@@ -4,7 +4,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
-const LocalDetailsPage = () => {
+function LocalDetailsPage() {
   const id = 2871024;
 
   const [data, setData] = useState<any>(null);
@@ -78,6 +78,6 @@ const LocalDetailsPage = () => {
       <p>{additionalData?.opentimefood}</p>
     </div>
   );
-};
+}
 
 export default LocalDetailsPage;
