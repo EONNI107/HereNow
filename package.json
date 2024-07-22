@@ -10,7 +10,7 @@
     "gen": "npx supabase gen types typescript --project-id \"cuxcqeqwbwfuxipnozwy\" --schema public > src/types/supabase.ts"
   },
   "dependencies": {
-    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@heroicons/react": "^2.1.5",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.44.4",
     "axios": "^1.7.2",
