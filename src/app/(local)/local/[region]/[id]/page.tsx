@@ -1,4 +1,5 @@
 'use client';
+import Like from '@/components/LocalDetails/like';
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
@@ -56,7 +57,6 @@ const LocalDetailsPage = () => {
 
   return (
     <div>
-      <h1>{data?.title}</h1>
       {data?.firstimage ? (
         <Image
           className="mx-auto my-3"
@@ -66,6 +66,11 @@ const LocalDetailsPage = () => {
           alt="장소 이미지"
         />
       ) : null}
+      <div className="flex justify-between">
+        <h1>{data?.title}</h1>
+        <Like />
+      </div>
+
       <p>{data?.addr1}</p>
       <p>{data?.zipcode}</p>
       <p>{data?.overview}</p>
