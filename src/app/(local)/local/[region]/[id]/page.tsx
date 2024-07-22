@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 
 const LocalDetailsPage = () => {
   const id = 2871024;
-  const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
 
   const [data, setData] = useState<any>(null);
   const [additionalData, setAdditionalData] = useState<any>(null);
