@@ -16,6 +16,7 @@ function LikeBtn() {
       showToast('success', '현재 페이지 주소가 복사되었습니다.');
     } catch (err) {
       console.error('복사 실패', err);
+      showToast('error', '현재 페이지 주소 복사를 실패하였습니다.');
     }
   };
 
