@@ -3,7 +3,7 @@ import { HeartIcon } from '@heroicons/react/24/outline';
 import { ShareIcon } from '@heroicons/react/24/outline';
 import { showToast } from '@/utils/toastHelper';
 
-const Like = () => {
+const LikeBtn = () => {
   const [liked, setLiked] = useState(false);
 
   const handleLike = () => {
@@ -34,4 +34,4 @@ const Like = () => {
   );
 };
 
-export default Like;
+export default LikeBtn;
