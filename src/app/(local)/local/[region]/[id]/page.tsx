@@ -1,11 +1,12 @@
 'use client';
+
+import Like from '@/components/LocalDetails/like';
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 const LocalDetailsPage = () => {
   const id = 2871024;
-  const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
 
   const [data, setData] = useState<any>(null);
   const [additionalData, setAdditionalData] = useState<any>(null);
@@ -56,7 +57,6 @@ const LocalDetailsPage = () => {
 
   return (
     <div>
-      <h1>{data?.title}</h1>
       {data?.firstimage ? (
         <Image
           className="mx-auto my-3"
@@ -66,6 +66,10 @@ const LocalDetailsPage = () => {
           alt="장소 이미지"
         />
       ) : null}
+      <div>
+        <h1>{data?.title}</h1>
+        <Like />
+      </div>
       <p>{data?.addr1}</p>
       <p>{data?.zipcode}</p>
       <p>{data?.overview}</p>
