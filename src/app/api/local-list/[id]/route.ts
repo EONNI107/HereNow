@@ -22,7 +22,10 @@ export const GET = async (
     );
 
     console.log('response.data =>', response.data);
-    return NextResponse.json(response.data);
+    return NextResponse.json({
+      ...response.data,
+      regionName: selectedRegion?.name || id,
+    });
   } catch (error) {
     console.error('Failed to fetch data', error);
     return NextResponse.json(
