@@ -35,9 +35,15 @@ function SignUpPage() {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          nickname,
+        },
+      },
     });
   };
 
