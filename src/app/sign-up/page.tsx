@@ -2,8 +2,7 @@
 
 import { createClient } from '@/utils/supabase/client';
 import { showToast } from '@/utils/toastHelper';
-import { useRouter } from 'next/navigation';
-import React, { FormEvent, useState } from 'react';
+import React, { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
 
 function SignUpPage() {
   const [email, setEmail] = useState('');
@@ -11,46 +10,35 @@ function SignUpPage() {
   const [passwordConfirm, setpasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
   const supabase = createClient();
-  const router = useRouter();
 
-  const onBlurPassword = (e) => {
-    if (e.target.value === '') {
-      showToast('error', `비밀번호를 입력하세요`);
-    } else if (e.target.value.length < 6) {
-      return showToast('error', '비밀번호는 최소 6글자입니다');
+  const onBlurPassword = (e: FocusEvent<HTMLInputElement>) => {
+    if (e.target.value.length < 6) {
+      return showToast('error', `비밀번호는 최소 6글자입니다`);
     }
   };
   const onBlurPasswordConfirm = () => {
-    if (passwordConfirm === '') {
-      return showToast('error', `비밀번호를 입력하세요`);
-    } else if (password !== passwordConfirm) {
+    if (password !== passwordConfirm) {
       return showToast('error', `비밀번호가 같지 않습니다`);
     } else if (password === passwordConfirm) {
       return showToast('success', `비밀번호가 일치 합니다`);
     }
   };
 
-  const onBlurNickname = (e) => {
-    if (e.target.value === '') {
-      return showToast('error', `닉네임을 입력해주세요`);
-    } else if (e.target.value.length < 2) {
-      return showToast('error', '닉네임은 최소 2글자입니다');
-    }
-  };
-
-  const onChangeEmail = (e) => setEmail(e.target.value);
-  const onChangePassword = (e) => {
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) =>
+    setEmail(e.target.value);
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setpassword(e.target.value);
   };
-  const onChangepasswordConfirm = (e) => {
+  const onChangepasswordConfirm = (e: ChangeEvent<HTMLInputElement>) => {
     setpasswordConfirm(e.target.value);
   };
-  const onChangeNickname = (e) => setNickname(e.target.value);
+  const onChangeNickname = (e: ChangeEvent<HTMLInputElement>) =>
+    setNickname(e.target.value);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { error } = await supabase.auth.signUp({
+    await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -59,12 +47,6 @@ function SignUpPage() {
         },
       },
     });
-    if (error) {
-      showToast('error', error.message);
-    } else {
-      showToast('success', '회원 가입이 완료되었습니다');
-      router.push('/sign-in');
-    }
   };
 
   return (
@@ -122,7 +104,6 @@ function SignUpPage() {
             닉네임:
           </label>
           <input
-            onBlur={onBlurNickname}
             id="nickname"
             type="text"
             value={nickname}
