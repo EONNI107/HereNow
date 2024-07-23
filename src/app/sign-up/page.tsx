@@ -13,14 +13,14 @@ function SignUpPage() {
   const supabase = createClient();
   const router = useRouter();
 
-  const onBlurPassword = (e: FocusEvent<HTMLInputElement>) => {
+  const handlePasswordBlur = (e: FocusEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
       showToast('error', `비밀번호를 입력하세요`);
     } else if (e.target.value.length < 6) {
       return showToast('error', '비밀번호는 최소 6글자입니다');
     }
   };
-  const onBlurPasswordConfirm = () => {
+  const handlePasswordConfirmBlur = () => {
     if (passwordConfirm === '') {
       return showToast('error', `비밀번호를 입력하세요`);
     } else if (password !== passwordConfirm) {
@@ -30,7 +30,7 @@ function SignUpPage() {
     }
   };
 
-  const onBlurNickname = (e: FocusEvent<HTMLInputElement>) => {
+  const handleNicknameBlur = (e: FocusEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
       return showToast('error', `닉네임을 입력해주세요`);
     } else if (e.target.value.length < 2) {
@@ -43,7 +43,7 @@ function SignUpPage() {
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setpassword(e.target.value);
   };
-  const onChangepasswordConfirm = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangePasswordConfirm = (e: ChangeEvent<HTMLInputElement>) => {
     setpasswordConfirm(e.target.value);
   };
   const onChangeNickname = (e: ChangeEvent<HTMLInputElement>) =>
@@ -62,7 +62,7 @@ function SignUpPage() {
       },
     });
     if (error) {
-      showToast('error', error.message);
+      showToast('error', '회원 가입중 오류가 발생했습니다');
     } else {
       showToast('success', '회원 가입이 완료되었습니다');
       router.push('/sign-in');
@@ -93,7 +93,7 @@ function SignUpPage() {
             비밀번호:
           </label>
           <input
-            onBlur={onBlurPassword}
+            onBlur={handlePasswordBlur}
             id="password"
             type="password"
             value={password}
@@ -110,13 +110,13 @@ function SignUpPage() {
             비밀번호 확인:
           </label>
           <input
-            onBlur={onBlurPasswordConfirm}
+            onBlur={handlePasswordConfirmBlur}
             id="passwordConfirm"
             type="password"
             value={passwordConfirm}
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="비밀번호를 다시 입력하세요"
-            onChange={onChangepasswordConfirm}
+            onChange={onChangePasswordConfirm}
           />
         </div>
         <div className="mb-4">
@@ -124,7 +124,7 @@ function SignUpPage() {
             닉네임:
           </label>
           <input
-            onBlur={onBlurNickname}
+            onBlur={handleNicknameBlur}
             id="nickname"
             type="text"
             value={nickname}

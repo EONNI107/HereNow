@@ -1,4 +1,4 @@
-function SignINPage() {
+function SignInPage() {
   return <div>"로그인페이지"</div>;
 }
-export default SignINPage;
+export default SignInPage;
