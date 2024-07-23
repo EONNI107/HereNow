@@ -9,7 +9,155 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      FeedComments: {
+        Row: {
+          content: string | null
+          createdAt: string | null
+          feedId: number | null
+          id: number
+          userId: string
+        }
+        Insert: {
+          content?: string | null
+          createdAt?: string | null
+          feedId?: number | null
+          id?: number
+          userId?: string
+        }
+        Update: {
+          content?: string | null
+          createdAt?: string | null
+          feedId?: number | null
+          id?: number
+          userId?: string
+        }
+        Relationships: []
+      }
+      FeedLikes: {
+        Row: {
+          feedId: number
+          id: number
+          userId: string | null
+        }
+        Insert: {
+          feedId: number
+          id?: number
+          userId?: string | null
+        }
+        Update: {
+          feedId?: number
+          id?: number
+          userId?: string | null
+        }
+        Relationships: []
+      }
+      Feeds: {
+        Row: {
+          content: string | null
+          createdAt: string | null
+          id: number
+          image: string | null
+          region: number | null
+          title: string | null
+          userId: string
+        }
+        Insert: {
+          content?: string | null
+          createdAt?: string | null
+          id?: number
+          image?: string | null
+          region?: number | null
+          title?: string | null
+          userId?: string
+        }
+        Update: {
+          content?: string | null
+          createdAt?: string | null
+          id?: number
+          image?: string | null
+          region?: number | null
+          title?: string | null
+          userId?: string
+        }
+        Relationships: []
+      }
+      PlaceComments: {
+        Row: {
+          content: string | null
+          createdAt: string
+          id: number
+          placeId: number | null
+          userId: string | null
+        }
+        Insert: {
+          content?: string | null
+          createdAt: string
+          id?: number
+          placeId?: number | null
+          userId?: string | null
+        }
+        Update: {
+          content?: string | null
+          createdAt?: string
+          id?: number
+          placeId?: number | null
+          userId?: string | null
+        }
+        Relationships: []
+      }
+      PlaceLikes: {
+        Row: {
+          id: number
+          placeId: number | null
+          userId: string
+        }
+        Insert: {
+          id?: number
+          placeId?: number | null
+          userId?: string
+        }
+        Update: {
+          id?: number
+          placeId?: number | null
+          userId?: string
+        }
+        Relationships: []
+      }
+      Users: {
+        Row: {
+          createdAt: string
+          email: string
+          id: string
+          nickname: string
+          profileImage: string | null
+          provider: string | null
+        }
+        Insert: {
+          createdAt?: string
+          email: string
+          id?: string
+          nickname: string
+          profileImage?: string | null
+          provider?: string | null
+        }
+        Update: {
+          createdAt?: string
+          email?: string
+          id?: string
+          nickname?: string
+          profileImage?: string | null
+          provider?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Users_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
