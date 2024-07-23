@@ -16,7 +16,7 @@ function SignUpPage() {
       return showToast('error', `비밀번호는 최소 6글자입니다`);
     }
   };
-  const onBlurPasswordConfirm = (e) => {
+  const onBlurPasswordConfirm = () => {
     if (password !== passwordConfirm) {
       return showToast('error', `비밀번호가 같지 않습니다`);
     } else if (password === passwordConfirm) {
