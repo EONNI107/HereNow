@@ -1,11 +1,10 @@
 'use client';
-
-import Like from '@/components/LocalDetails/like';
+import LikeBtn from '@/components/LocalDetails/LikeBtn';
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
-const LocalDetailsPage = () => {
+function LocalDetailsPage() {
   const id = 2871024;
 
   const [data, setData] = useState<any>(null);
@@ -66,10 +65,11 @@ const LocalDetailsPage = () => {
           alt="장소 이미지"
         />
       ) : null}
-      <div>
+      <div className="flex justify-between">
         <h1>{data?.title}</h1>
-        <Like />
+        <LikeBtn />
       </div>
+
       <p>{data?.addr1}</p>
       <p>{data?.zipcode}</p>
       <p>{data?.overview}</p>
@@ -78,6 +78,6 @@ const LocalDetailsPage = () => {
       <p>{additionalData?.opentimefood}</p>
     </div>
   );
-};
+}
 
 export default LocalDetailsPage;
