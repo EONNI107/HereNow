@@ -63,6 +63,9 @@ function LocalListPage({ params }: { params: { region: string } }) {
 
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>{error}</div>;
+  console.log('data => ', data);
+
+  const defaultImage = '/default-image.png';
 
   return (
     <div className="p-4">
@@ -75,7 +78,7 @@ function LocalListPage({ params }: { params: { region: string } }) {
               className="border rounded-lg overflow-hidden shadow-lg"
             >
               <Image
-                src={item.firstimage}
+                src={item.firstimage || defaultImage}
                 width={300}
                 height={200}
                 alt="지역 썸네일"

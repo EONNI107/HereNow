@@ -18,7 +18,7 @@ export const GET = async (
   const areaCode = selectedRegion?.code;
   try {
     const response = await tourApi.get(
-      `/areaBasedList1?numOfRows=10&pageNo=1&MobileOS=etc&MobileApp=HereNow&_type=json&listYN=Y&arrange=R&contentTypeId=12&areaCode=${areaCode}&serviceKey=${serviceKey}`,
+      `areaBasedList1?numOfRows=20&pageNo=1&MobileOS=etc&MobileApp=HereNow&_type=json&listYN=Y&arrange=R&contentTypeId=12&areaCode=${areaCode}&serviceKey=${serviceKey}`,
     );
 
     console.log('response.data =>', response.data);
