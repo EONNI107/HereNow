@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { tourApi } from '../tourApi';
-import axios from 'axios';
 
 export const GET = async (request: Request) => {
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
