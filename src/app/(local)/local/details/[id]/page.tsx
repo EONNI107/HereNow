@@ -108,7 +108,7 @@ function LocalDetailsPage() {
       };
       const getHours = () => {
         switch (contentTypeId) {
-          case 14: //관광지
+          case 14: // 문화시설
             return additionalData.usetimeculture ?? null;
           case 15: // 축제공연행사
             return additionalData.playtime ?? null;
@@ -153,7 +153,7 @@ function LocalDetailsPage() {
             className="text-gray-500 mt-1 text-sm underline text-left"
             onClick={handleExpand}
           >
-            {isExpanded ? '접기' : '더보기 >'}
+            {isExpanded ? '접기 ↑' : '더보기 >'}
           </button>
         </div>
         <p className="flex gap-2">
