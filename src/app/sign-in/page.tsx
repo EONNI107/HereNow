@@ -9,8 +9,9 @@ import Link from 'next/link';
 function SignInPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const supabse = createClient();
+  const supabase = createClient();
   const router = useRouter();
+
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = emailRef.current?.value;
@@ -19,7 +20,7 @@ function SignInPage() {
       return showToast('error', '모든 항목을 입력해주세요');
     }
 
-    const { error } = await supabse.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -28,6 +29,27 @@ function SignInPage() {
       return;
     }
     showToast('success', '로그인 성공');
+    router.push('/');
+  };
+
+  const signInWithOAuth = async (provider: 'google' | 'kakao') => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options:
+        provider === 'google'
+          ? {
+              queryParams: {
+                access_type: 'offline',
+                prompt: 'consent',
+              },
+            }
+          : {},
+    });
+    if (error) {
+      showToast('error', error.message);
+      return;
+    }
+    showToast('success', `${provider}로 로그인 성공`);
     router.push('/');
   };
 
@@ -57,10 +79,11 @@ function SignInPage() {
       </form>
       <Link href="/sign-up">회원가입</Link>
       <br />
-      <button>구글</button>
+      <button onClick={() => signInWithOAuth('google')}>구글</button>
       <br />
-      <button>카카오</button>
+      <button onClick={() => signInWithOAuth('kakao')}>카카오</button>
     </div>
   );
 }
+
 export default SignInPage;
