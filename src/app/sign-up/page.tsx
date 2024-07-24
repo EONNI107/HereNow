@@ -1,8 +1,8 @@
 'use client';
 
-import { createClient } from '@/utils/supabase/client';
 import { showToast } from '@/utils/toastHelper';
 import React, { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 function SignUpPage() {
@@ -10,7 +10,7 @@ function SignUpPage() {
   const [password, setpassword] = useState('');
   const [passwordConfirm, setpasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
-  const supabase = createClient();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const handlePasswordBlur = (e: FocusEvent<HTMLInputElement>) => {
@@ -51,21 +51,21 @@ function SignUpPage() {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          nickname,
-        },
-      },
-    });
-    if (error) {
-      showToast('error', '회원 가입중 오류가 발생했습니다');
-    } else {
-      showToast('success', '회원 가입이 완료되었습니다');
-      router.push('/sign-in');
+    setIsSubmitting(true);
+    try {
+      const response = await axios.post('/api/sign-up', {
+        email,
+        password,
+        nickname,
+      });
+      if (response.status === 201) {
+        showToast('success', `회원가입이 성공했습니다`);
+        router.push('/sign-in');
+      }
+    } catch (error) {
+      showToast('error', `회원가입에 실패했습니다`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -134,6 +134,7 @@ function SignUpPage() {
           />
         </div>
         <button
+          disabled={isSubmitting}
           type="submit"
           className="w-full py-2 px-4 bg-o-500 text-white rounded-md bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
