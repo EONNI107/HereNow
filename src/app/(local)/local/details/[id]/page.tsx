@@ -1,6 +1,6 @@
 'use client';
 import LikeBtn from '@/components/LocalDetails/LikeBtn';
-import { AdditionalData, ContentType, MainData } from '@/types/local-details';
+import { AdditionalData, MainData, NearbyPlaces } from '@/types/local-details';
 import {
   BookOpenIcon,
   CalendarDateRangeIcon,
@@ -9,17 +9,20 @@ import {
   PhoneIcon,
 } from '@heroicons/react/24/outline';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-function LocalDetailsPage() {
-  // const id = 2871024;
-  const id = 2871024;
+function LocalDetailsPage({ params }: { params: { id: number } }) {
+  const { id } = params;
 
   const [data, setData] = useState<MainData | null>(null);
   const [additionalData, setAdditionalData] = useState<AdditionalData | null>(
     null,
   );
+  const [nearbyPlaces, setNearbyPlaces] = useState<NearbyPlaces[]>([]);
+  const [filteredPlaces, setFilteredPlaces] = useState<NearbyPlaces[]>([]);
   const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
   const [restdate, setRestDate] = useState<string | null>(null);
   const [hours, setHours] = useState<string | null>(null);
@@ -27,15 +30,28 @@ function LocalDetailsPage() {
 
   const filteredHours = hours?.replace(/<br\s*\/?>/gi, ' ') || '';
   const filteredRestDate = restdate?.replace(/<br\s*\/?>/gi, ' ') || '';
-  const formatKoreanDate = (dateStr: string) => {
-    if (dateStr.length !== 8) {
-      throw new Error('YYYYMMDD 형식이 아닙니다.');
+
+  const formatKoreanDate = (dateStr: string): string => {
+    try {
+      const date = dayjs(dateStr, 'YYYYMMDD');
+      if (!date.isValid()) {
+        throw new Error('유효하지 않은 형식입니다.');
+      }
+      return date.format('YYYY년 MM월 DD일');
+    } catch (error) {
+      console.error('에러가 생겼습니다:', error);
+      return '유효하지 않은 형식';
     }
-    const year = dateStr.substring(0, 4);
-    const month = dateStr.substring(4, 6);
-    const day = dateStr.substring(6, 8);
-    return `${year}년 ${month}월 ${day}일`;
   };
+  const typeId = data?.contenttypeid;
+
+  useEffect(() => {
+    if (nearbyPlaces) {
+      setFilteredPlaces(
+        nearbyPlaces.filter((place) => place.contentid !== id.toString()),
+      );
+    }
+  }, [nearbyPlaces, id]);
 
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -61,7 +77,6 @@ function LocalDetailsPage() {
     if (!data) return;
     const fetchAdditionalData = async () => {
       try {
-        const typeId = data?.contenttypeid;
         const response = await axios.get(
           `/api/additional-details/${id}?typeId=${typeId}`,
         );
@@ -76,6 +91,25 @@ function LocalDetailsPage() {
     };
     fetchAdditionalData();
   }, [data, id]);
+
+  useEffect(() => {
+    if (!data) return;
+    const fetchNearbyData = async () => {
+      try {
+        const response = await axios.get(
+          `/api/nearby-places?mapX=${data.mapx}&mapY=${data.mapy}&typeId=${typeId}`,
+        );
+        if (response.data) {
+          setNearbyPlaces(response.data.response.body.items.item);
+        } else {
+          console.error('주변정보를 불러오는데 실패했습니다.');
+        }
+      } catch (err: any) {
+        console.error(err || '주변정보를 불러올때 에러가 생겼습니다.');
+      }
+    };
+    fetchNearbyData();
+  }, [data?.mapx, data?.mapy, data?.contenttypeid]);
 
   useEffect(() => {
     if (data?.contenttypeid && additionalData) {
@@ -125,9 +159,6 @@ function LocalDetailsPage() {
     }
   }, [data, additionalData]);
 
-  console.log(data);
-  console.log(additionalData);
-
   return (
     <div>
       {data?.firstimage ? (
@@ -140,7 +171,7 @@ function LocalDetailsPage() {
         />
       ) : null}
       <div className="flex justify-between">
-        <h1 className="text-3xl font-bold mb-4">{data?.title}</h1>
+        <h1 className="text-2xl font-bold mb-4">{data?.title}</h1>
         <LikeBtn />
       </div>
 
@@ -169,8 +200,8 @@ function LocalDetailsPage() {
         {filteredRestDate ? (
           <p className="flex gap-2">
             {' '}
-            <CalendarDateRangeIcon className="w-t h-5" /> {filteredRestDate}{' '}
-            휴무
+            <CalendarDateRangeIcon className="w-t h-5" /> 휴무:{' '}
+            {filteredRestDate}{' '}
           </p>
         ) : (
           <p className="flex gap-2">
@@ -192,9 +223,34 @@ function LocalDetailsPage() {
           <PhoneIcon className="w-t h-5" /> {phoneNumber}
         </p>
       </div>
-      {/* 
-      <p>{data?.mapx}</p>
-      <p>{data?.mapy}</p> */}
+
+      {filteredPlaces && (
+        <div>
+          <p className="font-bold text-lg mt-8">주변 추천 장소</p>
+          <div className="flex overflow-x-auto gap-4 mt-3 pb-4">
+            {filteredPlaces.map((place: any) => (
+              <Link
+                key={place.contentid}
+                href={`/local/details/${place.contentid}`}
+                className="flex-shrink-0 w-40"
+              >
+                <div className="w-full">
+                  <div className="relative w-40 h-40 mb-2">
+                    <Image
+                      className="rounded-lg object-cover"
+                      src={place.firstimage}
+                      alt={place.title}
+                      fill
+                      sizes="auto"
+                    />
+                  </div>
+                  <p className="font-bold text-sm truncate">{place.title}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
