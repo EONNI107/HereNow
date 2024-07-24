@@ -4,3 +4,8 @@
 
 @layer utilities {
 }
+
+.no-focus:focus {
+  outline: none;
+  border-color: transparent;
+}
