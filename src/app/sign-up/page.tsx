@@ -1,50 +1,73 @@
 'use client';
 
-import { createClient } from '@/utils/supabase/client';
 import { showToast } from '@/utils/toastHelper';
-import React, { FormEvent, useState } from 'react';
+import React, { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
   const [passwordConfirm, setpasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
-  const supabase = createClient();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
-  const onBlurPassword = (e) => {
-    if (e.target.value.length < 6) {
-      return showToast('error', `비밀번호는 최소 6글자입니다`);
+  const handlePasswordBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      showToast('error', `비밀번호를 입력하세요`);
+    } else if (e.target.value.length < 6) {
+      return showToast('error', '비밀번호는 최소 6글자입니다');
     }
   };
-  const onBlurPasswordConfirm = () => {
-    if (password !== passwordConfirm) {
+
+  const handlePasswordConfirmBlur = () => {
+    if (passwordConfirm === '') {
+      return showToast('error', `비밀번호를 입력하세요`);
+    } else if (password !== passwordConfirm) {
       return showToast('error', `비밀번호가 같지 않습니다`);
     } else if (password === passwordConfirm) {
       return showToast('success', `비밀번호가 일치 합니다`);
     }
   };
 
-  const onChangeEmail = (e) => setEmail(e.target.value);
-  const onChangePassword = (e) => {
+  const handleNicknameBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (e.target.value === '') {
+      return showToast('error', `닉네임을 입력해주세요`);
+    } else if (e.target.value.length < 2) {
+      return showToast('error', '닉네임은 최소 2글자입니다');
+    }
+  };
+
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) =>
+    setEmail(e.target.value);
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setpassword(e.target.value);
   };
-  const onChangepasswordConfirm = (e) => {
+  const onChangePasswordConfirm = (e: ChangeEvent<HTMLInputElement>) => {
     setpasswordConfirm(e.target.value);
   };
-  const onChangeNickname = (e) => setNickname(e.target.value);
+  const onChangeNickname = (e: ChangeEvent<HTMLInputElement>) =>
+    setNickname(e.target.value);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          nickname,
-        },
-      },
-    });
+    setIsSubmitting(true);
+    try {
+      const response = await axios.post('/api/sign-up', {
+        email,
+        password,
+        nickname,
+      });
+      if (response.status === 201) {
+        showToast('success', `회원가입이 성공했습니다`);
+        router.push('/sign-in');
+      }
+    } catch (error) {
+      showToast('error', `회원가입에 실패했습니다`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -71,7 +94,7 @@ function SignUpPage() {
             비밀번호:
           </label>
           <input
-            onBlur={onBlurPassword}
+            onBlur={handlePasswordBlur}
             id="password"
             type="password"
             value={password}
@@ -88,13 +111,13 @@ function SignUpPage() {
             비밀번호 확인:
           </label>
           <input
-            onBlur={onBlurPasswordConfirm}
+            onBlur={handlePasswordConfirmBlur}
             id="passwordConfirm"
             type="password"
             value={passwordConfirm}
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
             placeholder="비밀번호를 다시 입력하세요"
-            onChange={onChangepasswordConfirm}
+            onChange={onChangePasswordConfirm}
           />
         </div>
         <div className="mb-4">
@@ -102,6 +125,7 @@ function SignUpPage() {
             닉네임:
           </label>
           <input
+            onBlur={handleNicknameBlur}
             id="nickname"
             type="text"
             value={nickname}
@@ -111,6 +135,7 @@ function SignUpPage() {
           />
         </div>
         <button
+          disabled={isSubmitting}
           type="submit"
           className="w-full py-2 px-4 bg-o-500 text-white rounded-md bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
