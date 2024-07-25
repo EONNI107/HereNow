@@ -1,9 +1,9 @@
 import React from 'react';
 
-interface ContentTypeFilterProps {
+type ContentTypeFilterProps = {
   selectedContentType: string;
   onContentTypeChange: (contentType: string) => void;
-}
+};
 
 const contentTypes = [
   { id: '12', name: '관광명소' },
