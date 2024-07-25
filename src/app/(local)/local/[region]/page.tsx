@@ -1,78 +1,70 @@
 'use client';
 
-import { showToast } from '@/utils/toastHelper';
+import { Item } from '@/types/localList';
+import { getRegionName } from '@/utils/getRegionName';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
-type ItemKeys =
-  | 'addr1'
-  | 'addr2'
-  | 'areacode'
-  | 'booktour'
-  | 'cat1'
-  | 'cat2'
-  | 'cat3'
-  | 'contentid'
-  | 'contenttypeid'
-  | 'cpyrhtDivCd'
-  | 'createdtime'
-  | 'firstimage'
-  | 'firstimage2'
-  | 'mapx'
-  | 'mapy'
-  | 'mlevel'
-  | 'modifiedtime'
-  | 'sigungucode'
-  | 'tel'
-  | 'title'
-  | 'zipcode';
-
-type Item = Record<ItemKeys, string>;
+type LocalListData = {
+  localList: Item[];
+  totalPage: number;
+};
 
 function LocalListPage({ params }: { params: { region: string } }) {
-  const [data, setData] = useState<Item[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [regionName, setRegionName] = useState<string>('');
+  const {
+    data,
+    error,
+    isPending,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery<LocalListData, Error, LocalListData, string[], number>({
+    queryKey: ['localList', params.region],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await axios.get<LocalListData>(
+        `/api/local-list/${params.region}?pageNo=${pageParam}`,
+      );
 
-  useEffect(() => {
-    const fetchListData = async () => {
-      try {
-        const response = await axios.get(`/api/local-list/${params.region}`);
+      return response.data;
+    },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPage, lastPageParam) => {
+      return lastPageParam === lastPage.totalPage
+        ? undefined
+        : lastPageParam + 1;
+    },
+    select: (data) => ({
+      localList: data.pages.flatMap((page) => page.localList),
+      totalPage: data.pages[0].totalPage,
+    }),
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+  });
 
-        if (!response || !response.data) {
-          throw new Error('네트워크 응답이 실패했습니다.');
-        }
-
-        const { response: result, regionName } = response.data;
-
-        setData(result.body.items.item);
-        setRegionName(regionName);
-      } catch (err) {
-        console.error('Error fetching data:', err);
-        showToast('error', '데이터를 가져오는 중 오류가 발생했습니다.');
-        setError('데이터를 가져오는 데 실패했습니다.');
-      } finally {
-        setLoading(false);
+  const { ref } = useInView({
+    threshold: 1,
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
       }
-    };
+    },
+  });
 
-    fetchListData();
-  }, [params.region]);
-
-  if (loading) return <div>로딩 중...</div>;
-  if (error) return <div>{error}</div>;
+  if (isPending) return <div>로딩 중...</div>;
+  if (error) return <div>에러가 발생했습니다. {error.message}</div>;
   console.log('data => ', data);
 
   const defaultImage = '/default-image.png';
+  const regionName = getRegionName(params.region);
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-4">{regionName}의 정보 리스트</h1>
-      {data && data.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {data.map((item) => (
+      {data && data.localList.length > 0 ? (
+        <div className="grid grid-cols-1 gap-4">
+          {data.localList.map((item) => (
             <div
               key={item.contentid}
               className="border rounded-lg overflow-hidden shadow-lg"
@@ -87,6 +79,7 @@ function LocalListPage({ params }: { params: { region: string } }) {
               />
               <div className="p-4">
                 <h2 className="text-lg font-semibold">{item.title}</h2>
+                <p>{item.addr1}</p>
               </div>
             </div>
           ))}
@@ -94,6 +87,9 @@ function LocalListPage({ params }: { params: { region: string } }) {
       ) : (
         <p>데이터가 없습니다.</p>
       )}
+      <div ref={ref} className="h-1" />
+      {isFetchingNextPage && <p>로딩 중...</p>}
+      {/* 마지막 페이지 일 때 로딩 중 없애기 */}
     </div>
   );
 }
