@@ -1,11 +1,13 @@
 'use client';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
+import ContentTypeFilter from '@/components/LocalList/ContentTypeFilter';
 import { Item } from '@/types/localList';
 import { getRegionName } from '@/utils/getRegionName';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
+import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 type LocalListData = {
@@ -14,6 +16,8 @@ type LocalListData = {
 };
 
 function LocalListPage({ params }: { params: { region: string } }) {
+  const [contentType, setContentType] = useState('12');
+
   const {
     data,
     error,
@@ -22,10 +26,10 @@ function LocalListPage({ params }: { params: { region: string } }) {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery<LocalListData, Error, LocalListData, string[], number>({
-    queryKey: ['localList', params.region],
+    queryKey: ['localList', params.region, contentType],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await axios.get<LocalListData>(
-        `/api/local-list/${params.region}?pageNo=${pageParam}`,
+        `/api/local-list/${params.region}?pageNo=${pageParam}&contentTypeId=${contentType}`,
       );
 
       return response.data;
@@ -54,6 +58,10 @@ function LocalListPage({ params }: { params: { region: string } }) {
     },
   });
 
+  const handleContentTypeChange = (newContentType: string) => {
+    setContentType(newContentType);
+  };
+
   if (isPending) return <div>로딩 중...</div>;
   if (error) return <div>에러가 발생했습니다. {error.message}</div>;
   console.log('data => ', data);
@@ -64,6 +72,11 @@ function LocalListPage({ params }: { params: { region: string } }) {
   return (
     <div className="p-4 max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-4">{regionName}의 정보 리스트</h1>
+      <ContentTypeFilter
+        selectedContentType={contentType}
+        onContentTypeChange={handleContentTypeChange}
+      />
+
       {data && data.localList.length > 0 ? (
         <div className="grid grid-cols-1 gap-4">
           {data.localList.map((item) => (

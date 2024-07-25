@@ -14,11 +14,11 @@ export const GET = async (
   const areaCode = selectedRegion?.code;
   const { searchParams } = new URL(request.url);
   const pageNo = searchParams.get('pageNo') || '1';
-  const contentTypeId = searchParams.get('contentTypeId');
+  const contentTypeId = searchParams.get('contentTypeId') || '12';
 
   try {
     const response = await tourApi.get(
-      `areaBasedList1?numOfRows=10&pageNo=${pageNo}&MobileOS=etc&MobileApp=HereNow&_type=json&listYN=Y&arrange=R&contentTypeId=12&areaCode=${areaCode}&serviceKey=${serviceKey}`,
+      `areaBasedList1?numOfRows=10&pageNo=${pageNo}&MobileOS=etc&MobileApp=HereNow&_type=json&listYN=Y&arrange=R&contentTypeId=${contentTypeId}&areaCode=${areaCode}&serviceKey=${serviceKey}`,
     );
 
     return NextResponse.json({
