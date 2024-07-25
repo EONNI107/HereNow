@@ -1,4 +1,6 @@
-import { region } from '@/data/region.json';
+import regionData from '@/data/region.json';
+
+const region = regionData.region;
 
 type Region = {
   rnum: number;
