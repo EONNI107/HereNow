@@ -1,5 +1,6 @@
 'use client';
 
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { Item } from '@/types/localList';
 import { getRegionName } from '@/utils/getRegionName';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -44,7 +45,8 @@ function LocalListPage({ params }: { params: { region: string } }) {
   });
 
   const { ref } = useInView({
-    threshold: 1,
+    threshold: 0.5,
+    rootMargin: '100px',
     onChange: (inView) => {
       if (inView && hasNextPage && !isFetchingNextPage) {
         fetchNextPage();
@@ -87,9 +89,13 @@ function LocalListPage({ params }: { params: { region: string } }) {
       ) : (
         <p>데이터가 없습니다.</p>
       )}
-      <div ref={ref} className="h-1" />
-      {isFetchingNextPage && <p>로딩 중...</p>}
-      {/* 마지막 페이지 일 때 로딩 중 없애기 */}
+      {hasNextPage && <div ref={ref} className="h-10" />}
+      {isFetchingNextPage && hasNextPage && (
+        <div className="flex justify-center items-center">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!hasNextPage && <p>모든 데이터를 불러왔습니다.</p>}
     </div>
   );
 }
