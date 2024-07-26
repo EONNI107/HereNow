@@ -1,5 +1,10 @@
-import { Post } from '@/types/post';
+'use client';
+
+import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
+import { Post } from '@/types/post';
+import Comments from '@/components/FeedDetail/Comments';
+import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -9,7 +14,7 @@ async function fetchPost(id: string): Promise<Post | null> {
     .eq('id', id)
     .single();
 
-  if (error) {
+  if (error || !data) {
     console.error('Error fetching post:', error);
     return null;
   }
@@ -21,11 +26,21 @@ type PostPageProps = {
   params: { id: string };
 };
 
-const PostPage = async ({ params }: PostPageProps) => {
-  const post = await fetchPost(params.id);
+const PostPage = ({ params }: PostPageProps) => {
+  const [post, setPost] = useState<Post | null>(null);
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedPost = await fetchPost(params.id);
+      setPost(fetchedPost);
+    };
+
+    fetchData();
+  }, [params.id]);
 
   if (!post) {
-    return <div>Post not found</div>;
+    return <div>피드를 찾을 수 없습니다</div>;
   }
 
   return (
@@ -38,11 +53,21 @@ const PostPage = async ({ params }: PostPageProps) => {
             key={index}
             src={src}
             alt={`Image ${index}`}
-            className="w-32 h-32 object-cover"
+            className="w-full h-full object-cover"
           />
         ))}
       </div>
-      <p className="text-lg">{post.content}</p>
+      <ChatBubbleOvalLeftEllipsisIcon
+        onClick={() => setIsCommentModalOpen(true)}
+        className="btn mt-2 mb-2 w-6 h-6 cursor-pointer"
+      />
+      <p className="text-lg mb-4">{post.content}</p>
+      {isCommentModalOpen && (
+        <Comments
+          postId={post.id}
+          onClose={() => setIsCommentModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

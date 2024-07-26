@@ -51,7 +51,7 @@ function FeedWrite() {
 
       if (uploadError) {
         console.error('Upload Error:', uploadError);
-        alert('Error uploading image');
+        alert('이미지 업로드에 실패하였습니다.');
         return;
       }
 
@@ -71,9 +71,9 @@ function FeedWrite() {
 
     if (error) {
       console.error('Insert Post Error:', error);
-      alert('Error creating post');
+      alert('피드 작성에 실패하였습니다.');
     } else {
-      alert('Post created successfully');
+      alert('피드가 성공적으로 업데이트되었습니다.');
       router.push('/');
     }
   };
