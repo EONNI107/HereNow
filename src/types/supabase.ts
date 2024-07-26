@@ -11,117 +11,174 @@ export type Database = {
     Tables: {
       FeedComments: {
         Row: {
-          content: string | null
-          createdAt: string | null
-          feedId: number | null
+          content: string
+          createdAt: string
+          feedId: number
           id: number
           userId: string
         }
         Insert: {
-          content?: string | null
-          createdAt?: string | null
-          feedId?: number | null
+          content: string
+          createdAt?: string
+          feedId: number
           id?: number
           userId?: string
         }
         Update: {
-          content?: string | null
-          createdAt?: string | null
-          feedId?: number | null
+          content?: string
+          createdAt?: string
+          feedId?: number
           id?: number
           userId?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "FeedComments_feedId_fkey"
+            columns: ["feedId"]
+            isOneToOne: false
+            referencedRelation: "Feeds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "FeedComments_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       FeedLikes: {
         Row: {
           feedId: number
           id: number
-          userId: string | null
+          userId: string
         }
         Insert: {
           feedId: number
           id?: number
-          userId?: string | null
+          userId?: string
         }
         Update: {
           feedId?: number
           id?: number
-          userId?: string | null
+          userId?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "FeedLikes_feedId_fkey"
+            columns: ["feedId"]
+            isOneToOne: false
+            referencedRelation: "Feeds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "FeedLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       Feeds: {
         Row: {
-          content: string | null
-          createdAt: string | null
+          content: string
+          createdAt: string
           id: number
           image: string | null
-          region: number | null
-          title: string | null
+          region: string | null
+          sigungu: string | null
+          title: string
           userId: string
         }
         Insert: {
-          content?: string | null
-          createdAt?: string | null
+          content: string
+          createdAt?: string
           id?: number
           image?: string | null
-          region?: number | null
-          title?: string | null
+          region?: string | null
+          sigungu?: string | null
+          title: string
           userId?: string
         }
         Update: {
-          content?: string | null
-          createdAt?: string | null
+          content?: string
+          createdAt?: string
           id?: number
           image?: string | null
-          region?: number | null
-          title?: string | null
+          region?: string | null
+          sigungu?: string | null
+          title?: string
           userId?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "Feeds_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       PlaceComments: {
         Row: {
-          content: string | null
+          content: string
           createdAt: string
           id: number
-          placeId: number | null
-          userId: string | null
+          placeId: number
+          userId: string
         }
         Insert: {
-          content?: string | null
+          content: string
           createdAt: string
           id?: number
-          placeId?: number | null
-          userId?: string | null
+          placeId: number
+          userId?: string
         }
         Update: {
-          content?: string | null
+          content?: string
           createdAt?: string
           id?: number
-          placeId?: number | null
-          userId?: string | null
+          placeId?: number
+          userId?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "PlaceComments_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       PlaceLikes: {
         Row: {
           id: number
-          placeId: number | null
+          placeId: number
           userId: string
         }
         Insert: {
           id?: number
-          placeId?: number | null
+          placeId: number
           userId?: string
         }
         Update: {
           id?: number
-          placeId?: number | null
+          placeId?: number
           userId?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "PlaceLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       Users: {
         Row: {
