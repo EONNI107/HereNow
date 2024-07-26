@@ -26,7 +26,6 @@ export const GET = async (
       `searchFestival1?numOfRows=10&pageNo=${pageNo}&MobileOS=etc&MobileApp=HereNow&_type=json&listYN=Y&arrange=R&eventStartDate=${today}&areaCode=${areaCode}&serviceKey=${serviceKey}`,
     );
 
-    console.log('res.data => ', response.data);
     return NextResponse.json({
       localList: response.data.response.body?.items?.item ?? [],
       totalPage: Math.ceil(

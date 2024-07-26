@@ -2,8 +2,14 @@
 
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ContentTypeFilter from '@/components/LocalList/ContentTypeFilter';
+import SkeletonCard from '@/components/LocalList/SkeletonCard';
 import { Item } from '@/types/localList';
-import { getRegionName } from '@/utils/getRegionName';
+import {
+  getRegionNameKorean,
+  getRegionNameEnglish,
+} from '@/utils/getRegionName';
+import { getSigunguName } from '@/utils/getSigunguName';
+import { region } from '@/data/region.json';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
@@ -29,17 +35,11 @@ function LocalListPage({ params }: { params: { region: string } }) {
   } = useInfiniteQuery<LocalListData, Error, LocalListData, string[], number>({
     queryKey: ['localList', params.region, contentType],
     queryFn: async ({ pageParam = 1 }) => {
-      let response;
-      if (contentType === '15') {
-        response = await axios.get<LocalListData>(
-          `/api/local-event/${params.region}?pageNo=${pageParam}`,
-        );
-        console.log('행사 정보 API 응답:', response.data);
-      } else {
-        response = await axios.get<LocalListData>(
-          `/api/local-list/${params.region}?pageNo=${pageParam}&contentTypeId=${contentType}`,
-        );
-      }
+      const response = await axios.get<LocalListData>(
+        contentType === '15'
+          ? `/api/local-event/${params.region}?pageNo=${pageParam}`
+          : `/api/local-list/${params.region}?pageNo=${pageParam}&contentTypeId=${contentType}`,
+      );
       return response.data;
     },
     initialPageParam: 1,
@@ -70,16 +70,46 @@ function LocalListPage({ params }: { params: { region: string } }) {
     setContentType(newContentType);
   };
 
-  if (isPending) return <div>로딩 중...</div>;
-  if (error) return <div>에러가 발생했습니다. {error.message}</div>;
-  console.log('data => ', data);
-
   const defaultImage = '/default-image.png';
-  const regionName = getRegionName(params.region);
+  const selectedRegion = region.find(
+    (r) => r.ename.toLowerCase() === params.region.toLowerCase(),
+  );
+
+  if (isPending) {
+    return (
+      <div className="max-w-md mx-auto">
+        <div className="relative h-48 mb-4 bg-gray-200 animate-pulse"></div>
+
+        <div className="h-10 bg-gray-200 mb-4 animate-pulse"></div>
+
+        <div className="grid grid-cols-1 gap-4">
+          {[...Array(5)].map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (error) return <div>에러가 발생했습니다. {error.message}</div>;
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">{regionName}의 정보 리스트</h1>
+    <div className="max-w-md mx-auto">
+      {/* 상단 이미지 */}
+      <div className="relative h-48 mb-4">
+        <Image
+          src="/busan-bridge.jpg"
+          alt={`${getRegionNameKorean(params.region)} 이미지`}
+          fill={true}
+          priority={true}
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+          <h1 className="text-3xl font-bold text-white">
+            {getRegionNameEnglish(params.region).toUpperCase()}
+          </h1>
+        </div>
+      </div>
+
       <ContentTypeFilter
         selectedContentType={contentType}
         onContentTypeChange={handleContentTypeChange}
@@ -91,19 +121,29 @@ function LocalListPage({ params }: { params: { region: string } }) {
             <Link
               href={`/local/details/${item.contentid}`}
               key={item.contentid}
-              className="border rounded-lg overflow-hidden shadow-lg"
+              className="border rounded-lg overflow-hidden shadow-lg relative"
             >
-              <Image
-                src={item.firstimage || defaultImage}
-                width={300}
-                height={200}
-                alt="지역 관광 정보 이미지"
-                className="object-cover w-full h-48"
-                priority
-              />
-              <div className="p-4">
-                <h2 className="text-lg font-semibold">{item.title}</h2>
-                <p>{item.addr1}</p>
+              <div className="relative">
+                <Image
+                  src={item.firstimage || defaultImage}
+                  width={300}
+                  height={200}
+                  alt={item.title}
+                  className="object-cover w-full h-48"
+                  priority
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent h-1/2 flex flex-col justify-end items-center p-4">
+                  <p className="text-sm text-white mb-1 text-center">
+                    {getRegionNameKorean(params.region)}{' '}
+                    {getSigunguName(
+                      selectedRegion?.code || '',
+                      item.sigungucode,
+                    )}
+                  </p>
+                  <h2 className="text-xl font-bold text-white text-center">
+                    {item.title}
+                  </h2>
+                </div>
               </div>
             </Link>
           ))}
