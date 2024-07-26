@@ -2,7 +2,7 @@ import axios from 'axios';
 import { NextResponse } from 'next/server';
 import { tourApi } from '../tourApi';
 
-export const GET = async (request: Request) => {
+export const POST = async (request: Request) => {
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
   const xValue = '';
   const yValue = '';
