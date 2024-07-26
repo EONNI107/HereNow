@@ -8,7 +8,6 @@ type ImageUploadProps = {
 };
 
 const ImageUpload = ({
-  images,
   setImages,
   imagePreviews,
   setImagePreviews,

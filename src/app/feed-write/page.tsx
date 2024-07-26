@@ -17,9 +17,7 @@ function FeedWrite() {
   const router = useRouter();
   const supabase = createClient();
 
-  // 사용자 인증을 임시로 비활성화하여 항상 로그인된 것으로 가정
   useEffect(() => {
-    // 주석 처리: 실제 사용자 인증 체크
     // const checkUser = async () => {
     //   const { data, error } = await supabase.auth.getUser();
     //   if (error || !data.user) {
@@ -31,8 +29,6 @@ function FeedWrite() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // 주석 처리: 실제 사용자 인증 체크
     // const { data: userData, error: userError } = await supabase.auth.getUser();
 
     // if (userError || !userData.user) {
@@ -40,7 +36,6 @@ function FeedWrite() {
     //   return;
     // }
 
-    // 임시 사용자 ID 설정
     const userId = 'test-user-id'; // 임시 사용자 ID
 
     let imageUrls: string[] = [];

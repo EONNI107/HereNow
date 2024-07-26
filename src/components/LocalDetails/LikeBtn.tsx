@@ -21,7 +21,7 @@ function LikeBtn() {
   };
 
   return (
-    <div className="items-center ">
+    <div className="items-center flex gap-2 mb-4">
       <button onClick={handleLike} className="focus:outline-none">
         <HeartIcon
           className={`w-6 h-6 ${liked ? 'text-red-500' : 'text-gray-400'}`}
