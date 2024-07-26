@@ -9,7 +9,212 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      FeedComments: {
+        Row: {
+          content: string
+          createdAt: string
+          feedId: number
+          id: number
+          userId: string
+        }
+        Insert: {
+          content: string
+          createdAt?: string
+          feedId: number
+          id?: number
+          userId?: string
+        }
+        Update: {
+          content?: string
+          createdAt?: string
+          feedId?: number
+          id?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "FeedComments_feedId_fkey"
+            columns: ["feedId"]
+            isOneToOne: false
+            referencedRelation: "Feeds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "FeedComments_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      FeedLikes: {
+        Row: {
+          feedId: number
+          id: number
+          userId: string
+        }
+        Insert: {
+          feedId: number
+          id?: number
+          userId?: string
+        }
+        Update: {
+          feedId?: number
+          id?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "FeedLikes_feedId_fkey"
+            columns: ["feedId"]
+            isOneToOne: false
+            referencedRelation: "Feeds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "FeedLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Feeds: {
+        Row: {
+          content: string
+          createdAt: string
+          id: number
+          image: string | null
+          region: string | null
+          sigungu: string | null
+          title: string
+          userId: string
+        }
+        Insert: {
+          content: string
+          createdAt?: string
+          id?: number
+          image?: string | null
+          region?: string | null
+          sigungu?: string | null
+          title: string
+          userId?: string
+        }
+        Update: {
+          content?: string
+          createdAt?: string
+          id?: number
+          image?: string | null
+          region?: string | null
+          sigungu?: string | null
+          title?: string
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Feeds_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      PlaceComments: {
+        Row: {
+          content: string
+          createdAt: string
+          id: number
+          placeId: number
+          userId: string
+        }
+        Insert: {
+          content: string
+          createdAt: string
+          id?: number
+          placeId: number
+          userId?: string
+        }
+        Update: {
+          content?: string
+          createdAt?: string
+          id?: number
+          placeId?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "PlaceComments_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      PlaceLikes: {
+        Row: {
+          id: number
+          placeId: number
+          userId: string
+        }
+        Insert: {
+          id?: number
+          placeId: number
+          userId?: string
+        }
+        Update: {
+          id?: number
+          placeId?: number
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "PlaceLikes_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Users: {
+        Row: {
+          createdAt: string
+          email: string
+          id: string
+          nickname: string
+          profileImage: string | null
+          provider: string | null
+        }
+        Insert: {
+          createdAt?: string
+          email: string
+          id?: string
+          nickname: string
+          profileImage?: string | null
+          provider?: string | null
+        }
+        Update: {
+          createdAt?: string
+          email?: string
+          id?: string
+          nickname?: string
+          profileImage?: string | null
+          provider?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Users_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
