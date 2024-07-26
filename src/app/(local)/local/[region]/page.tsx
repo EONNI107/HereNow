@@ -88,7 +88,7 @@ function LocalListPage({ params }: { params: { region: string } }) {
                 src={item.firstimage || defaultImage}
                 width={300}
                 height={200}
-                alt="지역 썸네일"
+                alt="지역 관광 정보 이미지"
                 className="object-cover w-full h-48"
                 priority
               />
