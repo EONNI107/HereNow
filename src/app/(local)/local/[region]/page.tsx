@@ -64,7 +64,6 @@ function LocalListPage({ params }: { params: { region: string } }) {
 
   if (isPending) return <div>로딩 중...</div>;
   if (error) return <div>에러가 발생했습니다. {error.message}</div>;
-  console.log('data => ', data);
 
   const defaultImage = '/default-image.png';
   const regionName = getRegionName(params.region);
