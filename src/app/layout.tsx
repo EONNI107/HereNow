@@ -2,6 +2,7 @@ import ToastProvider from '@/providers/ToastProvider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import QueryProvider from '@/providers/QueryProvider';
 import Layoutheader from '@/components/Layoutheader';
 import Footer from '@/components/Footer';
 
@@ -16,11 +17,13 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="max-w-[400px] mx-auto h-screen">
-          <Layoutheader />
-          <ToastProvider>{children}</ToastProvider>
-          <Footer />
-        </div>
+        <QueryProvider>
+          <div className="max-w-[400px] mx-auto h-screen">
+            <Layoutheader />
+            <ToastProvider>{children}</ToastProvider>
+            <Footer />
+          </div>
+        </QueryProvider>
       </body>
     </html>
   );

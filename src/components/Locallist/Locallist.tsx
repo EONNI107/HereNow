@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 export default function Locallist() {
-  const [localarrs, setLocalarrs] = useState(items);
+  const [localarrs, setLocalarrs] = useState();
 
   return (
     <section>

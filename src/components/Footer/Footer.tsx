@@ -4,7 +4,7 @@ import React from 'react';
 export default function Footer() {
   return (
     <footer className="max-w-[400px] mx-auto w-full fixed bottom-0">
-      <div className="flex justify-center">
+      <div className="flex justify-between w-full">
         <div>
           <Link href={'/'}>홈</Link>
         </div>
