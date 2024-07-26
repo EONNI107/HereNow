@@ -28,8 +28,8 @@ function SignInPage() {
       showToast('error', error.message);
       return;
     }
-    showToast('success', '로그인 성공');
     router.push('/');
+    showToast('success', '로그인 성공');
   };
 
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
@@ -58,7 +58,7 @@ function SignInPage() {
       <h2>로그인 페이지</h2>
       <form onSubmit={onSubmit}>
         <div className="form-group">
-          <label htmlFor="username">이메일:</label>
+          <label htmlFor="email">이메일:</label>
           <input
             type="email"
             id="email"
@@ -79,9 +79,13 @@ function SignInPage() {
       </form>
       <Link href="/sign-up">회원가입</Link>
       <br />
-      <button onClick={() => signInWithOAuth('google')}>구글</button>
+      <button type="button" onClick={() => signInWithOAuth('google')}>
+        구글
+      </button>
       <br />
-      <button onClick={() => signInWithOAuth('kakao')}>카카오</button>
+      <button type="button" onClick={() => signInWithOAuth('kakao')}>
+        카카오
+      </button>
     </div>
   );
 }
