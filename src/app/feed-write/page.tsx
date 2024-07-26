@@ -18,6 +18,7 @@ function FeedWrite() {
   const supabase = createClient();
 
   useEffect(() => {
+    // 주석 처리: 실제 사용자 인증 체크
     // const checkUser = async () => {
     //   const { data, error } = await supabase.auth.getUser();
     //   if (error || !data.user) {
@@ -29,6 +30,7 @@ function FeedWrite() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // 주석 처리: 실제 사용자 인증 체크
     // const { data: userData, error: userError } = await supabase.auth.getUser();
 
     // if (userError || !userData.user) {
@@ -36,13 +38,13 @@ function FeedWrite() {
     //   return;
     // }
 
-    const userId = 'test-user-id'; // 임시 사용자 ID
+    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa'; // 임시 사용자 ID
 
     let imageUrls: string[] = [];
     for (const image of images) {
       const fileName = image.name.replace(/[^a-z0-9]/gi, '_').toLowerCase(); // 파일 이름 슬러그화
       const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('images')
+        .from('FeedImage') // 여기에 버킷 이름이 들어갑니다. 예: 'images'
         .upload(`public/${fileName}`, image);
 
       if (uploadError) {
@@ -85,6 +87,7 @@ function FeedWrite() {
       <div className="body flex flex-col">
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <InputField value={title} onChange={setTitle} placeholder="제목" />
+          <hr className="border-gray-300 border" />
           <LocationButton location={location} setLocation={setLocation} />
           <ImageUpload
             images={images}
@@ -92,7 +95,11 @@ function FeedWrite() {
             imagePreviews={imagePreviews}
             setImagePreviews={setImagePreviews}
           />
-          <TextArea value={content} onChange={setContent} placeholder="내용" />
+          <TextArea
+            value={content}
+            onChange={setContent}
+            placeholder="내용을 입력해주세요"
+          />
         </form>
       </div>
     </div>
