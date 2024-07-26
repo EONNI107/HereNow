@@ -7,6 +7,7 @@ import { getRegionName } from '@/utils/getRegionName';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -28,10 +29,17 @@ function LocalListPage({ params }: { params: { region: string } }) {
   } = useInfiniteQuery<LocalListData, Error, LocalListData, string[], number>({
     queryKey: ['localList', params.region, contentType],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await axios.get<LocalListData>(
-        `/api/local-list/${params.region}?pageNo=${pageParam}&contentTypeId=${contentType}`,
-      );
-
+      let response;
+      if (contentType === '15') {
+        response = await axios.get<LocalListData>(
+          `/api/local-event/${params.region}?pageNo=${pageParam}`,
+        );
+        console.log('행사 정보 API 응답:', response.data);
+      } else {
+        response = await axios.get<LocalListData>(
+          `/api/local-list/${params.region}?pageNo=${pageParam}&contentTypeId=${contentType}`,
+        );
+      }
       return response.data;
     },
     initialPageParam: 1,
@@ -64,6 +72,7 @@ function LocalListPage({ params }: { params: { region: string } }) {
 
   if (isPending) return <div>로딩 중...</div>;
   if (error) return <div>에러가 발생했습니다. {error.message}</div>;
+  console.log('data => ', data);
 
   const defaultImage = '/default-image.png';
   const regionName = getRegionName(params.region);
@@ -79,7 +88,8 @@ function LocalListPage({ params }: { params: { region: string } }) {
       {data && data.localList.length > 0 ? (
         <div className="grid grid-cols-1 gap-4">
           {data.localList.map((item) => (
-            <div
+            <Link
+              href={`/local/details/${item.contentid}`}
               key={item.contentid}
               className="border rounded-lg overflow-hidden shadow-lg"
             >
@@ -95,7 +105,7 @@ function LocalListPage({ params }: { params: { region: string } }) {
                 <h2 className="text-lg font-semibold">{item.title}</h2>
                 <p>{item.addr1}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       ) : (
