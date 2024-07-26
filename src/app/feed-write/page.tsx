@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import InputField from '@/components/FeedWrite/InputField';
@@ -17,16 +17,16 @@ function FeedWrite() {
   const router = useRouter();
   const supabase = createClient();
 
-  useEffect(() => {
-    // 주석 처리: 실제 사용자 인증 체크
-    // const checkUser = async () => {
-    //   const { data, error } = await supabase.auth.getUser();
-    //   if (error || !data.user) {
-    //     router.replace('/login');
-    //   }
-    // };
-    // checkUser();
-  }, [router, supabase]);
+  // useEffect(() => {
+  //   // 주석 처리: 실제 사용자 인증 체크
+  //   // const checkUser = async () => {
+  //   //   const { data, error } = await supabase.auth.getUser();
+  //   //   if (error || !data.user) {
+  //   //     router.replace('/login');
+  //   //   }
+  //   // };
+  //   // checkUser();
+  // }, [router, supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,10 +42,12 @@ function FeedWrite() {
 
     let imageUrls: string[] = [];
     for (const image of images) {
-      const fileName = image.name.replace(/[^a-z0-9]/gi, '_').toLowerCase(); // 파일 이름 슬러그화
+      const fileName = `${Date.now()}_${image.name
+        .replace(/[^a-z0-9]/gi, '_')
+        .toLowerCase()}`; // 고유한 파일 이름 생성
       const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('FeedImage') // 여기에 버킷 이름이 들어갑니다. 예: 'images'
-        .upload(`public/${fileName}`, image);
+        .from('FeedImage')
+        .upload(fileName, image);
 
       if (uploadError) {
         console.error('Upload Error:', uploadError);
@@ -53,8 +55,10 @@ function FeedWrite() {
         return;
       }
 
-      const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/${uploadData.path}`;
-      imageUrls.push(imageUrl);
+      const { data } = supabase.storage
+        .from('FeedImage')
+        .getPublicUrl(fileName);
+      imageUrls.push(data.publicUrl);
     }
 
     const { error } = await supabase.from('posts').insert({
