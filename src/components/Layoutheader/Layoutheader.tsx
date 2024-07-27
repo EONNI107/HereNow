@@ -1,10 +1,11 @@
 'use client';
+
 import React, { useState } from 'react';
-import SearchForm from '../SearchForm';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+import SearchForm from '../MainPage/search/SearchForm';
 
-export default function Layoutheader() {
+export default function LayoutHeader() {
   const [isbg, setIsbg] = useState(false);
   const router = useRouter();
   const pathname = usePathname();

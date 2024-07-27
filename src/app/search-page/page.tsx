@@ -1,8 +1,9 @@
 'use client';
-import { searchApi } from '@/components/SearchForm/SearchForm';
-import SearchItem from '@/components/SearchItem';
+
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { searchApi } from '../(main)/api/searchApi';
+import SearchItem from '../(main)/_components/search/SearchItem';
 
 export default function SeachDetailPage() {
   const [searchdata, setSearchdata] = useState([]);

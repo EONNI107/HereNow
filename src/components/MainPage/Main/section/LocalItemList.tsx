@@ -1,8 +1,7 @@
 'use client';
-import Image from 'next/image';
 import React, { useState } from 'react';
 
-export default function Locallist() {
+export default function LocalItemList() {
   const [localarrs, setLocalarrs] = useState();
 
   return (

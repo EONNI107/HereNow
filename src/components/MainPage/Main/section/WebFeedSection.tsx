@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Webfeedsection() {
+export default function WebFeedSection() {
   return (
     <section>
       <div className="flex justify-between">

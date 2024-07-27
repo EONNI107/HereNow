@@ -1,22 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import axios from 'axios';
-import useDebounce from '@/hooks/useDebounce';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-export const searchApi = async (searchQuery, url) => {
-  try {
-    const response = await axios.get(`${url}`, {
-      params: { query: searchQuery },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching suggestions:', error);
-  }
-};
 // const localitems = JSON.parse(localStorage.getItem('search') || '') || [];
 export default function SearchForm({ setIsbg }) {
   const [inputValue, setInputValue] = useState('');
