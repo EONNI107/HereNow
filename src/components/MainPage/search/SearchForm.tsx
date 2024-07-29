@@ -1,44 +1,52 @@
 'use client';
-import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState, useEffect, ChangeEvent, MouseEvent } from 'react';
 
-// const localitems = JSON.parse(localStorage.getItem('search') || '') || [];
-export default function SearchForm({ setIsbg }) {
-  const [inputValue, setInputValue] = useState('');
-  const [storgedata, setStorgedata] = useState<string[]>([
-    localStorage.getItem('search'),
-  ]);
+type SetIsBgProps = {
+  setIsbg: (a: boolean) => void;
+};
+
+export default function SearchForm({ setIsbg }: SetIsBgProps) {
+  const [inputValue, setInputValue] = useState<string>('');
+  const [storgedata, setStorgedata] = useState<string[]>(() => {
+    const data = localStorage.getItem('search');
+    return data ? data.split(',') : [];
+  });
 
   const router = useRouter();
+
   const handleClick = () => {
-    router.push(`/searchpage?q=${inputValue}`);
+    router.push(`/search-page?q=${inputValue}`);
     setIsbg(false);
-    // 최근검색어 저장 state
-    setStorgedata([...storgedata, inputValue]);
+    const updatedStorageData = [...storgedata, inputValue];
+    setStorgedata(updatedStorageData);
+    localStorage.setItem('search', updatedStorageData.join(','));
   };
 
-  localStorage.setItem('search', storgedata);
-  const newstorgedata = storgedata[0].split(',');
-  const originaldata = newstorgedata.filter(
+  useEffect(() => {
+    localStorage.setItem('search', storgedata.join(','));
+  }, [storgedata]);
+
+  const originaldata = storgedata.filter(
     (item, index, arr) => arr.indexOf(item) === index,
   );
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
-  const handleClose = (i) => {
+  const handleClose = (i: string) => {
     console.log('click');
-
-    const filtereddata = originaldata.filter((data) => data !== i);
-
-    setStorgedata([filtereddata.join(',')]);
+    const filtereddata = storgedata.filter((data) => data !== i);
+    setStorgedata(filtereddata);
   };
 
-  const handlemoveclick = (e) => {
-    router.push(`/searchpage?q=${e.target.innerHTML}`);
+  const handleMoveClick = (e: MouseEvent<HTMLLIElement>) => {
+    const target = e.target as HTMLLIElement;
+    router.push(`/search-page?q=${target.innerHTML}`);
     setIsbg(false);
   };
+
   return (
     <div className="flex flex-col items-center">
       <div>
@@ -55,17 +63,13 @@ export default function SearchForm({ setIsbg }) {
       <p>최근검색어</p>
       {originaldata.map((i, index) => {
         if (i === '') {
-          return;
+          return null;
         }
         return (
-          <>
-            <div key={index} className="flex ">
-              <li key={index} onClick={handlemoveclick}>
-                {i}
-              </li>
-              <button onClick={() => handleClose(i)}>x</button>
-            </div>
-          </>
+          <div key={index} className="flex ">
+            <li onClick={handleMoveClick}>{i}</li>
+            <button onClick={() => handleClose(i)}>x</button>
+          </div>
         );
       })}
     </div>

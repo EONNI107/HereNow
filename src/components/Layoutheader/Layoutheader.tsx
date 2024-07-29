@@ -2,13 +2,15 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SearchForm from '../MainPage/search/SearchForm';
 
 export default function LayoutHeader() {
-  const [isbg, setIsbg] = useState(false);
+  const [isbg, setIsbg] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
+  const params = useSearchParams();
+  const searchParams = params.get('q');
   const handleback = () => {
     if (pathname === '/') {
       return;
@@ -17,6 +19,7 @@ export default function LayoutHeader() {
   };
   const handleShow = () => {
     setIsbg(!isbg);
+    router.refresh();
   };
   return (
     <header className="fixed z-10 right-0 max-w-[400px] w-full left-0 mx-auto">
@@ -37,7 +40,14 @@ export default function LayoutHeader() {
               height={30}
             />
           </button>
-          <h1>지금,여기</h1>
+          <h1>
+            {searchParams ? (
+              <p>{searchParams}</p>
+            ) : (
+              <p className="font-['양진체']">여기,어때</p>
+            )}
+          </h1>
+
           <button onClick={handleShow}>
             <Image src="/search.png" alt="검색아이콘" width={20} height={20} />
           </button>

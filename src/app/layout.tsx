@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import QueryProvider from '@/providers/QueryProvider';
 import Footer from '@/components/Footer';
-import LayoutHeader from '@/components/Layoutheader/Layoutheader';
+import Layoutheader from '@/components/LayoutHeader';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,10 +18,12 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     <html lang="en">
       <body className={inter.className}>
         <QueryProvider>
-          <div className="max-w-[400px] mx-auto h-screen">
-            <LayoutHeader />
-            <ToastProvider>{children}</ToastProvider>
-            <Footer />
+          <div className="max-w-[400px] mx-auto">
+            <Layoutheader />
+            <div className="pt-[25px] pb-[70px]">
+              <ToastProvider>{children}</ToastProvider>
+              <Footer />
+            </div>
           </div>
         </QueryProvider>
       </body>

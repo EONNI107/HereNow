@@ -1,11 +1,11 @@
 import React from 'react';
-import LocalItemList from './section/LocalItemList';
-import WebFeedSection from './section/Webfeedsection';
-import LocalSection from './section/Localsection';
+import LocalItemList from './Section/LocalItemList';
+import WebFeedSection from './Section/WebFeedSection';
+import LocalSection from './Section/LocalSection';
 
 export default function Main() {
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col w-full">
       <LocalItemList />
       <WebFeedSection />
       <LocalSection />

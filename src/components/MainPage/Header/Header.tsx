@@ -1,7 +1,11 @@
 import Image from 'next/image';
 import React from 'react';
 
-export default function Header({ title, content }) {
+type propsdata = {
+  title: string;
+  content: string;
+};
+export default function Header({ title, content }: propsdata) {
   return (
     <div className="h-[200px] w-full bg-[#888] flex flex-col items-center relative">
       <Image src="/backgroundimage.png" alt="배경이미지" fill />

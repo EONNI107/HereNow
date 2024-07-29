@@ -1,9 +1,13 @@
 import axios from 'axios';
 
-export const searchApi = async (searchQuery, url) => {
+export const searchApi = async (
+  searchQuery: string,
+  url: string,
+  id: number = 15,
+) => {
   try {
     const response = await axios.get(`${url}`, {
-      params: { query: searchQuery },
+      params: { query: searchQuery, contentId: id },
       headers: {
         'Content-Type': 'application/json',
       },
