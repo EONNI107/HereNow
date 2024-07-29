@@ -17,14 +17,14 @@ const ContentTypeFilter: React.FC<ContentTypeFilterProps> = ({
   onContentTypeChange,
 }) => {
   return (
-    <div className="flex overflow-x-auto whitespace-nowrap mb-4 px-4">
+    <div className="font-pretendard font-semibold text-sm border-solid flex justify-center overflow-x-auto whitespace-nowrap mb-4 px-4">
       {contentTypes.map((type) => (
         <button
           key={type.id}
-          className={`px-4 py-2 mr-2 rounded-full ${
+          className={`px-4 py-2 mr-2 rounded-full border-[2px] ${
             selectedContentType === type.id
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-200 text-gray-700'
+              ? 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]'
+              : 'border-[#7D8591] bg-white text-[#505050]'
           }`}
           onClick={() => onContentTypeChange(type.id)}
         >

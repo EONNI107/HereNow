@@ -9,13 +9,14 @@ import {
   getRegionNameEnglish,
 } from '@/utils/getRegionName';
 import { getSigunguName } from '@/utils/getSigunguName';
-import { region } from '@/data/region.json';
+import regionData from '@/data/region.json';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useRouter } from 'next/navigation';
 
 type LocalListData = {
   localList: Item[];
@@ -23,6 +24,7 @@ type LocalListData = {
 };
 
 function LocalListPage({ params }: { params: { region: string } }) {
+  const router = useRouter();
   const [contentType, setContentType] = useState('12');
 
   const {
@@ -70,17 +72,61 @@ function LocalListPage({ params }: { params: { region: string } }) {
     setContentType(newContentType);
   };
 
-  const defaultImage = '/default-image.png';
-  const selectedRegion = region.find(
+  const regionImages: { [key: string]: string } = {
+    seoul: '/Seoul.jpg',
+    busan: '/Busan.jpg',
+    incheon: '/Incheon.jpg',
+    daejeon: '/Daejeon.jpg',
+    daegu: '/Daegu.jpg',
+    gwangju: '/Gwangju.jpg',
+    sejong: '/Sejong.jpg',
+    ulsan: '/Ulsan.jpg',
+    jejudo: '/Jeju.jpg',
+    gyeonggido: '/Gyeonggi.jpg',
+    gangwondo: '/Gangwon.jpg',
+    chungcheongbukdo: '/Chungbuk.jpg',
+    chungcheongnamdo: '/Chungnam.jpg',
+    gyeongsangbukdo: '/Gyeongbuk.jpg',
+    gyeongsangnamdo: '/Gyeongnam.jpg',
+    jeollabukdo: '/Jeonbuk.jpg',
+    jeollanamdo: '/Jeonnam.jpg',
+  };
+  const normalizedRegion = params.region.toLowerCase().replace(/-/g, '');
+  const selectedImage = regionImages[normalizedRegion];
+  const defaultImage = '/No_Img.jpg';
+  const selectedRegion = regionData.region.find(
     (r) => r.ename.toLowerCase() === params.region.toLowerCase(),
   );
+
+  useEffect(() => {
+    if (data && data.localList.length === 0) {
+      router.push('/404');
+    }
+  }, [data, router]);
 
   if (isPending) {
     return (
       <div className="max-w-md mx-auto">
-        <div className="relative h-48 mb-4 bg-gray-200 animate-pulse"></div>
+        <div className="relative h-48 mb-4">
+          <Image
+            src={selectedImage}
+            alt={`${getRegionNameKorean(params.region)} 이미지`}
+            width={300}
+            height={200}
+            priority={true}
+            className="object-cover w-full h-48"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
+            <h1 className="font-pretendard font-semibold text-[28px] text-white">
+              {getRegionNameEnglish(params.region).toUpperCase()}
+            </h1>
+          </div>
+        </div>
 
-        <div className="h-10 bg-gray-200 mb-4 animate-pulse"></div>
+        <ContentTypeFilter
+          selectedContentType={contentType}
+          onContentTypeChange={handleContentTypeChange}
+        />
 
         <div className="grid grid-cols-1 gap-4">
           {[...Array(5)].map((_, index) => (
@@ -90,21 +136,22 @@ function LocalListPage({ params }: { params: { region: string } }) {
       </div>
     );
   }
+
   if (error) return <div>에러가 발생했습니다. {error.message}</div>;
 
   return (
     <div className="max-w-md mx-auto">
-      {/* 상단 이미지 */}
       <div className="relative h-48 mb-4">
         <Image
-          src="/busan-bridge.jpg"
+          src={selectedImage}
           alt={`${getRegionNameKorean(params.region)} 이미지`}
-          fill={true}
+          width={300}
+          height={200}
           priority={true}
-          className="object-cover"
+          className="object-cover w-full h-48"
         />
         <div className="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="font-pretendard font-semibold text-[28px] text-white">
             {getRegionNameEnglish(params.region).toUpperCase()}
           </h1>
         </div>
@@ -115,15 +162,15 @@ function LocalListPage({ params }: { params: { region: string } }) {
         onContentTypeChange={handleContentTypeChange}
       />
 
-      {data && data.localList.length > 0 ? (
+      {data && data.localList.length > 0 && (
         <div className="grid grid-cols-1 gap-4">
           {data.localList.map((item) => (
             <Link
               href={`/local/details/${item.contentid}`}
               key={item.contentid}
-              className="border rounded-lg overflow-hidden shadow-lg relative"
+              className="border rounded-3xl overflow-hidden shadow-xl relative"
             >
-              <div className="relative">
+              <div className="relative h-48">
                 <Image
                   src={item.firstimage || defaultImage}
                   width={300}
@@ -132,15 +179,15 @@ function LocalListPage({ params }: { params: { region: string } }) {
                   className="object-cover w-full h-48"
                   priority
                 />
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent h-1/2 flex flex-col justify-end items-center p-4">
-                  <p className="text-sm text-white mb-1 text-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex flex-col justify-center p-4">
+                  <p className="font-pretendard font-regular text-sm text-white">
                     {getRegionNameKorean(params.region)}{' '}
                     {getSigunguName(
                       selectedRegion?.code || '',
                       item.sigungucode,
                     )}
                   </p>
-                  <h2 className="text-xl font-bold text-white text-center">
+                  <h2 className="font-pretendard font-semibold text-lg text-white mb-1">
                     {item.title}
                   </h2>
                 </div>
@@ -148,8 +195,6 @@ function LocalListPage({ params }: { params: { region: string } }) {
             </Link>
           ))}
         </div>
-      ) : (
-        <p>데이터가 없습니다.</p>
       )}
       {hasNextPage && <div ref={ref} className="h-10" />}
       {isFetchingNextPage && hasNextPage && (
