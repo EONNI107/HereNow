@@ -16,7 +16,9 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     <html lang="en">
       <body className={inter.className}>
         <QueryProvider>
-          <ToastProvider>{children}</ToastProvider>
+          <div className="max-w-[400px] mx-auto">
+            <ToastProvider>{children}</ToastProvider>
+          </div>
         </QueryProvider>
       </body>
     </html>
