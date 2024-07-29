@@ -19,19 +19,26 @@ function MyPage() {
   });
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [posts, setPosts] = useState<any[]>([]); // State to store posts
+  const [loading, setLoading] = useState(true); // Loading state
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // New state for authentication
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const user = await supabase.auth.getUser();
-      if (user.data.user) {
-        const { data, error } = await supabase
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+      if (user) {
+        setIsAuthenticated(true);
+        const { data, error: profileError } = await supabase
           .from('Users')
           .select('nickname, email, profileImage')
-          .eq('id', user.data.user.id)
+          .eq('id', user.id)
           .single();
 
-        if (error) {
-          console.error('에러', error.message);
+        if (profileError) {
+          console.error('에러', profileError.message);
         } else {
           setProfile(data);
           setEditProfile({
@@ -39,11 +46,38 @@ function MyPage() {
             profileImage: data.profileImage,
           });
         }
+      } else {
+        setIsAuthenticated(false);
       }
     };
 
     fetchProfile();
   }, []);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error: postsError } = await supabase
+          .from(selectedCategory === '작성한 글' ? 'Posts' : 'Favorites')
+          .select('*')
+          .eq('userId', user.id);
+
+        if (postsError) {
+          console.error('Error fetching posts:', postsError.message);
+        } else {
+          setPosts(data);
+        }
+      }
+      setLoading(false);
+    };
+
+    fetchPosts();
+  }, [selectedCategory]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -70,8 +104,11 @@ function MyPage() {
   };
 
   const handleUpdate = async () => {
-    const user = await supabase.auth.getUser();
-    if (user.data.user) {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+    if (user) {
       let imagePath = profile.profileImage;
 
       if (newImageFile) {
@@ -81,16 +118,16 @@ function MyPage() {
         }
       }
 
-      const { error } = await supabase
+      const { error: updateError } = await supabase
         .from('Users')
         .update({
           nickname: editProfile.nickname,
           profileImage: imagePath,
         })
-        .eq('id', user.data.user.id);
+        .eq('id', user.id);
 
-      if (error) {
-        console.error('에러', error.message);
+      if (updateError) {
+        console.error('에러', updateError.message);
       } else {
         setProfile((prev) => ({
           ...prev,
@@ -104,82 +141,126 @@ function MyPage() {
   };
 
   return (
-    <div>
-      <div>마이 페이지</div>
-      <div className="flex items-center bg-cyan-200 rounded-md w-full m-10">
-        <img
-          src={
-            imagePreview ||
-            profile.profileImage ||
-            'https://via.placeholder.com/150'
-          }
-          className="h-12 w-12 m-3 rounded-full"
-          alt="Profile"
-        />
+    <div className="pt-10 flex flex-col h-svh ">
+      <div
+        className={`flex items-center rounded-2xl w-full h-28 ${
+          isAuthenticated ? 'bg-[#DBEEFF]' : 'bg-[#FFF4F0]'
+        }`}
+      >
+        <div className="relative flex items-center">
+          <img
+            src={
+              imagePreview ||
+              profile.profileImage ||
+              'https://via.placeholder.com/150'
+            }
+            className="h-16 w-16 m-3 rounded-full"
+            alt="Profile"
+          />
+          {!isAuthenticated && (
+            <a href="/sign-in">
+              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded">
+                로그인,회원가입
+              </button>
+            </a>
+          )}
+          {isEditing && (
+            <div>
+              <label
+                htmlFor="file-input"
+                className="absolute bottom-2 right-2 cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                  />
+                </svg>
+              </label>
+              <input
+                type="file"
+                id="file-input"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </div>
+          )}
+        </div>
         <div>
           {isEditing ? (
             <>
-              <div className="mt-5">email: {profile.email}</div>
+              <div className="mt-5">{profile.email}</div>
               <div className="mb-5">
-                닉네임:
                 <input
                   type="text"
                   value={editProfile.nickname}
                   onChange={(e) =>
                     setEditProfile({ ...editProfile, nickname: e.target.value })
                   }
-                  className="ml-2 p-1 border rounded"
-                />
-              </div>
-              <div>
-                프로필 이미지:
-                <input
-                  type="file"
-                  onChange={handleImageChange}
-                  className="ml-2 p-1 border rounded"
+                  className="p-1 border rounded w-28"
                 />
               </div>
             </>
           ) : (
             <>
-              <div className="mt-5">email: {profile.email}</div>
-              <div className="mb-5">닉네임: {profile.nickname}</div>
+              <div className="mt-5">{profile.email}</div>
+              <div className="mb-5"> {profile.nickname}</div>
             </>
           )}
         </div>
-        {isEditing ? (
-          <button
-            onClick={handleUpdate}
-            className="m-2 w-40 rounded-md bg-sky-500"
-          >
-            수정 완료
-          </button>
-        ) : (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="m-5 w-30 rounded-md bg-sky-500"
-          >
-            프로필 수정
-          </button>
+        {isAuthenticated && (
+          <div>
+            {isEditing ? (
+              <div className="flex flex-col space-y-2 mt-2">
+                <button
+                  onClick={handleUpdate}
+                  className="m-2 w-40 rounded-md bg-sky-500 text-white"
+                >
+                  수정 완료
+                </button>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="m-2 w-40 rounded-md bg-gray-500 text-white"
+                >
+                  취소
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="m-5 w-40 rounded-md bg-sky-500 text-white"
+              >
+                프로필 수정
+              </button>
+            )}
+          </div>
         )}
       </div>
 
-      <div className="flex justify-center m-10">
+      <div className="flex justify-center w-full mt-7">
         <button
-          className={`m-2 p-2 border-b-4 ${
+          className={`m-2 p-2 border-b-4 flex-1 ${
             selectedCategory === '작성한 글'
               ? 'bg-white text-black border-sky-300'
-              : 'bg-gray-200'
+              : ''
           }`}
           onClick={() => setSelectedCategory('작성한 글')}
         >
           작성한 글
         </button>
         <button
-          className={`m-2 p-2 border-b-4 ${
+          className={`m-2 p-2 border-b-4 flex-1 ${
             selectedCategory === '찜한 글'
               ? 'bg-white text-black border-sky-300'
-              : 'bg-gray-200'
+              : ''
           }`}
           onClick={() => setSelectedCategory('찜한 글')}
         >
@@ -187,27 +268,31 @@ function MyPage() {
         </button>
       </div>
 
-      {selectedCategory === '작성한 글' && (
-        <div className="m-10">
-          <h2 className="text-lg font-bold">작성한 글</h2>
-          <ul className="list-disc list-inside">
-            <li>작성한 글 1</li>
-            <li>작성한 글 2</li>
-            <li>작성한 글 3</li>
-          </ul>
-        </div>
-      )}
-
-      {selectedCategory === '찜한 글' && (
-        <div className="m-10">
-          <h2 className="text-lg font-bold">찜한 글</h2>
-          <ul className="list-disc list-inside">
-            <li>찜한 글 1</li>
-            <li>찜한 글 2</li>
-            <li>찜한 글 3</li>
-          </ul>
-        </div>
-      )}
+      <div className="flex flex-1 justify-center py-10 bg-gray-50 items-center">
+        {loading ? (
+          <p>Loading...</p>
+        ) : posts.length === 0 ? (
+          <div className="text-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-16 h-16 mx-auto text-gray-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
+              />
+            </svg>
+            <p className="mt-2">작성한 게시글이 없어요</p>
+          </div>
+        ) : (
+          <div>{/* 작성한 게시글 */}</div>
+        )}
+      </div>
     </div>
   );
 }
