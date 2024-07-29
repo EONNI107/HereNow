@@ -13,7 +13,6 @@
     "@heroicons/react": "^2.1.5",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.44.4",
-    "@tailwindcss/line-clamp": "^0.4.4",
     "@tanstack/react-query": "^5.51.14",
     "@tanstack/react-query-devtools": "^5.51.11",
     "axios": "^1.7.2",
