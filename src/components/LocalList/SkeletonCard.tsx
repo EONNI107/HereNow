@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SkeletonCard = () => {
+function SkeletonCard(): React.ReactElement {
   return (
     <div className="border rounded-3xl overflow-hidden shadow-xl relative">
       <div className="relative h-48 bg-gray-200">
@@ -11,6 +11,6 @@ const SkeletonCard = () => {
       </div>
     </div>
   );
-};
+}
 
 export default SkeletonCard;
