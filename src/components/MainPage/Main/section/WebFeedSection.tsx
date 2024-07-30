@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function WebFeedSection() {
+function WebFeedSection() {
   return (
     <section className="flex flex-col gap-4 w-full px-4 py-4">
       <div className="flex justify-between">
@@ -18,3 +18,4 @@ export default function WebFeedSection() {
     </section>
   );
 }
+export default WebFeedSection;

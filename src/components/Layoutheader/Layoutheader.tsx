@@ -5,34 +5,34 @@ import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SearchForm from '../MainPage/search/SearchForm';
 
-export default function LayoutHeader() {
-  const [isbg, setIsbg] = useState<boolean>(false);
+function LayoutHeader() {
+  const [isBackground, setIsBackground] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
   const searchParams = params.get('q');
-  const handleback = () => {
+  const handleBack = () => {
     if (pathname === '/') {
       return;
     }
     router.back();
   };
   const handleShow = () => {
-    setIsbg(!isbg);
+    setIsBackground(!isBackground);
     router.refresh();
   };
   return (
     <header className="fixed z-10 right-0 max-w-[400px] w-full left-0 mx-auto">
-      {isbg ? (
+      {isBackground ? (
         <div className="flex justify-center items-center bg-[#fff]">
-          <SearchForm setIsbg={setIsbg} />
-          <button className="" onClick={() => setIsbg(!isbg)}>
+          <SearchForm setIsbg={setIsBackground} />
+          <button className="" onClick={() => setIsBackground(!isBackground)}>
             x
           </button>
         </div>
       ) : (
         <div className="w-full flex justify-between items-center h-[40px]">
-          <button onClick={handleback}>
+          <button onClick={handleBack}>
             <Image
               src="/chevron-left.png"
               alt="뒤로가기"
@@ -55,3 +55,4 @@ export default function LayoutHeader() {
     </header>
   );
 }
+export default LayoutHeader;

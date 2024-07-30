@@ -3,29 +3,28 @@
 import { searchApi } from '@/components/MainPage/api/searchApi';
 import SearchFeed from '@/components/MainPage/search/SearchFeed';
 import SearchItem from '@/components/MainPage/search/SearchItem';
-import { itemtype } from '@/types/maintype';
+import { ItemType } from '@/types/maintype';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-export type searchedtype = Omit<itemtype, 'dist'>;
+export type SearchedType = Omit<ItemType, 'dist'>;
 
-export default function SeachDetailPage() {
-  const [searchdata, setSearchdata] = useState<searchedtype[]>([]);
-  const [ischange, setIschange] = useState<boolean>(false);
-  const searchparams = useSearchParams();
-  const searchValue = searchparams.get('q') as string;
+function SeachDetailPage() {
+  const [searchData, setSearchData] = useState<SearchedType[]>([]);
+  const [isChange, setIsChange] = useState<boolean>(false);
+  const searchParams = useSearchParams();
+  const searchValue = searchParams.get('q') as string;
 
   const handleFeedClick = () => {
-    setIschange(false);
+    setIsChange(false);
   };
   const handleFestivalClick = () => {
-    setIschange(true);
+    setIsChange(true);
   };
   useEffect(() => {
     const searched = async () => {
-      const res: searchedtype[] = await searchApi(searchValue, '/api/search');
-      // ui저장 state
-      setSearchdata(res);
+      const res: SearchedType[] = await searchApi(searchValue, '/api/search');
+      setSearchData(res);
     };
     searched();
   }, [searchValue]);
@@ -44,9 +43,9 @@ export default function SeachDetailPage() {
         </div>
       </div>
 
-      {ischange ? (
+      {isChange ? (
         <>
-          <SearchItem searchdata={searchdata} searchValue={searchValue} />
+          <SearchItem searchData={searchData} searchValue={searchValue} />
         </>
       ) : (
         <>
@@ -56,3 +55,4 @@ export default function SeachDetailPage() {
     </div>
   );
 }
+export default SeachDetailPage;

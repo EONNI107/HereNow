@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-export default function SearchFeed() {
+function SearchFeed() {
   return (
     <>
       <div className="flex w-full border">
@@ -31,3 +31,4 @@ export default function SearchFeed() {
     </>
   );
 }
+export default SearchFeed;

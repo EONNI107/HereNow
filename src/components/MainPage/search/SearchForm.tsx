@@ -6,9 +6,9 @@ type SetIsBgProps = {
   setIsbg: (a: boolean) => void;
 };
 
-export default function SearchForm({ setIsbg }: SetIsBgProps) {
+function SearchForm({ setIsbg }: SetIsBgProps) {
   const [inputValue, setInputValue] = useState<string>('');
-  const [storgedata, setStorgedata] = useState<string[]>(() => {
+  const [storgeData, setStorgeData] = useState<string[]>(() => {
     const data = localStorage.getItem('search');
     return data ? data.split(',') : [];
   });
@@ -18,27 +18,26 @@ export default function SearchForm({ setIsbg }: SetIsBgProps) {
   const handleClick = () => {
     router.push(`/search-page?q=${inputValue}`);
     setIsbg(false);
-    const updatedStorageData = [...storgedata, inputValue];
-    setStorgedata(updatedStorageData);
+    const updatedStorageData = [...storgeData, inputValue];
+    setStorgeData(updatedStorageData);
     localStorage.setItem('search', updatedStorageData.join(','));
   };
 
   useEffect(() => {
-    localStorage.setItem('search', storgedata.join(','));
-  }, [storgedata]);
+    localStorage.setItem('search', storgeData.join(','));
+  }, [storgeData]);
 
-  const originaldata = storgedata.filter(
+  const originalData = storgeData.filter(
     (item, index, arr) => arr.indexOf(item) === index,
   );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
   const handleClose = (i: string) => {
-    console.log('click');
-    const filtereddata = storgedata.filter((data) => data !== i);
-    setStorgedata(filtereddata);
+    const filteredData = storgeData.filter((data) => data !== i);
+    setStorgeData(filteredData);
   };
 
   const handleMoveClick = (e: MouseEvent<HTMLLIElement>) => {
@@ -54,24 +53,25 @@ export default function SearchForm({ setIsbg }: SetIsBgProps) {
           className="border"
           type="text"
           value={inputValue}
-          onChange={handleChange}
+          onChange={handleInputChange}
         />
         <button onClick={handleClick} className="border">
           검색
         </button>
       </div>
       <p>최근검색어</p>
-      {originaldata.map((i, index) => {
-        if (i === '') {
+      {originalData.map((item, index) => {
+        if (item === '') {
           return null;
         }
         return (
           <div key={index} className="flex ">
-            <li onClick={handleMoveClick}>{i}</li>
-            <button onClick={() => handleClose(i)}>x</button>
+            <li onClick={handleMoveClick}>{item}</li>
+            <button onClick={() => handleClose(item)}>x</button>
           </div>
         );
       })}
     </div>
   );
 }
+export default SearchForm;

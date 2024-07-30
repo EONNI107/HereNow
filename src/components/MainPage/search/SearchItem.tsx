@@ -2,85 +2,67 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { searchApi } from '../api/searchApi';
-import { searchedtype } from '@/app/search-page/page';
+import { SearchedType } from '@/app/search-page/page';
 import { useRouter } from 'next/navigation';
-type SearchItemprops = {
-  searchdata: searchedtype[];
+import SkeletonItem from '../Skeleton/SkeletonItem';
+type SearchItemProps = {
+  searchData: SearchedType[];
   searchValue: string;
 };
-export default function SearchItem({
-  searchdata,
-  searchValue,
-}: SearchItemprops) {
-  const [resdata, setResdata] = useState<searchedtype[]>([]);
-  const [resdatas, setResdatas] = useState<searchedtype[][]>([]);
-  const [isshow, setIsshow] = useState<boolean>(true);
-  const [isskeleton, setIsskeleton] = useState<boolean>(true);
+function SearchItem({ searchData, searchValue }: SearchItemProps) {
+  const [resData, setResData] = useState<SearchedType[]>([]);
+  const [resDatas, setResDatas] = useState<SearchedType[][]>([]);
+  const [isShow, setIsShow] = useState<boolean>(true);
+  const [isSkeleton, setIsSkeleton] = useState<boolean>(true);
   const router = useRouter();
   useEffect(() => {
     const datas = async () => {
-      const res: searchedtype[] = await searchApi(
+      const res: SearchedType[] = await searchApi(
         searchValue,
         '/api/search',
         12,
       );
-      const res2: searchedtype[] = await searchApi(
+      const res2: SearchedType[] = await searchApi(
         searchValue,
         '/api/search',
         14,
       );
-      const res3: searchedtype[] = await searchApi(
+      const res3: SearchedType[] = await searchApi(
         searchValue,
         '/api/search',
         39,
       );
-      const res4: searchedtype[] = await searchApi(
+      const res4: SearchedType[] = await searchApi(
         searchValue,
         '/api/search',
         15,
       );
       const resarrs = [res, res2, res3, res4];
-      console.log(res);
-      setResdatas(resarrs);
-      setIsskeleton(false);
+      setResDatas(resarrs);
+      setIsSkeleton(false);
     };
     datas();
   }, [searchValue]);
-  const handleClick1 = () => {
-    setIsshow(false);
-    const firstdata = resdatas[0];
-    setResdata(firstdata);
+  const handleAttractionsClick = () => {
+    setIsShow(false);
+    const firstdata = resDatas[0];
+    setResData(firstdata);
   };
-  const handleClick2 = () => {
-    setIsshow(false);
-    const firstdata = resdatas[1];
-    setResdata(firstdata);
+  const handleCultureClick = () => {
+    setIsShow(false);
+    const firstdata = resDatas[1];
+    setResData(firstdata);
   };
-  const handleClick3 = () => {
-    setIsshow(false);
-    const firstdata = resdatas[2];
-    setResdata(firstdata);
+  const handleRestaurantClick = () => {
+    setIsShow(false);
+    const firstdata = resDatas[2];
+    setResData(firstdata);
   };
-  const handleClick4 = () => {
-    setIsshow(false);
-    const firstdata = resdatas[3];
-    setResdata(firstdata);
+  const handleFestivalClick = () => {
+    setIsShow(false);
+    const firstdata = resDatas[3];
+    setResData(firstdata);
   };
-
-  function SkeletonItem() {
-    return (
-      <div className="animate-pulse flex space-x-4">
-        <div className="rounded-full bg-gray-200 h-12 w-12"></div>
-        <div className="flex-1 space-y-4 py-1">
-          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-          <div className="space-y-2">
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   const handleClick = (contentid: string) => {
     router.push(`/local/details/${contentid}`);
@@ -90,16 +72,28 @@ export default function SearchItem({
       <div className="flex w-full border">
         <div className="shrink-0 px-1 py-1">정렬</div>
         <div className="flex border w-full items-center">
-          <div className="w-full flex justify-center" onClick={handleClick1}>
+          <div
+            className="w-full flex justify-center"
+            onClick={handleAttractionsClick}
+          >
             관광명소
           </div>
-          <div className="w-full flex justify-center" onClick={handleClick2}>
+          <div
+            className="w-full flex justify-center"
+            onClick={handleCultureClick}
+          >
             문화시설
           </div>
-          <div className="w-full flex justify-center" onClick={handleClick3}>
+          <div
+            className="w-full flex justify-center"
+            onClick={handleRestaurantClick}
+          >
             맛집
           </div>
-          <div className="w-full flex justify-center" onClick={handleClick4}>
+          <div
+            className="w-full flex justify-center"
+            onClick={handleFestivalClick}
+          >
             행사
           </div>
         </div>
@@ -116,14 +110,14 @@ export default function SearchItem({
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">
-        {isshow ? (
-          isskeleton ? (
+        {isShow ? (
+          isSkeleton ? (
             Array.from({ length: 10 }).map((_, index) => (
               <SkeletonItem key={index} />
             ))
           ) : (
             <>
-              {searchdata?.map((item) => (
+              {searchData?.map((item) => (
                 <div key={item.contentid} className="w-full flex gap-3">
                   <Image
                     src={item.firstimage}
@@ -144,13 +138,13 @@ export default function SearchItem({
               ))}
             </>
           )
-        ) : isskeleton ? (
+        ) : isSkeleton ? (
           Array.from({ length: 10 }).map((_, index) => (
             <SkeletonItem key={index} />
           ))
         ) : (
           <>
-            {resdata?.map((i) => (
+            {resData?.map((i) => (
               <div
                 key={i.contentid}
                 className="w-full flex gap-3"
@@ -174,3 +168,4 @@ export default function SearchItem({
     </>
   );
 }
+export default SearchItem;

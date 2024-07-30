@@ -1,7 +1,7 @@
 import Header from '@/components/MainPage/Header';
 import Main from '@/components/MainPage/Main';
 
-export default function Home() {
+function Home() {
   return (
     <>
       <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto">
@@ -11,3 +11,4 @@ export default function Home() {
     </>
   );
 }
+export default Home;

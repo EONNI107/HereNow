@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-export default function Footer() {
+function Footer() {
   return (
     <footer className="max-w-[400px] mx-auto w-full fixed bottom-0 z-10 ">
       <div className="flex justify-between px-5 py-5">
@@ -34,3 +34,4 @@ export default function Footer() {
     </footer>
   );
 }
+export default Footer;

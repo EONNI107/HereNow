@@ -1,9 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { itemtype } from '@/types/maintype';
+import { ItemType } from '@/types/maintype';
 import { useRouter } from 'next/navigation';
 import LocalItem from './LocalItem';
+import { tourApi } from '@/app/api/tourApi';
+import SkeletonItem from '../../Skeleton/SkeletonItem';
 
 type PositionType = {
   coords: {
@@ -17,34 +18,19 @@ type GeolocationError = {
   message: string;
 };
 
-export default function LocalSection() {
+function LocalSection() {
   const router = useRouter();
-  const [localitems, setLocalitems] = useState<itemtype[]>([]);
+  const [localitems, setLocalitems] = useState<ItemType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
 
-  function SkeletonItem() {
-    return (
-      <div className="animate-pulse flex space-x-4">
-        <div className="rounded-full bg-gray-200 h-12 w-12"></div>
-        <div className="flex-1 space-y-4 py-1">
-          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-          <div className="space-y-2">
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const getLocationdata = async (latitude: number, longitude: number) => {
+  const getLocationData = async (latitude: number, longitude: number) => {
     try {
-      const res = await axios.get(
-        `https://apis.data.go.kr/B551011/KorService1/locationBasedList1?MobileOS=ETC&numOfRows=2&MobileApp=new&_type=JSON&mapX=${longitude}&mapY=${latitude}&radius=20000&contentTypeId=12&serviceKey=${serviceKey}`,
+      const res = await tourApi(
+        `/locationBasedList1?MobileOS=ETC&numOfRows=2&MobileApp=new&_type=JSON&mapX=${longitude}&mapY=${latitude}&radius=20000&contentTypeId=12&serviceKey=${serviceKey}`,
       );
-      const items: itemtype[] = res.data.response.body.items.item;
-      console.log(items);
+
+      const items: ItemType[] = res.data.response.body.items.item;
       setLocalitems(items);
       setLoading(false);
     } catch (error) {
@@ -56,11 +42,11 @@ export default function LocalSection() {
   const getLoactionSuc = async (position: PositionType) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    await getLocationdata(latitude, longitude);
+    await getLocationData(latitude, longitude);
   };
 
   const getLocationErr = (error: GeolocationError) => {
-    alert(`Error (${error.code}): ${error.message}`);
+    console.error('Failed to fetch location data:', error);
   };
 
   const getLoaction = () => {
@@ -94,7 +80,7 @@ export default function LocalSection() {
             ? Array.from({ length: 2 }).map((_, index) => (
                 <SkeletonItem key={index} />
               ))
-            : localitems.map((item: itemtype) => (
+            : localitems.map((item: ItemType) => (
                 <LocalItem
                   key={item.contentid}
                   item={item}
@@ -106,3 +92,4 @@ export default function LocalSection() {
     </section>
   );
 }
+export default LocalSection;

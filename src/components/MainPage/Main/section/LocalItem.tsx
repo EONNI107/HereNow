@@ -1,13 +1,13 @@
-import { itemtype } from '@/types/maintype';
+import { ItemType } from '@/types/maintype';
 import Image from 'next/image';
 import React from 'react';
 
-type itemtypeprops = {
-  item: itemtype;
+type ItemTypeProps = {
+  item: ItemType;
   key: string;
   onclick: () => void;
 };
-export default function LocalItem({ item, key, onclick }: itemtypeprops) {
+function LocalItem({ item, key, onclick }: ItemTypeProps) {
   return (
     <li onClick={onclick} className="relative w-full h-[100px] mb-5" key={key}>
       <Image
@@ -32,3 +32,4 @@ export default function LocalItem({ item, key, onclick }: itemtypeprops) {
     </li>
   );
 }
+export default LocalItem;

@@ -4,7 +4,7 @@ import './globals.css';
 import QueryProvider from '@/providers/QueryProvider';
 import localFont from 'next/font/local';
 import Footer from '@/components/Footer';
-import LayoutHeader from '@/components/Layoutheader';
+import LayoutHeader from '@/components/LayoutHeader';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',

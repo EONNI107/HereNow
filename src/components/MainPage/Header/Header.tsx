@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import React from 'react';
 
-type propsdata = {
+type PropsData = {
   title: string;
   content: string;
 };
-export default function Header({ title, content }: propsdata) {
+function Header({ title, content }: PropsData) {
   return (
     <div className="h-[200px] w-full bg-[#888] flex flex-col items-center relative">
       <Image src="/backgroundimage.png" alt="배경이미지" fill />
@@ -19,3 +19,4 @@ export default function Header({ title, content }: propsdata) {
     </div>
   );
 }
+export default Header;

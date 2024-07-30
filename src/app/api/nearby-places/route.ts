@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { tourApi } from '../tourApi';
 
-export const POST = async (request: Request) => {
+export const GET = async (request: Request) => {
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
   const urlParams = new URL(request.url).searchParams;
   const latitude = urlParams.get('mapX');
