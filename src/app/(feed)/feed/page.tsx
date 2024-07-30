@@ -1,7 +1,9 @@
+import FeedListItem from '@/components/FeedList/FeedListItem';
+import { Feed } from '@/types/feed';
 import { createClient } from '@/utils/supabase/server';
 import { showToast } from '@/utils/toastHelper';
 
-async function page() {
+async function Page() {
   const supabase = createClient();
   const { data, error } = await supabase.from('Feeds').select('*');
 
@@ -15,16 +17,11 @@ async function page() {
   return (
     <div>
       <h1>Feeds</h1>
-      {data &&
-        data.map((feed) => (
-          <div key={feed.id}>
-            <h2>{feed.title}</h2>
-            <p>{feed.content}</p>
-            <div>{feed.createdAt}</div>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 gap-4">
+        {data && data.map((feed) => <FeedListItem key={feed.id} feed={feed} />)}
+      </div>
     </div>
   );
 }
 
-export default page;
+export default Page;
