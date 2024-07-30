@@ -19,9 +19,9 @@ function MyPage() {
   });
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [posts, setPosts] = useState<any[]>([]); // State to store posts
-  const [loading, setLoading] = useState(true); // Loading state
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // New state for authentication
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -160,7 +160,7 @@ function MyPage() {
           {!isAuthenticated && (
             <a href="/sign-in">
               <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded ">
-                로그인 · 회원가입
+                로그인 · 회원가입하러가기
               </button>
             </a>
           )}
@@ -168,7 +168,7 @@ function MyPage() {
             <div>
               <label
                 htmlFor="file-input"
-                className="absolute bottom-2 right-2 cursor-pointer"
+                className="absolute bottom-7 right-10 cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +176,7 @@ function MyPage() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="h-6 w-6"
+                  className="h-5 w-5"
                 >
                   <path
                     strokeLinecap="round"
@@ -195,40 +195,46 @@ function MyPage() {
           )}
         </div>
         <div>
-          {isEditing ? (
-            <>
-              <div className="mt-5">{profile.email}</div>
+          {isAuthenticated && !isEditing && (
+            <div>
+              <div className="mt-5 mr-6">{profile.email}</div>
+              <div className="mb-5">{profile.nickname}</div>
+            </div>
+          )}
+          {isAuthenticated && isEditing && (
+            <div>
+              <div className="mt-5 mr-8">{profile.email}</div>
               <div className="mb-5">
                 <input
                   type="text"
                   value={editProfile.nickname}
                   onChange={(e) =>
-                    setEditProfile({ ...editProfile, nickname: e.target.value })
+                    setEditProfile({
+                      ...editProfile,
+                      nickname: e.target.value,
+                    })
                   }
                   className="p-1 border rounded w-28"
                 />
               </div>
-            </>
-          ) : (
-            <>
-              <div className="mt-5">{profile.email}</div>
-              <div className="mb-5"> {profile.nickname}</div>
-            </>
+            </div>
           )}
         </div>
         {isAuthenticated && (
           <div>
             {isEditing ? (
-              <div className="flex flex-col space-y-2 mt-2">
-                <button
-                  onClick={handleUpdate}
-                  className="m-2 w-40 rounded-md bg-sky-500 text-white"
-                >
-                  수정 완료
-                </button>
+              <div className="flex flex-col space-y-2 ">
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleUpdate}
+                    className="m-2 w-24 rounded-md bg-sky-500 text-white"
+                  >
+                    수정 완료
+                  </button>
+                </div>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="m-2 w-40 rounded-md bg-gray-500 text-white"
+                  className="m-2 w-24 rounded-md bg-gray-500 text-white"
                 >
                   취소
                 </button>
@@ -236,7 +242,7 @@ function MyPage() {
             ) : (
               <button
                 onClick={() => setIsEditing(true)}
-                className="m-5 w-40 rounded-md bg-sky-500 text-white"
+                className="m-5 w-24 rounded-md bg-sky-500 text-white"
               >
                 프로필 수정
               </button>
@@ -245,22 +251,22 @@ function MyPage() {
         )}
       </div>
 
-      <div className="flex justify-center w-full mt-7">
+      <div className="flex justify-center w-full mt-6">
         <button
-          className={`m-2 p-2 border-b-4 flex-1 ${
+          className={`p-2 flex-1 ${
             selectedCategory === '작성한 글'
-              ? 'bg-white text-black border-sky-300'
-              : ''
+              ? 'bg-white text-black border-b-4 border-[#118DFF]'
+              : 'text-gray-400'
           }`}
           onClick={() => setSelectedCategory('작성한 글')}
         >
           작성한 글
         </button>
         <button
-          className={`m-2 p-2 border-b-4 flex-1 ${
+          className={`p-2 flex-1 ${
             selectedCategory === '찜한 글'
-              ? 'bg-white text-black border-sky-300'
-              : ''
+              ? 'bg-white text-black border-b-4 border-[#118DFF]'
+              : 'text-gray-400'
           }`}
           onClick={() => setSelectedCategory('찜한 글')}
         >
