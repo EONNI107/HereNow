@@ -159,7 +159,7 @@ function MyPage() {
           />
           {!isAuthenticated && (
             <a href="/sign-in">
-              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded ">
+              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded-xl ">
                 로그인 · 회원가입하러가기
               </button>
             </a>
@@ -250,7 +250,6 @@ function MyPage() {
           </div>
         )}
       </div>
-
       <div className="flex justify-center w-full mt-6">
         <button
           className={`p-2 flex-1 ${
