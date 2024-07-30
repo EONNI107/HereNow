@@ -14,6 +14,9 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: '지금여기',
   description: '로컬의 정보를 확인하고 공유할 수 있는 플랫폼입니다.',
+  icons: {
+    icon: '/Symbol.png',
+  },
 };
 
 function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
