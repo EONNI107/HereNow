@@ -1,17 +1,8 @@
 'use client';
-import axios from 'axios';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function SearchFeed() {
-  useEffect(() => {
-    feedData();
-  }, []);
-  const feedData = async () => {
-    const res = await axios.get('/api/supabase-feed', {
-      params: {},
-    });
-  };
   return (
     <>
       <div className="flex w-full border">
