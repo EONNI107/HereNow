@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { searchApi } from '../api/searchApi';
 import { searchedtype } from '@/app/search-page/page';
+import { useRouter } from 'next/navigation';
 type SearchItemprops = {
   searchdata: searchedtype[];
   searchValue: string;
@@ -14,7 +15,7 @@ export default function SearchItem({
   const [resdata, setResdata] = useState<searchedtype[]>([]);
   const [resdatas, setResdatas] = useState<searchedtype[][]>([]);
   const [isshow, setIsshow] = useState<boolean>(true);
-
+  const router = useRouter();
   useEffect(() => {
     const datas = async () => {
       const res: searchedtype[] = await searchApi(
@@ -63,6 +64,10 @@ export default function SearchItem({
     const firstdata = resdatas[3];
     setResdata(firstdata);
   };
+
+  const handleClick = (contentid: string) => {
+    router.push(`/local/details/${contentid}`);
+  };
   return (
     <>
       <div className="flex w-full border">
@@ -82,9 +87,16 @@ export default function SearchItem({
           </div>
         </div>
       </div>
-      <div className="border w-full">
-        <h2>행사</h2>
-        <p>서울의 가볼만한 곳을 찾아드릴게요!</p>
+      <div className="w-full px-5 py-5">
+        <div className="w-full rounded-lg bg-[#FFF4F0] flex">
+          <div>
+            <Image src="/Event.png" alt="행사아이콘" width={20} height={20} />
+          </div>
+          <div>
+            <h2>행사</h2>
+            <p>{searchValue}의 가볼만한 곳을 찾아드릴게요!</p>
+          </div>
+        </div>
       </div>
       <div className="w-full flex flex-col gap-2">
         {isshow ? (
@@ -107,7 +119,11 @@ export default function SearchItem({
         ) : (
           <>
             {resdata?.map((i) => (
-              <div key={i.contentid} className="w-full flex gap-3">
+              <div
+                key={i.contentid}
+                className="w-full flex gap-3"
+                onClick={() => handleClick(i.contentid)}
+              >
                 <Image
                   src={i.firstimage}
                   alt="이미지"

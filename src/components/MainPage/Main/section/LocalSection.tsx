@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LocalItem from './LocalItem';
 import { itemtype } from '@/types/maintype';
+import { useRouter } from 'next/navigation';
 
 type PositionType = {
   coords: {
@@ -17,6 +18,7 @@ type GeolocationError = {
 };
 
 export default function LocalSection() {
+  const router = useRouter();
   const [localitems, setLocalitems] = useState<itemtype[]>([]);
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
 
@@ -59,7 +61,9 @@ export default function LocalSection() {
   useEffect(() => {
     getLoaction();
   }, []);
-
+  const handleClick = (contentid: string) => {
+    router.push(`/local/details/${contentid}`);
+  };
   return (
     <section className="flex flex-col gap-4 w-full px-4">
       <div className="flex justify-between">
@@ -69,7 +73,11 @@ export default function LocalSection() {
       <div className="w-full">
         <ul className="w-full">
           {localitems.map((item: itemtype) => (
-            <LocalItem key={item.contentid} item={item} />
+            <LocalItem
+              key={item.contentid}
+              item={item}
+              onclick={() => handleClick(item.contentid)}
+            />
           ))}
         </ul>
       </div>
