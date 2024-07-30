@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { tourApi } from '../../tourApi';
 import { region } from '@/data/region.json';
+
 export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } },
