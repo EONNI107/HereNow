@@ -9,6 +9,7 @@ import ContentTypeFilter from './ContentTypeFilter';
 import RegionHeader from './RegionHeader';
 import LoadingState from './LoadingState';
 import SkeletonCard from './SkeletonCard';
+import { Item } from '@/types/localList';
 
 function LocalListPage({ region }: { region: string }) {
   const router = useRouter();
@@ -47,7 +48,7 @@ function LocalListPage({ region }: { region: string }) {
       ) : (
         data && (
           <div className="grid grid-cols-1 gap-4">
-            {data.localList.map((item) => (
+            {data.localList.map((item: Item) => (
               <LocalListItem key={item.contentid} item={item} region={region} />
             ))}
           </div>
