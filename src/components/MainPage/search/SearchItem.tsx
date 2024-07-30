@@ -15,6 +15,7 @@ export default function SearchItem({
   const [resdata, setResdata] = useState<searchedtype[]>([]);
   const [resdatas, setResdatas] = useState<searchedtype[][]>([]);
   const [isshow, setIsshow] = useState<boolean>(true);
+  const [isskeleton, setIsskeleton] = useState<boolean>(true);
   const router = useRouter();
   useEffect(() => {
     const datas = async () => {
@@ -41,6 +42,7 @@ export default function SearchItem({
       const resarrs = [res, res2, res3, res4];
       console.log(res);
       setResdatas(resarrs);
+      setIsskeleton(false);
     };
     datas();
   }, [searchValue]);
@@ -64,6 +66,21 @@ export default function SearchItem({
     const firstdata = resdatas[3];
     setResdata(firstdata);
   };
+
+  function SkeletonItem() {
+    return (
+      <div className="animate-pulse flex space-x-4">
+        <div className="rounded-full bg-gray-200 h-12 w-12"></div>
+        <div className="flex-1 space-y-4 py-1">
+          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleClick = (contentid: string) => {
     router.push(`/local/details/${contentid}`);
@@ -100,22 +117,37 @@ export default function SearchItem({
       </div>
       <div className="w-full flex flex-col gap-2">
         {isshow ? (
-          <>
-            {searchdata?.map((item) => (
-              <div key={item.contentid} className="w-full flex gap-3">
-                <Image
-                  src={item.firstimage}
-                  alt="이미지"
-                  width={100}
-                  height={100}
-                />
-                <p className="">{item.title}</p>
-                <div className="">
-                  <Image src="/heart.png" alt="좋아요" width={20} height={20} />
+          isskeleton ? (
+            Array.from({ length: 10 }).map((_, index) => (
+              <SkeletonItem key={index} />
+            ))
+          ) : (
+            <>
+              {searchdata?.map((item) => (
+                <div key={item.contentid} className="w-full flex gap-3">
+                  <Image
+                    src={item.firstimage}
+                    alt="이미지"
+                    width={100}
+                    height={100}
+                  />
+                  <p className="">{item.title}</p>
+                  <div className="">
+                    <Image
+                      src="/heart.png"
+                      alt="좋아요"
+                      width={20}
+                      height={20}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </>
+              ))}
+            </>
+          )
+        ) : isskeleton ? (
+          Array.from({ length: 10 }).map((_, index) => (
+            <SkeletonItem key={index} />
+          ))
         ) : (
           <>
             {resdata?.map((i) => (

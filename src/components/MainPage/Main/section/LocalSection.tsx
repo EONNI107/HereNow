@@ -20,7 +20,23 @@ type GeolocationError = {
 export default function LocalSection() {
   const router = useRouter();
   const [localitems, setLocalitems] = useState<itemtype[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
+
+  function SkeletonItem() {
+    return (
+      <div className="animate-pulse flex space-x-4">
+        <div className="rounded-full bg-gray-200 h-12 w-12"></div>
+        <div className="flex-1 space-y-4 py-1">
+          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const getLocationdata = async (latitude: number, longitude: number) => {
     try {
@@ -30,8 +46,10 @@ export default function LocalSection() {
       const items: itemtype[] = res.data.response.body.items.item;
       console.log(items);
       setLocalitems(items);
+      setLoading(false);
     } catch (error) {
       console.error('Failed to fetch location data:', error);
+      setLoading(false);
     }
   };
 
@@ -72,13 +90,17 @@ export default function LocalSection() {
       </div>
       <div className="w-full">
         <ul className="w-full">
-          {localitems.map((item: itemtype) => (
-            <LocalItem
-              key={item.contentid}
-              item={item}
-              onclick={() => handleClick(item.contentid)}
-            />
-          ))}
+          {loading
+            ? Array.from({ length: 2 }).map((_, index) => (
+                <SkeletonItem key={index} />
+              ))
+            : localitems.map((item: itemtype) => (
+                <LocalItem
+                  key={item.contentid}
+                  item={item}
+                  onclick={() => handleClick(item.contentid)}
+                />
+              ))}
         </ul>
       </div>
     </section>

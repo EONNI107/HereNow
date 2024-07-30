@@ -31,7 +31,7 @@ export default function LayoutHeader() {
           </button>
         </div>
       ) : (
-        <div className="w-full flex justify-between h-[29px]">
+        <div className="w-full flex justify-between items-center h-[40px]">
           <button onClick={handleback}>
             <Image
               src="/chevron-left.png"
@@ -40,13 +40,12 @@ export default function LayoutHeader() {
               height={30}
             />
           </button>
-          <h1>
-            {searchParams ? (
-              <p>{searchParams}</p>
-            ) : (
-              <p className="font-['양진체']">여기,어때</p>
-            )}
-          </h1>
+
+          {searchParams ? (
+            <p>{searchParams}</p>
+          ) : (
+            <p className="font-['양진체'] text-[#118DFF] text-xl">여기,어때</p>
+          )}
 
           <button onClick={handleShow}>
             <Image src="/search.png" alt="검색아이콘" width={20} height={20} />
