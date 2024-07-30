@@ -5,13 +5,14 @@ import { showToast } from '@/utils/toastHelper';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import useAuthStore from '@/zustand/useAuthStore';
 
 function SignInPage() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const supabase = createClient();
   const router = useRouter();
-
+  const setUser = useAuthStore((state) => state.setUser);
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = emailRef.current?.value;
@@ -20,14 +21,16 @@ function SignInPage() {
       return showToast('error', '모든 항목을 입력해주세요');
     }
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
     if (error) {
       showToast('error', error.message);
       return;
     }
+    setUser(data.user);
     router.push('/');
     showToast('success', '로그인 성공');
   };

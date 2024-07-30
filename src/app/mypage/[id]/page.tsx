@@ -147,7 +147,7 @@ function MyPage() {
           isAuthenticated ? 'bg-[#DBEEFF]' : 'bg-[#FFF4F0]'
         }`}
       >
-        <div className="relative flex items-center">
+        <div className="relative flex items-center w-full justify-between p-5 pr-10">
           <img
             src={
               imagePreview ||
@@ -159,8 +159,8 @@ function MyPage() {
           />
           {!isAuthenticated && (
             <a href="/sign-in">
-              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded">
-                로그인,회원가입
+              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded ">
+                로그인 · 회원가입
               </button>
             </a>
           )}
