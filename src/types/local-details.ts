@@ -156,7 +156,7 @@ export type AdditionalData = {
   benikia: string;
 };
 
-export type NearbyPlaces = {
+export type NearbyPlace = {
   addr1: string;
   addr2: string;
   areacode: string;
@@ -178,4 +178,12 @@ export type NearbyPlaces = {
   sigungucode: string;
   tel: string;
   title: string;
+};
+
+export type NearbyPlacesType = NearbyPlace[];
+
+export type DetailProps = {
+  mainData?: MainData;
+  additionalData?: AdditionalData;
+  typeId: string;
 };

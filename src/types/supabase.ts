@@ -9,6 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      comments: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: number
+          post_id: number | null
+          user_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: number
+          post_id?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: number
+          post_id?: number | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       FeedComments: {
         Row: {
           content: string
@@ -127,21 +151,21 @@ export type Database = {
           content: string
           createdAt: string
           id: number
-          placeId: number
+          placeId: string
           userId: string
         }
         Insert: {
           content: string
           createdAt: string
           id?: number
-          placeId: number
+          placeId: string
           userId?: string
         }
         Update: {
           content?: string
           createdAt?: string
           id?: number
-          placeId?: number
+          placeId?: string
           userId?: string
         }
         Relationships: [
@@ -157,17 +181,17 @@ export type Database = {
       PlaceLikes: {
         Row: {
           id: number
-          placeId: number
+          placeId: string
           userId: string
         }
         Insert: {
           id?: number
-          placeId: number
+          placeId: string
           userId?: string
         }
         Update: {
           id?: number
-          placeId?: number
+          placeId?: string
           userId?: string
         }
         Relationships: [
@@ -179,6 +203,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      posts: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: number
+          image_urls: Json | null
+          location: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: number
+          image_urls?: Json | null
+          location?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: number
+          image_urls?: Json | null
+          location?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
       }
       Users: {
         Row: {
