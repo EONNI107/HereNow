@@ -1,10 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { ItemType } from '@/types/maintype';
 import { useRouter } from 'next/navigation';
 import LocalItem from './LocalItem';
 import { tourApi } from '@/app/api/tourApi';
 import SkeletonItem from '../../Skeleton/SkeletonItem';
+import { ItemType } from '@/types/mainType';
 
 type PositionType = {
   coords: {

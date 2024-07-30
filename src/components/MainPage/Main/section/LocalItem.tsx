@@ -1,4 +1,4 @@
-import { ItemType } from '@/types/maintype';
+import { ItemType } from '@/types/mainType';
 import Image from 'next/image';
 import React from 'react';
 

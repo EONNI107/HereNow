@@ -3,7 +3,7 @@
 import { searchApi } from '@/components/MainPage/api/searchApi';
 import SearchFeed from '@/components/MainPage/search/SearchFeed';
 import SearchItem from '@/components/MainPage/search/SearchItem';
-import { ItemType } from '@/types/maintype';
+import { ItemType } from '@/types/mainType';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
