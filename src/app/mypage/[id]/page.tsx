@@ -147,14 +147,14 @@ function MyPage() {
           isAuthenticated ? 'bg-[#DBEEFF]' : 'bg-[#FFF4F0]'
         }`}
       >
-        <div className="relative flex items-center w-full justify-between p-5 pr-10">
+        <div className="relative flex items-center w-full justify-between p-5  ">
           <img
             src={
               imagePreview ||
               profile.profileImage ||
               'https://via.placeholder.com/150'
             }
-            className="h-16 w-16 m-3 rounded-full"
+            className="h-16 w-16 rounded-full"
             alt="Profile"
           />
           {!isAuthenticated && (
@@ -255,7 +255,7 @@ function MyPage() {
           className={`p-2 flex-1 ${
             selectedCategory === '작성한 글'
               ? 'bg-white text-black border-b-4 border-[#118DFF]'
-              : 'text-gray-400'
+              : 'text-gray-400 border-b-4 border-b-white'
           }`}
           onClick={() => setSelectedCategory('작성한 글')}
         >
@@ -265,7 +265,7 @@ function MyPage() {
           className={`p-2 flex-1 ${
             selectedCategory === '찜한 글'
               ? 'bg-white text-black border-b-4 border-[#118DFF]'
-              : 'text-gray-400'
+              : 'text-gray-400 border-b-4 border-b-white'
           }`}
           onClick={() => setSelectedCategory('찜한 글')}
         >
