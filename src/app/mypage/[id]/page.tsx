@@ -1,8 +1,10 @@
 'use client';
 
 import { createClient } from '@/utils/supabase/client';
+import { showToast } from '@/utils/toastHelper';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import PostIcon from '@/components/IconList/PostIcon';
+import PenIcon from '@/components/IconList/PenIcon';
 
 function MyPage() {
   const supabase = createClient();
@@ -11,7 +13,6 @@ function MyPage() {
     email: '',
     profileImage: '',
   });
-  const [selectedCategory, setSelectedCategory] = useState('작성한 글');
   const [isEditing, setIsEditing] = useState(false);
   const [editProfile, setEditProfile] = useState({
     nickname: '',
@@ -22,6 +23,7 @@ function MyPage() {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isWritingPostsSelected, setIsWritingPostsSelected] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -29,7 +31,9 @@ function MyPage() {
         data: { user },
         error,
       } = await supabase.auth.getUser();
-      if (user) {
+      if (error) {
+        showToast('error', `에러: ${error.message}`);
+      } else if (user) {
         setIsAuthenticated(true);
         const { data, error: profileError } = await supabase
           .from('Users')
@@ -38,7 +42,7 @@ function MyPage() {
           .single();
 
         if (profileError) {
-          console.error('에러', profileError.message);
+          showToast('error', `프로 파일 에러: ${profileError.message}`);
         } else {
           setProfile(data);
           setEditProfile({
@@ -61,14 +65,16 @@ function MyPage() {
         data: { user },
         error,
       } = await supabase.auth.getUser();
-      if (user) {
+      if (error) {
+        showToast('error', `슈퍼베이스 에러: ${error.message}`);
+      } else if (user) {
         const { data, error: postsError } = await supabase
-          .from(selectedCategory === '작성한 글' ? 'Posts' : 'Favorites')
+          .from(isWritingPostsSelected ? 'Posts' : 'Favorites')
           .select('*')
           .eq('userId', user.id);
 
         if (postsError) {
-          console.error('Error fetching posts:', postsError.message);
+          showToast('error', `게시물 에러: ${postsError.message}`);
         } else {
           setPosts(data);
         }
@@ -77,7 +83,7 @@ function MyPage() {
     };
 
     fetchPosts();
-  }, [selectedCategory]);
+  }, [isWritingPostsSelected]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -96,7 +102,7 @@ function MyPage() {
       .upload(`avatar_${Date.now()}.png`, file);
 
     if (error) {
-      console.error('Error uploading file:', error.message);
+      showToast('error', `이미지 업로드 에러: ${error.message}`);
       return null;
     }
 
@@ -108,7 +114,9 @@ function MyPage() {
       data: { user },
       error,
     } = await supabase.auth.getUser();
-    if (user) {
+    if (error) {
+      showToast('error', `프로파일 업로드 에러: ${error.message}`);
+    } else if (user) {
       let imagePath = profile.profileImage;
 
       if (newImageFile) {
@@ -127,7 +135,7 @@ function MyPage() {
         .eq('id', user.id);
 
       if (updateError) {
-        console.error('에러', updateError.message);
+        showToast('error', `프로필 파일 업로드 에러: ${updateError.message}`);
       } else {
         setProfile((prev) => ({
           ...prev,
@@ -135,7 +143,7 @@ function MyPage() {
           profileImage: imagePath,
         }));
         setIsEditing(false);
-        toast.success('프로필 수정이 완료되었습니다.');
+        showToast('success', '프로필 수정이 완료되었습니다.');
       }
     }
   };
@@ -168,22 +176,9 @@ function MyPage() {
             <div>
               <label
                 htmlFor="file-input"
-                className="absolute bottom-7 right-10 cursor-pointer"
+                className="absolute bottom-6 right-11 cursor-pointer"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                  />
-                </svg>
+                <PenIcon />
               </label>
               <input
                 type="file"
@@ -253,21 +248,21 @@ function MyPage() {
       <div className="flex justify-center w-full mt-6">
         <button
           className={`p-2 flex-1 ${
-            selectedCategory === '작성한 글'
+            isWritingPostsSelected
               ? 'bg-white text-black border-b-4 border-[#118DFF]'
               : 'text-gray-400 border-b-4 border-b-white'
           }`}
-          onClick={() => setSelectedCategory('작성한 글')}
+          onClick={() => setIsWritingPostsSelected(true)}
         >
           작성한 글
         </button>
         <button
           className={`p-2 flex-1 ${
-            selectedCategory === '찜한 글'
+            !isWritingPostsSelected
               ? 'bg-white text-black border-b-4 border-[#118DFF]'
               : 'text-gray-400 border-b-4 border-b-white'
           }`}
-          onClick={() => setSelectedCategory('찜한 글')}
+          onClick={() => setIsWritingPostsSelected(false)}
         >
           찜한 글
         </button>
@@ -277,21 +272,8 @@ function MyPage() {
         {loading ? (
           <p>Loading...</p>
         ) : posts.length === 0 ? (
-          <div className="text-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-16 h-16 mx-auto text-gray-500"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-              />
-            </svg>
+          <div className="flex  flex-col items-center">
+            <PostIcon />
             <p className="mt-2">작성한 게시글이 없어요</p>
           </div>
         ) : (

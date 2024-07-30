@@ -31,8 +31,8 @@ function SignInPage() {
       return;
     }
     setUser(data.user);
-    router.push('/');
     showToast('success', '로그인 성공');
+    router.push('/');
   };
 
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
