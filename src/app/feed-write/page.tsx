@@ -10,33 +10,16 @@ import TextArea from '@/components/FeedWrite/TextArea';
 
 function FeedWrite() {
   const [title, setTitle] = useState('');
-  const [location, setLocation] = useState('');
+  const [region, setRegion] = useState('');
+  const [sigungu, setSigungu] = useState('');
   const [content, setContent] = useState('');
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const router = useRouter();
   const supabase = createClient();
 
-  // useEffect(() => {
-  //   // 주석 처리: 실제 사용자 인증 체크
-  //   // const checkUser = async () => {
-  //   //   const { data, error } = await supabase.auth.getUser();
-  //   //   if (error || !data.user) {
-  //   //     router.replace('/login');
-  //   //   }
-  //   // };
-  //   // checkUser();
-  // }, [router, supabase]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 주석 처리: 실제 사용자 인증 체크
-    // const { data: userData, error: userError } = await supabase.auth.getUser();
-
-    // if (userError || !userData.user) {
-    //   alert('You need to be logged in to create a post');
-    //   return;
-    // }
 
     const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa'; // 임시 사용자 ID
 
@@ -44,7 +27,7 @@ function FeedWrite() {
     for (const image of images) {
       const fileName = `${Date.now()}_${image.name
         .replace(/[^a-z0-9]/gi, '_')
-        .toLowerCase()}`; // 고유한 파일 이름 생성
+        .toLowerCase()}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('FeedImage')
         .upload(fileName, image);
@@ -55,26 +38,32 @@ function FeedWrite() {
         return;
       }
 
-      const { data } = supabase.storage
+      const { publicUrl } = supabase.storage
         .from('FeedImage')
-        .getPublicUrl(fileName);
-      imageUrls.push(data.publicUrl);
+        .getPublicUrl(fileName).data;
+      imageUrls.push(publicUrl);
     }
 
-    const { error } = await supabase.from('posts').insert({
-      title,
-      location,
-      content,
-      image_urls: imageUrls,
-      user_id: userId,
-    });
+    const { data, error } = await supabase
+      .from('Feeds')
+      .insert({
+        userId,
+        title,
+        content,
+        image: imageUrls,
+        region,
+        sigungu,
+        createdAt: new Date(),
+      })
+      .select();
 
     if (error) {
       console.error('Insert Post Error:', error);
       alert('피드 작성에 실패하였습니다.');
     } else {
-      alert('피드가 성공적으로 업데이트되었습니다.');
-      router.push('/');
+      alert('피드가 성공적으로 작성되었습니다.');
+      const feedId = data[0].id;
+      router.push(`/feed-detail/${feedId}`);
     }
   };
 
@@ -92,7 +81,12 @@ function FeedWrite() {
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <InputField value={title} onChange={setTitle} placeholder="제목" />
           <hr className="border-gray-300 border" />
-          <LocationButton location={location} setLocation={setLocation} />
+          <LocationButton
+            region={region}
+            sigungu={sigungu}
+            setRegion={setRegion}
+            setSigungu={setSigungu}
+          />
           <ImageUpload
             images={images}
             setImages={setImages}

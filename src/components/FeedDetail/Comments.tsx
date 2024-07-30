@@ -5,10 +5,10 @@ import { createClient } from '@/utils/supabase/client';
 
 type Comment = {
   id: number;
-  post_id: number;
+  feedId: number;
   content: string;
-  user_id: string;
-  created_at: string;
+  userId: string;
+  createdAt: string;
 };
 
 type CommentsProps = {
@@ -25,10 +25,10 @@ function Comments({ postId, onClose }: CommentsProps) {
   useEffect(() => {
     const fetchComments = async () => {
       const { data, error } = await supabase
-        .from('comments')
+        .from('FeedComments')
         .select('*')
-        .eq('post_id', postId)
-        .order('created_at', { ascending: true });
+        .eq('feedId', postId)
+        .order('createdAt', { ascending: true });
 
       if (error) {
         console.error('Error fetching comments:', error);
@@ -47,10 +47,10 @@ function Comments({ postId, onClose }: CommentsProps) {
 
     console.log('Submitting comment:', newComment);
 
-    const { data, error } = await supabase.from('comments').insert({
-      post_id: postId,
+    const { data, error } = await supabase.from('FeedComments').insert({
+      feedId: postId,
       content: newComment,
-      user_id: userId,
+      userId: userId,
     });
 
     if (error) {
@@ -83,8 +83,8 @@ function Comments({ postId, onClose }: CommentsProps) {
             <li key={comment.id} className="mb-2">
               <p>{comment.content}</p>
               <small className="text-gray-500">
-                Posted by {comment.user_id} on{' '}
-                {new Date(comment.created_at).toLocaleString()}
+                Posted by {comment.userId} on{' '}
+                {new Date(comment.createdAt).toLocaleString()}
               </small>
             </li>
           ))}

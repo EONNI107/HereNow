@@ -1,10 +1,10 @@
 export type Post = {
   id: number;
+  userId: string;
   title: string;
-  location: string;
   content: string;
-  image_urls: string[];
-  user_id: string;
-  created_at: string;
-  updated_at: string;
+  image: string[];
+  region: string;
+  sigungu: string;
+  createdAt: string;
 };

@@ -45,7 +45,7 @@ const ImageUpload = ({
         multiple
         className="input no-focus"
       />
-      <div className="image-previews flex flex-wrap space-x-2">
+      <div className="image-previews flex overflow-x-scroll space-x-2 mt-4">
         {imagePreviews.map((src, index) => (
           <div key={index} className="relative">
             <img
