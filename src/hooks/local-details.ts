@@ -26,7 +26,11 @@ const fetchAdditionalData = async (id: number, typeId: string) => {
   return response.data.response.body.items.item[0];
 };
 
-export const useAdditionalData = (id: number, typeId: string, options: any) => {
+export const useAdditionalData = (
+  id: number,
+  typeId: string,
+  options: object,
+) => {
   return useQuery<AdditionalData>({
     queryKey: ['additionalData', id, typeId],
     queryFn: () => fetchAdditionalData(id, typeId),

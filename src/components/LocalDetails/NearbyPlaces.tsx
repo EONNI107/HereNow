@@ -1,4 +1,4 @@
-import type { NearbyPlace, NearbyPlacesType } from '@/types/local-details';
+import type { NearbyPlace } from '@/types/local-details';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -20,7 +20,7 @@ function NearbyPlaces({ nearbyPlaces = [], typeId }: NearbyPlacesProps) {
       {nearbyPlaces && (
         <div className="mx-2">
           <div className="flex overflow-x-auto gap-4 mt-3 pb-4">
-            {nearbyPlaces.map((place: any) => (
+            {nearbyPlaces.map((place: NearbyPlace) => (
               <Link
                 key={place.contentid}
                 href={`/local/details/${place.contentid}`}
