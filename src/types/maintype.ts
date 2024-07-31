@@ -1,3 +1,5 @@
+import { Tables } from './supabase';
+
 export type Sigungu = {
   rnum: number;
   code: string;
@@ -16,3 +18,5 @@ export type Region = {
 export type Regions = {
   region: Region[];
 };
+
+export type tableType = Tables<'Feeds'>;

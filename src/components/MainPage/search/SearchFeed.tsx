@@ -1,8 +1,30 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import SearchFeedItem from './SearchFeedItem';
+import axios from 'axios';
+import { tableType } from '@/types/mainType';
 
-function SearchFeed() {
+type searchProps = {
+  searchValue: string;
+};
+
+function SearchFeed({ searchValue }: searchProps) {
+  const [searchFeedItems, setSearchFeedItems] = useState<tableType[]>([]);
+  useEffect(() => {
+    searchFeedData();
+  }, []);
+  const searchFeedData = async () => {
+    const res = await axios.get('/api/supabase-searchfeed', {
+      params: {
+        searchValue,
+      },
+    });
+    const Feeditems = res.data.data as tableType[];
+    console.log(Feeditems);
+
+    setSearchFeedItems(Feeditems);
+  };
   return (
     <>
       <div className="flex w-full border">
@@ -24,9 +46,9 @@ function SearchFeed() {
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">
-        <div className="flex gap-3">
-          <p>피드</p>
-        </div>
+        {searchFeedItems.map((item) => (
+          <SearchFeedItem item={item} key={item.id} />
+        ))}
       </div>
     </>
   );

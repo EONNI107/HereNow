@@ -49,7 +49,7 @@ function SeachDetailPage() {
         </>
       ) : (
         <>
-          <SearchFeed />
+          <SearchFeed searchValue={searchValue} />
         </>
       )}
     </div>

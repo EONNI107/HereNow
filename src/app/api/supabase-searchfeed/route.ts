@@ -3,13 +3,13 @@ import { createClient } from '@/utils/supabase/server';
 
 export async function GET(request: Request) {
   const supabase = createClient();
-
+  const { searchParams } = new URL(request.url);
+  const searchTitle = searchParams.get('searchValue');
   try {
     const response = await supabase
       .from('Feeds')
       .select('*')
-      .order('createdAt', { ascending: false })
-      .limit(4);
+      .ilike('content', `%${searchTitle}%`);
     return NextResponse.json(response);
   } catch (error) {
     console.error(error);
