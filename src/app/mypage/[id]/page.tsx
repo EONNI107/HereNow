@@ -3,10 +3,12 @@
 import { createClient } from '@/utils/supabase/client';
 import { showToast } from '@/utils/toastHelper';
 import { ChangeEvent, useEffect, useState } from 'react';
-import PostIcon from '@/components/IconList/PostIcon';
 import PenIcon from '@/components/IconList/PenIcon';
 import Image from 'next/image';
 import { Tables } from '@/types/supabase';
+import FeedsList from '@/components/FeedsList/FeedsList';
+import FeedLikes from '@/components/FeedLikesList/FeedLikesList';
+import PlaceLikes from '@/components/PlaceLikes/PlaceLikes';
 
 function MyPage() {
   const supabase = createClient();
@@ -23,9 +25,12 @@ function MyPage() {
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [posts, setPosts] = useState<Tables<'Feeds'>[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isWritingPostsSelected, setIsWritingPostsSelected] = useState(true);
+  const [selectedTab, setSelectedTab] = useState<
+    'posts' | 'favorites' | 'places'
+  >('posts');
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -45,7 +50,7 @@ function MyPage() {
           .single();
 
         if (profileError) {
-          showToast('error', `프로 파일 에러`);
+          showToast('error', `프로필 에러`);
           console.log(profileError.message);
         } else {
           setProfile(data);
@@ -69,27 +74,58 @@ function MyPage() {
         data: { user },
         error,
       } = await supabase.auth.getUser();
+
       if (error) {
-        showToast('error', `슈퍼베이스 에러`);
+        showToast('error', '슈퍼베이스 에러');
         console.log(error.message);
       } else if (user) {
-        const { data, error: postsError } = await supabase
-          .from(isWritingPostsSelected ? 'Posts' : 'Favorites')
-          .select('*')
-          .eq('userId', user.id);
+        try {
+          if (selectedTab === 'posts') {
+            const { data, error: postsError } = await supabase
+              .from('Feeds')
+              .select('*')
+              .eq('userId', user.id);
 
-        if (postsError) {
-          showToast('error', `작성,찜한 글 에러`);
-          console.log(postsError.message);
-        } else {
-          setPosts(data);
+            if (postsError) throw postsError;
+
+            setPosts(data);
+          } else if (selectedTab === 'favorites') {
+            const { data, error: favoritesError } = await supabase
+              .from('FeedLikes')
+              .select('*')
+              .eq('userId', user.id);
+
+            if (favoritesError) throw favoritesError;
+
+            setPosts(data);
+          } else if (selectedTab === 'places') {
+            const { data, error: placesError } = await supabase
+              .from('PlaceLikes')
+              .select('*')
+              .eq('userId', user.id);
+
+            if (placesError) throw placesError;
+
+            setPosts(data);
+          }
+        } catch (fetchError) {
+          showToast(
+            'error',
+            `${
+              selectedTab === 'posts'
+                ? '작성한 글'
+                : selectedTab === 'favorites'
+                ? '찜한 글'
+                : '찜한 장소'
+            } 불러오기 에러`,
+          );
         }
       }
       setLoading(false);
     };
 
     fetchPosts();
-  }, [isWritingPostsSelected]);
+  }, [selectedTab]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -122,7 +158,7 @@ function MyPage() {
       error,
     } = await supabase.auth.getUser();
     if (error) {
-      showToast('error', `프로파일 업로드 에러`);
+      showToast('error', `프로필 업로드 에러`);
       console.log(error.message);
     } else if (user) {
       let imagePath = profile.profileImage;
@@ -158,13 +194,13 @@ function MyPage() {
   };
 
   return (
-    <div className="pt-10 flex flex-col h-svh ">
+    <div className="pt-10 flex flex-col h-svh">
       <div
         className={`flex items-center rounded-2xl w-full h-28 ${
           isAuthenticated ? 'bg-[#DBEEFF]' : 'bg-[#FFF4F0]'
         }`}
       >
-        <div className="relative flex items-center w-full justify-between p-5  ">
+        <div className="relative flex items-center w-full justify-between p-5">
           <Image
             src={
               imagePreview ||
@@ -178,7 +214,7 @@ function MyPage() {
           />
           {!isAuthenticated && (
             <a href="/sign-in">
-              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded-xl ">
+              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded-xl">
                 로그인 · 회원가입하러가기
               </button>
             </a>
@@ -229,7 +265,7 @@ function MyPage() {
         {isAuthenticated && (
           <div>
             {isEditing ? (
-              <div className="flex flex-col space-y-2 ">
+              <div className="flex flex-col space-y-2">
                 <div className="flex justify-end">
                   <button
                     onClick={handleUpdate}
@@ -259,36 +295,45 @@ function MyPage() {
       <div className="flex justify-center w-full mt-6">
         <button
           className={`p-2 flex-1 ${
-            isWritingPostsSelected
+            selectedTab === 'posts'
               ? 'bg-white text-black border-b-4 border-[#118DFF]'
               : 'text-gray-400 border-b-4 border-b-white'
           }`}
-          onClick={() => setIsWritingPostsSelected(true)}
+          onClick={() => setSelectedTab('posts')}
         >
           작성한 글
         </button>
         <button
           className={`p-2 flex-1 ${
-            !isWritingPostsSelected
+            selectedTab === 'favorites'
               ? 'bg-white text-black border-b-4 border-[#118DFF]'
               : 'text-gray-400 border-b-4 border-b-white'
           }`}
-          onClick={() => setIsWritingPostsSelected(false)}
+          onClick={() => setSelectedTab('favorites')}
         >
           찜한 글
+        </button>
+        <button
+          className={`p-2 flex-1 ${
+            selectedTab === 'places'
+              ? 'bg-white text-black border-b-4 border-[#118DFF]'
+              : 'text-gray-400 border-b-4 border-b-white'
+          }`}
+          onClick={() => setSelectedTab('places')}
+        >
+          찜한 장소
         </button>
       </div>
 
       <div className="flex flex-1 justify-center py-10 bg-gray-50 items-center">
         {loading ? (
           <p>Loading...</p>
-        ) : posts.length === 0 ? (
-          <div className="flex  flex-col items-center">
-            <PostIcon />
-            <p className="mt-2">작성한 게시글이 없어요</p>
-          </div>
         ) : (
-          <div>{/* 작성한 게시글 */}</div>
+          <div>
+            <div>{selectedTab === 'posts' && <FeedsList posts={posts} />}</div>
+            <div>{selectedTab === 'favorites' && <FeedLikes />}</div>
+            <div>{selectedTab === 'places' && <PlaceLikes />}</div>
+          </div>
         )}
       </div>
     </div>
