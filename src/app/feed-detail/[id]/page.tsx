@@ -74,8 +74,7 @@ const PostPage = ({ params }: PostPageProps) => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-      <p className="text-sm text-gray-600 mb-4">{`${post.region} ${post.sigungu}`}</p>
+      <p className="font-semibold text-14px text-gray-600 mb-4 text-right">{`${post.region} ${post.sigungu}`}</p>
       <div className="image-previews flex overflow-x-scroll space-x-2 mb-4">
         {images.map((src, index) => (
           <img

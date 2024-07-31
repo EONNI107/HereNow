@@ -11,7 +11,7 @@ const TextArea = ({ value, onChange, placeholder }: TextAreaProps) => {
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       required
-      className="textarea no-focus"
+      className="textarea no-focus text-18"
     />
   );
 };

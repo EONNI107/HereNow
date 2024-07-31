@@ -7,6 +7,7 @@ import InputField from '@/components/FeedWrite/InputField';
 import LocationButton from '@/components/FeedWrite/LocationButton';
 import ImageUpload from '@/components/FeedWrite/ImageUpload';
 import TextArea from '@/components/FeedWrite/TextArea';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
 function FeedWrite() {
   const [title, setTitle] = useState('');
@@ -69,11 +70,15 @@ function FeedWrite() {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="header flex justify-between mb-4">
-        <button onClick={() => router.back()} className="btn">
-          뒤로가기
-        </button>
-        <button onClick={handleSubmit} className="btn">
+      <div className="header flex justify-between items-center mb-4">
+        <ChevronLeftIcon
+          onClick={() => router.back()}
+          className="btn h-6 w-6 cursor-pointer"
+        ></ChevronLeftIcon>
+        <button
+          onClick={handleSubmit}
+          className="btn bg-blue-500 px-2 py-1 rounded-md font-semibold text-14px text-white"
+        >
           등록
         </button>
       </div>
