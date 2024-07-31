@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LocalItem from './LocalItem';
 import { tourApi } from '@/app/api/tourApi';
-import SkeletonItem from '../../Skeleton/SkeletonItem';
 import { NearbyPlace } from '@/types/local-details';
+import SkeletonSearchItem from '../../Skeleton/SkeletonSearchItem';
 
 type PositionType = {
   coords: {
@@ -77,8 +77,8 @@ function LocalSection() {
       <div className="w-full">
         <ul className="w-full">
           {loading
-            ? Array.from({ length: 2 }).map((_, index) => (
-                <SkeletonItem key={index} />
+            ? Array.from({ length: 10 }).map((_, index) => (
+                <SkeletonSearchItem key={index} />
               ))
             : localitems.map((item: NearbyPlace) => (
                 <LocalItem

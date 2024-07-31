@@ -19,4 +19,14 @@ export type Regions = {
   region: Region[];
 };
 
-export type tableType = Tables<'Feeds'>;
+export type TableFeedType = Tables<'Feeds'>;
+
+export type TableFeedUserType = {
+  FeedLikes: {
+    feedId?: number;
+  }[];
+  Users: {
+    nickname: string;
+    profileImage?: string;
+  };
+} & TableFeedType;

@@ -3,14 +3,18 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import SearchFeedItem from './SearchFeedItem';
 import axios from 'axios';
-import { tableType } from '@/types/mainType';
+import { TableFeedType } from '@/types/mainType';
+import SkeletonSearchItem from '../Skeleton/SkeletonSearchItem';
 
 type searchProps = {
   searchValue: string;
 };
 
 function SearchFeed({ searchValue }: searchProps) {
-  const [searchFeedItems, setSearchFeedItems] = useState<tableType[]>([]);
+  const [searchFeedItems, setSearchFeedItems] = useState<TableFeedType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [sortedItems, setSortItems] = useState<TableFeedType[]>([]);
+  const [isSorted, setIsSorted] = useState<boolean>(true);
   useEffect(() => {
     searchFeedData();
   }, []);
@@ -20,19 +24,66 @@ function SearchFeed({ searchValue }: searchProps) {
         searchValue,
       },
     });
-    const Feeditems = res.data.data as tableType[];
-    console.log(Feeditems);
+    const Feeditems = res.data.data as TableFeedType[];
 
     setSearchFeedItems(Feeditems);
+    setIsLoading(false);
   };
+  const handleAttractionsClick = async () => {
+    const sortedRes = await axios.post('/api/supabase-sortedfeed', {
+      title: '여행',
+      searchValue,
+    });
+    const sortedarrs = sortedRes.data.data as TableFeedType[];
+    setSortItems(sortedarrs);
+    setIsSorted(false);
+  };
+  const handleCultureClick = async () => {
+    const sortedRes = await axios.post('/api/supabase-sortedfeed', {
+      title: '문화',
+      searchValue,
+    });
+    const sortedarrs = sortedRes.data.data as TableFeedType[];
+    setSortItems(sortedarrs);
+    setIsSorted(false);
+  };
+
+  const handleRestaurantClick = async () => {
+    const sortedRes = await axios.post('/api/supabase-sortedfeed', {
+      title: '맛집',
+      searchValue,
+    });
+    const sortedarrs = sortedRes.data.data as TableFeedType[];
+    setSortItems(sortedarrs);
+    setIsSorted(false);
+  };
+
+  const handleFestivalClick = async () => {
+    const sortedRes = await axios.post('/api/supabase-sortedfeed', {
+      title: '축제',
+      searchValue,
+    });
+    const sortedarrs = sortedRes.data.data as TableFeedType[];
+    setSortItems(sortedarrs);
+    setIsSorted(false);
+  };
+
   return (
     <>
       <div className="flex w-full border">
         <div className="grow">정렬</div>
-        <div className="grow">관광명소</div>
-        <div className="grow">문화시설</div>
-        <div className="grow">맛집</div>
-        <div className="grow">행사</div>
+        <div className="grow" onClick={handleAttractionsClick}>
+          관광명소
+        </div>
+        <div className="grow" onClick={handleCultureClick}>
+          문화시설
+        </div>
+        <div className="grow" onClick={handleRestaurantClick}>
+          맛집
+        </div>
+        <div className="grow" onClick={handleFestivalClick}>
+          행사
+        </div>
       </div>
       <div className="w-full px-5 py-5">
         <div className="w-full rounded-lg bg-[#FFF4F0] flex">
@@ -46,9 +97,17 @@ function SearchFeed({ searchValue }: searchProps) {
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">
-        {searchFeedItems.map((item) => (
-          <SearchFeedItem item={item} key={item.id} />
-        ))}
+        {isLoading
+          ? Array.from({ length: 10 }).map((_, index) => (
+              <SkeletonSearchItem key={index} />
+            ))
+          : isSorted
+          ? searchFeedItems.map((item) => (
+              <SearchFeedItem item={item} key={item.id} />
+            ))
+          : sortedItems.map((item) => (
+              <SearchFeedItem item={item} key={item.id} />
+            ))}
       </div>
     </>
   );

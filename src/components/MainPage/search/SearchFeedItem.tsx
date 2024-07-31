@@ -1,10 +1,10 @@
-import { tableType } from '@/types/mainType';
+import { TableFeedType } from '@/types/mainType';
 import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
 import React from 'react';
 
 type itemProps = {
-  item: tableType;
+  item: TableFeedType;
 };
 function searchFeedItem({ item }: itemProps) {
   let feedImage = '/No_Img.jpg';

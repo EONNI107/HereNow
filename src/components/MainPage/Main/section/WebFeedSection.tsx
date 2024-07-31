@@ -2,18 +2,21 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import WebFeedItem from './WebFeedItem';
-import { tableType } from '@/types/mainType';
+import { TableFeedUserType } from '@/types/mainType';
+import SkeletonFeedItem from '../../Skeleton/SkeletonFeedItem';
 
 function WebFeedSection() {
-  const [feedItems, setFeedItems] = useState<tableType[]>([]);
+  const [feedItems, setFeedItems] = useState<TableFeedUserType[] | null>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
-    FeedData();
+    feedUserDatas();
   }, []);
-  const FeedData = async () => {
-    const res = await axios.get('/api/supabase-feed');
-    const items = res.data.data as tableType[];
-    console.log(items);
+
+  const feedUserDatas = async () => {
+    const res = await axios.get('/api/supabase-feeduserdata');
+    const items = res.data.data as TableFeedUserType[];
     setFeedItems(items);
+    setIsLoading(false);
   };
 
   return (
@@ -23,9 +26,13 @@ function WebFeedSection() {
         <button>더보러가기</button>
       </div>
       <div className="grid gap-4 grid-cols-2 grid-rows-2 w-full h-full">
-        {feedItems.map((item) => (
-          <WebFeedItem feedItem={item} key={item.id} />
-        ))}
+        {isLoading
+          ? Array.from({ length: 4 }).map((_: unknown, index) => (
+              <SkeletonFeedItem key={index} />
+            ))
+          : feedItems?.map((item) => (
+              <WebFeedItem feedItem={item} key={item.id} />
+            ))}
       </div>
     </section>
   );

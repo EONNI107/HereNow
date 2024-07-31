@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { searchApi } from '../api/searchApi';
 import { SearchedType } from '@/app/search-page/page';
 import { useRouter } from 'next/navigation';
-import SkeletonItem from '../Skeleton/SkeletonItem';
+import SkeletonSearchItem from '../Skeleton/SkeletonSearchItem';
 type SearchItemProps = {
   searchData: SearchedType[];
   searchValue: string;
@@ -43,25 +43,26 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
     };
     datas();
   }, [searchValue]);
+
   const handleAttractionsClick = () => {
-    setIsShow(false);
     const firstdata = resDatas[0];
     setResData(firstdata);
+    setIsShow(false);
   };
   const handleCultureClick = () => {
-    setIsShow(false);
     const firstdata = resDatas[1];
     setResData(firstdata);
+    setIsShow(false);
   };
   const handleRestaurantClick = () => {
-    setIsShow(false);
     const firstdata = resDatas[2];
     setResData(firstdata);
+    setIsShow(false);
   };
   const handleFestivalClick = () => {
-    setIsShow(false);
     const firstdata = resDatas[3];
     setResData(firstdata);
+    setIsShow(false);
   };
 
   const handleClick = (contentid: string) => {
@@ -110,23 +111,26 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
         </div>
       </div>
       <div className="w-full flex flex-col gap-2">
-        {isShow ? (
-          isSkeleton ? (
-            Array.from({ length: 10 }).map((_, index) => (
-              <SkeletonItem key={index} />
-            ))
-          ) : (
-            <>
-              {searchData?.map((item) => (
-                <div key={item.contentid} className="w-full flex gap-3">
+        {isSkeleton ? (
+          Array.from({ length: 10 }).map((_, index) => (
+            <SkeletonSearchItem key={index} />
+          ))
+        ) : isShow ? (
+          <>
+            {' '}
+            {searchData?.map((item) => (
+              <div key={item.contentid} className="w-full flex gap-3">
+                <div className="w-[100px] h-[100px] relative">
                   <Image
                     src={item.firstimage}
                     alt="이미지"
-                    width={100}
-                    height={100}
+                    fill
+                    className="rounded-lg border"
                   />
-                  <p className="">{item.title}</p>
-                  <div className="">
+                </div>
+                <div className="flex justify-between w-[300px] items-center px-4">
+                  <p>{item.title}</p>
+                  <div>
                     <Image
                       src="/heart.png"
                       alt="좋아요"
@@ -135,15 +139,12 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
                     />
                   </div>
                 </div>
-              ))}
-            </>
-          )
-        ) : isSkeleton ? (
-          Array.from({ length: 10 }).map((_, index) => (
-            <SkeletonItem key={index} />
-          ))
+              </div>
+            ))}
+          </>
         ) : (
           <>
+            {' '}
             {resData?.map((i) => (
               <div
                 key={i.contentid}
