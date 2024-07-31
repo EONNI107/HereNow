@@ -5,23 +5,18 @@ import { showToast } from '@/utils/toastHelper';
 import { ChangeEvent, useEffect, useState } from 'react';
 import PenIcon from '@/components/IconList/PenIcon';
 import Image from 'next/image';
-import { Tables } from '@/types/supabase';
+import { Tables, TablesInsert } from '@/types/supabase';
 import FeedsList from '@/components/FeedsList/FeedsList';
 import FeedLikes from '@/components/FeedLikesList/FeedLikesList';
 import PlaceLikes from '@/components/PlaceLikes/PlaceLikes';
 
+type EditProfile = Pick<TablesInsert<'Users'>, 'nickname' | 'profileImage'>;
+
 function MyPage() {
   const supabase = createClient();
-  const [profile, setProfile] = useState({
-    nickname: '',
-    email: '',
-    profileImage: '',
-  });
+  const [profile, setProfile] = useState<Tables<'Users'>>();
   const [isEditing, setIsEditing] = useState(false);
-  const [editProfile, setEditProfile] = useState({
-    nickname: '',
-    profileImage: '',
-  });
+  const [editProfile, setEditProfile] = useState<EditProfile>();
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [feedsList, setFeedsList] = useState<Tables<'Feeds'>[]>([]);
@@ -37,7 +32,7 @@ function MyPage() {
   const fetchUserProfile = async (userId: string) => {
     const { data, error } = await supabase
       .from('Users')
-      .select('nickname, email, profileImage')
+      .select('*')
       .eq('id', userId)
       .single();
 
@@ -88,7 +83,6 @@ function MyPage() {
     const fetchPosts = async () => {
       setLoading(true);
       const user = await fetchUserData();
-
       if (user) {
         try {
           let data;
@@ -97,18 +91,21 @@ function MyPage() {
               .from('Feeds')
               .select('*')
               .eq('userId', user.id));
+            if (!data) return;
             setFeedsList(data);
           } else if (selectedTab === 'feedLikes') {
             ({ data } = await supabase
               .from('FeedLikes')
               .select('*')
               .eq('userId', user.id));
+            if (!data) return;
             setFeedLikes(data);
           } else if (selectedTab === 'placeLikes') {
             ({ data } = await supabase
               .from('PlaceLikes')
               .select('*')
               .eq('userId', user.id));
+            if (!data) return;
             setPlaceLikes(data);
           }
         } catch (error) {
@@ -158,7 +155,7 @@ function MyPage() {
   const handleUpdate = async () => {
     const user = await fetchUserData();
     if (user) {
-      let imagePath = profile.profileImage;
+      let imagePath = profile?.profileImage;
 
       if (newImageFile) {
         const path = await uploadImage(newImageFile);
@@ -170,7 +167,7 @@ function MyPage() {
       const { error } = await supabase
         .from('Users')
         .update({
-          nickname: editProfile.nickname,
+          nickname: editProfile?.nickname,
           profileImage: imagePath,
         })
         .eq('id', user.id);
@@ -179,17 +176,19 @@ function MyPage() {
         showToast('error', `프로필 파일 업로드중 오류가 발생했습니다`);
         console.log(error.message);
       } else {
-        setProfile((prev) => ({
-          ...prev,
-          nickname: editProfile.nickname,
-          profileImage: imagePath,
-        }));
+        setProfile((prev) => {
+          return {
+            ...prev,
+            nickname: editProfile?.nickname,
+            profileImage: imagePath,
+          } as Tables<'Users'>;
+        });
         setIsEditing(false);
         showToast('success', '프로필 수정이 완료되었습니다.');
       }
     }
   };
-
+  if (!profile) return null;
   return (
     <div className="pt-10 flex flex-col h-svh">
       <div
@@ -246,7 +245,7 @@ function MyPage() {
               <div className="mb-5">
                 <input
                   type="text"
-                  value={editProfile.nickname}
+                  value={editProfile?.nickname}
                   onChange={(e) =>
                     setEditProfile({
                       ...editProfile,
@@ -327,9 +326,7 @@ function MyPage() {
           <p>Loading...</p>
         ) : (
           <div>
-            <div>
-              {selectedTab === 'feedsList' && <FeedsList posts={feedsList} />}
-            </div>
+            <div>{selectedTab === 'feedsList' && <FeedsList />}</div>
             <div>{selectedTab === 'feedLikes' && <FeedLikes />}</div>
             <div>{selectedTab === 'placeLikes' && <PlaceLikes />}</div>
           </div>
