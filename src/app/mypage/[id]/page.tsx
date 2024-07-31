@@ -5,6 +5,7 @@ import { showToast } from '@/utils/toastHelper';
 import { ChangeEvent, useEffect, useState } from 'react';
 import PostIcon from '@/components/IconList/PostIcon';
 import PenIcon from '@/components/IconList/PenIcon';
+import Image from 'next/image';
 
 function MyPage() {
   const supabase = createClient();
@@ -20,7 +21,7 @@ function MyPage() {
   });
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<[] | null>([]);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isWritingPostsSelected, setIsWritingPostsSelected] = useState(true);
@@ -32,7 +33,8 @@ function MyPage() {
         error,
       } = await supabase.auth.getUser();
       if (error) {
-        showToast('error', `에러: ${error.message}`);
+        showToast('error', `유저 불러오기 에러`);
+        console.log(error.message);
       } else if (user) {
         setIsAuthenticated(true);
         const { data, error: profileError } = await supabase
@@ -42,7 +44,8 @@ function MyPage() {
           .single();
 
         if (profileError) {
-          showToast('error', `프로 파일 에러: ${profileError.message}`);
+          showToast('error', `프로 파일 에러`);
+          console.log(profileError.message);
         } else {
           setProfile(data);
           setEditProfile({
@@ -66,7 +69,8 @@ function MyPage() {
         error,
       } = await supabase.auth.getUser();
       if (error) {
-        showToast('error', `슈퍼베이스 에러: ${error.message}`);
+        showToast('error', `슈퍼베이스 에러`);
+        console.log(error.message);
       } else if (user) {
         const { data, error: postsError } = await supabase
           .from(isWritingPostsSelected ? 'Posts' : 'Favorites')
@@ -74,7 +78,8 @@ function MyPage() {
           .eq('userId', user.id);
 
         if (postsError) {
-          showToast('error', `게시물 에러: ${postsError.message}`);
+          showToast('error', `작성,찜한 글 에러`);
+          console.log(postsError.message);
         } else {
           setPosts(data);
         }
@@ -102,7 +107,8 @@ function MyPage() {
       .upload(`avatar_${Date.now()}.png`, file);
 
     if (error) {
-      showToast('error', `이미지 업로드 에러: ${error.message}`);
+      showToast('error', `이미지 업로드 에러`);
+      console.log(error.message);
       return null;
     }
 
@@ -115,7 +121,8 @@ function MyPage() {
       error,
     } = await supabase.auth.getUser();
     if (error) {
-      showToast('error', `프로파일 업로드 에러: ${error.message}`);
+      showToast('error', `프로파일 업로드 에러`);
+      console.log(error.message);
     } else if (user) {
       let imagePath = profile.profileImage;
 
@@ -135,7 +142,8 @@ function MyPage() {
         .eq('id', user.id);
 
       if (updateError) {
-        showToast('error', `프로필 파일 업로드 에러: ${updateError.message}`);
+        showToast('error', `프로필 파일 업로드 에러`);
+        console.log(updateError.message);
       } else {
         setProfile((prev) => ({
           ...prev,
@@ -156,7 +164,7 @@ function MyPage() {
         }`}
       >
         <div className="relative flex items-center w-full justify-between p-5  ">
-          <img
+          <Image
             src={
               imagePreview ||
               profile.profileImage ||
@@ -164,6 +172,8 @@ function MyPage() {
             }
             className="h-16 w-16 rounded-full"
             alt="Profile"
+            width={64}
+            height={64}
           />
           {!isAuthenticated && (
             <a href="/sign-in">
