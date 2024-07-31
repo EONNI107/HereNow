@@ -24,97 +24,100 @@ function MyPage() {
   });
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [posts, setPosts] = useState<Tables<'Feeds'>[]>([]);
+  const [feedsList, setFeedsList] = useState<Tables<'Feeds'>[]>([]);
+  const [feedLikes, setFeedLikes] = useState<Tables<'FeedLikes'>[]>([]);
+  const [placeLikes, setPlaceLikes] = useState<Tables<'PlaceLikes'>[]>([]);
 
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedTab, setSelectedTab] = useState<
-    'posts' | 'favorites' | 'places'
-  >('posts');
+    'feedsList' | 'feedLikes' | 'placeLikes'
+  >('feedsList');
+
+  const fetchUserProfile = async (userId: string) => {
+    const { data, error } = await supabase
+      .from('Users')
+      .select('nickname, email, profileImage')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      showToast('error', `프로필 정보 불러오는 중에 오류가 발생했습니다`);
+      console.log(error.message);
+      return null;
+    }
+    return data;
+  };
+
+  const fetchUserData = async () => {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error) {
+      showToast('error', '유저 정보를 불러오는 중에 오류가 발생했습니다');
+      console.log(error.message);
+      return null;
+    }
+    return user;
+  };
+
+  const fetchProfile = async () => {
+    const user = await fetchUserData();
+    if (user) {
+      setIsAuthenticated(true);
+      const profileData = await fetchUserProfile(user.id);
+      if (profileData) {
+        setProfile(profileData);
+        setEditProfile({
+          nickname: profileData.nickname,
+          profileImage: profileData.profileImage,
+        });
+      }
+    } else {
+      setIsAuthenticated(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
-      if (error) {
-        showToast('error', `유저 불러오기 에러`);
-        console.log(error.message);
-      } else if (user) {
-        setIsAuthenticated(true);
-        const { data, error: profileError } = await supabase
-          .from('Users')
-          .select('nickname, email, profileImage')
-          .eq('id', user.id)
-          .single();
-
-        if (profileError) {
-          showToast('error', `프로필 에러`);
-          console.log(profileError.message);
-        } else {
-          setProfile(data);
-          setEditProfile({
-            nickname: data.nickname,
-            profileImage: data.profileImage,
-          });
-        }
-      } else {
-        setIsAuthenticated(false);
-      }
-    };
-
     fetchProfile();
   }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
+      const user = await fetchUserData();
 
-      if (error) {
-        showToast('error', '슈퍼베이스 에러');
-        console.log(error.message);
-      } else if (user) {
+      if (user) {
         try {
-          if (selectedTab === 'posts') {
-            const { data, error: postsError } = await supabase
+          let data;
+          if (selectedTab === 'feedsList') {
+            ({ data } = await supabase
               .from('Feeds')
               .select('*')
-              .eq('userId', user.id);
-
-            if (postsError) throw postsError;
-
-            setPosts(data);
-          } else if (selectedTab === 'favorites') {
-            const { data, error: favoritesError } = await supabase
+              .eq('userId', user.id));
+            setFeedsList(data);
+          } else if (selectedTab === 'feedLikes') {
+            ({ data } = await supabase
               .from('FeedLikes')
               .select('*')
-              .eq('userId', user.id);
-
-            if (favoritesError) throw favoritesError;
-
-            setPosts(data);
-          } else if (selectedTab === 'places') {
-            const { data, error: placesError } = await supabase
+              .eq('userId', user.id));
+            setFeedLikes(data);
+          } else if (selectedTab === 'placeLikes') {
+            ({ data } = await supabase
               .from('PlaceLikes')
               .select('*')
-              .eq('userId', user.id);
-
-            if (placesError) throw placesError;
-
-            setPosts(data);
+              .eq('userId', user.id));
+            setPlaceLikes(data);
           }
-        } catch (fetchError) {
+        } catch (error) {
           showToast(
             'error',
             `${
-              selectedTab === 'posts'
+              selectedTab === 'feedsList'
                 ? '작성한 글'
-                : selectedTab === 'favorites'
+                : selectedTab === 'feedLikes'
                 ? '찜한 글'
                 : '찜한 장소'
             } 불러오기 에러`,
@@ -144,7 +147,7 @@ function MyPage() {
       .upload(`avatar_${Date.now()}.png`, file);
 
     if (error) {
-      showToast('error', `이미지 업로드 에러`);
+      showToast('error', `이미지 업로드 중 오류가 발생했습니다`);
       console.log(error.message);
       return null;
     }
@@ -153,14 +156,8 @@ function MyPage() {
   };
 
   const handleUpdate = async () => {
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
-    if (error) {
-      showToast('error', `프로필 업로드 에러`);
-      console.log(error.message);
-    } else if (user) {
+    const user = await fetchUserData();
+    if (user) {
       let imagePath = profile.profileImage;
 
       if (newImageFile) {
@@ -170,7 +167,7 @@ function MyPage() {
         }
       }
 
-      const { error: updateError } = await supabase
+      const { error } = await supabase
         .from('Users')
         .update({
           nickname: editProfile.nickname,
@@ -178,9 +175,9 @@ function MyPage() {
         })
         .eq('id', user.id);
 
-      if (updateError) {
-        showToast('error', `프로필 파일 업로드 에러`);
-        console.log(updateError.message);
+      if (error) {
+        showToast('error', `프로필 파일 업로드중 오류가 발생했습니다`);
+        console.log(error.message);
       } else {
         setProfile((prev) => ({
           ...prev,
@@ -295,31 +292,31 @@ function MyPage() {
       <div className="flex justify-center w-full mt-6">
         <button
           className={`p-2 flex-1 ${
-            selectedTab === 'posts'
+            selectedTab === 'feedsList'
               ? 'bg-white text-black border-b-4 border-[#118DFF]'
               : 'text-gray-400 border-b-4 border-b-white'
           }`}
-          onClick={() => setSelectedTab('posts')}
+          onClick={() => setSelectedTab('feedsList')}
         >
           작성한 글
         </button>
         <button
           className={`p-2 flex-1 ${
-            selectedTab === 'favorites'
+            selectedTab === 'feedLikes'
               ? 'bg-white text-black border-b-4 border-[#118DFF]'
               : 'text-gray-400 border-b-4 border-b-white'
           }`}
-          onClick={() => setSelectedTab('favorites')}
+          onClick={() => setSelectedTab('feedLikes')}
         >
           찜한 글
         </button>
         <button
           className={`p-2 flex-1 ${
-            selectedTab === 'places'
+            selectedTab === 'placeLikes'
               ? 'bg-white text-black border-b-4 border-[#118DFF]'
               : 'text-gray-400 border-b-4 border-b-white'
           }`}
-          onClick={() => setSelectedTab('places')}
+          onClick={() => setSelectedTab('placeLikes')}
         >
           찜한 장소
         </button>
@@ -330,9 +327,11 @@ function MyPage() {
           <p>Loading...</p>
         ) : (
           <div>
-            <div>{selectedTab === 'posts' && <FeedsList posts={posts} />}</div>
-            <div>{selectedTab === 'favorites' && <FeedLikes />}</div>
-            <div>{selectedTab === 'places' && <PlaceLikes />}</div>
+            <div>
+              {selectedTab === 'feedsList' && <FeedsList posts={feedsList} />}
+            </div>
+            <div>{selectedTab === 'feedLikes' && <FeedLikes />}</div>
+            <div>{selectedTab === 'placeLikes' && <PlaceLikes />}</div>
           </div>
         )}
       </div>
