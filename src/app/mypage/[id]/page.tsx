@@ -6,6 +6,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import PostIcon from '@/components/IconList/PostIcon';
 import PenIcon from '@/components/IconList/PenIcon';
 import Image from 'next/image';
+import { Tables } from '@/types/supabase';
 
 function MyPage() {
   const supabase = createClient();
@@ -21,7 +22,7 @@ function MyPage() {
   });
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [posts, setPosts] = useState<[] | null>([]);
+  const [posts, setPosts] = useState<Tables<'Feeds'>[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isWritingPostsSelected, setIsWritingPostsSelected] = useState(true);
