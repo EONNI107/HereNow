@@ -9,6 +9,8 @@ export type Item = {
   contentid: string;
   contenttypeid: string;
   cpyrhtDivCd: string;
+  eventstartdate?: string;
+  eventenddate?: string;
   createdtime: string;
   firstimage: string;
   firstimage2: string;
@@ -19,5 +21,5 @@ export type Item = {
   sigungucode: string;
   tel: string;
   title: string;
-  zipcode: string;
+  zipcode?: string;
 };
