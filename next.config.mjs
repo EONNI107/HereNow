@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['plus.unsplash.com'],
     remotePatterns: [
       {
         protocol: 'http',
         hostname: 'tong.visitkorea.or.kr',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cuxcqeqwbwfuxipnozwy.supabase.co',
       },
     ],
   },

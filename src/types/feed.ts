@@ -7,4 +7,12 @@ export type Feed = {
   sigungu: string | null;
   title: string;
   userId: string;
+  Users: Users;
+  FeedLikes: { id: number }[];
+  FeedComments: { id: number }[];
+};
+
+export type Users = {
+  nickname: string;
+  profileImage: string | null;
 };
