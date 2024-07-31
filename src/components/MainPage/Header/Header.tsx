@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import React from 'react';
 
-type PropsData = {
+type DataProps = {
   title: string;
   content: string;
 };
-function Header({ title, content }: PropsData) {
+function Header({ title, content }: DataProps) {
   return (
     <div className="h-[200px] w-full bg-[#888] flex flex-col items-center relative">
       <Image src="/backgroundimage.png" alt="배경이미지" fill />

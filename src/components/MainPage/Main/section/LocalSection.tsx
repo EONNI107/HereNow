@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import LocalItem from './LocalItem';
 import { tourApi } from '@/app/api/tourApi';
 import SkeletonItem from '../../Skeleton/SkeletonItem';
-import { ItemType } from '@/types/mainType';
+import { NearbyPlace } from '@/types/local-details';
 
 type PositionType = {
   coords: {
@@ -20,7 +20,7 @@ type GeolocationError = {
 
 function LocalSection() {
   const router = useRouter();
-  const [localitems, setLocalitems] = useState<ItemType[]>([]);
+  const [localitems, setLocalitems] = useState<NearbyPlace[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
 
@@ -30,7 +30,7 @@ function LocalSection() {
         `/locationBasedList1?MobileOS=ETC&numOfRows=2&MobileApp=new&_type=JSON&mapX=${longitude}&mapY=${latitude}&radius=20000&contentTypeId=12&serviceKey=${serviceKey}`,
       );
 
-      const items: ItemType[] = res.data.response.body.items.item;
+      const items: NearbyPlace[] = res.data.response.body.items.item;
       setLocalitems(items);
       setLoading(false);
     } catch (error) {
@@ -80,7 +80,7 @@ function LocalSection() {
             ? Array.from({ length: 2 }).map((_, index) => (
                 <SkeletonItem key={index} />
               ))
-            : localitems.map((item: ItemType) => (
+            : localitems.map((item: NearbyPlace) => (
                 <LocalItem
                   key={item.contentid}
                   item={item}

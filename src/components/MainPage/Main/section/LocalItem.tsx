@@ -1,13 +1,13 @@
-import { ItemType } from '@/types/mainType';
+import { NearbyPlace } from '@/types/local-details';
 import Image from 'next/image';
 import React from 'react';
 
-type ItemTypeProps = {
-  item: ItemType;
+type NearbyTypePlace = {
+  item: NearbyPlace;
   key: string;
   onclick: () => void;
 };
-function LocalItem({ item, key, onclick }: ItemTypeProps) {
+function LocalItem({ item, key, onclick }: NearbyTypePlace) {
   return (
     <li onClick={onclick} className="relative w-full h-[100px] mb-5" key={key}>
       <Image

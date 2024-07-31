@@ -3,11 +3,11 @@
 import { searchApi } from '@/components/MainPage/api/searchApi';
 import SearchFeed from '@/components/MainPage/search/SearchFeed';
 import SearchItem from '@/components/MainPage/search/SearchItem';
-import { ItemType } from '@/types/mainType';
+import { NearbyPlace } from '@/types/local-details';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-export type SearchedType = Omit<ItemType, 'dist'>;
+export type SearchedType = Omit<NearbyPlace, 'dist'>;
 
 function SeachDetailPage() {
   const [searchData, setSearchData] = useState<SearchedType[]>([]);

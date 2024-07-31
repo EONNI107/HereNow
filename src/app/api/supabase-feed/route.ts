@@ -6,7 +6,6 @@ export async function GET(request: Request) {
 
   try {
     const response = await supabase.from('Feeds').select('*');
-
     return NextResponse.json(response);
   } catch (error) {
     console.error(error);
