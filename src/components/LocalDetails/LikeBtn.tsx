@@ -4,10 +4,17 @@ import { ShareIcon } from '@heroicons/react/24/outline';
 import { showToast } from '@/utils/toastHelper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import LoginPrompt from '../LoginPrompt';
 
-function LikeBtn({ userId, placeId }: { userId: string; placeId: string }) {
+function LikeBtn({ placeId }: { placeId: string }) {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
+  const userId = undefined;
+  // '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
+  // const userID = user.userId
 
   useEffect(() => {
     const fetchLikeStatus = async () => {
@@ -60,13 +67,32 @@ function LikeBtn({ userId, placeId }: { userId: string; placeId: string }) {
     },
   });
 
+  const redirectToLogin = () => {
+    router.push('/log-in');
+  };
   const handleLike = () => {
+    if (!userId) {
+      toast(
+        <LoginPrompt
+          closeToast={toast.dismiss}
+          redirectToLogin={redirectToLogin}
+        />,
+        {
+          position: 'top-center',
+          autoClose: false,
+          closeOnClick: false,
+          closeButton: false,
+        },
+      );
+      return;
+    }
     if (liked) {
       unlikeMutate();
     } else {
       likeMutate();
     }
   };
+
   const handleShareBtn = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -79,6 +105,9 @@ function LikeBtn({ userId, placeId }: { userId: string; placeId: string }) {
 
   return (
     <div className="items-center flex gap-2 mb-4">
+      {/* login prompt when clicked without login.
+      when logged in, send the user's id together  */}
+
       <button onClick={handleLike} className="focus:outline-none">
         <HeartIcon
           className={`w-6 h-6 ${liked ? 'text-red-500' : 'text-gray-400'}`}
