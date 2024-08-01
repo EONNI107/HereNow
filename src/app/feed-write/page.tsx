@@ -17,34 +17,16 @@ function FeedWrite() {
   const router = useRouter();
   const supabase = createClient();
 
-  // useEffect(() => {
-  //   // 주석 처리: 실제 사용자 인증 체크
-  //   // const checkUser = async () => {
-  //   //   const { data, error } = await supabase.auth.getUser();
-  //   //   if (error || !data.user) {
-  //   //     router.replace('/login');
-  //   //   }
-  //   // };
-  //   // checkUser();
-  // }, [router, supabase]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 주석 처리: 실제 사용자 인증 체크
-    // const { data: userData, error: userError } = await supabase.auth.getUser();
 
-    // if (userError || !userData.user) {
-    //   alert('You need to be logged in to create a post');
-    //   return;
-    // }
-
-    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa'; // 임시 사용자 ID
+    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
 
     let imageUrls: string[] = [];
     for (const image of images) {
       const fileName = `${Date.now()}_${image.name
         .replace(/[^a-z0-9]/gi, '_')
-        .toLowerCase()}`; // 고유한 파일 이름 생성
+        .toLowerCase()}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('FeedImage')
         .upload(fileName, image);
