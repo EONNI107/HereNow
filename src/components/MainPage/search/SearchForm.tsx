@@ -56,7 +56,7 @@ function SearchForm({ setIsbg }: SetIsBgProps) {
           onChange={handleInputChange}
           placeholder="검색어를 입력하세요"
         />
-        <button className="ml-1 border px-[7px] py-[1px] rounded-lg ">
+        <button className="ml-1 border-[2px] px-[10px] py-[1px] rounded-lg hover:border-[#118DFF] hover:bg-[#DBEEFF] hover:text-[#111111]">
           검색
         </button>
       </form>
