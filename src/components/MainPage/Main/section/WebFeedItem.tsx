@@ -6,7 +6,7 @@ import React from 'react';
 
 type feedTypeProps = {
   feedItem: TableFeedUserType;
-  key: number;
+  key?: number;
 };
 const WebFeedItem = ({ feedItem, key }: feedTypeProps) => {
   let feedImage = '/No_Img.jpg';
@@ -21,29 +21,29 @@ const WebFeedItem = ({ feedItem, key }: feedTypeProps) => {
   }
   return (
     <>
-      <div key={key} className="w-full h-[170px] flex flex-col items-center">
+      <div key={key} className="flex flex-col items-center">
         <div className="w-[150px] h-[150px] relative">
           <Image
             src={feedImage}
             alt="피드이미지"
-            fill
-            objectFit="cover"
-            objectPosition="center"
-            className="border rounded-2xl"
+            width={150}
+            height={150}
+            className="border rounded-2xl object-cover w-full h-full"
           />
-          <div className="absolute bottom-3 left-3 felx flex-col text-[#fff] z-1 w-[170px]">
+          <div className="absolute bottom-3 left-3 felx flex-col text-[#fff] z-1">
             <p className="line-clamp-1 text-sm">{feedItem.region}</p>
             <p className="line-clamp-1">{feedItem.title}</p>
           </div>
         </div>
 
-        <div className="w-full flex mt-2 ml-8">
+        <div className="w-full flex mt-2 ml-8 gap-1">
           <div className="w-[25px] h-[25px] relative">
             <Image
-              src={`/${feedItem.Users.profileImage}`}
+              src={feedItem.Users.profileImage || feedImage}
               alt="프로필이미지"
-              fill
-              className="rounded-full"
+              width={25}
+              height={25}
+              className="rounded-full object-cover w-full h-full"
             />
           </div>
           <div>

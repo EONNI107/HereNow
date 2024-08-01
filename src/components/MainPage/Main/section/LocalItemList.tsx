@@ -20,12 +20,13 @@ function LocalItemList() {
             className="flex flex-col mx-2"
             onClick={() => handleClick(i.ename)}
           >
-            <div className="relative h-[68px] w-[68px] rounded-full border">
+            <div className="h-[68px] w-[68px] rounded-full border">
               <Image
                 src={i.image}
                 alt="이미지"
-                layout="fill"
-                className="rounded-full object-cover"
+                width={68}
+                height={68}
+                className="rounded-full object-cover w-full h-full"
               />
             </div>
             <div className="text-center mt-2">{i.name}</div>
