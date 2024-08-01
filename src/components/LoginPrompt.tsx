@@ -1,16 +1,16 @@
-// src/components/LoginPromptToast.tsx
+import { useRouter } from 'next/navigation';
 import React from 'react';
+import { toast } from 'react-toastify';
 
-const LoginPrompt = ({
-  closeToast,
-  redirectToLogin,
-}: {
-  closeToast: () => void;
-  redirectToLogin: () => void;
-}) => {
+const LoginPrompt = () => {
+  const router = useRouter();
+
+  const closeToast = () => toast.dismiss();
   const handleConfirm = () => {
     closeToast();
-    redirectToLogin();
+    setTimeout(() => {
+      router.push('/sign-in');
+    }, 300);
   };
 
   return (

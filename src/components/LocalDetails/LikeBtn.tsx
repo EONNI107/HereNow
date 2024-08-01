@@ -15,7 +15,6 @@ type LikeBtnProps = {
 };
 
 function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
-  const router = useRouter();
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
@@ -75,26 +74,14 @@ function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
     },
   });
 
-  const redirectToLogin = () => {
-    setTimeout(() => {
-      router.push('/sign-in');
-    }, 300);
-  };
-
   const handleLike = () => {
     if (!userId) {
-      toast(
-        <LoginPrompt
-          closeToast={toast.dismiss}
-          redirectToLogin={redirectToLogin}
-        />,
-        {
-          position: 'top-center',
-          autoClose: false,
-          closeOnClick: false,
-          closeButton: false,
-        },
-      );
+      toast(<LoginPrompt />, {
+        position: 'top-center',
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      });
       return;
     }
     if (liked) {
