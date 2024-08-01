@@ -16,7 +16,7 @@ function ContentTypeFilter(props: ContentTypeFilterProps): React.ReactElement {
   const { selectedContentType, onContentTypeChange } = props;
 
   return (
-    <div className="font-pretendard font-semibold text-sm border-solid flex justify-center overflow-x-auto whitespace-nowrap mb-4 px-4">
+    <div className="font-semibold text-sm border-solid flex justify-center overflow-x-auto whitespace-nowrap mb-4 px-4">
       {contentTypes.map((type) => (
         <button
           key={type.id}

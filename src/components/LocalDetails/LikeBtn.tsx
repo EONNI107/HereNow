@@ -4,12 +4,24 @@ import { ShareIcon } from '@heroicons/react/24/outline';
 import { showToast } from '@/utils/toastHelper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import LoginPrompt from '../LoginPrompt';
+import useAuthStore from '@/zustand/useAuthStore';
 
-function LikeBtn({ userId, placeId }: { userId: string; placeId: string }) {
+type LikeBtnProps = {
+  placeId: string;
+  imageUrl: string;
+};
+
+function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
+  const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
+  const userId = user?.id;
 
   useEffect(() => {
+    if (!userId) return;
     const fetchLikeStatus = async () => {
       try {
         const response = await axios.get<boolean>(
@@ -25,7 +37,7 @@ function LikeBtn({ userId, placeId }: { userId: string; placeId: string }) {
 
   const { mutate: likeMutate } = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/like-place', { userId, placeId });
+      await axios.post('/api/like-place', { userId, placeId, imageUrl });
     },
     onMutate: async () => {
       setLiked(true);
@@ -36,14 +48,16 @@ function LikeBtn({ userId, placeId }: { userId: string; placeId: string }) {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ['like-place', userId, placeId],
+        queryKey: ['like-place', userId, placeId, imageUrl],
       });
     },
   });
 
   const { mutate: unlikeMutate } = useMutation({
     mutationFn: async () => {
-      await axios.delete('/api/like-place', { data: { userId, placeId } });
+      await axios.delete('/api/like-place', {
+        data: { userId, placeId, imageUrl },
+      });
     },
     onMutate: async () => {
       setLiked(false);
@@ -55,18 +69,28 @@ function LikeBtn({ userId, placeId }: { userId: string; placeId: string }) {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ['like-place', userId, placeId],
+        queryKey: ['like-place', userId, placeId, imageUrl],
       });
     },
   });
 
   const handleLike = () => {
+    if (!userId) {
+      toast(<LoginPrompt />, {
+        position: 'top-center',
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      });
+      return;
+    }
     if (liked) {
       unlikeMutate();
     } else {
       likeMutate();
     }
   };
+
   const handleShareBtn = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
