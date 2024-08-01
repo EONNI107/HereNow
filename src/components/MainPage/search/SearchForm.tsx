@@ -47,24 +47,30 @@ function SearchForm({ setIsbg }: SetIsBgProps) {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center pt-2 mx-auto">
       <form onSubmit={handleClick}>
         <input
-          className="border"
+          className="border bg-[#ECEDEF] rounded-lg px-1 py-1 h-[25px]"
           type="text"
           value={inputValue}
           onChange={handleInputChange}
+          placeholder="검색어를 입력하세요"
         />
         <button className="border">검색</button>
       </form>
-      <p>최근검색어</p>
+      <p className="my-2">최근검색어</p>
       {originalData.map((item, index) => {
         if (item === '') {
           return null;
         }
         return (
-          <div key={index} className="flex ">
-            <li onClick={handleMoveClick}>{item}</li>
+          <div
+            key={index}
+            className="flex border-[2px] rounded-2xl px-3 py-1 mb-1 gap-2 hover:border-[#118DFF] hover:bg-[#DBEEFF] hover:text-[#111111]"
+          >
+            <li className="list-none cursor-pointer " onClick={handleMoveClick}>
+              {item}
+            </li>
             <button onClick={() => handleClose(item)}>x</button>
           </div>
         );
