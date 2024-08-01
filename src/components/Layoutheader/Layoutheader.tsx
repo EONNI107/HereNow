@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SearchForm from '../MainPage/search/SearchForm';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 
 function LayoutHeader() {
   const [isBackground, setIsBackground] = useState<boolean>(false);
@@ -22,23 +23,18 @@ function LayoutHeader() {
     router.refresh();
   };
   return (
-    <header className="fixed z-10 right-0 max-w-[400px] w-full left-0 mx-auto">
+    <header className="bg-white fixed z-10 right-0 max-w-[400px] w-full left-0 mx-auto">
       {isBackground ? (
-        <div className="flex justify-center items-center bg-[#fff]">
+        <div className="flex justify-center items-center bg-white">
           <SearchForm setIsbg={setIsBackground} />
           <button className="" onClick={() => setIsBackground(!isBackground)}>
             x
           </button>
         </div>
       ) : (
-        <div className="w-full flex justify-between items-center h-[40px]">
+        <div className="w-full flex justify-between items-center h-[50px]">
           <button onClick={handleBack}>
-            <Image
-              src="/chevron-left.png"
-              alt="뒤로가기"
-              width={30}
-              height={30}
-            />
+            <ChevronLeftIcon />
           </button>
 
           {searchParams ? (

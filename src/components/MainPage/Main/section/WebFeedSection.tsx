@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import WebFeedItem from './WebFeedItem';
-import { TableFeedUserType } from '@/types/mainType';
+import { TableFeedUserType } from '@/types/mainTypes';
 import SkeletonFeedItem from '../../Skeleton/SkeletonFeedItem';
 
 function WebFeedSection() {

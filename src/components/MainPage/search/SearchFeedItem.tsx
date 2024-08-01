@@ -1,4 +1,4 @@
-import { TableFeedType } from '@/types/mainType';
+import { TableFeedType } from '@/types/mainTypes';
 import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
 import React from 'react';

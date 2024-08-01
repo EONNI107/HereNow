@@ -1,4 +1,5 @@
 import type { NearbyPlace } from '@/types/localDetails';
+import useAuthStore from '@/zustand/useAuthStore';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -9,6 +10,8 @@ type NearbyPlacesProps = {
 
 function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
   const defaultImage = '/No_Img.jpg';
+  const { user } = useAuthStore();
+  console.log(user);
 
   return (
     <div>

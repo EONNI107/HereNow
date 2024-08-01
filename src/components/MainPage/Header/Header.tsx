@@ -7,7 +7,7 @@ type DataProps = {
 };
 function Header({ title, content }: DataProps) {
   return (
-    <div className="h-[200px] w-full bg-[#888] flex flex-col items-center relative">
+    <div className="h-[200px] w-full bg-[#888] flex flex-col mt-4 items-center relative">
       <Image src="/backgroundimage.png" alt="배경이미지" fill />
       <div className="text-white absolute bottom-10 left-8">
         <h2>{title}</h2>
