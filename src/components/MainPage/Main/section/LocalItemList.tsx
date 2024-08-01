@@ -1,5 +1,5 @@
 'use client';
-import { Regions } from '@/types/maintype';
+import { Regions } from '@/types/mainType';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 function LocalItemList() {
