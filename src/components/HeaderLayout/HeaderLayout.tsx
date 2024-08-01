@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SearchForm from '../MainPage/search/SearchForm';
 import {
@@ -9,7 +8,7 @@ import {
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
 
-function LayoutHeader() {
+function HeaderLayout() {
   const [isBackground, setIsBackground] = useState<boolean>(false);
   const router = useRouter();
   const pathname = usePathname();
@@ -43,9 +42,7 @@ function LayoutHeader() {
           {searchParams ? (
             <p>{searchParams}</p>
           ) : (
-            <p className="font-['양진체'] text-[#118DFF] pb-1 text-xl">
-              여기,어때
-            </p>
+            <p className="font-['양진체'] text-[#118DFF] text-xl">지금,여기</p>
           )}
 
           <button onClick={handleShow}>
@@ -56,4 +53,4 @@ function LayoutHeader() {
     </header>
   );
 }
-export default LayoutHeader;
+export default HeaderLayout;
