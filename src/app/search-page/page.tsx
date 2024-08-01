@@ -35,7 +35,7 @@ function SeachDetailPage() {
 
   return (
     <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto">
-      <div className="flex w-full">
+      <div className="flex w-full font-semibold text-lg">
         <div
           onClick={handleFeedClick}
           className={`cursor-pointer py-1 flex justify-center w-full ${

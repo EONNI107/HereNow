@@ -15,6 +15,13 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const [resDatas, setResDatas] = useState<SearchedType[][]>([]);
   const [isShow, setIsShow] = useState<boolean>(true);
   const [isSkeleton, setIsSkeleton] = useState<boolean>(true);
+  const [clickClass, setClickClass] = useState<{
+    title: string;
+    classname: string;
+  }>({
+    title: '',
+    classname: '',
+  });
   const router = useRouter();
   useEffect(() => {
     const datas = async () => {
@@ -46,21 +53,37 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   }, [searchValue]);
 
   const handleAttractionsClick = () => {
+    setClickClass({
+      title: '여행',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const firstdata = resDatas[0];
     setResData(firstdata);
     setIsShow(false);
   };
   const handleCultureClick = () => {
+    setClickClass({
+      title: '문화',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const firstdata = resDatas[1];
     setResData(firstdata);
     setIsShow(false);
   };
   const handleRestaurantClick = () => {
+    setClickClass({
+      title: '맛집',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const firstdata = resDatas[2];
     setResData(firstdata);
     setIsShow(false);
   };
   const handleFestivalClick = () => {
+    setClickClass({
+      title: '행사',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const firstdata = resDatas[3];
     setResData(firstdata);
     setIsShow(false);
@@ -74,25 +97,41 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
       <div className="flex w-full pt-4 px-4">
         <div className="flex w-full items-center gap-3">
           <div
-            className="cursor-pointer	w-full flex justify-center rounded-2xl bg-[#DBEEFF] border-[1.5px] border-[#118DFF]"
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '여행'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
             onClick={handleAttractionsClick}
           >
             관광명소
           </div>
           <div
-            className="cursor-pointer	w-full flex justify-center rounded-2xl bg-[#DBEEFF] border-[1.5px] border-[#118DFF]"
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '문화'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
             onClick={handleCultureClick}
           >
             문화시설
           </div>
           <div
-            className="cursor-pointer	w-full flex justify-center rounded-2xl bg-[#DBEEFF] border-[1.5px] border-[#118DFF]"
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '맛집'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
             onClick={handleRestaurantClick}
           >
             맛집
           </div>
           <div
-            className="cursor-pointer	w-full flex justify-center rounded-2xl bg-[#DBEEFF] border-[1.5px] border-[#118DFF]"
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '행사'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
             onClick={handleFestivalClick}
           >
             행사
