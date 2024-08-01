@@ -1,5 +1,4 @@
 import FeedListClient from '@/components/FeedList/FeedListClient';
-import { Feed } from '@/types/feed';
 import { createClient } from '@/utils/supabase/server';
 import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
