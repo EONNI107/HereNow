@@ -1,7 +1,7 @@
 import { Item } from '@/types/localList';
 import Image from 'next/image';
 import Link from 'next/link';
-import regionData from '@/data/region.json';
+import regionData from '@/data/regions.json';
 import { getRegionNameKorean } from '@/utils/getRegionName';
 import { getSigunguName } from '@/utils/getSigunguName';
 

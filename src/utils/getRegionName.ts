@@ -1,4 +1,4 @@
-import regionData from '@/data/region.json';
+import regionData from '@/data/regions.json';
 
 const region = regionData.region;
 
