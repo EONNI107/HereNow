@@ -4,7 +4,6 @@ import { createClient } from '@/utils/supabase/server';
 export async function POST(request: Request) {
   const supabase = createClient();
   const { searchValue, title } = await request.json();
-  console.log(searchValue);
   try {
     const response = await supabase
       .from('Feeds')
