@@ -28,7 +28,7 @@ function FeedListItem({
   }
   return (
     <div>
-      <Link href={'/'} className="p-4  rounded-3xl">
+      <Link href={`/feed-detail/${feed.id}`} className="p-4  rounded-3xl">
         <div className="flex items-center mb-4">
           <Image
             src={feed.Users?.profileImage || '/default-profile.jpg'}
