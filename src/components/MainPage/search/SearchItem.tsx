@@ -125,18 +125,19 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
                 className="w-full flex gap-3"
                 onClick={() => handleClick(item.contentid)}
               >
-                <div className="w-[100px] h-[100px] relative">
+                <div className="w-[100px] h-[100px]">
                   <Image
                     src={item.firstimage}
                     alt="이미지"
-                    fill
-                    className="rounded-lg border"
+                    width={100}
+                    height={100}
+                    className="rounded-lg border w-full h-full object-cover"
                   />
                 </div>
-                <div className="flex justify-between w-[300px] items-center px-4">
+                <div className="flex justify-between w-[300px] items-center px-4 text-[#000] font-semibold text-lg">
                   <p>{item.title}</p>
                   <div>
-                    <HeartIcon className="w-4 h-4" />
+                    <HeartIcon className="w-5 h-5" />
                   </div>
                 </div>
               </div>
@@ -151,23 +152,19 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
                 className="w-full flex gap-3"
                 onClick={() => handleClick(item.contentid)}
               >
-                <div className="w-[100px] h-[100px] relative">
+                <div className="w-[100px] h-[100px]">
                   <Image
                     src={item.firstimage}
                     alt="이미지"
-                    fill
-                    className="rounded-lg border"
+                    width={100}
+                    height={100}
+                    className="rounded-lg border w-full h-full object-cover"
                   />
                 </div>
-                <div className="flex justify-between w-[300px] items-center px-4">
+                <div className="flex justify-between w-[300px] items-center px-4  text-[#000] font-semibold text-lg">
                   <p>{item.title}</p>
                   <div>
-                    <Image
-                      src="/heart.png"
-                      alt="좋아요"
-                      width={20}
-                      height={20}
-                    />
+                    <HeartIcon className="w-5 h-5" />
                   </div>
                 </div>
               </div>
