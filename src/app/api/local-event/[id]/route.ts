@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { tourApi } from '../../tourApi';
-import { region } from '@/data/regions.json';
+import regionData from '@/data/regions.json';
 import dayjs from 'dayjs';
 
 export const GET = async (
@@ -11,7 +11,7 @@ export const GET = async (
 
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
 
-  const selectedRegion = region.find(
+  const selectedRegion = regionData.region.find(
     (region) => region.ename.toLowerCase() === id.toLowerCase(),
   );
 
