@@ -1,20 +1,19 @@
-type InputFieldProps = {
+type TextAreaProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
 };
 
-const InputField = ({ value, onChange, placeholder }: InputFieldProps) => {
+function ContentInput({ value, onChange, placeholder }: TextAreaProps) {
   return (
-    <input
-      type="text"
+    <textarea
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       required
-      className="input no-focus placeholder-bold text-24"
+      className="textarea no-focus text-18"
     />
   );
-};
+}
 
-export default InputField;
+export default ContentInput;

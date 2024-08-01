@@ -10,8 +10,9 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
-import dayjs from 'dayjs';
 import Image from 'next/image';
+import useAuthStore from '@/zustand/useAuthStore';
+import { formatDate } from '@/utils/formatDate';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -64,11 +65,11 @@ type PostPageProps = {
   params: { id: string };
 };
 
-const PostPage = ({ params }: PostPageProps) => {
+function PostPage({ params }: PostPageProps) {
   const [post, setPost] = useState<Post | null>(null);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
-  const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
+  const { user } = useAuthStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -130,14 +131,12 @@ const PostPage = ({ params }: PostPageProps) => {
       </Swiper>
       <DetailLikeBtn
         postId={post.id}
-        userId={userId}
+        userId={user?.id ?? ''}
         onCommentClick={() => setIsCommentModalOpen(true)}
         commentCount={commentCount}
       />
       <p className="text-3xl font-bold mb-2">{post.title}</p>
-      <p className="text-sm text-gray-500 mb-4">
-        {dayjs(post.createdAt).format('YYYY-MM-DD HH:mm')}
-      </p>
+      <p className="text-sm text-gray-500 mb-4">{formatDate(post.createdAt)}</p>
       <p className="text-16px mb-4">{post.content}</p>
       {isCommentModalOpen && (
         <div className="fixed inset-0 z-50">
@@ -149,6 +148,6 @@ const PostPage = ({ params }: PostPageProps) => {
       )}
     </div>
   );
-};
+}
 
 export default PostPage;

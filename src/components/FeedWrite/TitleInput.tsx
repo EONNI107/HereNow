@@ -1,19 +1,20 @@
-type TextAreaProps = {
+type InputFieldProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
 };
 
-const TextArea = ({ value, onChange, placeholder }: TextAreaProps) => {
+function TitleInput({ value, onChange, placeholder }: InputFieldProps) {
   return (
-    <textarea
+    <input
+      type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       required
-      className="textarea no-focus text-18"
+      className="input no-focus placeholder-bold text-24"
     />
   );
-};
+}
 
-export default TextArea;
+export default TitleInput;
