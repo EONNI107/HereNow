@@ -5,6 +5,7 @@ import { Database, Tables } from '@/types/supabase';
 import useAuthStore from '@/zustand/useAuthStore';
 import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function FeedList() {
   const [feedsList, setFeedsList] = useState<Tables<'Feeds'>[]>([]);
@@ -35,38 +36,35 @@ export default function FeedList() {
   }, [user?.id]);
 
   return (
-    <div>
+    <>
       {feedsList.length === 0 ? (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center h-full justify-center">
           <PostIcon />
           <p className="mt-2">작성한 게시글이 없어요</p>
         </div>
       ) : (
-        feedsList.map((post) => {
-          const postImages = JSON.parse(JSON.stringify(post.image));
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5">
+          {feedsList.map((post) => {
+            const postImages = JSON.parse(post.image as string);
 
-          return (
-            <div key={post.id} className="mb-4">
-              <h2>{post.title}</h2>
-              <p>{post.content}</p>
-              {postImages &&
-                postImages.length > 0 &&
-                postImages.map((image, index) => {
-                  console.log(image);
-                  return (
+            return (
+              <div key={post.id}>
+                {postImages && postImages.length > 0 && (
+                  <Link href={`/feed-detail/${post.id}`}>
                     <Image
-                      key={index}
-                      src={image}
+                      src={postImages[0]}
                       alt="이미지"
-                      width={30}
-                      height={30}
+                      width={200}
+                      height={200}
+                      className="rounded aspect-square object-cover"
                     />
-                  );
-                })}
-            </div>
-          );
-        })
+                  </Link>
+                )}
+              </div>
+            );
+          })}
+        </div>
       )}
-    </div>
+    </>
   );
 }

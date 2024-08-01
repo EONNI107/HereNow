@@ -321,14 +321,14 @@ function MyPage() {
         </button>
       </div>
 
-      <div className="flex flex-1 justify-center py-10 bg-gray-50 items-center">
+      <div className="flex flex-1 justify-center bg-gray-50">
         {loading ? (
           <p>Loading...</p>
         ) : (
           <div>
-            <div>{selectedTab === 'feedsList' && <FeedsList />}</div>
-            <div>{selectedTab === 'feedLikes' && <FeedLikes />}</div>
-            <div>{selectedTab === 'placeLikes' && <PlaceLikes />}</div>
+            {selectedTab === 'feedsList' && <FeedsList />}
+            {selectedTab === 'feedLikes' && <FeedLikes />}
+            {selectedTab === 'placeLikes' && <PlaceLikes />}
           </div>
         )}
       </div>
