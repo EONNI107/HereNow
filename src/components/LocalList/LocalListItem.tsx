@@ -26,11 +26,11 @@ function LocalListItem({ item, region }: { item: Item; region: string }) {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex flex-col justify-center p-4">
-          <p className="font-pretendard font-regular text-sm text-white">
+          <p className="font-regular text-sm text-white">
             {getRegionNameKorean(region)}{' '}
             {getSigunguName(selectedRegion?.code || '', item.sigungucode)}
           </p>
-          <h2 className="font-pretendard font-semibold text-lg text-white mb-1">
+          <h2 className="font-semibold text-lg text-white mb-1">
             {item.title}
           </h2>
         </div>
