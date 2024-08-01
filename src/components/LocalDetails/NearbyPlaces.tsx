@@ -8,7 +8,7 @@ type NearbyPlacesProps = {
 };
 
 function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
-  const defaultImage = '/default-image.png';
+  const defaultImage = '/No_Img.jpg';
 
   return (
     <div>

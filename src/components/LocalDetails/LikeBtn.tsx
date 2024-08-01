@@ -8,15 +8,20 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import LoginPrompt from '../LoginPrompt';
 
-function LikeBtn({ placeId }: { placeId: string }) {
+type LikeBtnProps = {
+  placeId: string;
+  imageUrl: string;
+};
+
+function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
-  const userId = undefined;
-  // '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
-  // const userID = user.userId
+  // const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
+  const userId = null;
 
   useEffect(() => {
+    if (!userId) return;
     const fetchLikeStatus = async () => {
       try {
         const response = await axios.get<boolean>(
@@ -32,7 +37,7 @@ function LikeBtn({ placeId }: { placeId: string }) {
 
   const { mutate: likeMutate } = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/like-place', { userId, placeId });
+      await axios.post('/api/like-place', { userId, placeId, imageUrl });
     },
     onMutate: async () => {
       setLiked(true);
@@ -43,14 +48,16 @@ function LikeBtn({ placeId }: { placeId: string }) {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ['like-place', userId, placeId],
+        queryKey: ['like-place', userId, placeId, imageUrl],
       });
     },
   });
 
   const { mutate: unlikeMutate } = useMutation({
     mutationFn: async () => {
-      await axios.delete('/api/like-place', { data: { userId, placeId } });
+      await axios.delete('/api/like-place', {
+        data: { userId, placeId, imageUrl },
+      });
     },
     onMutate: async () => {
       setLiked(false);
@@ -62,14 +69,17 @@ function LikeBtn({ placeId }: { placeId: string }) {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ['like-place', userId, placeId],
+        queryKey: ['like-place', userId, placeId, imageUrl],
       });
     },
   });
 
   const redirectToLogin = () => {
-    router.push('/log-in');
+    setTimeout(() => {
+      router.push('/sign-in');
+    }, 300);
   };
+
   const handleLike = () => {
     if (!userId) {
       toast(

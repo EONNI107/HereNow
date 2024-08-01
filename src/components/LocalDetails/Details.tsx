@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 import { DetailProps } from '@/types/localDetails';
 
 function Details({ mainData, additionalData, typeId }: DetailProps) {
-  const defaultImage = '/default-image.png';
+  const defaultImage = '/No_Img.jpg';
   const [isExpanded, setIsExpanded] = useState(false);
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -95,7 +95,12 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
       ) : null}
       <div className="flex justify-between gap-2 mx-2">
         <h1 className="text-2xl font-bold mb-4">{mainData?.title}</h1>
-        {mainData?.contentid && <LikeBtn placeId={mainData.contentid} />}
+        {mainData?.contentid && (
+          <LikeBtn
+            imageUrl={mainData?.firstimage}
+            placeId={mainData.contentid}
+          />
+        )}
       </div>
 
       <div className="flex flex-col space-y-4">

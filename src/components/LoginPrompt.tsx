@@ -1,5 +1,6 @@
 // src/components/LoginPromptToast.tsx
 import React from 'react';
+import { toast } from 'react-toastify';
 
 const LoginPrompt = ({
   closeToast,
@@ -8,6 +9,11 @@ const LoginPrompt = ({
   closeToast: () => void;
   redirectToLogin: () => void;
 }) => {
+  const handleConfirm = () => {
+    closeToast();
+    toast.dismiss();
+    redirectToLogin();
+  };
   return (
     <div>
       <p>
@@ -24,7 +30,10 @@ const LoginPrompt = ({
         </button>
         <button
           className="bg-blue-500 w-32 text-white px-3 py-1 rounded"
-          onClick={redirectToLogin}
+          onClick={() => {
+            closeToast();
+            redirectToLogin();
+          }}
         >
           확인
         </button>
