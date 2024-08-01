@@ -8,7 +8,7 @@ export type Post = {
   sigungu: string;
   createdAt: string;
   userProfile?: {
-    profileImage: string;
+    profileImage: string | null;
     nickname: string;
   };
 };

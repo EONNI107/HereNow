@@ -22,14 +22,14 @@ function FeedWrite() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa'; // 임시 사용자 ID
+    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
 
     let imageUrls: string[] = [];
     for (const image of images) {
       const fileName = `${Date.now()}_${image.name
         .replace(/[^a-z0-9]/gi, '_')
         .toLowerCase()}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('FeedImage')
         .upload(fileName, image);
 
@@ -45,17 +45,21 @@ function FeedWrite() {
       imageUrls.push(publicUrl);
     }
 
+    const imageUrlsString = JSON.stringify(imageUrls);
+
     const { data, error } = await supabase
       .from('Feeds')
-      .insert({
-        userId,
-        title,
-        content,
-        image: imageUrls,
-        region,
-        sigungu,
-        createdAt: new Date(),
-      })
+      .insert([
+        {
+          userId,
+          title,
+          content,
+          image: imageUrlsString,
+          region,
+          sigungu,
+          createdAt: new Date().toISOString(),
+        },
+      ])
       .select();
 
     if (error) {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 type ImageUploadProps = {
   images: File[];
@@ -56,10 +57,12 @@ const ImageUpload = ({
       <div className="image-previews flex space-x-2 mt-4 overflow-x-scroll">
         {imagePreviews.map((src, index) => (
           <div key={index} className="relative flex-none w-32 h-32">
-            <img
+            <Image
               src={src}
               alt={`Preview ${index}`}
               className="w-full h-full object-cover"
+              layout="fill"
+              objectFit="cover"
             />
             <button
               type="button"

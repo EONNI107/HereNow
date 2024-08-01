@@ -11,6 +11,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
 import dayjs from 'dayjs';
+import Image from 'next/image';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -35,9 +36,12 @@ async function fetchPost(id: string): Promise<Post | null> {
 
   return {
     ...data,
+    image: data.image ? JSON.parse(data.image) : [],
+    region: data.region || '',
+    sigungu: data.sigungu || '',
     userProfile: data.Users
       ? { profileImage: data.Users.profileImage, nickname: data.Users.nickname }
-      : null,
+      : { profileImage: null, nickname: '알 수 없음' },
   };
 }
 
@@ -64,16 +68,12 @@ const PostPage = ({ params }: PostPageProps) => {
   const [post, setPost] = useState<Post | null>(null);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
-  const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa'; // 임시 사용자 ID
+  const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
 
   useEffect(() => {
     const fetchData = async () => {
       const fetchedPost = await fetchPost(params.id);
       if (fetchedPost) {
-        fetchedPost.image =
-          typeof fetchedPost.image === 'string'
-            ? JSON.parse(fetchedPost.image)
-            : fetchedPost.image;
         setPost(fetchedPost);
       }
 
@@ -97,9 +97,11 @@ const PostPage = ({ params }: PostPageProps) => {
     <div className="container mx-auto relative">
       <div className="flex items-center justify-between py-1 px-1">
         <div className="flex items-center">
-          <img
+          <Image
             src={userProfileImage}
             alt="User Avatar"
+            width={40}
+            height={40}
             className="w-10 h-10 rounded-full mr-2"
           />
           <p className="font-semibold text-14px text-gray-600">
@@ -116,9 +118,11 @@ const PostPage = ({ params }: PostPageProps) => {
       >
         {images.map((src, index) => (
           <SwiperSlide key={index}>
-            <img
+            <Image
               src={src}
               alt={`Image ${index}`}
+              width={800}
+              height={600}
               className="w-full h-full object-cover"
             />
           </SwiperSlide>

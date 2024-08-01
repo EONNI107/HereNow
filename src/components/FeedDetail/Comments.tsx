@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/client';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
 dayjs.extend(relativeTime);
 
@@ -15,7 +16,7 @@ type Comment = {
   userId: string;
   createdAt: string;
   Users: {
-    profileImage: string;
+    profileImage: string | null;
     nickname: string;
   } | null;
 };
@@ -42,7 +43,7 @@ function Comments({ postId, onClose }: CommentsProps) {
       if (error) {
         console.error(error);
       } else if (data) {
-        setComments(data);
+        setComments(data as Comment[]);
       }
     };
 
@@ -52,7 +53,7 @@ function Comments({ postId, onClose }: CommentsProps) {
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa'; // 임시 사용자 ID
+    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
 
     const { data, error } = await supabase
       .from('FeedComments')
@@ -61,12 +62,21 @@ function Comments({ postId, onClose }: CommentsProps) {
         content: newComment,
         userId,
       })
-      .select();
+      .select('*, Users (profileImage, nickname)');
 
     if (error) {
       console.error(error);
     } else if (data) {
-      setComments((prevComments) => [...prevComments, data[0]]);
+      setComments((prevComments) => [
+        ...prevComments,
+        ...data.map((comment) => ({
+          ...comment,
+          Users: comment.Users || {
+            profileImage: null,
+            nickname: '알 수 없음',
+          },
+        })),
+      ]);
       setNewComment('');
       setNotification('댓글이 등록되었습니다');
       setTimeout(() => setNotification(null), 3000);
@@ -79,7 +89,7 @@ function Comments({ postId, onClose }: CommentsProps) {
         <XMarkIcon
           onClick={onClose}
           className="absolute top-3 right-2 text-xl font-bold h-6 w-6 cursor-pointer"
-        ></XMarkIcon>
+        />
         <hr className="border-gray-300 mt-8 mb-4" />
         {notification && (
           <div className="mb-4 p-2 bg-green-100 text-green-800 rounded">
@@ -89,12 +99,14 @@ function Comments({ postId, onClose }: CommentsProps) {
         <ul>
           {comments.map((comment) => (
             <li key={comment.id} className="mb-6 flex items-center">
-              <img
+              <Image
                 src={
                   comment.Users?.profileImage || '/path/to/default/avatar.png'
                 }
                 alt="User Avatar"
-                className="w-10 h-10 rounded-full mr-2"
+                width={40}
+                height={40}
+                className="rounded-full mr-2"
               />
               <div>
                 <div className="flex">
