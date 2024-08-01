@@ -1,15 +1,14 @@
-import type { NearbyPlace } from '@/types/local-details';
+import type { NearbyPlace } from '@/types/localDetails';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 type NearbyPlacesProps = {
   nearbyPlaces?: NearbyPlace[];
-  typeId: string;
 };
 
-function NearbyPlaces({ nearbyPlaces = [], typeId }: NearbyPlacesProps) {
-  const defaultImage = '/default-image.png';
+function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
+  const defaultImage = '/No_Img.jpg';
 
   return (
     <div>

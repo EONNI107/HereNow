@@ -9,7 +9,6 @@ type feedTypeProps = {
   key: number;
 };
 const WebFeedItem = ({ feedItem, key }: feedTypeProps) => {
-  console.log(feedItem);
   let feedImage = '/No_Img.jpg';
   if (feedItem.image) {
     try {

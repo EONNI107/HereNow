@@ -1,5 +1,5 @@
+import useKakaoLoader from '@/hooks/useKaKaoLoader';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
-import useKakaoLoader from './useKaKaoLoader';
 
 function KakaoMap({
   latitude,
