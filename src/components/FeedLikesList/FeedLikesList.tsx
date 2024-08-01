@@ -44,6 +44,7 @@ export default function FeedLikes() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5">
           {feedLikes.map((like) => {
             const post = like.Feeds;
+            console.log(post);
             const postImages = post.image
               ? JSON.parse(post.image as string)
               : [];
@@ -51,7 +52,7 @@ export default function FeedLikes() {
             return (
               <div key={like.id}>
                 {postImages.length > 0 && (
-                  <Link href={`/feed-detail/${post.id}`} passHref>
+                  <Link href={`/feed-detail/${post.id}`}>
                     <Image
                       src={postImages[0]}
                       alt="이미지"
