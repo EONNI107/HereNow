@@ -5,11 +5,6 @@
 @layer utilities {
 }
 
-.no-focus:focus {
-  outline: none;
-  border-color: transparent;
-}
-
 @font-face {
   font-family: '양진체';
   src: url('https://fastly.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff')
@@ -44,4 +39,29 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.no-focus:focus {
+  outline: none;
+  border-color: transparent;
+}
+
+.text-18 {
+  font-size: 18px;
+}
+
+.text-14 {
+  font-size: 14px;
+}
+
+.text-24 {
+  font-size: 24px;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-regular {
+  font-weight: 400;
 }

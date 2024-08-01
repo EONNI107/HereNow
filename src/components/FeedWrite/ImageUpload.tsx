@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 type ImageUploadProps = {
   images: File[];
@@ -13,13 +14,20 @@ const ImageUpload = ({
   imagePreviews,
   setImagePreviews,
 }: ImageUploadProps) => {
+  const [error, setError] = useState<string | null>(null);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const newImages = [...images, ...files];
-    setImages(newImages);
 
-    const newPreviews = newImages.map((file) => URL.createObjectURL(file));
-    setImagePreviews(newPreviews);
+    if (newImages.length > 4) {
+      setError('이미지는 최대 4개까지 업로드할 수 있습니다.');
+    } else {
+      setError(null);
+      setImages(newImages);
+      const newPreviews = newImages.map((file) => URL.createObjectURL(file));
+      setImagePreviews(newPreviews);
+    }
   };
 
   const handleImageDelete = (index: number) => {
@@ -45,13 +53,16 @@ const ImageUpload = ({
         multiple
         className="input no-focus"
       />
-      <div className="image-previews flex flex-wrap space-x-2">
+      {error && <p className="text-red-500">{error}</p>}
+      <div className="image-previews flex space-x-2 mt-4 overflow-x-scroll">
         {imagePreviews.map((src, index) => (
-          <div key={index} className="relative">
-            <img
+          <div key={index} className="relative flex-none w-32 h-32">
+            <Image
               src={src}
               alt={`Preview ${index}`}
-              className="preview w-32 h-32 object-cover"
+              className="w-full h-full object-cover"
+              layout="fill"
+              objectFit="cover"
             />
             <button
               type="button"
