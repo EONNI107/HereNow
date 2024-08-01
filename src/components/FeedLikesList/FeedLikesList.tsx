@@ -7,8 +7,10 @@ import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
 import Link from 'next/link';
 
+type LikedFeeds = Tables<'FeedLikes'> & { Feeds: Tables<'Feeds'> | null };
+
 export default function FeedLikes() {
-  const [feedLikes, setFeedLikes] = useState<Tables<'FeedLikes'>[]>([]);
+  const [feedLikes, setFeedLikes] = useState<LikedFeeds[]>([]);
   const { user } = useAuthStore();
 
   useEffect(() => {
@@ -27,6 +29,7 @@ export default function FeedLikes() {
         }
         if (!data) return;
         setFeedLikes(data);
+        console.log(data);
       } catch {}
     };
 
@@ -44,15 +47,14 @@ export default function FeedLikes() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5">
           {feedLikes.map((like) => {
             const post = like.Feeds;
-            console.log(post);
-            const postImages = post.image
+            const postImages = post?.image
               ? JSON.parse(post.image as string)
               : [];
 
             return (
               <div key={like.id}>
                 {postImages.length > 0 && (
-                  <Link href={`/feed-detail/${post.id}`}>
+                  <Link href={`/feed-detail/${post?.id}`}>
                     <Image
                       src={postImages[0]}
                       alt="이미지"

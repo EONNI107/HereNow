@@ -1,4 +1,4 @@
-import { NearbyPlace } from '@/types/local-details';
+import { NearbyPlace } from '@/types/localDetails';
 import Image from 'next/image';
 import React from 'react';
 

@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Regions } from '@/types/mainType';
+import { Regions } from '@/types/maintype';
 function LocalItemList() {
   const router = useRouter();
 

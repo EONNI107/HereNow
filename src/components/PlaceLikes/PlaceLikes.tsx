@@ -5,6 +5,7 @@ import { Tables } from '@/types/supabase';
 import useAuthStore from '@/zustand/useAuthStore';
 import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function PlaceLikes() {
   const [placeLikes, setPlaceLikes] = useState<Tables<'PlaceLikes'>[]>([]);
@@ -42,18 +43,19 @@ export default function PlaceLikes() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5">
-          {placeLikes.map((like) => (
-            <div key={like.id} className="p-4 border rounded">
-              {like.imageUrl && (
-                <Image
-                  src={like.imageUrl}
-                  alt={like.name}
-                  width={200}
-                  height={200}
-                  className="rounded aspect-square object-cover"
-                />
+          {placeLikes.map((place) => (
+            <div key={place.id} className=" border rounded">
+              {place.imageUrl && (
+                <Link href={`/local/details/${place.placeId}`}>
+                  <Image
+                    src={place.imageUrl}
+                    alt={'찜한 장소 이미지'}
+                    width={200}
+                    height={200}
+                    className="rounded aspect-square object-cover"
+                  />
+                </Link>
               )}
-              <h3>{like.name}</h3>
             </div>
           ))}
         </div>

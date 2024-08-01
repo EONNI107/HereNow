@@ -321,7 +321,7 @@ function MyPage() {
         </button>
       </div>
 
-      <div className="flex flex-1 justify-center bg-gray-50">
+      <div className="flex flex-1 justify-center bg-gray-50 px-4">
         {loading ? (
           <p>Loading...</p>
         ) : (

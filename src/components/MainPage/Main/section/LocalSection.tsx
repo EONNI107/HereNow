@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LocalItem from './LocalItem';
 import { tourApi } from '@/app/api/tourApi';
-import { NearbyPlace } from '@/types/local-details';
+import { NearbyPlace } from '@/types/localDetails';
 import SkeletonSearchItem from '../../Skeleton/SkeletonSearchItem';
 
 type PositionType = {
