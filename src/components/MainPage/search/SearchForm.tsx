@@ -56,7 +56,9 @@ function SearchForm({ setIsbg }: SetIsBgProps) {
           onChange={handleInputChange}
           placeholder="검색어를 입력하세요"
         />
-        <button className="border">검색</button>
+        <button className="ml-1 border px-[7px] py-[1px] rounded-lg ">
+          검색
+        </button>
       </form>
       <p className="my-2">최근검색어</p>
       {originalData.map((item, index) => {
