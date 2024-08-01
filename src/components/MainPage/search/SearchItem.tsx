@@ -139,13 +139,21 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
         </div>
       </div>
       <div className="w-full px-5 py-5">
-        <div className="w-full rounded-lg bg-[#FFF4F0] flex">
-          <div>
-            <Image src="/Event.png" alt="행사아이콘" width={20} height={20} />
+        <div className="pl-4 py-3 w-full rounded-lg bg-[#FFF4F0] flex gap-2">
+          <div className="mt-[3px] flex w-[30px] h-[25px] items-center">
+            <Image
+              src="/Event.png"
+              alt="행사아이콘"
+              width={30}
+              height={25}
+              className="w-full h-full"
+            />
           </div>
-          <div>
-            <h2>행사</h2>
-            <p>{searchValue}의 가볼만한 곳을 찾아드릴게요!</p>
+          <div className="flex flex-col">
+            <h2 className="font-semibold text-lg">행사</h2>
+            <p className="text-sm">
+              {searchValue}의 가볼만한 곳을 찾아드릴게요!
+            </p>
           </div>
         </div>
       </div>

@@ -139,11 +139,17 @@ function SearchFeed({ searchValue }: searchProps) {
         </div>
       </div>
       <div className="w-full px-5 py-5">
-        <div className="w-full rounded-lg bg-[#FFF4F0] flex">
-          <div>
-            <Image src="/Save.png" alt="피드아이콘" width={20} height={20} />
+        <div className="pl-4 py-3 w-full rounded-lg bg-[#FFF4F0] flex gap-2">
+          <div className="mt-[3px] flex w-[30px] h-[25px] items-center">
+            <Image
+              src="/Save.png"
+              alt="피드아이콘"
+              width={30}
+              height={25}
+              className="w-full h-full"
+            />
           </div>
-          <div>
+          <div className="flex flex-col">
             <h2 className="font-semibold text-lg">피드</h2>
             <p className="text-sm">
               사람들끼리 공유한 모든 여행 꿀팁을 볼 수 있어요
