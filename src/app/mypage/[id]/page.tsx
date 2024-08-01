@@ -142,29 +142,6 @@ function MyPage() {
     }
   };
 
-  if (!profile && !user) {
-    return (
-      <div className="pt-10 flex flex-col h-svh">
-        <div className="flex items-center rounded-2xl w-full h-28 bg-[#FFF4F0]">
-          <div className="relative flex items-center w-full justify-between p-5">
-            <Image
-              src={imagePreview || 'https://via.placeholder.com/150'}
-              className="h-16 w-16 rounded-full"
-              alt="Profile"
-              width={64}
-              height={64}
-            />
-            <a href="/sign-in">
-              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded-xl">
-                로그인 · 회원가입하러가기
-              </button>
-            </a>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="pt-10 flex flex-col h-svh">
       <div
@@ -264,6 +241,7 @@ function MyPage() {
           </div>
         )}
       </div>
+
       <div className="flex justify-center w-full mt-6">
         <button
           className={`p-2 flex-1 ${
