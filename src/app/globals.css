@@ -5,6 +5,11 @@
 @layer utilities {
 }
 
+.no-focus:focus {
+  outline: none;
+  border-color: transparent;
+}
+
 @font-face {
   font-family: '양진체';
   src: url('https://fastly.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff')
