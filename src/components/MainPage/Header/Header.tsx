@@ -8,7 +8,7 @@ type DataProps = {
 };
 function Header({ title, content }: DataProps) {
   return (
-    <div className="relative mb-4">
+    <div className="relative mb-4 my-4">
       <div className="aspect-[16/9] w-full">
         <Image
           src={'/backgroundimage.png'}

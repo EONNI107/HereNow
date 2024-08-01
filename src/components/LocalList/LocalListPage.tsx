@@ -33,7 +33,7 @@ function LocalListPage({ region }: { region: string }) {
   }
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto my-4">
       <RegionHeader region={region} />
       <ContentTypeFilter
         selectedContentType={contentType}
