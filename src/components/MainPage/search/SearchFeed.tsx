@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import SearchFeedItem from './SearchFeedItem';
 import axios from 'axios';
-import { TableFeedType } from '@/types/mainTypes';
+import { TableFeedType } from '@/types/mainType';
 import SkeletonSearchItem from '../Skeleton/SkeletonSearchItem';
 
 type searchProps = {

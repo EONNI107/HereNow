@@ -6,6 +6,7 @@ import SearchForm from '../MainPage/search/SearchForm';
 import {
   ChevronLeftIcon,
   MagnifyingGlassIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline';
 
 function HeaderLayout() {
@@ -30,7 +31,7 @@ function HeaderLayout() {
         <div className="flex justify-center items-center bg-white">
           <SearchForm setIsbg={setIsBackground} />
           <button className="" onClick={() => setIsBackground(!isBackground)}>
-            x
+            <XMarkIcon className="w-4 h-4" />
           </button>
         </div>
       ) : (
