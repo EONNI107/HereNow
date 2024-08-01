@@ -1,5 +1,5 @@
 'use client';
-import { TableFeedUserType } from '@/types/mainTypes';
+import { TableFeedUserType } from '@/types/mainType';
 import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
 import React from 'react';
