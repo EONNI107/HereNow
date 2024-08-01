@@ -15,6 +15,7 @@ function HeaderLayout() {
   const pathname = usePathname();
   const params = useSearchParams();
   const searchParams = params.get('q');
+  const isMainPage = pathname === '/';
   const handleBack = () => {
     if (pathname === '/') {
       return;
@@ -36,18 +37,24 @@ function HeaderLayout() {
         </div>
       ) : (
         <div className="w-full flex justify-between items-center h-[50px]">
-          <button onClick={handleBack}>
-            <ChevronLeftIcon className="w-6 h-6" />
-          </button>
-
-          {searchParams ? (
-            <p>{searchParams}</p>
-          ) : (
-            <p className="font-['양진체'] text-[#118DFF] text-xl">지금,여기</p>
+          {!isMainPage && (
+            <button onClick={handleBack}>
+              <ChevronLeftIcon className="w-6 h-6" />
+            </button>
           )}
 
-          <button onClick={handleShow}>
-            <MagnifyingGlassIcon className="w-6 h-6" />
+          {searchParams ? (
+            <p className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-[#118DFF] text-xl">
+              {searchParams}
+            </p>
+          ) : (
+            <p className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-[#118DFF] text-xl">
+              지금,여기
+            </p>
+          )}
+
+          <button onClick={handleShow} className="absolute right-2 z-10">
+            <MagnifyingGlassIcon className="w-6 h-6 justf" />
           </button>
         </div>
       )}
