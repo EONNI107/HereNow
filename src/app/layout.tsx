@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import QueryProvider from '@/providers/QueryProvider';
 import localFont from 'next/font/local';
+import Footer from '@/components/Footer';
+import LayoutHeader from '@/components/LayoutHeader';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -25,7 +27,11 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
       <body className={`${pretendard.variable} font-pretendard`}>
         <QueryProvider>
           <div className="max-w-[400px] mx-auto">
-            <ToastProvider>{children}</ToastProvider>
+            <LayoutHeader />
+            <div className="pt-[35px] pb-[70px]">
+              <ToastProvider>{children}</ToastProvider>
+              <Footer />
+            </div>
           </div>
         </QueryProvider>
       </body>
