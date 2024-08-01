@@ -77,7 +77,7 @@ function LocalSection() {
       <div className="w-full">
         <ul className="w-full">
           {loading
-            ? Array.from({ length: 10 }).map((_, index) => (
+            ? Array.from({ length: 2 }).map((_, index) => (
                 <SkeletonSearchItem key={index} />
               ))
             : localitems.map((item: NearbyPlace) => (

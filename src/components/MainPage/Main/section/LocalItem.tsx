@@ -16,8 +16,9 @@ function LocalItem({ item, key, onclick }: NearbyTypePlace) {
         }
         alt="축제이미지"
         fill
+        className="rounded-xl"
       />
-      <div className="absolute top-8">
+      <div className="absolute top-8 left-3">
         <p
           className={item.firstimage ? ` z-1 text-[#fff]` : ` z-1 text-[#000]`}
         >

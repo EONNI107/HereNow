@@ -17,7 +17,7 @@ function SearchFeed({ searchValue }: searchProps) {
   const [isSorted, setIsSorted] = useState<boolean>(true);
   useEffect(() => {
     searchFeedData();
-  }, []);
+  }, [searchValue]);
   const searchFeedData = async () => {
     const res = await axios.get('/api/supabase-searchfeed', {
       params: {

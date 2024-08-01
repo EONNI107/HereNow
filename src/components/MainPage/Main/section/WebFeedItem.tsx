@@ -31,7 +31,7 @@ const WebFeedItem = ({ feedItem, key }: feedTypeProps) => {
             className="border rounded-2xl"
           />
         </div>
-        <div className="absolute bottom-6 left-3 felx flex-col text-[#fff]">
+        <div className="absolute bottom-6 left-3 felx flex-col text-[#fff] z-1">
           <p>{feedItem.title}</p>
           <p>{feedItem.content}</p>
         </div>

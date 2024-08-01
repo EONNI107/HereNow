@@ -119,7 +119,11 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
           <>
             {' '}
             {searchData?.map((item) => (
-              <div key={item.contentid} className="w-full flex gap-3">
+              <div
+                key={item.contentid}
+                className="w-full flex gap-3"
+                onClick={() => handleClick(item.contentid)}
+              >
                 <div className="w-[100px] h-[100px] relative">
                   <Image
                     src={item.firstimage}
@@ -145,21 +149,30 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
         ) : (
           <>
             {' '}
-            {resData?.map((i) => (
+            {resData?.map((item) => (
               <div
-                key={i.contentid}
+                key={item.contentid}
                 className="w-full flex gap-3"
-                onClick={() => handleClick(i.contentid)}
+                onClick={() => handleClick(item.contentid)}
               >
-                <Image
-                  src={i.firstimage}
-                  alt="이미지"
-                  width={100}
-                  height={100}
-                />
-                <p className="">{i.title}</p>
-                <div className="">
-                  <Image src="/heart.png" alt="좋아요" width={20} height={20} />
+                <div className="w-[100px] h-[100px] relative">
+                  <Image
+                    src={item.firstimage}
+                    alt="이미지"
+                    fill
+                    className="rounded-lg border"
+                  />
+                </div>
+                <div className="flex justify-between w-[300px] items-center px-4">
+                  <p>{item.title}</p>
+                  <div>
+                    <Image
+                      src="/heart.png"
+                      alt="좋아요"
+                      width={20}
+                      height={20}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
