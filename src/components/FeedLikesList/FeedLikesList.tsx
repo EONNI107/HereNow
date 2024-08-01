@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PostIcon from '../IconList/PostIcon';
 import { createClient } from '@/utils/supabase/client';
-import { Database, Tables } from '@/types/supabase';
+import { Tables } from '@/types/supabase';
 import useAuthStore from '@/zustand/useAuthStore';
 import { showToast } from '@/utils/toastHelper';
 
@@ -25,7 +25,6 @@ export default function FeedLikes() {
         }
         if (!data) return;
         setFeedLikes(data);
-        console.log(data);
       } catch {}
     };
 

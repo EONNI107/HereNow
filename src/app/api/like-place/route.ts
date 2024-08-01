@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const supabase = createClient();
 
-  const { userId, placeId } = await request.json();
+  const { userId, placeId, imageUrl } = await request.json();
 
   if (!userId || !placeId) {
     return NextResponse.json(
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from('PlaceLikes')
-      .insert([{ userId, placeId }])
+      .insert([{ userId, placeId, imageUrl }])
       .select();
 
     if (error) {
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const supabase = createClient();
 
-  const { userId, placeId } = await request.json();
+  const { userId, placeId, imageUrl } = await request.json();
 
   if (!userId || !placeId) {
     return NextResponse.json(
@@ -81,7 +81,8 @@ export async function DELETE(request: NextRequest) {
       .from('PlaceLikes')
       .delete()
       .eq('userId', userId)
-      .eq('placeId', placeId);
+      .eq('placeId', placeId)
+      .eq('imageUrl', imageUrl);
 
     if (error) {
       console.error('데이터베이스 에러:', error);

@@ -3,7 +3,7 @@ import {
   MainData,
   NearbyPlace,
   NearbyPlacesType,
-} from '@/types/local-details';
+} from '@/types/localDetails';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 

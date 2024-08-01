@@ -1,12 +1,13 @@
 'use client';
 import Details from '@/components/LocalDetails/Details';
 import KakaoMap from '@/components/LocalDetails/KakaoMap';
+import LocalDetailsSkeleton from '@/components/LocalDetails/LocalDetailsSkeleton';
 import NearbyPlaces from '@/components/LocalDetails/NearbyPlaces';
 import {
   useAdditionalData,
   useMainData,
   useNearbyPlaces,
-} from '@/hooks/local-details';
+} from '@/hooks/useLocalDetails';
 import React from 'react';
 
 function LocalDetailsPage({ params }: { params: { id: number } }) {
@@ -20,6 +21,7 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
   const typeId = mainData?.contenttypeid || '';
   const latitude = Number(mainData?.mapy);
   const longitude = Number(mainData?.mapx);
+
   const {
     data: additionalData,
     isPending: isPendingAdditionalData,
@@ -30,7 +32,16 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
     useNearbyPlaces(longitude, latitude, typeId || '', id);
 
   if (isPendingMainData || isPendingAdditionalData || isPendingNearbyPlaces) {
-    return <p>Loading...</p>;
+    return (
+      <div className="p-4">
+        <LocalDetailsSkeleton height="h-[300px]" />
+        <div className="mt-4 space-y-4">
+          <LocalDetailsSkeleton height="h-[450px]" />
+          <LocalDetailsSkeleton height="h-[300px]" />
+          <LocalDetailsSkeleton height="h-[260px]" />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -41,7 +52,7 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
         typeId={typeId}
       />
       <KakaoMap latitude={latitude} longitude={longitude} />
-      <NearbyPlaces nearbyPlaces={nearbyPlaces} typeId={typeId} />
+      <NearbyPlaces nearbyPlaces={nearbyPlaces} />
     </div>
   );
 }

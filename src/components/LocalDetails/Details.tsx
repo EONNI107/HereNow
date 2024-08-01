@@ -9,10 +9,10 @@ import {
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { DetailProps } from '@/types/local-details';
+import { DetailProps } from '@/types/localDetails';
 
 function Details({ mainData, additionalData, typeId }: DetailProps) {
-  const defaultImage = '/default-image.png';
+  const defaultImage = '/No_Img.jpg';
   const [isExpanded, setIsExpanded] = useState(false);
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -97,7 +97,7 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
         <h1 className="text-2xl font-bold mb-4">{mainData?.title}</h1>
         {mainData?.contentid && (
           <LikeBtn
-            userId={'2596d4ff-f4e9-4875-a67c-22abc5fdacfa'}
+            imageUrl={mainData?.firstimage}
             placeId={mainData.contentid}
           />
         )}
