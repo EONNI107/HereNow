@@ -6,9 +6,8 @@ import React from 'react';
 
 type feedTypeProps = {
   feedItem: TableFeedUserType;
-  key?: number;
 };
-const WebFeedItem = ({ feedItem, key }: feedTypeProps) => {
+const WebFeedItem = ({ feedItem }: feedTypeProps) => {
   let feedImage = '/No_Img.jpg';
   if (feedItem.image) {
     try {
@@ -21,7 +20,7 @@ const WebFeedItem = ({ feedItem, key }: feedTypeProps) => {
   }
   return (
     <>
-      <div key={key} className="flex flex-col items-center">
+      <div className="flex flex-col items-center">
         <div className="w-[150px] h-[150px] relative">
           <Image
             src={feedImage}
