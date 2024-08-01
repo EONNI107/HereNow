@@ -9,30 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      comments: {
-        Row: {
-          content: string | null;
-          created_at: string;
-          id: number;
-          post_id: number | null;
-          user_id: string | null;
-        };
-        Insert: {
-          content?: string | null;
-          created_at?: string;
-          id?: number;
-          post_id?: number | null;
-          user_id?: string | null;
-        };
-        Update: {
-          content?: string | null;
-          created_at?: string;
-          id?: number;
-          post_id?: number | null;
-          user_id?: string | null;
-        };
-        Relationships: [];
-      };
       FeedComments: {
         Row: {
           content: string;
@@ -181,16 +157,19 @@ export type Database = {
       PlaceLikes: {
         Row: {
           id: number;
+          imageUrl: string | null;
           placeId: string;
           userId: string;
         };
         Insert: {
           id?: number;
+          imageUrl?: string | null;
           placeId: string;
           userId?: string;
         };
         Update: {
           id?: number;
+          imageUrl?: string | null;
           placeId?: string;
           userId?: string;
         };
@@ -203,39 +182,6 @@ export type Database = {
             referencedColumns: ['id'];
           },
         ];
-      };
-      posts: {
-        Row: {
-          content: string | null;
-          created_at: string;
-          id: number;
-          image_urls: Json | null;
-          location: string | null;
-          title: string | null;
-          updated_at: string | null;
-          user_id: string | null;
-        };
-        Insert: {
-          content?: string | null;
-          created_at?: string;
-          id?: number;
-          image_urls?: Json | null;
-          location?: string | null;
-          title?: string | null;
-          updated_at?: string | null;
-          user_id?: string | null;
-        };
-        Update: {
-          content?: string | null;
-          created_at?: string;
-          id?: number;
-          image_urls?: Json | null;
-          location?: string | null;
-          title?: string | null;
-          updated_at?: string | null;
-          user_id?: string | null;
-        };
-        Relationships: [];
       };
       Users: {
         Row: {
