@@ -27,7 +27,6 @@ export default function PlaceLikes() {
         }
         if (!data) return;
         setPlaceLikes(data);
-        console.log(data);
       } catch {}
     };
 
