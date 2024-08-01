@@ -4,7 +4,10 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SearchForm from '../MainPage/search/SearchForm';
-import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import {
+  ChevronLeftIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/react/24/outline';
 
 function LayoutHeader() {
   const [isBackground, setIsBackground] = useState<boolean>(false);
@@ -34,17 +37,19 @@ function LayoutHeader() {
       ) : (
         <div className="w-full flex justify-between items-center h-[50px]">
           <button onClick={handleBack}>
-            <ChevronLeftIcon />
+            <ChevronLeftIcon className="w-6 h-6" />
           </button>
 
           {searchParams ? (
             <p>{searchParams}</p>
           ) : (
-            <p className="font-['양진체'] text-[#118DFF] text-xl">여기,어때</p>
+            <p className="font-['양진체'] text-[#118DFF] pb-1 text-xl">
+              여기,어때
+            </p>
           )}
 
           <button onClick={handleShow}>
-            <Image src="/search.png" alt="검색아이콘" width={20} height={20} />
+            <MagnifyingGlassIcon className="w-6 h-6" />
           </button>
         </div>
       )}

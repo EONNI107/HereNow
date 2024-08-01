@@ -11,12 +11,12 @@ type NearbyPlacesProps = {
 function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
   const defaultImage = '/No_Img.jpg';
   const { user } = useAuthStore();
-  console.log(user);
+  const nickname = user?.user_metadata.nickname;
 
   return (
     <div>
       <p className="font-bold text-md mt-8 mx-2 mb-4">
-        OOO 님, 이런 곳은 어때요?
+        {nickname} 님, 이런 곳은 어때요?
       </p>
 
       {nearbyPlaces && (
