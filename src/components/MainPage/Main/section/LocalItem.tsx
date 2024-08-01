@@ -10,16 +10,17 @@ function LocalItem({ item, onclick }: NearbyTypePlace) {
   return (
     <li
       onClick={onclick}
-      className="relative w-full h-[100px] mb-5 bg-gradient-to-r from-black/50 rounded-xl"
+      className="relative w-auto h-auto mb-5 bg-gradient-to-r from-black/50 rounded-xl overflow-hidden"
     >
       <Image
         src={
           item.firstimage ? item.firstimage || item.firstimage2 : '/No_Img.jpg'
         }
         alt="축제이미지"
-        fill
-        className="rounded-xl"
-        objectFit="cover"
+        width={368}
+        height={100}
+        className="rounded-xl object-cover w-full h-[100px]"
+        priority
       />
       <div className="absolute top-8 left-3">
         <p
