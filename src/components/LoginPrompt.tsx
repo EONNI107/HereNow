@@ -1,6 +1,5 @@
 // src/components/LoginPromptToast.tsx
 import React from 'react';
-import { toast } from 'react-toastify';
 
 const LoginPrompt = ({
   closeToast,
@@ -11,9 +10,9 @@ const LoginPrompt = ({
 }) => {
   const handleConfirm = () => {
     closeToast();
-    toast.dismiss();
     redirectToLogin();
   };
+
   return (
     <div>
       <p>

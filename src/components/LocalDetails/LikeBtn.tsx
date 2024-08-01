@@ -116,9 +116,6 @@ function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
 
   return (
     <div className="items-center flex gap-2 mb-4">
-      {/* login prompt when clicked without login.
-      when logged in, send the user's id together  */}
-
       <button onClick={handleLike} className="focus:outline-none">
         <HeartIcon
           className={`w-6 h-6 ${liked ? 'text-red-500' : 'text-gray-400'}`}
