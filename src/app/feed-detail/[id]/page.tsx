@@ -5,12 +5,26 @@ import { createClient } from '@/utils/supabase/client';
 import { Post } from '@/types/post';
 import Comments from '@/components/FeedDetail/Comments';
 import DetailLikeBtn from '@/components/FeedDetail/DetailLikeBtn';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { Pagination, Navigation } from 'swiper/modules';
+import dayjs from 'dayjs'; // 날짜 형식을 위해 dayjs를 사용
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('Feeds')
-    .select('*')
+    .select(
+      `
+      *,
+      Users (
+        profileImage,
+        nickname
+      )
+    `,
+    )
     .eq('id', id)
     .single();
 
@@ -19,7 +33,12 @@ async function fetchPost(id: string): Promise<Post | null> {
     return null;
   }
 
-  return data;
+  return {
+    ...data,
+    userProfile: data.Users
+      ? { profileImage: data.Users.profileImage, nickname: data.Users.nickname }
+      : null,
+  };
 }
 
 async function fetchCommentCount(postId: number): Promise<number> {
@@ -71,32 +90,59 @@ const PostPage = ({ params }: PostPageProps) => {
   }
 
   const images = Array.isArray(post.image) ? post.image : [post.image];
+  const userProfileImage =
+    post.userProfile?.profileImage || '/path/to/default/avatar.png';
+  const userNickname = post.userProfile?.nickname || '알 수 없음';
 
   return (
-    <div className="container mx-auto p-4">
-      <p className="font-semibold text-14px text-gray-600 mb-4 text-right">{`${post.region} ${post.sigungu}`}</p>
-      <div className="image-previews flex overflow-x-scroll space-x-2 mb-4">
-        {images.map((src, index) => (
+    <div className="container mx-auto relative">
+      <div className="flex items-center justify-between py-1 px-1">
+        <div className="flex items-center">
           <img
-            key={index}
-            src={src}
-            alt={`Image ${index}`}
-            className="w-full h-full object-cover"
+            src={userProfileImage}
+            alt="User Avatar"
+            className="w-10 h-10 rounded-full mr-2"
           />
-        ))}
+          <p className="font-semibold text-14px text-gray-600">
+            {userNickname}
+          </p>
+        </div>
+        <p className="font-semibold text-14px text-gray-600 text-right">{`${post.region} ${post.sigungu}`}</p>
       </div>
+      <Swiper
+        pagination={{ clickable: true }}
+        navigation={true}
+        modules={[Pagination, Navigation]}
+        className="mb-4"
+      >
+        {images.map((src, index) => (
+          <SwiperSlide key={index}>
+            <img
+              src={src}
+              alt={`Image ${index}`}
+              className="w-full h-full object-cover"
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
       <DetailLikeBtn
         postId={post.id}
         userId={userId}
         onCommentClick={() => setIsCommentModalOpen(true)}
         commentCount={commentCount}
       />
-      <p className="text-lg mb-4">{post.content}</p>
+      <p className="text-3xl font-bold mb-2">{post.title}</p>
+      <p className="text-sm text-gray-500 mb-4">
+        {dayjs(post.createdAt).format('YYYY-MM-DD HH:mm')}
+      </p>
+      <p className="text-16px mb-4">{post.content}</p>
       {isCommentModalOpen && (
-        <Comments
-          postId={post.id}
-          onClose={() => setIsCommentModalOpen(false)}
-        />
+        <div className="fixed inset-0 z-50">
+          <Comments
+            postId={post.id}
+            onClose={() => setIsCommentModalOpen(false)}
+          />
+        </div>
       )}
     </div>
   );

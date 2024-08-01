@@ -69,7 +69,7 @@ function FeedWrite() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mt-4">
       <div className="header flex justify-between items-center mb-4">
         <ChevronLeftIcon
           onClick={() => router.back()}
