@@ -18,14 +18,13 @@ const LocationDropdown = ({
   );
 
   useEffect(() => {
-    // JSON 파일에서 데이터를 불러옴
     const fetchRegions = async () => {
       try {
         const response = await fetch('/regions.json');
         const data = await response.json();
         setRegionsData(data);
       } catch (error) {
-        console.error('Error fetching regions:', error);
+        console.error(error);
       }
     };
 
@@ -34,7 +33,7 @@ const LocationDropdown = ({
 
   const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRegion(e.target.value);
-    setSigungu(''); // 시/군/구를 선택할 때마다 기존 선택된 시/군/구 초기화
+    setSigungu('');
   };
 
   const handleSigunguChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

@@ -26,19 +26,17 @@ function DetailLikeBtn({
 
   useEffect(() => {
     const fetchLikes = async () => {
-      // 좋아요 수 가져오기
       const { count, error } = await supabase
         .from('FeedLikes')
         .select('id', { count: 'exact', head: true })
         .eq('feedId', postId);
 
       if (error) {
-        console.error('Error fetching likes:', error);
+        console.error(error);
       } else {
         setLikeCount(count || 0);
       }
 
-      // 현재 사용자가 좋아요를 눌렀는지 확인
       const { data, error: likeError } = await supabase
         .from('FeedLikes')
         .select('id')
@@ -47,7 +45,7 @@ function DetailLikeBtn({
         .single();
 
       if (likeError) {
-        console.error('Error checking like status:', likeError);
+        console.error(likeError);
       } else if (data) {
         setLiked(true);
       }
@@ -58,7 +56,6 @@ function DetailLikeBtn({
 
   const handleLike = async () => {
     if (liked) {
-      // 좋아요 취소
       const { error } = await supabase
         .from('FeedLikes')
         .delete()
@@ -66,20 +63,19 @@ function DetailLikeBtn({
         .eq('userId', userId);
 
       if (error) {
-        console.error('Error unliking post:', error);
+        console.error(error);
       } else {
         setLiked(false);
         setLikeCount(likeCount - 1);
       }
     } else {
-      // 좋아요 추가
       const { error } = await supabase.from('FeedLikes').insert({
         feedId: postId,
         userId,
       });
 
       if (error) {
-        console.error('Error liking post:', error);
+        console.error(error);
       } else {
         setLiked(true);
         setLikeCount(likeCount + 1);

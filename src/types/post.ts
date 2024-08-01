@@ -1,7 +1,7 @@
 export type Post = {
   id: number;
   userId: string;
-  title: string; // 추가된 부분
+  title: string;
   content: string;
   image: string[];
   region: string;

@@ -10,7 +10,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
-import dayjs from 'dayjs'; // 날짜 형식을 위해 dayjs를 사용
+import dayjs from 'dayjs';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -29,7 +29,7 @@ async function fetchPost(id: string): Promise<Post | null> {
     .single();
 
   if (error || !data) {
-    console.error('Error fetching post:', error);
+    console.error(error);
     return null;
   }
 
@@ -49,7 +49,7 @@ async function fetchCommentCount(postId: number): Promise<number> {
     .eq('feedId', postId);
 
   if (error) {
-    console.error('Error fetching comment count:', error);
+    console.error(error);
     return 0;
   }
 
@@ -70,7 +70,6 @@ const PostPage = ({ params }: PostPageProps) => {
     const fetchData = async () => {
       const fetchedPost = await fetchPost(params.id);
       if (fetchedPost) {
-        // image가 문자열인지 확인하고 배열로 변환
         fetchedPost.image =
           typeof fetchedPost.image === 'string'
             ? JSON.parse(fetchedPost.image)

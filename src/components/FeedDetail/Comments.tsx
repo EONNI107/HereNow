@@ -40,7 +40,7 @@ function Comments({ postId, onClose }: CommentsProps) {
         .order('createdAt', { ascending: true });
 
       if (error) {
-        console.error('Error fetching comments:', error);
+        console.error(error);
       } else if (data) {
         setComments(data);
       }
@@ -64,7 +64,7 @@ function Comments({ postId, onClose }: CommentsProps) {
       .select();
 
     if (error) {
-      console.error('Error adding comment:', error);
+      console.error(error);
     } else if (data) {
       setComments((prevComments) => [...prevComments, data[0]]);
       setNewComment('');
