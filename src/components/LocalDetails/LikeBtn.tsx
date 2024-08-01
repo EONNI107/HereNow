@@ -5,7 +5,6 @@ import { showToast } from '@/utils/toastHelper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
 import LoginPrompt from '../LoginPrompt';
 import useAuthStore from '@/zustand/useAuthStore';
 

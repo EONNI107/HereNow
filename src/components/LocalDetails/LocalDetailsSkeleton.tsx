@@ -1,16 +1,18 @@
+import { ReactNode } from 'react';
+
 type LocalDetailsSkeletonProps = {
-  width?: string;
   height?: string;
+  children?: ReactNode;
 };
 
 function LocalDetailsSkeleton({
-  width = 'w-full',
   height = 'h-full',
+  children,
 }: LocalDetailsSkeletonProps) {
   return (
-    <div
-      className={`bg-gray-300 animate-pulse rounded-md ${width} ${height}`}
-    ></div>
+    <div className={`bg-gray-300 animate-pulse rounded-md p-5 ${height}`}>
+      {children}
+    </div>
   );
 }
 

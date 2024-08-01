@@ -34,18 +34,31 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
   if (isPendingMainData || isPendingAdditionalData || isPendingNearbyPlaces) {
     return (
       <div className="p-4">
-        <LocalDetailsSkeleton height="h-[300px]" />
+        <LocalDetailsSkeleton height="h-[250px]" />
         <div className="mt-4 space-y-4">
-          <LocalDetailsSkeleton height="h-[450px]" />
-          <LocalDetailsSkeleton height="h-[300px]" />
-          <LocalDetailsSkeleton height="h-[260px]" />
+          <LocalDetailsSkeleton height="h-[340px]">
+            <div className="bg-gray-400 animate-pulse rounded-md h-8 w-1/2 mb-4"></div>
+            <div className="bg-gray-400 animate-pulse mt-5 rounded-md h-6 w-full mb-2 mx-auto"></div>
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-full mb-2 mx-auto"></div>
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-full mb-2 mx-auto"></div>
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-full mb-2 mx-auto"></div>
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-[50%] mt-4"></div>
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-[50%] mt-4"></div>
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-[50%] mt-4"></div>
+          </LocalDetailsSkeleton>
+          <LocalDetailsSkeleton height="h-[300px]">
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-1/2 mb-4"></div>
+          </LocalDetailsSkeleton>
+          <LocalDetailsSkeleton height="h-[250px]">
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-1/2 mb-4"></div>
+          </LocalDetailsSkeleton>
         </div>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="my-4">
       <Details
         mainData={mainData}
         additionalData={additionalData}

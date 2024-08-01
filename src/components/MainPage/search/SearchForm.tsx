@@ -48,17 +48,15 @@ function SearchForm({ setIsbg }: SetIsBgProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <div>
+      <form onSubmit={handleClick}>
         <input
           className="border"
           type="text"
           value={inputValue}
           onChange={handleInputChange}
         />
-        <button onClick={handleClick} className="border">
-          검색
-        </button>
-      </div>
+        <button className="border">검색</button>
+      </form>
       <p>최근검색어</p>
       {originalData.map((item, index) => {
         if (item === '') {

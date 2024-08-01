@@ -10,12 +10,14 @@ import FeedsList from '@/components/FeedsList/FeedsList';
 import FeedLikes from '@/components/FeedLikesList/FeedLikesList';
 import PlaceLikes from '@/components/PlaceLikes/PlaceLikes';
 import useAuthStore from '@/zustand/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 type EditProfile = Pick<TablesInsert<'Users'>, 'nickname' | 'profileImage'>;
 
 function MyPage() {
   const { user } = useAuthStore();
   const supabase = createClient();
+  const router = useRouter();
   const [profile, setProfile] = useState<Tables<'Users'>>();
   const [isEditing, setIsEditing] = useState(false);
   const [editProfile, setEditProfile] = useState<EditProfile>();
@@ -116,7 +118,7 @@ function MyPage() {
           imagePath = `https://cuxcqeqwbwfuxipnozwy.supabase.co/storage/v1/object/public/profileImage/${path}`;
         }
       }
-
+      //쥬스탠드 업데이트 기능 추가
       const { error } = await supabase
         .from('Users')
         .update({
@@ -231,12 +233,24 @@ function MyPage() {
                 </button>
               </div>
             ) : (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="m-5 w-24 rounded-md bg-sky-500 text-white"
-              >
-                프로필 수정
-              </button>
+              <div>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="mt-10 ml-5 w-24 rounded-md bg-sky-500 text-white"
+                >
+                  프로필 수정
+                </button>
+                <button
+                  onClick={() => {
+                    useAuthStore.getState().logOut();
+                    showToast('success', '로그아웃이 완료 되었습니다');
+                    router.push('/sign-in');
+                  }}
+                  className="m-5 mb-10 w-24 rounded-md bg-[#FD8B59] text-white"
+                >
+                  로그아웃
+                </button>
+              </div>
             )}
           </div>
         )}
