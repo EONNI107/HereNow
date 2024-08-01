@@ -20,11 +20,9 @@ export default function FeedList() {
           .from('Feeds')
           .select('*')
           .eq('userId', user.id);
+
         if (error) {
-          console.log(error.message);
-        }
-        if (error) {
-          showToast('error', '슈퍼베이스 에러');
+          showToast('error', '슈퍼베이스 불러오는중 오류가 발생했습니다');
           console.log(error.message);
         }
         if (!data) return;
