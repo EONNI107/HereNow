@@ -9,7 +9,6 @@ type feedTypeProps = {
   key: number;
 };
 const WebFeedItem = ({ feedItem, key }: feedTypeProps) => {
-  console.log(feedItem);
   let feedImage = '/No_Img.jpg';
   if (feedItem.image) {
     try {
@@ -22,20 +21,23 @@ const WebFeedItem = ({ feedItem, key }: feedTypeProps) => {
   }
   return (
     <>
-      <div key={key} className="w-full h-[170px] flex flex-col">
-        <div className="w-full h-[150px] relative">
+      <div key={key} className="w-full h-[170px] flex flex-col items-center">
+        <div className="w-[150px] h-[150px] relative">
           <Image
             src={feedImage}
             alt="피드이미지"
             fill
+            objectFit="cover"
+            objectPosition="center"
             className="border rounded-2xl"
           />
+          <div className="absolute bottom-3 left-3 felx flex-col text-[#fff] z-1 w-[170px]">
+            <p className="line-clamp-1 text-sm">{feedItem.region}</p>
+            <p className="line-clamp-1">{feedItem.title}</p>
+          </div>
         </div>
-        <div className="absolute bottom-6 left-3 felx flex-col text-[#fff] z-1">
-          <p>{feedItem.title}</p>
-          <p>{feedItem.content}</p>
-        </div>
-        <div className="w-full flex mt-2">
+
+        <div className="w-full flex mt-2 ml-8">
           <div className="w-[25px] h-[25px] relative">
             <Image
               src={`/${feedItem.Users.profileImage}`}
