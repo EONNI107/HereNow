@@ -44,7 +44,7 @@ function LayoutHeader() {
           {searchParams ? (
             <p>{searchParams}</p>
           ) : (
-            <p className="font-['양진체'] text-[#118DFF] text-xl">여기,어때</p>
+            <p className="font-['양진체'] text-[#118DFF] text-xl">지금,여기</p>
           )}
 
           <button onClick={handleShow}>

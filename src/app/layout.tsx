@@ -30,8 +30,8 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
             <LayoutHeader />
             <div className="pt-[35px] pb-[70px]">
               <ToastProvider>{children}</ToastProvider>
-              <Footer />
             </div>
+            <Footer />
           </div>
         </QueryProvider>
       </body>

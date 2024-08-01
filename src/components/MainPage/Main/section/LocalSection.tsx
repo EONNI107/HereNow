@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import LocalItem from './LocalItem';
 import { tourApi } from '@/app/api/tourApi';
-import { NearbyPlace } from '@/types/local-details';
-import SkeletonSearchItem from '../../Skeleton/SkeletonSearchItem';
+import { NearbyPlace } from '@/types/localDetails';
+import SkeletonLocalItem from '../../Skeleton/SkeletonLocalItem';
 
 type PositionType = {
   coords: {
@@ -38,7 +38,6 @@ function LocalSection() {
       setLoading(false);
     }
   };
-
   const getLoactionSuc = async (position: PositionType) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
@@ -48,7 +47,6 @@ function LocalSection() {
   const getLocationErr = (error: GeolocationError) => {
     console.error('Failed to fetch location data:', error);
   };
-
   const getLoaction = () => {
     const option = {
       enableHighAccuracy: true,
@@ -61,24 +59,24 @@ function LocalSection() {
       option,
     );
   };
-
   useEffect(() => {
     getLoaction();
   }, []);
+
   const handleClick = (contentid: string) => {
     router.push(`/local/details/${contentid}`);
   };
   return (
     <section className="flex flex-col gap-4 w-full px-4">
       <div className="flex justify-between">
-        <h2>로컬들의 여행지</h2>
-        <button>더보러가기2</button>
+        <h2 className="text-[#000] font-semibold text-lg">로컬들의 여행지</h2>
+        <button hidden={true}></button>
       </div>
       <div className="w-full">
         <ul className="w-full">
           {loading
             ? Array.from({ length: 2 }).map((_, index) => (
-                <SkeletonSearchItem key={index} />
+                <SkeletonLocalItem key={index} />
               ))
             : localitems.map((item: NearbyPlace) => (
                 <LocalItem
