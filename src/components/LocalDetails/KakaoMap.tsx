@@ -15,7 +15,7 @@ function KakaoMap({
   }
   return (
     <div className="mt-8 flex-col space-y-4 border-y-2 border-gray-300 mx-2 pb-6">
-      <p className="mt-4 font-bold">장소 위치</p>
+      <p className="mt-4 font-bold">해당 위치는 이곳이에요</p>
       <Map
         id="map"
         center={{ lat: latitude, lng: longitude }}
