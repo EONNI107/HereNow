@@ -47,7 +47,7 @@ async function FeedListPage() {
           </div>
         </div>
       </div>
-      {data && <FeedListClient initialFeeds={data} />}
+      {data && <FeedListClient initialFeeds={data || []} />}
     </div>
   );
 }
