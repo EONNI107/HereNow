@@ -71,29 +71,28 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   };
   return (
     <>
-      <div className="flex w-full border">
-        <div className="shrink-0 px-1 py-1">정렬</div>
-        <div className="flex border w-full items-center">
+      <div className="flex w-full pt-4 px-4">
+        <div className="flex w-full items-center gap-3">
           <div
-            className="w-full flex justify-center"
+            className="cursor-pointer	w-full flex justify-center rounded-2xl bg-[#DBEEFF] border-[1.5px] border-[#118DFF]"
             onClick={handleAttractionsClick}
           >
             관광명소
           </div>
           <div
-            className="w-full flex justify-center"
+            className="cursor-pointer	w-full flex justify-center rounded-2xl bg-[#DBEEFF] border-[1.5px] border-[#118DFF]"
             onClick={handleCultureClick}
           >
             문화시설
           </div>
           <div
-            className="w-full flex justify-center"
+            className="cursor-pointer	w-full flex justify-center rounded-2xl bg-[#DBEEFF] border-[1.5px] border-[#118DFF]"
             onClick={handleRestaurantClick}
           >
             맛집
           </div>
           <div
-            className="w-full flex justify-center"
+            className="cursor-pointer	w-full flex justify-center rounded-2xl bg-[#DBEEFF] border-[1.5px] border-[#118DFF]"
             onClick={handleFestivalClick}
           >
             행사
