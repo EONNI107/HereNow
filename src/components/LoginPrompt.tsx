@@ -31,8 +31,7 @@ const LoginPrompt = ({
         <button
           className="bg-blue-500 w-32 text-white px-3 py-1 rounded"
           onClick={() => {
-            closeToast();
-            redirectToLogin();
+            handleConfirm();
           }}
         >
           확인

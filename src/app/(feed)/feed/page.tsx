@@ -17,8 +17,6 @@ async function FeedListPage() {
     showToast('error', '피드 목록을 불러오는 중 오류가 발생했습니다.');
   }
 
-  console.log('data => ', data);
-
   return (
     <div>
       <div className="relative mb-4">

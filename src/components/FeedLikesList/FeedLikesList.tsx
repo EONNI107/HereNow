@@ -25,7 +25,6 @@ export default function FeedLikes() {
         }
         if (!data) return;
         setFeedLikes(data);
-        console.log(data);
       } catch {}
     };
 

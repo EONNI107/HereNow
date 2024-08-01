@@ -7,6 +7,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import LoginPrompt from '../LoginPrompt';
+import useAuthStore from '@/zustand/useAuthStore';
 
 type LikeBtnProps = {
   placeId: string;
@@ -15,10 +16,10 @@ type LikeBtnProps = {
 
 function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
   const router = useRouter();
+  const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
-  // const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
-  const userId = null;
+  const userId = user?.id;
 
   useEffect(() => {
     if (!userId) return;
