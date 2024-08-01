@@ -9,22 +9,20 @@ import { Tables, TablesInsert } from '@/types/supabase';
 import FeedsList from '@/components/FeedsList/FeedsList';
 import FeedLikes from '@/components/FeedLikesList/FeedLikesList';
 import PlaceLikes from '@/components/PlaceLikes/PlaceLikes';
+import useAuthStore from '@/zustand/useAuthStore';
 
 type EditProfile = Pick<TablesInsert<'Users'>, 'nickname' | 'profileImage'>;
 
 function MyPage() {
+  const { user } = useAuthStore();
   const supabase = createClient();
   const [profile, setProfile] = useState<Tables<'Users'>>();
   const [isEditing, setIsEditing] = useState(false);
   const [editProfile, setEditProfile] = useState<EditProfile>();
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [feedsList, setFeedsList] = useState<Tables<'Feeds'>[]>([]);
-  const [feedLikes, setFeedLikes] = useState<Tables<'FeedLikes'>[]>([]);
-  const [placeLikes, setPlaceLikes] = useState<Tables<'PlaceLikes'>[]>([]);
 
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedTab, setSelectedTab] = useState<
     'feedsList' | 'feedLikes' | 'placeLikes'
   >('feedsList');
@@ -44,24 +42,8 @@ function MyPage() {
     return data;
   };
 
-  const fetchUserData = async () => {
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
-
-    if (error) {
-      showToast('error', '유저 정보를 불러오는 중에 오류가 발생했습니다');
-      console.log(error.message);
-      return null;
-    }
-    return user;
-  };
-
   const fetchProfile = async () => {
-    const user = await fetchUserData();
     if (user) {
-      setIsAuthenticated(true);
       const profileData = await fetchUserProfile(user.id);
       if (profileData) {
         setProfile(profileData);
@@ -70,56 +52,28 @@ function MyPage() {
           profileImage: profileData.profileImage,
         });
       }
-    } else {
-      setIsAuthenticated(false);
     }
   };
 
   useEffect(() => {
     fetchProfile();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
-      const user = await fetchUserData();
-      if (user) {
-        try {
-          let data;
-          if (selectedTab === 'feedsList') {
-            ({ data } = await supabase
-              .from('Feeds')
-              .select('*')
-              .eq('userId', user.id));
-            if (!data) return;
-            setFeedsList(data);
-          } else if (selectedTab === 'feedLikes') {
-            ({ data } = await supabase
-              .from('FeedLikes')
-              .select('*')
-              .eq('userId', user.id));
-            if (!data) return;
-            setFeedLikes(data);
-          } else if (selectedTab === 'placeLikes') {
-            ({ data } = await supabase
-              .from('PlaceLikes')
-              .select('*')
-              .eq('userId', user.id));
-            if (!data) return;
-            setPlaceLikes(data);
-          }
-        } catch (error) {
-          showToast(
-            'error',
-            `${
-              selectedTab === 'feedsList'
-                ? '작성한 글'
-                : selectedTab === 'feedLikes'
-                ? '찜한 글'
-                : '찜한 장소'
-            } 불러오기 에러`,
-          );
-        }
+      try {
+      } catch (error) {
+        showToast(
+          'error',
+          `${
+            selectedTab === 'feedsList'
+              ? '작성한 글'
+              : selectedTab === 'feedLikes'
+              ? '찜한 글'
+              : '찜한 장소'
+          } 불러오기 에러`,
+        );
       }
       setLoading(false);
     };
@@ -153,7 +107,6 @@ function MyPage() {
   };
 
   const handleUpdate = async () => {
-    const user = await fetchUserData();
     if (user) {
       let imagePath = profile?.profileImage;
 
@@ -188,19 +141,42 @@ function MyPage() {
       }
     }
   };
-  if (!profile) return null;
+
+  if (!profile && !user) {
+    return (
+      <div className="pt-10 flex flex-col h-svh">
+        <div className="flex items-center rounded-2xl w-full h-28 bg-[#FFF4F0]">
+          <div className="relative flex items-center w-full justify-between p-5">
+            <Image
+              src={imagePreview || 'https://via.placeholder.com/150'}
+              className="h-16 w-16 rounded-full"
+              alt="Profile"
+              width={64}
+              height={64}
+            />
+            <a href="/sign-in">
+              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded-xl">
+                로그인 · 회원가입하러가기
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="pt-10 flex flex-col h-svh">
       <div
         className={`flex items-center rounded-2xl w-full h-28 ${
-          isAuthenticated ? 'bg-[#DBEEFF]' : 'bg-[#FFF4F0]'
+          user ? 'bg-[#DBEEFF]' : 'bg-[#FFF4F0]'
         }`}
       >
         <div className="relative flex items-center w-full justify-between p-5">
           <Image
             src={
               imagePreview ||
-              profile.profileImage ||
+              profile?.profileImage ||
               'https://via.placeholder.com/150'
             }
             className="h-16 w-16 rounded-full"
@@ -208,14 +184,14 @@ function MyPage() {
             width={64}
             height={64}
           />
-          {!isAuthenticated && (
+          {!user && (
             <a href="/sign-in">
               <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded-xl">
                 로그인 · 회원가입하러가기
               </button>
             </a>
           )}
-          {isEditing && (
+          {user && isEditing && (
             <div>
               <label
                 htmlFor="file-input"
@@ -233,15 +209,15 @@ function MyPage() {
           )}
         </div>
         <div>
-          {isAuthenticated && !isEditing && (
+          {user && !isEditing && (
             <div>
-              <div className="mt-5 mr-6">{profile.email}</div>
-              <div className="mb-5">{profile.nickname}</div>
+              <div className="mt-5 mr-6">{profile?.email}</div>
+              <div className="mb-5">{profile?.nickname}</div>
             </div>
           )}
-          {isAuthenticated && isEditing && (
+          {user && isEditing && (
             <div>
-              <div className="mt-5 mr-8">{profile.email}</div>
+              <div className="mt-5 mr-8">{profile?.email}</div>
               <div className="mb-5">
                 <input
                   type="text"
@@ -258,7 +234,7 @@ function MyPage() {
             </div>
           )}
         </div>
-        {isAuthenticated && (
+        {user && (
           <div>
             {isEditing ? (
               <div className="flex flex-col space-y-2">
