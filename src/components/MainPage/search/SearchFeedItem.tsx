@@ -1,5 +1,6 @@
 import { TableFeedType } from '@/types/mainType';
 import { showToast } from '@/utils/toastHelper';
+import { HeartIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import React from 'react';
 
@@ -33,7 +34,7 @@ function searchFeedItem({ item }: itemProps) {
           <p>{item.content}</p>
         </div>
         <div>
-          <Image src="/heart.png" alt="좋아요" width={20} height={20} />
+          <HeartIcon className="w-4 h-4" />
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { searchApi } from '../api/searchApi';
 import { SearchedType } from '@/app/search-page/page';
 import { useRouter } from 'next/navigation';
 import SkeletonSearchItem from '../Skeleton/SkeletonSearchItem';
+import { HeartIcon } from '@heroicons/react/24/outline';
 type SearchItemProps = {
   searchData: SearchedType[];
   searchValue: string;
@@ -135,12 +136,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
                 <div className="flex justify-between w-[300px] items-center px-4">
                   <p>{item.title}</p>
                   <div>
-                    <Image
-                      src="/heart.png"
-                      alt="좋아요"
-                      width={20}
-                      height={20}
-                    />
+                    <HeartIcon className="w-4 h-4" />
                   </div>
                 </div>
               </div>

@@ -85,7 +85,7 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
     <>
       {mainData?.firstimage ? (
         <Image
-          className="mx-auto my-3 mb-8"
+          className="mx-auto my-3 mb-8 w-auto h-auto"
           src={mainData?.firstimage || defaultImage}
           width={400}
           height={400}
