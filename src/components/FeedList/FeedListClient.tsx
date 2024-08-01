@@ -55,7 +55,7 @@ function FeedListClient({ initialFeeds }: FeedListClientProps) {
   if (isPending) return <div>로딩 중...</div>;
   if (error) return <div>에러: {error.message}</div>;
 
-  console.log(data);
+  console.log('infi=>', data);
 
   return (
     <div className="container mx-auto p-4">
