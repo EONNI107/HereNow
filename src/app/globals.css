@@ -40,3 +40,28 @@
     transform: rotate(360deg);
   }
 }
+
+.no-focus:focus {
+  outline: none;
+  border-color: transparent;
+}
+
+.text-18 {
+  font-size: 18px;
+}
+
+.text-14 {
+  font-size: 14px;
+}
+
+.text-24 {
+  font-size: 24px;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-regular {
+  font-weight: 400;
+}
