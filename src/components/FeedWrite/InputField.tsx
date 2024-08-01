@@ -12,7 +12,7 @@ const InputField = ({ value, onChange, placeholder }: InputFieldProps) => {
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       required
-      className="input no-focus placeholder-bold"
+      className="input no-focus placeholder-bold text-24"
     />
   );
 };
