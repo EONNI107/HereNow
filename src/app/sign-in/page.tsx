@@ -33,7 +33,7 @@ function SignInPage() {
     }
     setUser(data.user);
     showToast('success', '로그인 성공');
-    router.push('/');
+    router.back();
   };
 
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
@@ -65,12 +65,13 @@ function SignInPage() {
       }}
     >
       <div className="w-full">
-        <p className="text-sm  mb-4 text-center text-white">
+        <p className="text-sm  mb-4 text-center font-semibold text-white ">
           찐 로컬들의 여행, 맛집 공유 앱
         </p>
-        <p className="text-4xl font-bold mb-6 text-center text-white">
+        <p className="text-4xl  mb-6 text-center text-white font-[양진체]">
           지금, 여기
         </p>
+
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
             <label className="text-white">아이디(이메일)</label>
