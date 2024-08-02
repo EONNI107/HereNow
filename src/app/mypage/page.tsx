@@ -66,7 +66,6 @@ function MyPage() {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        // 포스트 불러오기 로직
       } catch (error) {
         showToast(
           'error',
@@ -306,9 +305,30 @@ function MyPage() {
           <p>Loading...</p>
         ) : (
           <div>
-            {selectedTab === 'feedsList' && <FeedsList />}
-            {selectedTab === 'feedLikes' && <FeedLikes />}
-            {selectedTab === 'placeLikes' && <PlaceLikes />}
+            {selectedTab === 'feedsList' &&
+              (user ? (
+                <FeedsList />
+              ) : (
+                <p className="flex justify-center items-center h-full">
+                  로그인 후 이용 가능합니다.
+                </p>
+              ))}
+            {selectedTab === 'feedLikes' &&
+              (user ? (
+                <FeedLikes />
+              ) : (
+                <p className="flex justify-center items-center h-full">
+                  로그인 후 이용 가능합니다.
+                </p>
+              ))}
+            {selectedTab === 'placeLikes' &&
+              (user ? (
+                <PlaceLikes />
+              ) : (
+                <p className="flex justify-center items-center h-full">
+                  로그인 후 이용 가능합니다.
+                </p>
+              ))}
           </div>
         )}
       </div>
