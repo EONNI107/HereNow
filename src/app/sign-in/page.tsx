@@ -6,6 +6,7 @@ import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import useAuthStore from '@/zustand/useAuthStore';
+import Image from 'next/image';
 
 function SignInPage() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -60,63 +61,86 @@ function SignInPage() {
     <div
       className="min-h-screen flex flex-col  items-center p-4 pt-20 bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage:
-          "url('https://media.istockphoto.com/id/1822247032/ko/%EC%82%AC%EC%A7%84/%EA%B0%80%EC%9D%84-%EC%8A%A4%EC%9C%84%EC%8A%A4-%EC%95%8C%ED%94%84%EC%8A%A4%EC%9D%98-%EA%B5%AC%EB%B6%88%EA%B5%AC%EB%B6%88%ED%95%9C-%EB%8F%84%EB%A1%9C%EC%9D%98-%EC%A1%B0%EA%B0%90%EB%8F%84.jpg?s=1024x1024&w=is&k=20&c=_wvxcmCMESdovQcIjvuh78JlBsUcKMv2t0-PMCfrKYs=')",
+        backgroundImage: "url('/roginpage.jpg')",
       }}
     >
       <div className="w-full">
-        <p className="text-sm text-gray-600 mb-4 text-center">
+        <p className="text-sm  mb-4 text-center text-white">
           찐 로컬들의 여행, 맛집 공유 앱
         </p>
-        <h5 className="text-2xl font-bold mb-6 text-center  text-gray-800">
+        <p className="text-4xl font-bold mb-6 text-center text-white">
           지금, 여기
-        </h5>
+        </p>
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
+            <label className="text-white">아이디(이메일)</label>
             <input
               type="email"
               id="email"
               ref={emailRef}
               placeholder="아이디 (이메일)"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white bg-opacity-90"
+              className="w-full px-3 py-2 border border-blue-300 rounded-md bg-transparent text-white placeholder-white"
             />
           </div>
           <div>
+            <label className="text-white">비밀번호</label>
             <input
               ref={passwordRef}
               type="password"
               id="password"
-              placeholder="비밀번호"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white bg-opacity-90"
+              placeholder="*******"
+              className="w-full px-3 py-2 border border-blue-300 rounded-md bg-transparent text-white placeholder-white"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-gray-200 text-black py-2 px-4 rounded-md hover:bg-gray-300"
+            className="w-full bg-[#118DFF] text-white py-2 px-4 rounded-md hover:bg-gray-300"
           >
             로그인
           </button>
         </form>
         <div className="mt-4 text-center">
-          <Link href="/sign-up" className="text-sm text-blue-600">
+          <Link
+            href="/sign-up"
+            className="text-sm text-white underline underline-offset-2 decoration-1"
+          >
             처음이신가요?
           </Link>
         </div>
+        <div className="text-center text-sm text-white mb-6 mt-40">
+          ────────── SNS계정으로 로그인하기 ──────────
+        </div>
         <div className="mt-6 flex flex-col space-y-2">
-          <button
-            type="button"
-            onClick={() => signInWithOAuth('kakao')}
-            className="w-full bg-yellow-300 text-black py-2 px-4 rounded-md hover:bg-yellow-400 flex items-center justify-center"
-          >
-            <span className="mr-2">카카오로 로그인</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => signInWithOAuth('google')}
-            className="w-full bg-white text-black py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
-          >
-            <span className="mr-2">구글로 로그인</span>
-          </button>
+          <div>
+            <button
+              type="button"
+              onClick={() => signInWithOAuth('kakao')}
+              className="w-full bg-[#F9E006] font-bold text-black py-2 px-4 rounded-md hover:bg-yellow-400 flex items-center justify-center"
+            >
+              <Image
+                src="/kakao_symbol.jpg"
+                alt="Kakao"
+                width={24}
+                height={24}
+              />
+              <span className="ml-2">카카오로 로그인</span>
+            </button>
+          </div>
+          <div className="pt-0.5">
+            <button
+              type="button"
+              onClick={() => signInWithOAuth('google')}
+              className="w-full bg-white font-bold text-black py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+            >
+              <Image
+                src="/google_symbol.svg.jpg"
+                alt="Google"
+                width={24}
+                height={24}
+              />
+              <span className="ml-2">구글로 로그인</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
