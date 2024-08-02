@@ -168,7 +168,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             {searchData?.map((item) => (
               <div
                 key={item.contentid}
-                className="w-full flex gap-3"
+                className="w-full flex gap-3 cursor-pointer"
                 onClick={() => handleClick(item.contentid)}
               >
                 <div className="w-[100px] h-[100px]">
@@ -195,7 +195,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             {resData?.map((item) => (
               <div
                 key={item.contentid}
-                className="w-full flex gap-3"
+                className="w-full flex gap-3 cursor-pointer"
                 onClick={() => handleClick(item.contentid)}
               >
                 <div className="w-[100px] h-[100px]">
