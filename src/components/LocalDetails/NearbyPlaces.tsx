@@ -15,9 +15,13 @@ function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
 
   return (
     <div>
-      <p className="font-bold text-md mt-8 mx-2 mb-4">
-        {nickname} 님, 이런 곳은 어때요?
-      </p>
+      {!user ? (
+        <p className="font-bold text-md mt-8 mx-2 mb-4">이런 곳은 어때요?</p>
+      ) : (
+        <p className="font-bold text-md mt-8 mx-2 mb-4">
+          {nickname} 님, 이런 곳은 어때요?
+        </p>
+      )}
 
       {nearbyPlaces && (
         <div className="mx-2">
