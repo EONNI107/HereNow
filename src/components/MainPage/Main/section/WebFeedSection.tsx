@@ -8,12 +8,12 @@ import { useRouter } from 'next/navigation';
 
 function WebFeedSection() {
   const router = useRouter();
+
   const [feedItems, setFeedItems] = useState<TableFeedUserType[] | null>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     feedUserDatas();
   }, []);
-
   const feedUserDatas = async () => {
     const res = await axios.get('/api/supabase-feeduserdata');
     const items = res.data.data as TableFeedUserType[];

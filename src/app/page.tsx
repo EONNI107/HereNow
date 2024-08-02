@@ -1,6 +1,6 @@
+'use client';
 import Header from '@/components/MainPage/Header';
 import Main from '@/components/MainPage/Main';
-
 function Home() {
   return (
     <>
