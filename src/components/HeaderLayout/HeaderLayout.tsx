@@ -48,7 +48,7 @@ function HeaderLayout() {
               {searchParams}
             </p>
           ) : (
-            <p className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-[#118DFF] text-xl">
+            <p className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-[#118DFF] text-xl pb-2">
               지금,여기
             </p>
           )}
