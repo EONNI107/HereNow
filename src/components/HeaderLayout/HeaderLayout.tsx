@@ -31,8 +31,11 @@ function HeaderLayout() {
       {isBackground ? (
         <div className="flex justify-center items-center bg-white">
           <SearchForm setIsbg={setIsBackground} />
-          <button className="" onClick={() => setIsBackground(!isBackground)}>
-            <XMarkIcon className="w-4 h-4" />
+          <button
+            className="absolute top-3 right-2"
+            onClick={() => setIsBackground(!isBackground)}
+          >
+            <XMarkIcon className="w-6 h-6" />
           </button>
         </div>
       ) : (
@@ -48,13 +51,18 @@ function HeaderLayout() {
               {searchParams}
             </p>
           ) : (
-            <p className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-[#118DFF] text-xl pb-2">
+            <p
+              onClick={() => {
+                router.push('/');
+              }}
+              className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-[#118DFF] text-xl pb-2 cursor-pointer"
+            >
               지금,여기
             </p>
           )}
 
           <button onClick={handleShow} className="absolute right-2 z-10">
-            <MagnifyingGlassIcon className="w-6 h-6 justf" />
+            <MagnifyingGlassIcon className="w-6 h-6" />
           </button>
         </div>
       )}
