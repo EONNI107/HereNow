@@ -7,6 +7,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import useAuthStore from '@/zustand/useAuthStore';
+import { toast } from 'react-toastify';
+import LoginPrompt from '@/components/LoginPrompt';
 
 dayjs.extend(relativeTime);
 
@@ -31,8 +33,8 @@ function Comments({ postId, onClose }: CommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState<string>('');
   const [notification, setNotification] = useState<string | null>(null);
-  const supabase = createClient();
   const { user } = useAuthStore();
+  const supabase = createClient();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -56,8 +58,12 @@ function Comments({ postId, onClose }: CommentsProps) {
     e.preventDefault();
 
     if (!user) {
-      setNotification('로그인이 필요합니다.');
-      setTimeout(() => setNotification(null), 3000);
+      toast(<LoginPrompt />, {
+        position: 'top-center',
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      });
       return;
     }
 
@@ -84,7 +90,7 @@ function Comments({ postId, onClose }: CommentsProps) {
         })),
       ]);
       setNewComment('');
-      setNotification('댓글이 등록되었습니다.');
+      setNotification('댓글이 등록되었습니다');
       setTimeout(() => setNotification(null), 3000);
     }
   };
