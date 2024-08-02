@@ -31,7 +31,7 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
             <Suspense>
               <HeaderLayout />
             </Suspense>
-            <div className="pt-[35px] pb-[70px]">
+            <div className="pt-[50px] pb-[84px]">
               <ToastProvider>{children}</ToastProvider>
             </div>
             <Footer />
