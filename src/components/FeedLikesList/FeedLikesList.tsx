@@ -4,9 +4,13 @@ import { createClient } from '@/utils/supabase/client';
 import { Tables } from '@/types/supabase';
 import useAuthStore from '@/zustand/useAuthStore';
 import { showToast } from '@/utils/toastHelper';
+import Image from 'next/image';
+import Link from 'next/link';
+
+type LikedFeeds = Tables<'FeedLikes'> & { Feeds: Tables<'Feeds'> | null };
 
 export default function FeedLikes() {
-  const [feedLikes, setFeedLikes] = useState<Tables<'FeedLikes'>[]>([]);
+  const [feedLikes, setFeedLikes] = useState<LikedFeeds[]>([]);
   const { user } = useAuthStore();
 
   useEffect(() => {
@@ -16,7 +20,7 @@ export default function FeedLikes() {
       try {
         const { data, error } = await supabase
           .from('FeedLikes')
-          .select('*')
+          .select('*,Feeds(*)')
           .eq('userId', user.id);
 
         if (error) {
@@ -32,9 +36,38 @@ export default function FeedLikes() {
   }, [user?.id]);
 
   return (
-    <div className="flex flex-col items-center h-full justify-center">
-      <PostIcon />
-      <p className="mt-2">찜한 글이 없어요</p>
-    </div>
+    <>
+      {feedLikes.length === 0 ? (
+        <div className="flex flex-col items-center h-full justify-center">
+          <PostIcon />
+          <p className="mt-2">찜한 글이 없어요</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5">
+          {feedLikes.map((like) => {
+            const post = like.Feeds;
+            const postImages = post?.image
+              ? JSON.parse(post.image as string)
+              : [];
+
+            return (
+              <div key={like.id}>
+                {postImages.length > 0 && (
+                  <Link href={`/feed-detail/${post?.id}`}>
+                    <Image
+                      src={postImages[0]}
+                      alt="이미지"
+                      width={200}
+                      height={200}
+                      className="rounded aspect-square object-cover"
+                    />
+                  </Link>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 }

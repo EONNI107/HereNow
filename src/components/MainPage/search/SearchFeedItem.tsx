@@ -1,13 +1,18 @@
+'use client';
+
 import { TableFeedType } from '@/types/mainType';
 import { showToast } from '@/utils/toastHelper';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 type itemProps = {
   item: TableFeedType;
 };
-function searchFeedItem({ item }: itemProps) {
+function SearchFeedItem({ item }: itemProps) {
+  const router = useRouter();
+
   let feedImage = '/No_Img.jpg';
   if (item.image) {
     try {
@@ -18,8 +23,14 @@ function searchFeedItem({ item }: itemProps) {
       showToast('error', '피드이미지를 불러오는 중 오류가 발생하였습니다.');
     }
   }
+  const handleMoveClick = (Id: number) => {
+    router.push(`/feed-detail/${Id}`);
+  };
   return (
-    <div className="flex w-full">
+    <div
+      className="flex w-full cursor-pointer"
+      onClick={() => handleMoveClick(item.id)}
+    >
       <div className="w-[100px] h-[100px] relative">
         <Image
           src={feedImage}
@@ -41,4 +52,4 @@ function searchFeedItem({ item }: itemProps) {
   );
 }
 
-export default searchFeedItem;
+export default SearchFeedItem;

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { tourApi } from '../../tourApi';
-import { region } from '@/data/regions.json';
+import regionData from '@/data/regions.json';
 
 export const GET = async (
   request: NextRequest,
@@ -8,7 +8,7 @@ export const GET = async (
 ) => {
   const { id } = params;
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
-  const selectedRegion = region.find(
+  const selectedRegion = regionData.region.find(
     (region) => region.ename.toLowerCase() === id.toLowerCase(),
   );
   const areaCode = selectedRegion?.code;

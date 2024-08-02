@@ -20,7 +20,7 @@ function KakaoMap({
         id="map"
         center={{ lat: latitude, lng: longitude }}
         level={4}
-        className="w-full h-[250px]"
+        className="w-full h-[250px] rounded-md"
       >
         <MapMarker position={{ lat: latitude, lng: longitude }} />
       </Map>

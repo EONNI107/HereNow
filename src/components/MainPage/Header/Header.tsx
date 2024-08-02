@@ -8,7 +8,7 @@ type DataProps = {
 };
 function Header({ title, content }: DataProps) {
   return (
-    <div className="relative mb-4 my-4">
+    <div className="relative">
       <div className="aspect-[16/9] w-full">
         <Image
           src={'/backgroundimage.png'}
@@ -22,7 +22,7 @@ function Header({ title, content }: DataProps) {
       <div className="absolute inset-0 bg-black bg-opacity-15 flex flex-col justify-end p-8">
         <div className="flex flex-col space-y-2">
           <Link
-            href={'/'}
+            href={'/feed-write'}
             className="self-start font-semibold bg-blue-500 text-white px-4 py-2 rounded-md"
           >
             글쓰러 가기

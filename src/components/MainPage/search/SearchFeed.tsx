@@ -15,6 +15,13 @@ function SearchFeed({ searchValue }: searchProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [sortedItems, setSortItems] = useState<TableFeedType[]>([]);
   const [isSorted, setIsSorted] = useState<boolean>(true);
+  const [clickClass, setClickClass] = useState<{
+    title: string;
+    classname: string;
+  }>({
+    title: '',
+    classname: '',
+  });
   useEffect(() => {
     searchFeedData();
   }, [searchValue]);
@@ -30,6 +37,11 @@ function SearchFeed({ searchValue }: searchProps) {
     setIsLoading(false);
   };
   const handleAttractionsClick = async () => {
+    setClickClass({
+      title: '여행',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
+
     const sortedRes = await axios.post('/api/supabase-sortedfeed', {
       title: '여행',
       searchValue,
@@ -39,6 +51,10 @@ function SearchFeed({ searchValue }: searchProps) {
     setIsSorted(false);
   };
   const handleCultureClick = async () => {
+    setClickClass({
+      title: '문화',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const sortedRes = await axios.post('/api/supabase-sortedfeed', {
       title: '문화',
       searchValue,
@@ -49,6 +65,10 @@ function SearchFeed({ searchValue }: searchProps) {
   };
 
   const handleRestaurantClick = async () => {
+    setClickClass({
+      title: '맛집',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const sortedRes = await axios.post('/api/supabase-sortedfeed', {
       title: '맛집',
       searchValue,
@@ -59,6 +79,10 @@ function SearchFeed({ searchValue }: searchProps) {
   };
 
   const handleFestivalClick = async () => {
+    setClickClass({
+      title: '행사',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const sortedRes = await axios.post('/api/supabase-sortedfeed', {
       title: '축제',
       searchValue,
@@ -70,29 +94,66 @@ function SearchFeed({ searchValue }: searchProps) {
 
   return (
     <>
-      <div className="flex w-full border">
-        <div className="grow">정렬</div>
-        <div className="grow" onClick={handleAttractionsClick}>
-          관광명소
-        </div>
-        <div className="grow" onClick={handleCultureClick}>
-          문화시설
-        </div>
-        <div className="grow" onClick={handleRestaurantClick}>
-          맛집
-        </div>
-        <div className="grow" onClick={handleFestivalClick}>
-          행사
+      <div className="flex w-full pt-4 px-4">
+        <div className="flex w-full items-center gap-3">
+          <div
+            className={`py-1 cursor-pointer w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '여행'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
+            onClick={handleAttractionsClick}
+          >
+            관광명소
+          </div>
+          <div
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '문화'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
+            onClick={handleCultureClick}
+          >
+            문화시설
+          </div>
+          <div
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '맛집'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            } `}
+            onClick={handleRestaurantClick}
+          >
+            맛집
+          </div>
+          <div
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '행사'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            } `}
+            onClick={handleFestivalClick}
+          >
+            행사
+          </div>
         </div>
       </div>
       <div className="w-full px-5 py-5">
-        <div className="w-full rounded-lg bg-[#FFF4F0] flex">
-          <div>
-            <Image src="/Save.png" alt="피드아이콘" width={20} height={20} />
+        <div className="pl-4 py-3 w-full rounded-lg bg-[#FFF4F0] flex gap-2">
+          <div className="mt-[3px] flex w-[30px] h-[25px] items-center">
+            <Image
+              src="/Save.png"
+              alt="피드아이콘"
+              width={30}
+              height={25}
+              className="w-full h-full"
+            />
           </div>
-          <div>
-            <h2>피드</h2>
-            <p>사람들끼리 공유한 모든 여행 꿀팁을 볼 수 있어요</p>
+          <div className="flex flex-col">
+            <h2 className="font-semibold text-lg">피드</h2>
+            <p className="text-sm">
+              사람들끼리 공유한 모든 여행 꿀팁을 볼 수 있어요
+            </p>
           </div>
         </div>
       </div>

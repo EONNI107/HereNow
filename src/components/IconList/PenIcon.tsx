@@ -5,8 +5,8 @@ export default function PenIcon() {
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke="currentColor"
-      className="h-5 w-5"
+      stroke="white"
+      className="h-3.5 w-3.5 "
     >
       <path
         strokeLinecap="round"

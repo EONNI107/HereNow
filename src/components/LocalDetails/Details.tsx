@@ -84,14 +84,16 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
   return (
     <>
       {mainData?.firstimage ? (
-        <Image
-          className="mx-auto my-3 mb-8 w-auto h-auto"
-          src={mainData?.firstimage || defaultImage}
-          width={400}
-          height={400}
-          alt="장소 이미지"
-          priority
-        />
+        <div className="relative w-full h-[300px] mx-auto mb-2">
+          <Image
+            src={mainData?.firstimage || defaultImage}
+            alt="장소 이미지"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-contain"
+            priority
+          />
+        </div>
       ) : null}
       <div className="flex justify-between gap-2 mx-2">
         <h1 className="text-2xl font-bold mb-4">{mainData?.title}</h1>

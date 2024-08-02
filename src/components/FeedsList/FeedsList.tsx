@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PostIcon from '../IconList/PostIcon';
 import { createClient } from '@/utils/supabase/client';
-import { Database, Tables } from '@/types/supabase';
+import { Tables } from '@/types/supabase';
 import useAuthStore from '@/zustand/useAuthStore';
 import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
@@ -34,7 +34,7 @@ export default function FeedList() {
   }, [user?.id]);
 
   return (
-    <>
+    <div>
       {feedsList.length === 0 ? (
         <div className="flex flex-col items-center h-full justify-center">
           <PostIcon />
@@ -63,6 +63,6 @@ export default function FeedList() {
           })}
         </div>
       )}
-    </>
+    </div>
   );
 }
