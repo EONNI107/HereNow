@@ -130,7 +130,7 @@ function SignUpPage() {
               className="block text-sm font-medium text-gray-700 mb-1"
               htmlFor="nickname"
             >
-              닉네임 설정
+              닉네임
             </label>
             <input
               onBlur={handleNicknameBlur}
