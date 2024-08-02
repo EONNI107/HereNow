@@ -1,4 +1,4 @@
-import regionData from '@/data/region.json';
+import regionData from '@/data/regions.json';
 
 export function getSigunguName(areaCode: string, sigunguCode: string) {
   const region = regionData.region.find((r) => r.code === areaCode);

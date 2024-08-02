@@ -28,17 +28,17 @@ function FeedListItem({
   }
   return (
     <div>
-      <Link href={'/'} className="p-4  rounded-3xl">
+      <Link href={`/feed-detail/${feed.id}`} className="p-4  rounded-3xl">
         <div className="flex items-center mb-4">
           <Image
-            src={feed.Users.profileImage || '/default-profile.jpg'}
+            src={feed.Users?.profileImage || '/default-profile.jpg'}
             alt="유저 프로필 이미지"
             width={48}
             height={48}
             className="w-12 h-12 border rounded-full mr-4"
           />
           <span className="text-[14px] font-regular">
-            {feed.Users.nickname}
+            {feed.Users?.nickname}
           </span>
         </div>
         <div className="relative h-48">
