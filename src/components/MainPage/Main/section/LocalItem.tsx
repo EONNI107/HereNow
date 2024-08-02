@@ -10,7 +10,7 @@ function LocalItem({ item, onclick }: NearbyTypePlace) {
   return (
     <li
       onClick={onclick}
-      className="relative w-auto h-auto mb-5 bg-gradient-to-r from-black/50 rounded-xl overflow-hidden cursor-pointer"
+      className="relative w-auto h-auto mb-5 rounded-xl overflow-hidden cursor-pointer"
     >
       <Image
         src={
@@ -22,6 +22,7 @@ function LocalItem({ item, onclick }: NearbyTypePlace) {
         className="rounded-xl object-cover w-full h-[100px]"
         priority
       />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent rounded-xl"></div>
       <div className="absolute top-8 left-3">
         <p
           className={
