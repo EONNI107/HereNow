@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 type EditProfile = Pick<TablesInsert<'Users'>, 'nickname' | 'profileImage'>;
 
 function MyPage() {
-  const { user } = useAuthStore();
+  const { user, setUser } = useAuthStore();
   const supabase = createClient();
   const router = useRouter();
   const [profile, setProfile] = useState<Tables<'Users'>>();
@@ -109,38 +109,46 @@ function MyPage() {
   };
 
   const handleUpdate = async () => {
-    if (user) {
-      let imagePath = profile?.profileImage;
+    if (!user || !profile || !editProfile) return;
 
-      if (newImageFile) {
-        const path = await uploadImage(newImageFile);
-        if (path) {
-          imagePath = `https://cuxcqeqwbwfuxipnozwy.supabase.co/storage/v1/object/public/profileImage/${path}`;
-        }
+    let imagePath = profile.profileImage;
+
+    if (newImageFile) {
+      const path = await uploadImage(newImageFile);
+      if (path) {
+        imagePath = `https://cuxcqeqwbwfuxipnozwy.supabase.co/storage/v1/object/public/profileImage/${path}`;
       }
-      //쥬스탠드 업데이트 기능 추가
-      const { error } = await supabase
-        .from('Users')
-        .update({
-          nickname: editProfile?.nickname,
+    }
+
+    const { error } = await supabase
+      .from('Users')
+      .update({
+        nickname: editProfile.nickname,
+        profileImage: imagePath,
+      })
+      .eq('id', user.id);
+
+    if (error) {
+      showToast('error', `프로필 파일 업로드중 오류가 발생했습니다`);
+      console.log(error.message);
+    } else {
+      setProfile(() => {
+        return {
+          ...profile,
+          nickname: editProfile.nickname,
           profileImage: imagePath,
-        })
-        .eq('id', user.id);
+        };
+      });
 
-      if (error) {
-        showToast('error', `프로필 파일 업로드중 오류가 발생했습니다`);
-        console.log(error.message);
-      } else {
-        setProfile((prev) => {
-          return {
-            ...prev,
-            nickname: editProfile?.nickname,
-            profileImage: imagePath,
-          } as Tables<'Users'>;
-        });
-        setIsEditing(false);
-        showToast('success', '프로필 수정이 완료되었습니다.');
-      }
+      setUser({
+        ...user,
+        user_metadata: {
+          nickname: editProfile.nickname,
+          profileImage: editProfile.profileImage,
+        },
+      });
+      setIsEditing(false);
+      showToast('success', '프로필 수정이 완료되었습니다.');
     }
   };
 
