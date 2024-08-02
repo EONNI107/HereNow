@@ -94,52 +94,54 @@ function SignInPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#118DFF] text-white py-2 px-4 rounded-md hover:bg-gray-300"
+            className="w-full bg-[#118DFF] text-white py-3 px-4 rounded-2xl hover:bg-gray-300"
           >
             로그인
           </button>
         </form>
-        <div className="mt-4 text-center">
-          <Link
-            href="/sign-up"
-            className="text-sm text-white underline underline-offset-2 decoration-1"
-          >
-            처음이신가요?
-          </Link>
-        </div>
-        <div className="text-center text-sm text-white mb-6 mt-40">
-          ────────── SNS계정으로 로그인하기 ──────────
-        </div>
-        <div className="mt-6 flex flex-col space-y-2">
-          <div>
-            <button
-              type="button"
-              onClick={() => signInWithOAuth('kakao')}
-              className="w-full bg-[#F9E006] font-bold text-black py-2 px-4 rounded-md hover:bg-yellow-400 flex items-center justify-center"
+        <div>
+          <div className="mt-6 text-center">
+            <Link
+              href="/sign-up"
+              className="text-base text-white underline underline-offset-2 decoration-1"
             >
-              <Image
-                src="/kakao_symbol.jpg"
-                alt="Kakao"
-                width={24}
-                height={24}
-              />
-              <span className="ml-2">카카오로 로그인</span>
-            </button>
+              처음이신가요?
+            </Link>
           </div>
-          <div className="pt-0.5">
-            <button
-              type="button"
-              onClick={() => signInWithOAuth('google')}
-              className="w-full bg-white font-bold text-black py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
-            >
-              <Image
-                src="/google_symbol.svg.jpg"
-                alt="Google"
-                width={24}
-                height={24}
-              />
-              <span className="ml-2">구글로 로그인</span>
-            </button>
+          <div className="text-center text-sm text-white mb-6 mt-40">
+            ─────────── SNS계정으로 로그인하기 ───────────
+          </div>
+          <div className="mt-6 flex flex-col space-y-2">
+            <div>
+              <button
+                type="button"
+                onClick={() => signInWithOAuth('kakao')}
+                className="w-full bg-[#F9E006] font-bold text-black py-2 px-4 rounded-md hover:bg-yellow-400 flex items-center justify-center"
+              >
+                <Image
+                  src="/kakao_symbol.jpg"
+                  alt="Kakao"
+                  width={24}
+                  height={24}
+                />
+                <span className="ml-2">카카오로 로그인</span>
+              </button>
+            </div>
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => signInWithOAuth('google')}
+                className="w-full bg-white font-bold text-black py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+              >
+                <Image
+                  src="/google_symbol.svg.jpg"
+                  alt="Google"
+                  width={24}
+                  height={24}
+                />
+                <span className="ml-2">구글로 로그인</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
