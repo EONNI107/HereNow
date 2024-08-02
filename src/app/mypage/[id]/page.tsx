@@ -11,6 +11,7 @@ import FeedLikes from '@/components/FeedLikesList/FeedLikesList';
 import PlaceLikes from '@/components/PlaceLikes/PlaceLikes';
 import useAuthStore from '@/zustand/useAuthStore';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 type EditProfile = Pick<TablesInsert<'Users'>, 'nickname' | 'profileImage'>;
 
@@ -65,6 +66,7 @@ function MyPage() {
     const fetchPosts = async () => {
       setLoading(true);
       try {
+        // 포스트 불러오기 로직
       } catch (error) {
         showToast(
           'error',
@@ -144,7 +146,7 @@ function MyPage() {
         ...user,
         user_metadata: {
           nickname: editProfile.nickname,
-          profileImage: editProfile.profileImage,
+          profileImage: imagePath,
         },
       });
       setIsEditing(false);
@@ -159,105 +161,107 @@ function MyPage() {
           user ? 'bg-[#DBEEFF]' : 'bg-[#FFF4F0]'
         }`}
       >
-        <div className="relative flex items-center w-full justify-between p-5">
-          <Image
-            src={
-              imagePreview ||
-              profile?.profileImage ||
-              'https://via.placeholder.com/150'
-            }
-            className="h-16 w-16 rounded-full"
-            alt="Profile"
-            width={64}
-            height={64}
-          />
-          {!user && (
-            <a href="/sign-in">
-              <button className="ml-4 p-2 bg-[#FD8B59] text-white rounded-xl">
+        {!user ? (
+          <div className="flex justify-between items-center w-full p-8 bg-[#FFF4F0] rounded-2xl">
+            <Image
+              src="https://via.placeholder.com/150"
+              className="h-16 w-16 rounded-full"
+              alt="Profile"
+              width={64}
+              height={64}
+            />
+            <Link href="/sign-in">
+              <button className="px-4 py-2 bg-[#FD8B59] text-white rounded-xl text-sm whitespace-nowrap">
                 로그인 · 회원가입하러가기
               </button>
-            </a>
-          )}
-          {user && isEditing && (
-            <div>
-              <label
-                htmlFor="file-input"
-                className="absolute bottom-6 right-11 cursor-pointer"
-              >
-                <PenIcon />
-              </label>
-              <input
-                type="file"
-                id="file-input"
-                onChange={handleImageChange}
-                className="hidden"
-              />
-            </div>
-          )}
-        </div>
-        <div>
-          {user && !isEditing && (
-            <div>
-              <div className="mt-5 mr-6">{profile?.email}</div>
-              <div className="mb-5">{profile?.nickname}</div>
-            </div>
-          )}
-          {user && isEditing && (
-            <div>
-              <div className="mt-5 mr-8">{profile?.email}</div>
-              <div className="mb-5">
-                <input
-                  type="text"
-                  value={editProfile?.nickname}
-                  onChange={(e) =>
-                    setEditProfile({
-                      ...editProfile,
-                      nickname: e.target.value,
-                    })
+            </Link>
+          </div>
+        ) : (
+          <div className="relative flex items-center w-full justify-between p-5">
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <Image
+                  src={
+                    imagePreview ||
+                    profile?.profileImage ||
+                    'https://via.placeholder.com/150'
                   }
-                  className="p-1 border rounded w-28"
+                  className="h-16 w-16 rounded-full"
+                  alt="Profile"
+                  width={64}
+                  height={64}
+                />
+                {user && isEditing && (
+                  <label
+                    htmlFor="file-input"
+                    className="absolute bottom-0 right-0 p-0.5 cursor-pointer bg-[#FD8B59] rounded-full"
+                  >
+                    <PenIcon />
+                  </label>
+                )}
+                <input
+                  type="file"
+                  id="file-input"
+                  onChange={handleImageChange}
+                  className="hidden"
                 />
               </div>
-            </div>
-          )}
-        </div>
-        {user && (
-          <div>
-            {isEditing ? (
-              <div className="flex flex-col space-y-2">
-                <div className="flex justify-end">
-                  <button
-                    onClick={handleUpdate}
-                    className="m-2 w-24 rounded-md bg-sky-500 text-white"
-                  >
-                    수정 완료
-                  </button>
-                </div>
-                <button
-                  onClick={() => setIsEditing(false)}
-                  className="m-2 w-24 rounded-md bg-gray-500 text-white"
-                >
-                  취소
-                </button>
-              </div>
-            ) : (
               <div>
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="mt-10 ml-5 w-24 rounded-md bg-sky-500 text-white"
-                >
-                  프로필 수정
-                </button>
-                <button
-                  onClick={() => {
-                    useAuthStore.getState().logOut();
-                    showToast('success', '로그아웃이 완료 되었습니다');
-                    router.push('/sign-in');
-                  }}
-                  className="m-5 mb-10 w-24 rounded-md bg-[#FD8B59] text-white"
-                >
-                  로그아웃
-                </button>
+                <div className="font-medium">{profile?.email}</div>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editProfile?.nickname || ''}
+                    onChange={(e) =>
+                      setEditProfile({
+                        ...editProfile,
+                        nickname: e.target.value,
+                      })
+                    }
+                    className="p-1 border rounded w-28"
+                  />
+                ) : (
+                  <div className="text-gray-700">{profile?.nickname}</div>
+                )}
+              </div>
+            </div>
+            {user && (
+              <div className="flex flex-col items-center ">
+                {isEditing ? (
+                  <>
+                    <button
+                      onClick={handleUpdate}
+                      className="m-2 w-24 rounded-md bg-sky-500 text-white"
+                    >
+                      수정 완료
+                    </button>
+                    <button
+                      onClick={() => setIsEditing(false)}
+                      className="m-2 w-24 rounded-md bg-gray-500 text-white"
+                    >
+                      취소
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => setIsEditing(true)}
+                      className="m-2 w-24 rounded-md bg-sky-500 text-white"
+                    >
+                      프로필 수정
+                    </button>
+                    <button
+                      onClick={() => {
+                        useAuthStore.getState().logOut();
+                        showToast('success', '로그아웃이 완료 되었습니다');
+                        router.push('/sign-in');
+                      }}
+                      className="m-2 w-24 rounded-md bg-[#FD8B59] text-white "
+                    >
+                      로그아웃
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>
