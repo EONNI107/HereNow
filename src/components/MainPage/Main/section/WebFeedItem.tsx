@@ -2,12 +2,14 @@
 import { TableFeedUserType } from '@/types/mainType';
 import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 type feedTypeProps = {
   feedItem: TableFeedUserType;
 };
 const WebFeedItem = ({ feedItem }: feedTypeProps) => {
+  const router = useRouter();
   let feedImage = '/No_Img.jpg';
   if (feedItem.image) {
     try {
@@ -18,10 +20,16 @@ const WebFeedItem = ({ feedItem }: feedTypeProps) => {
       showToast('error', '이미지를 불러오는 중 오류가 발생하였습니다.');
     }
   }
+  const handleFeedMove = (Id: number) => {
+    router.push(`/feed-detail/${Id}`);
+  };
   return (
     <>
       <div className="flex flex-col items-center">
-        <div className="w-[150px] h-[150px] relative">
+        <div
+          className="w-[150px] h-[150px] relative cursor-pointer"
+          onClick={() => handleFeedMove(feedItem.id)}
+        >
           <Image
             src={feedImage}
             alt="피드이미지"
@@ -36,7 +44,7 @@ const WebFeedItem = ({ feedItem }: feedTypeProps) => {
         </div>
 
         <div className="w-full flex mt-2 ml-8 gap-1">
-          <div className="w-[25px] h-[25px] relative">
+          <div className="w-[25px] h-[25px]">
             <Image
               src={feedItem.Users.profileImage || feedImage}
               alt="프로필이미지"

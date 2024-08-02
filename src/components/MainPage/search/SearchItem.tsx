@@ -15,6 +15,13 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const [resDatas, setResDatas] = useState<SearchedType[][]>([]);
   const [isShow, setIsShow] = useState<boolean>(true);
   const [isSkeleton, setIsSkeleton] = useState<boolean>(true);
+  const [clickClass, setClickClass] = useState<{
+    title: string;
+    classname: string;
+  }>({
+    title: '',
+    classname: '',
+  });
   const router = useRouter();
   useEffect(() => {
     const datas = async () => {
@@ -46,21 +53,37 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   }, [searchValue]);
 
   const handleAttractionsClick = () => {
+    setClickClass({
+      title: '여행',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const firstdata = resDatas[0];
     setResData(firstdata);
     setIsShow(false);
   };
   const handleCultureClick = () => {
+    setClickClass({
+      title: '문화',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const firstdata = resDatas[1];
     setResData(firstdata);
     setIsShow(false);
   };
   const handleRestaurantClick = () => {
+    setClickClass({
+      title: '맛집',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const firstdata = resDatas[2];
     setResData(firstdata);
     setIsShow(false);
   };
   const handleFestivalClick = () => {
+    setClickClass({
+      title: '행사',
+      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+    });
     const firstdata = resDatas[3];
     setResData(firstdata);
     setIsShow(false);
@@ -71,29 +94,44 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   };
   return (
     <>
-      <div className="flex w-full border">
-        <div className="shrink-0 px-1 py-1">정렬</div>
-        <div className="flex border w-full items-center">
+      <div className="flex w-full pt-4 px-4">
+        <div className="flex w-full items-center gap-3">
           <div
-            className="w-full flex justify-center"
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '여행'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
             onClick={handleAttractionsClick}
           >
             관광명소
           </div>
           <div
-            className="w-full flex justify-center"
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '문화'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
             onClick={handleCultureClick}
           >
             문화시설
           </div>
           <div
-            className="w-full flex justify-center"
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '맛집'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
             onClick={handleRestaurantClick}
           >
             맛집
           </div>
           <div
-            className="w-full flex justify-center"
+            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
+              clickClass.title === '행사'
+                ? clickClass.classname
+                : 'border-[#7D8591] bg-white text-[#505050]'
+            }`}
             onClick={handleFestivalClick}
           >
             행사
@@ -101,13 +139,21 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
         </div>
       </div>
       <div className="w-full px-5 py-5">
-        <div className="w-full rounded-lg bg-[#FFF4F0] flex">
-          <div>
-            <Image src="/Event.png" alt="행사아이콘" width={20} height={20} />
+        <div className="pl-4 py-3 w-full rounded-lg bg-[#FFF4F0] flex gap-2">
+          <div className="mt-[3px] flex w-[30px] h-[25px] items-center">
+            <Image
+              src="/Event.png"
+              alt="행사아이콘"
+              width={30}
+              height={25}
+              className="w-full h-full"
+            />
           </div>
-          <div>
-            <h2>행사</h2>
-            <p>{searchValue}의 가볼만한 곳을 찾아드릴게요!</p>
+          <div className="flex flex-col">
+            <h2 className="font-semibold text-lg">행사</h2>
+            <p className="text-sm">
+              {searchValue}의 가볼만한 곳을 찾아드릴게요!
+            </p>
           </div>
         </div>
       </div>
@@ -122,21 +168,22 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             {searchData?.map((item) => (
               <div
                 key={item.contentid}
-                className="w-full flex gap-3"
+                className="w-full flex gap-3 cursor-pointer"
                 onClick={() => handleClick(item.contentid)}
               >
-                <div className="w-[100px] h-[100px] relative">
+                <div className="w-[100px] h-[100px]">
                   <Image
                     src={item.firstimage}
                     alt="이미지"
-                    fill
-                    className="rounded-lg border"
+                    width={100}
+                    height={100}
+                    className="rounded-lg border w-full h-full object-cover"
                   />
                 </div>
-                <div className="flex justify-between w-[300px] items-center px-4">
+                <div className="flex justify-between w-[300px] items-center px-4 text-[#000] font-semibold text-lg">
                   <p>{item.title}</p>
                   <div>
-                    <HeartIcon className="w-4 h-4" />
+                    <HeartIcon className="w-5 h-5" />
                   </div>
                 </div>
               </div>
@@ -148,26 +195,22 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             {resData?.map((item) => (
               <div
                 key={item.contentid}
-                className="w-full flex gap-3"
+                className="w-full flex gap-3 cursor-pointer"
                 onClick={() => handleClick(item.contentid)}
               >
-                <div className="w-[100px] h-[100px] relative">
+                <div className="w-[100px] h-[100px]">
                   <Image
                     src={item.firstimage}
                     alt="이미지"
-                    fill
-                    className="rounded-lg border"
+                    width={100}
+                    height={100}
+                    className="rounded-lg border w-full h-full object-cover"
                   />
                 </div>
-                <div className="flex justify-between w-[300px] items-center px-4">
+                <div className="flex justify-between w-[300px] items-center px-4  text-[#000] font-semibold text-lg">
                   <p>{item.title}</p>
                   <div>
-                    <Image
-                      src="/heart.png"
-                      alt="좋아요"
-                      width={20}
-                      height={20}
-                    />
+                    <HeartIcon className="w-5 h-5" />
                   </div>
                 </div>
               </div>

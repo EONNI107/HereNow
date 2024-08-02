@@ -5,6 +5,7 @@ import QueryProvider from '@/providers/QueryProvider';
 import localFont from 'next/font/local';
 import Footer from '@/components/Footer';
 import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
+import { Suspense } from 'react';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -27,8 +28,10 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
       <body className={`${pretendard.variable} font-pretendard`}>
         <QueryProvider>
           <div className="max-w-[400px] mx-auto">
-            <HeaderLayout />
-            <div className="pt-[35px] pb-[70px]">
+            <Suspense>
+              <HeaderLayout />
+            </Suspense>
+            <div className="pt-[50px] pb-[84px]">
               <ToastProvider>{children}</ToastProvider>
             </div>
             <Footer />
