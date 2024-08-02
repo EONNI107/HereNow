@@ -57,38 +57,68 @@ function SignInPage() {
   };
 
   return (
-    <div className="sign-in-container">
-      <h2>로그인 페이지</h2>
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">이메일:</label>
-          <input
-            type="email"
-            id="email"
-            ref={emailRef}
-            placeholder="이메일을 입력하세요"
-          />
+    <div
+      className="min-h-screen flex flex-col  items-center p-4 pt-20 bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage:
+          "url('https://media.istockphoto.com/id/1822247032/ko/%EC%82%AC%EC%A7%84/%EA%B0%80%EC%9D%84-%EC%8A%A4%EC%9C%84%EC%8A%A4-%EC%95%8C%ED%94%84%EC%8A%A4%EC%9D%98-%EA%B5%AC%EB%B6%88%EA%B5%AC%EB%B6%88%ED%95%9C-%EB%8F%84%EB%A1%9C%EC%9D%98-%EC%A1%B0%EA%B0%90%EB%8F%84.jpg?s=1024x1024&w=is&k=20&c=_wvxcmCMESdovQcIjvuh78JlBsUcKMv2t0-PMCfrKYs=')",
+      }}
+    >
+      <div className="w-full">
+        <p className="text-sm text-gray-600 mb-4 text-center">
+          찐 로컬들의 여행, 맛집 공유 앱
+        </p>
+        <h5 className="text-2xl font-bold mb-6 text-center  text-gray-800">
+          지금, 여기
+        </h5>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <input
+              type="email"
+              id="email"
+              ref={emailRef}
+              placeholder="아이디 (이메일)"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white bg-opacity-90"
+            />
+          </div>
+          <div>
+            <input
+              ref={passwordRef}
+              type="password"
+              id="password"
+              placeholder="비밀번호"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white bg-opacity-90"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-gray-200 text-black py-2 px-4 rounded-md hover:bg-gray-300"
+          >
+            로그인
+          </button>
+        </form>
+        <div className="mt-4 text-center">
+          <Link href="/sign-up" className="text-sm text-blue-600">
+            처음이신가요?
+          </Link>
         </div>
-        <div className="form-group">
-          <label htmlFor="password">비밀번호:</label>
-          <input
-            ref={passwordRef}
-            type="password"
-            id="password"
-            placeholder="비밀번호를 입력하세요"
-          />
+        <div className="mt-6 flex flex-col space-y-2">
+          <button
+            type="button"
+            onClick={() => signInWithOAuth('kakao')}
+            className="w-full bg-yellow-300 text-black py-2 px-4 rounded-md hover:bg-yellow-400 flex items-center justify-center"
+          >
+            <span className="mr-2">카카오로 로그인</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => signInWithOAuth('google')}
+            className="w-full bg-white text-black py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
+          >
+            <span className="mr-2">구글로 로그인</span>
+          </button>
         </div>
-        <button type="submit">로그인</button>
-      </form>
-      <Link href="/sign-up">회원가입</Link>
-      <br />
-      <button type="button" onClick={() => signInWithOAuth('google')}>
-        구글
-      </button>
-      <br />
-      <button type="button" onClick={() => signInWithOAuth('kakao')}>
-        카카오
-      </button>
+      </div>
     </div>
   );
 }
