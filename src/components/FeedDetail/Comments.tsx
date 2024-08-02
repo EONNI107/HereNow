@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import useAuthStore from '@/zustand/useAuthStore';
 
 dayjs.extend(relativeTime);
 
@@ -31,6 +32,7 @@ function Comments({ postId, onClose }: CommentsProps) {
   const [newComment, setNewComment] = useState<string>('');
   const [notification, setNotification] = useState<string | null>(null);
   const supabase = createClient();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -53,14 +55,18 @@ function Comments({ postId, onClose }: CommentsProps) {
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
+    if (!user) {
+      setNotification('로그인이 필요합니다.');
+      setTimeout(() => setNotification(null), 3000);
+      return;
+    }
 
     const { data, error } = await supabase
       .from('FeedComments')
       .insert({
         feedId: postId,
         content: newComment,
-        userId,
+        userId: user.id,
       })
       .select('*, Users (profileImage, nickname)');
 
@@ -78,7 +84,7 @@ function Comments({ postId, onClose }: CommentsProps) {
         })),
       ]);
       setNewComment('');
-      setNotification('댓글이 등록되었습니다');
+      setNotification('댓글이 등록되었습니다.');
       setTimeout(() => setNotification(null), 3000);
     }
   };
