@@ -27,11 +27,6 @@ function LocalListPage({ region }: { region: string }) {
     return <LoadingState error={error} />;
   }
 
-  if (data && data.localList.length === 0) {
-    router.push('/404');
-    return null;
-  }
-
   return (
     <div className="max-w-md mx-auto my-4">
       <RegionHeader region={region} />

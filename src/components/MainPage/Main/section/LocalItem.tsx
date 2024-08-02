@@ -10,7 +10,7 @@ function LocalItem({ item, onclick }: NearbyTypePlace) {
   return (
     <li
       onClick={onclick}
-      className="relative w-auto h-auto mb-5 bg-gradient-to-r from-black/50 rounded-xl overflow-hidden"
+      className="relative w-auto h-auto mb-5 bg-gradient-to-r from-black/50 rounded-xl overflow-hidden cursor-pointer"
     >
       <Image
         src={

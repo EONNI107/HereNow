@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import WebFeedItem from './WebFeedItem';
 import { TableFeedUserType } from '@/types/mainType';
 import SkeletonFeedItem from '../../Skeleton/SkeletonFeedItem';
+import { useRouter } from 'next/navigation';
 
 function WebFeedSection() {
+  const router = useRouter();
   const [feedItems, setFeedItems] = useState<TableFeedUserType[] | null>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
@@ -25,7 +27,12 @@ function WebFeedSection() {
         <h2 className="text-[#000] font-semibold text-lg">
           지금 뜨고 있는 피드
         </h2>
-        <button className="text-[#000] font-regular text-sm">더보러가기</button>
+        <button
+          className="text-[#000] font-regular text-sm"
+          onClick={() => router.push('/feed')}
+        >
+          더보러가기
+        </button>
       </div>
       <div className="grid gap-4 grid-cols-2 grid-rows-2 w-full h-full">
         {isLoading
