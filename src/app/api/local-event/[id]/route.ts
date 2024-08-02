@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { tourApi } from '../../tourApi';
-import { region } from '@/data/region.json';
+import { region } from '@/data/regions.json';
 import dayjs from 'dayjs';
 
 export const GET = async (

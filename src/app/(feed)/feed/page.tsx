@@ -1,5 +1,5 @@
 import FeedListClient from '@/components/FeedList/FeedListClient';
-import { Feed } from '@/types/feed';
+import UserName from '@/components/FeedList/UserName';
 import { createClient } from '@/utils/supabase/server';
 import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
@@ -33,19 +33,21 @@ async function FeedListPage() {
         <div className="absolute inset-0 bg-black bg-opacity-15 flex flex-col justify-end p-8">
           <div className="flex flex-col space-y-2">
             <Link
-              href={'/'}
+              href={'/feed-write'}
               className="self-start font-semibold bg-blue-500 text-white px-4 py-2 rounded-md"
             >
               글쓰러 가기
             </Link>
             <h1 className="font-semibold text-[28px] text-white">
-              <span className="block">홍길동님만의</span>
+              <span className="block">
+                <UserName />
+              </span>
               맛집 · 여행지를 공유해주세요!
             </h1>
           </div>
         </div>
       </div>
-      <FeedListClient initialFeeds={data as Feed[]} />
+      {data && <FeedListClient initialFeeds={data || []} />}
     </div>
   );
 }
