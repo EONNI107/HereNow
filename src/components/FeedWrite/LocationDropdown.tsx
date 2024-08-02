@@ -7,12 +7,12 @@ type LocationDropdownProps = {
   setSigungu: (value: string) => void;
 };
 
-const LocationDropdown = ({
+function LocationDropdown({
   region,
   sigungu,
   setRegion,
   setSigungu,
-}: LocationDropdownProps) => {
+}: LocationDropdownProps) {
   const [regionsData, setRegionsData] = useState<{ [key: string]: string[] }>(
     {},
   );
@@ -71,6 +71,6 @@ const LocationDropdown = ({
       )}
     </>
   );
-};
+}
 
 export default LocationDropdown;
