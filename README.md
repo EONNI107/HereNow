@@ -75,8 +75,8 @@
 
 - ## 프로젝트 진행 간
 
-<img width="300" height="300"  alt="image" src="룰파일.gif">
-<img width="300" height="300" alt="image" src="코드 컨벤션.jpg">
+<img width="300" height="300"  alt="image" src="gif\룰파일.gif">
+<img width="300" height="300" alt="image" src="gif\코드 컨벤션.jpg">
 <br/>
 <br/>
 
