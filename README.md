@@ -62,7 +62,7 @@
     <td align="center">
     장소 상세 페이지 - <br/> 장소 정보, 지도, 주변 장소, 댓글, API</td>
     <td align="center">
-    피드 상세 페이지 - <br/> 좋아요, 댓글 | 피드 작성 페이지</td>
+    피드 상세 페이지 - <br/> 좋아요, 댓글, 피드 작성 페이지</td>
     <td align="center">
     로그인/회원가입/마이페이지</td>
     <td align="center">전체적인 디자인, 와이어프레임</td>
