@@ -98,6 +98,11 @@ function PostPage({ params }: PostPageProps) {
   const userNickname = post.userProfile?.nickname || '알 수 없음';
 
   const handleEdit = () => {
+    if (!user || user.id !== post.userId) {
+      toast.error('수정 권한이 없습니다.');
+      return;
+    }
+
     // URLSearchParams를 사용하여 query를 직렬화
     const queryParams = new URLSearchParams({
       id: String(post.id),
@@ -112,6 +117,11 @@ function PostPage({ params }: PostPageProps) {
   };
 
   const handleDelete = async () => {
+    if (!user || user.id !== post.userId) {
+      toast.error('삭제 권한이 없습니다.');
+      return;
+    }
+
     const supabase = createClient();
     const { error } = await supabase.from('Feeds').delete().eq('id', post.id);
 
