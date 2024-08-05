@@ -44,17 +44,15 @@ export default function PlaceLikes() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5">
           {placeLikes.map((place) => (
             <div key={place.id} className=" border rounded">
-              {place.imageUrl && (
-                <Link href={`/local/details/${place.placeId}`}>
-                  <Image
-                    src={place.imageUrl}
-                    alt={'찜한 장소 이미지'}
-                    width={200}
-                    height={200}
-                    className="rounded aspect-square object-cover"
-                  />
-                </Link>
-              )}
+              <Link href={`/local/details/${place.placeId}`}>
+                <Image
+                  src={place.imageUrl || '/No_Img.jpg'}
+                  alt={'찜한 장소 이미지'}
+                  width={200}
+                  height={200}
+                  className="rounded aspect-square object-cover"
+                />
+              </Link>
             </div>
           ))}
         </div>
