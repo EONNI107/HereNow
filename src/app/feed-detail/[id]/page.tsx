@@ -183,13 +183,13 @@ function PostPage({ params }: PostPageProps) {
         <div className="flex space-x-4">
           <button
             onClick={handleEdit}
-            className="btn bg-yellow-500 px-4 py-2 rounded-md text-white"
+            className="btn border-2 border-[#118DFF] text-[#118DFF] bg-transparent px-4 py-2 rounded-md hover:bg-[#118DFF] hover:text-white transition-colors duration-300"
           >
             수정하기
           </button>
           <button
             onClick={handleDelete}
-            className="btn bg-red-500 px-4 py-2 rounded-md text-white"
+            className="btn border-2 border-[#118DFF] text-[#118DFF] bg-transparent px-4 py-2 rounded-md hover:bg-[#118DFF] hover:text-white transition-colors duration-300"
           >
             삭제하기
           </button>
