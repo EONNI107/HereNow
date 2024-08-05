@@ -13,6 +13,7 @@ import { Pagination, Navigation } from 'swiper/modules';
 import Image from 'next/image';
 import useAuthStore from '@/zustand/useAuthStore';
 import { formatDate } from '@/utils/formatDate';
+import Skeleton from '@/components/Skeleton';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -86,7 +87,18 @@ function PostPage({ params }: PostPageProps) {
   }, [params.id]);
 
   if (!post) {
-    return <div>피드를 찾을 수 없습니다</div>;
+    return (
+      <div className="p-4">
+        <Skeleton height="h-[260px]" />
+        <div className="mt-4 space-y-4">
+          <Skeleton height="h-[180px]">
+            <div className="bg-gray-400 animate-pulse rounded-md h-8 w-1/2 mb-6"></div>
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-full mb-3 mx-auto"></div>
+            <div className="bg-gray-400 animate-pulse rounded-md h-6 w-full mb-2 mx-auto"></div>
+          </Skeleton>
+        </div>
+      </div>
+    );
   }
 
   const images = Array.isArray(post.image) ? post.image : [post.image];
