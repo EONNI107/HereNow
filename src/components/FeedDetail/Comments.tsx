@@ -6,6 +6,9 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import useAuthStore from '@/zustand/useAuthStore';
+import { toast } from 'react-toastify';
+import LoginPrompt from '@/components/LoginPrompt';
 
 dayjs.extend(relativeTime);
 
@@ -30,6 +33,7 @@ function Comments({ postId, onClose }: CommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState<string>('');
   const [notification, setNotification] = useState<string | null>(null);
+  const { user } = useAuthStore();
   const supabase = createClient();
 
   useEffect(() => {
@@ -53,14 +57,22 @@ function Comments({ postId, onClose }: CommentsProps) {
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
+    if (!user) {
+      toast(<LoginPrompt />, {
+        position: 'top-center',
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      });
+      return;
+    }
 
     const { data, error } = await supabase
       .from('FeedComments')
       .insert({
         feedId: postId,
         content: newComment,
-        userId,
+        userId: user.id,
       })
       .select('*, Users (profileImage, nickname)');
 
