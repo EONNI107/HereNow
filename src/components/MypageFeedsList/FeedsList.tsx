@@ -34,7 +34,7 @@ export default function FeedList() {
   }, [user?.id]);
 
   return (
-    <div>
+    <>
       {feedsList.length === 0 ? (
         <div className="flex flex-col items-center h-full justify-center">
           <PostIcon />
@@ -63,6 +63,6 @@ export default function FeedList() {
           })}
         </div>
       )}
-    </div>
+    </>
   );
 }
