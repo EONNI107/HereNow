@@ -27,6 +27,7 @@ function FeedListClient({ initialFeeds }: FeedListClientProps) {
       .select(
         `*, Users(profileImage, nickname), FeedLikes(id), FeedComments(id)`,
       )
+      .order('createdAt', { ascending: false })
       .range(pageParam * FEEDS_PER_PAGE, (pageParam + 1) * FEEDS_PER_PAGE - 1);
 
     if (selectedRegion) {

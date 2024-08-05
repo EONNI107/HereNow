@@ -10,6 +10,7 @@ async function FeedListPage() {
   const { data, error } = await supabase
     .from('Feeds')
     .select(`*, Users(profileImage, nickname), FeedLikes(id), FeedComments(id)`)
+    .order('createdAt', { ascending: false })
     .range(0, 9);
 
   if (error) {
