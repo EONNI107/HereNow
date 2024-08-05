@@ -132,7 +132,7 @@ function FeedListClient({ initialFeeds }: FeedListClientProps) {
           ? '로딩 중...'
           : hasNextPage
           ? '더 보기'
-          : '더 이상 보여줄 피드가 없네요!'}
+          : '더 이상 보여줄 피드가 없어요!'}
       </div>
     </div>
   );
