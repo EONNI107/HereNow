@@ -22,7 +22,7 @@ function WebFeedSection() {
   };
 
   return (
-    <section className="flex flex-col gap-4 w-full px-4 py-4">
+    <section className="flex flex-col gap-4 w-full px-4 py-4 mb-6">
       <div className="flex justify-between">
         <h2 className="text-[#000] font-semibold text-lg">
           지금 뜨고 있는 피드
