@@ -7,6 +7,7 @@ import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import { Feed } from '@/types/feed';
 import regionData from '@/data/regions.json';
+import LoadingSpinner from '../LoadingSpinner';
 
 const FEEDS_PER_PAGE = 4;
 
@@ -26,6 +27,7 @@ function FeedListClient({ initialFeeds }: FeedListClientProps) {
       .select(
         `*, Users(profileImage, nickname), FeedLikes(id), FeedComments(id)`,
       )
+      .order('createdAt', { ascending: false })
       .range(pageParam * FEEDS_PER_PAGE, (pageParam + 1) * FEEDS_PER_PAGE - 1);
 
     if (selectedRegion) {
@@ -128,11 +130,13 @@ function FeedListClient({ initialFeeds }: FeedListClientProps) {
         ))}
       </div>
       <div ref={ref} className="text-[#767676] text-center py-4">
-        {isFetchingNextPage
-          ? '로딩 중...'
-          : hasNextPage
-          ? '더 보기'
-          : '더 이상 보여줄 피드가 없어요!'}
+        {isFetchingNextPage ? (
+          <LoadingSpinner />
+        ) : hasNextPage ? (
+          '더 보기'
+        ) : (
+          '더 이상 보여줄 피드가 없어요!'
+        )}
       </div>
     </div>
   );
