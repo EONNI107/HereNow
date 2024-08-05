@@ -12,7 +12,7 @@ function LocalItemList() {
   };
 
   return (
-    <section>
+    <section className="mb-4">
       <div className="flex overflow-x-scroll whitespace-nowrap py-4 cursor-pointer">
         {regions.region.map((i) => (
           <div
