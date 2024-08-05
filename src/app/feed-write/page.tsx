@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
-import InputField from '@/components/FeedWrite/InputField';
 import LocationButton from '@/components/FeedWrite/LocationButton';
 import ImageUpload from '@/components/FeedWrite/ImageUpload';
-import TextArea from '@/components/FeedWrite/TextArea';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import ContentInput from '@/components/FeedWrite/ContentInput';
+import TitleInput from '@/components/FeedWrite/TitleInput';
 
 function FeedWrite() {
   const [title, setTitle] = useState('');
@@ -88,7 +88,7 @@ function FeedWrite() {
       </div>
       <div className="body flex flex-col">
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-          <InputField value={title} onChange={setTitle} placeholder="제목" />
+          <TitleInput value={title} onChange={setTitle} placeholder="제목" />
           <hr className="border-gray-300 border" />
           <LocationButton
             region={region}
@@ -102,7 +102,7 @@ function FeedWrite() {
             imagePreviews={imagePreviews}
             setImagePreviews={setImagePreviews}
           />
-          <TextArea
+          <ContentInput
             value={content}
             onChange={setContent}
             placeholder="내용을 입력해주세요"
