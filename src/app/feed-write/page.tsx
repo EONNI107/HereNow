@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import LocationButton from '@/components/FeedWrite/LocationButton';
 import ImageUpload from '@/components/FeedWrite/ImageUpload';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import ContentInput from '@/components/FeedWrite/ContentInput';
 import TitleInput from '@/components/FeedWrite/TitleInput';
+import useAuthStore from '@/zustand/useAuthStore';
+import { toast } from 'react-toastify';
 
 function FeedWrite() {
   const [title, setTitle] = useState('');
@@ -16,13 +18,41 @@ function FeedWrite() {
   const [content, setContent] = useState('');
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [existingImageUrls, setExistingImageUrls] = useState<string[]>([]);
+  const [feedId, setFeedId] = useState<string | null>(null);
+
   const router = useRouter();
   const supabase = createClient();
+  const { user } = useAuthStore();
+
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const id = searchParams.get('id');
+    const title = searchParams.get('title');
+    const content = searchParams.get('content');
+    const region = searchParams.get('region');
+    const sigungu = searchParams.get('sigungu');
+    const image = searchParams.get('image');
+
+    if (id) setFeedId(id);
+    if (title) setTitle(title);
+    if (content) setContent(content);
+    if (region) setRegion(region);
+    if (sigungu) setSigungu(sigungu);
+    if (image) setExistingImageUrls(JSON.parse(image));
+
+    if (image) setImagePreviews(JSON.parse(image));
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
+    if (!user) {
+      toast.error('로그인이 필요합니다.');
+      return;
+    }
+
+    const userId = user.id;
 
     let imageUrls: string[] = [];
     for (const image of images) {
@@ -45,30 +75,52 @@ function FeedWrite() {
       imageUrls.push(publicUrl);
     }
 
-    const imageUrlsString = JSON.stringify(imageUrls);
+    const allImageUrls = [...existingImageUrls, ...imageUrls];
+    const imageUrlsString = JSON.stringify(allImageUrls);
 
-    const { data, error } = await supabase
-      .from('Feeds')
-      .insert([
-        {
-          userId,
+    if (feedId) {
+      const { error } = await supabase
+        .from('Feeds')
+        .update({
           title,
           content,
           image: imageUrlsString,
           region,
           sigungu,
-          createdAt: new Date().toISOString(),
-        },
-      ])
-      .select();
+        })
+        .eq('id', feedId);
 
-    if (error) {
-      console.error('Insert Post Error:', error);
-      alert('피드 작성에 실패하였습니다.');
+      if (error) {
+        console.error('Update Post Error:', error);
+        alert('피드 수정에 실패하였습니다.');
+      } else {
+        toast.success('피드가 성공적으로 수정되었습니다.');
+        router.push(`/feed-detail/${feedId}`);
+      }
     } else {
-      alert('피드가 성공적으로 작성되었습니다.');
-      const feedId = data[0].id;
-      router.push(`/feed-detail/${feedId}`);
+      const { data, error } = await supabase
+        .from('Feeds')
+        .insert([
+          {
+            userId,
+            title,
+            content,
+            image: imageUrlsString,
+            region,
+            sigungu,
+            createdAt: new Date().toISOString(),
+          },
+        ])
+        .select();
+
+      if (error) {
+        console.error('Insert Post Error:', error);
+        alert('피드 작성에 실패하였습니다.');
+      } else {
+        toast.success('피드가 성공적으로 작성되었습니다.');
+        const newFeedId = data[0].id;
+        router.push(`/feed-detail/${newFeedId}`);
+      }
     }
   };
 
@@ -83,7 +135,7 @@ function FeedWrite() {
           onClick={handleSubmit}
           className="btn bg-blue-500 px-2 py-1 rounded-md font-semibold text-14px text-white"
         >
-          등록
+          {feedId ? '수정하기' : '등록'}
         </button>
       </div>
       <div className="body flex flex-col">
