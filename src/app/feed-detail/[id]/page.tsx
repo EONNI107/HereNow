@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import { Post } from '@/types/post';
 import Comments from '@/components/FeedDetail/Comments';
@@ -10,8 +11,10 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
-import dayjs from 'dayjs';
 import Image from 'next/image';
+import useAuthStore from '@/zustand/useAuthStore';
+import { formatDate } from '@/utils/formatDate';
+import { toast } from 'react-toastify';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -64,11 +67,12 @@ type PostPageProps = {
   params: { id: string };
 };
 
-const PostPage = ({ params }: PostPageProps) => {
+function PostPage({ params }: PostPageProps) {
   const [post, setPost] = useState<Post | null>(null);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
-  const userId = '2596d4ff-f4e9-4875-a67c-22abc5fdacfa';
+  const { user } = useAuthStore();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,6 +96,44 @@ const PostPage = ({ params }: PostPageProps) => {
   const userProfileImage =
     post.userProfile?.profileImage || '/path/to/default/avatar.png';
   const userNickname = post.userProfile?.nickname || '알 수 없음';
+
+  const handleEdit = () => {
+    if (!user || user.id !== post.userId) {
+      toast.error('수정 권한이 없습니다.');
+      return;
+    }
+
+    const queryParams = new URLSearchParams({
+      id: String(post.id),
+      title: post.title,
+      content: post.content,
+      region: post.region,
+      sigungu: post.sigungu,
+      image: JSON.stringify(post.image),
+    });
+
+    router.push(`/feed-write?${queryParams.toString()}`);
+  };
+
+  const handleDelete = async () => {
+    if (!user || user.id !== post.userId) {
+      toast.error('삭제 권한이 없습니다.');
+      return;
+    }
+
+    const supabase = createClient();
+    const { error } = await supabase.from('Feeds').delete().eq('id', post.id);
+
+    if (error) {
+      console.error('Delete Post Error:', error);
+      toast.error('피드 삭제에 실패하였습니다.');
+    } else {
+      toast.success('피드가 성공적으로 삭제되었습니다.');
+      router.push('/feed');
+    }
+  };
+
+  const isAuthor = user?.id === post.userId;
 
   return (
     <div className="container mx-auto relative">
@@ -130,15 +172,29 @@ const PostPage = ({ params }: PostPageProps) => {
       </Swiper>
       <DetailLikeBtn
         postId={post.id}
-        userId={userId}
+        userId={user?.id ?? ''}
         onCommentClick={() => setIsCommentModalOpen(true)}
         commentCount={commentCount}
       />
       <p className="text-3xl font-bold mb-2">{post.title}</p>
-      <p className="text-sm text-gray-500 mb-4">
-        {dayjs(post.createdAt).format('YYYY-MM-DD HH:mm')}
-      </p>
+      <p className="text-sm text-gray-500 mb-4">{formatDate(post.createdAt)}</p>
       <p className="text-16px mb-4">{post.content}</p>
+      {isAuthor && (
+        <div className="flex space-x-4">
+          <button
+            onClick={handleEdit}
+            className="btn bg-yellow-500 px-4 py-2 rounded-md text-white"
+          >
+            수정하기
+          </button>
+          <button
+            onClick={handleDelete}
+            className="btn bg-red-500 px-4 py-2 rounded-md text-white"
+          >
+            삭제하기
+          </button>
+        </div>
+      )}
       {isCommentModalOpen && (
         <div className="fixed inset-0 z-50">
           <Comments
@@ -149,6 +205,6 @@ const PostPage = ({ params }: PostPageProps) => {
       )}
     </div>
   );
-};
+}
 
 export default PostPage;

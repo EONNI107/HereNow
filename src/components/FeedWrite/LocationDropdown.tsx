@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-
+import { useState } from 'react';
+import regionData from '@/data/regions.json';
 type LocationDropdownProps = {
   region: string;
   sigungu: string;
@@ -7,29 +7,13 @@ type LocationDropdownProps = {
   setSigungu: (value: string) => void;
 };
 
-const LocationDropdown = ({
+function LocationDropdown({
   region,
   sigungu,
   setRegion,
   setSigungu,
-}: LocationDropdownProps) => {
-  const [regionsData, setRegionsData] = useState<{ [key: string]: string[] }>(
-    {},
-  );
-
-  useEffect(() => {
-    const fetchRegions = async () => {
-      try {
-        const response = await fetch('/regions.json');
-        const data = await response.json();
-        setRegionsData(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchRegions();
-  }, []);
+}: LocationDropdownProps) {
+  const [regionsData] = useState(regionData);
 
   const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRegion(e.target.value);
@@ -48,9 +32,9 @@ const LocationDropdown = ({
         className="input no-focus"
       >
         <option value="">시/도 선택</option>
-        {Object.keys(regionsData).map((regionName) => (
-          <option key={regionName} value={regionName}>
-            {regionName}
+        {regionsData.region.map((region) => (
+          <option key={region.code} value={region.name}>
+            {region.name}
           </option>
         ))}
       </select>
@@ -62,15 +46,17 @@ const LocationDropdown = ({
           className="input no-focus mt-2"
         >
           <option value="">시/군/구 선택</option>
-          {regionsData[region].map((district) => (
-            <option key={district} value={district}>
-              {district}
-            </option>
-          ))}
+          {regionsData.region
+            .find((r) => r.name === region)
+            ?.sigungu.map((district) => (
+              <option key={district.code} value={district.name}>
+                {district.name}
+              </option>
+            ))}
         </select>
       )}
     </>
   );
-};
+}
 
 export default LocationDropdown;

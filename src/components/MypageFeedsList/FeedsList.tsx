@@ -7,17 +7,17 @@ import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function PlaceLikes() {
-  const [placeLikes, setPlaceLikes] = useState<Tables<'PlaceLikes'>[]>([]);
+export default function FeedList() {
+  const [feedsList, setFeedsList] = useState<Tables<'Feeds'>[]>([]);
   const { user } = useAuthStore();
 
   useEffect(() => {
     const supabase = createClient();
-    const fetchPlaceLikes = async () => {
+    const fetchFeeds = async () => {
       if (!user) return;
       try {
         const { data, error } = await supabase
-          .from('PlaceLikes')
+          .from('Feeds')
           .select('*')
           .eq('userId', user.id);
 
@@ -26,37 +26,41 @@ export default function PlaceLikes() {
           console.log(error.message);
         }
         if (!data) return;
-        setPlaceLikes(data);
+        setFeedsList(data);
       } catch {}
     };
 
-    fetchPlaceLikes();
+    fetchFeeds();
   }, [user?.id]);
 
   return (
     <>
-      {placeLikes.length === 0 ? (
+      {feedsList.length === 0 ? (
         <div className="flex flex-col items-center h-full justify-center">
           <PostIcon />
-          <p className="mt-2">찜한 장소가 없어요</p>
+          <p className="mt-2">작성한 게시글이 없어요</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5">
-          {placeLikes.map((place) => (
-            <div key={place.id} className=" border rounded">
-              {place.imageUrl && (
-                <Link href={`/local/details/${place.placeId}`}>
-                  <Image
-                    src={place.imageUrl}
-                    alt={'찜한 장소 이미지'}
-                    width={200}
-                    height={200}
-                    className="rounded aspect-square object-cover"
-                  />
-                </Link>
-              )}
-            </div>
-          ))}
+          {feedsList.map((post) => {
+            const postImages = JSON.parse(post.image as string);
+
+            return (
+              <div key={post.id}>
+                {postImages && postImages.length > 0 && (
+                  <Link href={`/feed-detail/${post.id}`}>
+                    <Image
+                      src={postImages[0]}
+                      alt="이미지"
+                      width={200}
+                      height={200}
+                      className="rounded aspect-square object-cover"
+                    />
+                  </Link>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </>

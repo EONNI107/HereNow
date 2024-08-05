@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import {
   HeartIcon,
@@ -6,6 +8,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { createClient } from '@/utils/supabase/client';
 import { showToast } from '@/utils/toastHelper';
+import LoginPrompt from '@/components/LoginPrompt';
+import { toast } from 'react-toastify';
 
 type DetailLikeBtnProps = {
   postId: number;
@@ -26,28 +30,33 @@ function DetailLikeBtn({
 
   useEffect(() => {
     const fetchLikes = async () => {
-      const { count, error } = await supabase
-        .from('FeedLikes')
-        .select('id', { count: 'exact', head: true })
-        .eq('feedId', postId);
+      try {
+        const { count, error } = await supabase
+          .from('FeedLikes')
+          .select('id', { count: 'exact', head: true })
+          .eq('feedId', postId);
 
-      if (error) {
-        console.error(error);
-      } else {
-        setLikeCount(count || 0);
-      }
+        if (error) {
+          console.error(error);
+        } else {
+          setLikeCount(count || 0);
+        }
+        if (userId) {
+          const { data, error: likeError } = await supabase
+            .from('FeedLikes')
+            .select('id')
+            .eq('feedId', postId)
+            .eq('userId', userId)
+            .single();
 
-      const { data, error: likeError } = await supabase
-        .from('FeedLikes')
-        .select('id')
-        .eq('feedId', postId)
-        .eq('userId', userId)
-        .single();
-
-      if (likeError) {
-        console.error(likeError);
-      } else if (data) {
-        setLiked(true);
+          if (likeError) {
+            console.error(likeError);
+          } else if (data) {
+            setLiked(true);
+          }
+        }
+      } catch (err) {
+        console.error(err);
       }
     };
 
@@ -55,31 +64,49 @@ function DetailLikeBtn({
   }, [postId, userId, supabase]);
 
   const handleLike = async () => {
-    if (liked) {
-      const { error } = await supabase
-        .from('FeedLikes')
-        .delete()
-        .eq('feedId', postId)
-        .eq('userId', userId);
-
-      if (error) {
-        console.error(error);
-      } else {
-        setLiked(false);
-        setLikeCount(likeCount - 1);
-      }
-    } else {
-      const { error } = await supabase.from('FeedLikes').insert({
-        feedId: postId,
-        userId,
+    if (!userId) {
+      toast(<LoginPrompt />, {
+        position: 'top-center',
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
       });
+      return;
+    }
 
-      if (error) {
-        console.error(error);
+    try {
+      if (liked) {
+        const { error } = await supabase
+          .from('FeedLikes')
+          .delete()
+          .eq('feedId', postId)
+          .eq('userId', userId);
+
+        if (error) {
+          console.error(error);
+          showToast('error', '좋아요 취소 중 오류가 발생했습니다.');
+        } else {
+          setLiked(false);
+          setLikeCount((prev) => prev - 1);
+          showToast('success', '좋아요가 취소되었습니다.');
+        }
       } else {
-        setLiked(true);
-        setLikeCount(likeCount + 1);
+        const { error } = await supabase.from('FeedLikes').insert({
+          feedId: postId,
+          userId,
+        });
+
+        if (error) {
+          console.error(error);
+          showToast('error', '좋아요 등록 중 오류가 발생했습니다.');
+        } else {
+          setLiked(true);
+          setLikeCount((prev) => prev + 1);
+          showToast('success', '좋아요가 등록되었습니다.');
+        }
       }
+    } catch (e) {
+      console.error(e);
     }
   };
 
