@@ -9,12 +9,12 @@ type LocationButtonProps = {
   setSigungu: (value: string) => void;
 };
 
-const LocationButton = ({
+function LocationButton({
   region,
   sigungu,
   setRegion,
   setSigungu,
-}: LocationButtonProps) => {
+}: LocationButtonProps) {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleAddLocation = () => {
@@ -48,6 +48,6 @@ const LocationButton = ({
       {sigungu && <p>선택된 시/군/구: {sigungu}</p>}
     </>
   );
-};
+}
 
 export default LocationButton;

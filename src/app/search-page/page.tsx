@@ -4,7 +4,6 @@ import { searchApi } from '@/components/MainPage/api/searchApi';
 import SearchFeed from '@/components/MainPage/search/SearchFeed';
 import SearchItem from '@/components/MainPage/search/SearchItem';
 import { NearbyPlace } from '@/types/localDetails';
-import { tree } from 'next/dist/build/templates/app-page';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 

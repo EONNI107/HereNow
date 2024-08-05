@@ -29,16 +29,21 @@ function FeedListItem({
   return (
     <div>
       <Link href={`/feed-detail/${feed.id}`} className="p-4  rounded-3xl">
-        <div className="flex items-center mb-4">
-          <Image
-            src={feed.Users?.profileImage || '/default-profile.jpg'}
-            alt="유저 프로필 이미지"
-            width={48}
-            height={48}
-            className="w-12 h-12 border rounded-full mr-4"
-          />
-          <span className="text-[14px] font-regular">
-            {feed.Users?.nickname}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <Image
+              src={feed.Users?.profileImage || '/default-profile.jpg'}
+              alt="유저 프로필 이미지"
+              width={48}
+              height={48}
+              className="w-6 h-6 border rounded-full mr-4"
+            />
+            <span className="text-[14px] font-regular">
+              {feed.Users?.nickname}
+            </span>
+          </div>
+          <span className="text-[12px] text-[#767676]">
+            {fromNow(feed.createdAt)}
           </span>
         </div>
         <div className="relative h-48">
@@ -51,17 +56,11 @@ function FeedListItem({
           />
         </div>
         <div className="p-4">
-          <h2 className="text-[#212125] text-[18px] font-semibold mb-2">
-            {feed.title}
-          </h2>
-          <p className="text-[14px] text-[#767676] mb-2">
-            {feed.region && <span>{feed.region}</span>}
-            {feed.region && feed.sigungu && ' '}
-            {feed.sigungu && <span>{feed.sigungu}</span>}
-          </p>
-          <div className="flex items-center justify-between text-xs text-[#505050]">
-            <span>{fromNow(feed.createdAt)}</span>
-            <div className="flex items-center space-x-3">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-[#212125] text-[18px] font-semibold">
+              {feed.title}
+            </h2>
+            <div className="flex items-center space-x-3 text-xs text-[#505050]">
               <div className="flex items-center space-x-1">
                 <HeartIcon className="w-5 h-5 text-[#ff5c5c]" />
                 <span>{likesCount}</span>
@@ -72,6 +71,11 @@ function FeedListItem({
               </div>
             </div>
           </div>
+          <p className="text-[14px] text-[#767676]">
+            {feed.region && <span>{feed.region}</span>}
+            {feed.region && feed.sigungu && ' '}
+            {feed.sigungu && <span>{feed.sigungu}</span>}
+          </p>
         </div>
       </Link>
     </div>

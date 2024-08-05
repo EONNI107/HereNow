@@ -8,12 +8,12 @@ type ImageUploadProps = {
   setImagePreviews: (previews: string[]) => void;
 };
 
-const ImageUpload = ({
+function ImageUpload({
   images,
   setImages,
   imagePreviews,
   setImagePreviews,
-}: ImageUploadProps) => {
+}: ImageUploadProps) {
   const [error, setError] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,6 +76,6 @@ const ImageUpload = ({
       </div>
     </>
   );
-};
+}
 
 export default ImageUpload;

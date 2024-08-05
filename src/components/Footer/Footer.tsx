@@ -28,7 +28,7 @@ function Footer() {
           <p>피드</p>
         </Link>
         <Link
-          href={`/mypage/${user?.id}`}
+          href={`/my-page`}
           className="w-[70px] h-[44px] flex flex-col items-center"
         >
           <UserIcon className="w-5 h-5" />
