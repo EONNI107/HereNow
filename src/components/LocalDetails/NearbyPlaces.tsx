@@ -19,7 +19,7 @@ function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
         <p className="font-bold text-md mt-8 mx-2 mb-4">이런 곳은 어때요?</p>
       ) : (
         <p className="font-bold text-md mt-8 mx-2 mb-4">
-          {nickname} 님, 이런 곳은 어때요?
+          {nickname}님, 이런 곳은 어때요?
         </p>
       )}
 
