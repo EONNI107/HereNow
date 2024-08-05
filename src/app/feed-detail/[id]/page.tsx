@@ -103,7 +103,6 @@ function PostPage({ params }: PostPageProps) {
       return;
     }
 
-    // URLSearchParams를 사용하여 query를 직렬화
     const queryParams = new URLSearchParams({
       id: String(post.id),
       title: post.title,
@@ -134,7 +133,7 @@ function PostPage({ params }: PostPageProps) {
     }
   };
 
-  const isAuthor = user?.id === post.userId; // 작성자 여부 확인
+  const isAuthor = user?.id === post.userId;
 
   return (
     <div className="container mx-auto relative">
