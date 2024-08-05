@@ -94,7 +94,7 @@ function SearchFeed({ searchValue }: searchProps) {
 
   return (
     <>
-      <div className="flex w-full pt-4 px-4">
+      <div className="flex w-full py-2 px-4">
         <div className="flex w-full items-center gap-3">
           <div
             className={`py-1 cursor-pointer w-full flex justify-center rounded-2xl border-[2px] ${
@@ -138,37 +138,39 @@ function SearchFeed({ searchValue }: searchProps) {
           </div>
         </div>
       </div>
-      <div className="w-full px-5 py-5">
-        <div className="pl-4 py-3 w-full rounded-lg bg-[#FFF4F0] flex gap-2">
-          <div className="mt-[3px] flex w-[30px] h-[25px] items-center">
-            <Image
-              src="/Save.png"
-              alt="피드아이콘"
-              width={30}
-              height={25}
-              className="w-full h-full"
-            />
-          </div>
-          <div className="flex flex-col">
-            <h2 className="font-semibold text-lg">피드</h2>
-            <p className="text-sm">
-              사람들끼리 공유한 모든 여행 꿀팁을 볼 수 있어요
-            </p>
+      <div className="w-full flex flex-col py-[13px] px-4 gap-4 bg-[#F9FAFA]">
+        <div className="px-4 py-2 w-full rounded-lg bg-[#FFF4F0] h-[72px]">
+          <div className="w-full flex h-full gap-[7px]">
+            <div className="flex w-[35px] h-[25px] items-center">
+              <Image
+                src="/Save.png"
+                alt="피드아이콘"
+                width={20}
+                height={20}
+                className="w-full h-full"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <h2 className="font-semibold text-lg">피드</h2>
+              <p className="text-sm">
+                사람들끼리 공유한 모든 여행 꿀팁을 볼 수 있어요
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="w-full flex flex-col gap-2">
-        {isLoading
-          ? Array.from({ length: 10 }).map((_, index) => (
-              <SkeletonSearchItem key={index} />
-            ))
-          : isSorted
-          ? searchFeedItems.map((item) => (
-              <SearchFeedItem item={item} key={item.id} />
-            ))
-          : sortedItems.map((item) => (
-              <SearchFeedItem item={item} key={item.id} />
-            ))}
+        <div className="w-full flex flex-col gap-4">
+          {isLoading
+            ? Array.from({ length: 10 }).map((_, index) => (
+                <SkeletonSearchItem key={index} />
+              ))
+            : isSorted
+            ? searchFeedItems.map((item) => (
+                <SearchFeedItem item={item} key={item.id} />
+              ))
+            : sortedItems.map((item) => (
+                <SearchFeedItem item={item} key={item.id} />
+              ))}
+        </div>
       </div>
     </>
   );
