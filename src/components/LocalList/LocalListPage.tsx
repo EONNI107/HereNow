@@ -1,18 +1,15 @@
 'use client';
 
 import useLocalList from '@/hooks/useLocalList';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import InfiniteScroll from './InfiniteScroll';
 import LocalListItem from './LocalListItem';
 import ContentTypeFilter from './ContentTypeFilter';
-import RegionHeader from './RegionHeader';
 import LoadingState from './LoadingState';
 import SkeletonCard from './SkeletonCard';
 import { Item } from '@/types/localList';
 
 function LocalListPage({ region }: { region: string }) {
-  const router = useRouter();
   const [contentType, setContentType] = useState('12');
   const {
     data,
@@ -28,8 +25,7 @@ function LocalListPage({ region }: { region: string }) {
   }
 
   return (
-    <div className="max-w-md mx-auto my-4">
-      <RegionHeader region={region} />
+    <div>
       <ContentTypeFilter
         selectedContentType={contentType}
         onContentTypeChange={setContentType}

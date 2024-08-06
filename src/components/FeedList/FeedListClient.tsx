@@ -8,18 +8,27 @@ import { useEffect, useState } from 'react';
 import { Feed } from '@/types/feed';
 import regionData from '@/data/regions.json';
 import LoadingSpinner from '../LoadingSpinner';
+import { showToast } from '@/utils/toastHelper';
+import { PostgrestError } from '@supabase/supabase-js';
 
 const FEEDS_PER_PAGE = 4;
 
 type FeedListClientProps = {
   initialFeeds: Feed[];
+  SupabaseError: PostgrestError | null;
 };
 
-function FeedListClient({ initialFeeds }: FeedListClientProps) {
+function FeedListClient({ initialFeeds, SupabaseError }: FeedListClientProps) {
   const supabase = createClient();
   const { ref, inView } = useInView();
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedSigungu, setSelectedSigungu] = useState('');
+
+  useEffect(() => {
+    if (SupabaseError) {
+      showToast('error', '피드 목록을 불러오는 중 오류가 발생했습니다.');
+    }
+  }, [SupabaseError]);
 
   const fetchFeeds = async ({ pageParam = 1 }) => {
     let query = supabase
