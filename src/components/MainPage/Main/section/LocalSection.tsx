@@ -69,7 +69,7 @@ function LocalSection() {
   return (
     <section className="flex flex-col gap-4 w-full px-4">
       <div className="flex justify-between">
-        <h2 className="text-[#000] font-semibold text-lg">
+        <h2 className="text-main font-semibold text-lg">
           내 주변에 있는 여행지
         </h2>
         <button hidden={true}></button>

@@ -27,7 +27,7 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     <html lang="en">
       <body className={`${pretendard.variable} font-pretendard`}>
         <QueryProvider>
-          <div className="max-w-[400px] mx-auto">
+          <div className="max-w-[375px] mx-auto">
             <Suspense>
               <HeaderLayout />
             </Suspense>

@@ -27,9 +27,9 @@ function HeaderLayout() {
     router.refresh();
   };
   return (
-    <header className="bg-white fixed z-10 right-0 max-w-[400px] w-full left-0 mx-auto">
+    <header className="bg-white fixed z-10 right-0 max-w-[375px] w-full left-0 mx-auto">
       {isBackground ? (
-        <div className="flex justify-center items-center bg-white">
+        <div className="flex justify-center bg-white h-screen">
           <SearchForm setIsbg={setIsBackground} />
           <button
             className="absolute top-3 right-2"
