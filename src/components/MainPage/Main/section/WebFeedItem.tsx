@@ -40,7 +40,7 @@ const WebFeedItem = ({ feedItem }: feedTypeProps) => {
             "
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent rounded-xl"></div>
-          <div className="absolute bottom-3 left-3 felx flex-col text-[#fff] z-1">
+          <div className="absolute bottom-3 left-3 felx flex-col text-white z-1">
             <p className="line-clamp-1 text-sm">{feedItem.region}</p>
             <p className="line-clamp-1">{feedItem.title}</p>
           </div>

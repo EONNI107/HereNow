@@ -57,7 +57,7 @@ function SearchForm({ setIsbg }: SetIsBgProps) {
           onChange={handleInputChange}
           placeholder="검색어를 입력하세요"
         />
-        <button className="ml-1 border-[2px] px-[10px] py-[1px] rounded-lg hover:border-[#118DFF] hover:bg-[#DBEEFF] hover:text-[#111111]">
+        <button className="ml-1 border-[2px] px-[10px] py-[1px] rounded-lg hover:border-blue4 hover:bg-blue0 hover:text-main">
           검색
         </button>
       </form>
@@ -70,7 +70,7 @@ function SearchForm({ setIsbg }: SetIsBgProps) {
           return (
             <div
               key={index}
-              className="flex border-[2px] rounded-2xl px-3 py-1 mb-1 gap-2 hover:border-[#118DFF] hover:bg-[#DBEEFF] hover:text-[#111111]"
+              className="flex border-[2px] rounded-2xl px-3 py-1 mb-1 gap-2 hover:border-blue4 hover:bg-blue0 hover:text-main"
             >
               <li
                 className="list-none cursor-pointer "
