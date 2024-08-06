@@ -91,7 +91,7 @@ function SignInPage() {
                     id="email"
                     ref={emailRef}
                     placeholder="ex)email@naver.com"
-                    className="w-full px-4 py-3 sm:py-4 border border-[#75BDFF] rounded-lg bg-transparent text-white placeholder-[#B4B9C0] text-base"
+                    className="w-full px-4 py-3 sm:py-4 border border-blue0 rounded-lg bg-transparent text-white placeholder-gray3 text-base"
                   />
                 </div>
                 <div>
@@ -101,13 +101,13 @@ function SignInPage() {
                     type="password"
                     id="password"
                     placeholder="*******"
-                    className="w-full px-4 py-3 sm:py-4 border border-[#75BDFF] rounded-lg bg-transparent text-white placeholder-[#B4B9C0] text-base"
+                    className="w-full px-4 py-3 sm:py-4 border border-blue0 rounded-lg bg-transparent text-white placeholder-gray3 text-base"
                   />
                 </div>
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full bg-[#118DFF] text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray-300 text-sm sm:text-base"
+                    className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray3 text-sm sm:text-base"
                   >
                     로그인
                   </button>
@@ -151,7 +151,7 @@ function SignInPage() {
                   <button
                     type="button"
                     onClick={() => signInWithOAuth('google')}
-                    className="w-full bg-white font-bold text-black py-3 sm:py-4 px-4 rounded-md border border-gray-300 hover:bg-gray-100 flex items-center justify-center text-sm"
+                    className="w-full bg-white font-bold text-black py-3 sm:py-4 px-4 rounded-md border border-gray3 hover:bg-gray-100 flex items-center justify-center text-sm"
                   >
                     <Image
                       src="/google_symbol.svg.jpg"
