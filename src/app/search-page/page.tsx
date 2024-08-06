@@ -33,26 +33,25 @@ function SeachDetailPage() {
   }, [searchValue]);
 
   return (
-    <div className="flex flex-col items-center justify-center max-w-[400px] mx-auto">
-      <div className="flex w-full font-semibold text-lg">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex w-full text-[18px] font-normal text-sub2">
         <div
           onClick={handleFeedClick}
-          className={`cursor-pointer py-1 flex justify-center w-full ${
-            isBorderShow && 'border-b-[3px] border-b-[#118DFF]'
+          className={`cursor-pointer py-4 px-3 flex justify-center w-full ${
+            isBorderShow && 'border-b-[3px] text-main border-b-blue4'
           }`}
         >
           피드
         </div>
         <div
           onClick={handleFestivalClick}
-          className={`cursor-pointer flex justify-center w-full ${
-            !isBorderShow && 'border-b-[3px] border-b-[#118DFF]'
+          className={`cursor-pointer py-4 px-3 flex justify-center w-full ${
+            !isBorderShow && 'border-b-[3px] text-main border-b-blue4'
           }`}
         >
           행사
         </div>
       </div>
-
       {isChange ? (
         <>
           <SearchItem searchData={searchData} searchValue={searchValue} />

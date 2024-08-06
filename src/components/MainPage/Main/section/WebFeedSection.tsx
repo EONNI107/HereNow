@@ -24,11 +24,9 @@ function WebFeedSection() {
   return (
     <section className="flex flex-col gap-4 w-full px-4 py-4 mb-6">
       <div className="flex justify-between">
-        <h2 className="text-[#000] font-semibold text-lg">
-          지금 뜨고 있는 피드
-        </h2>
+        <h2 className="text-main font-semibold text-lg">지금 뜨고 있는 피드</h2>
         <button
-          className="text-[#000] font-regular text-sm"
+          className="text-main font-regular text-sm"
           onClick={() => router.push('/feed')}
         >
           더보러가기

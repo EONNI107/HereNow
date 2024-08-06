@@ -28,24 +28,27 @@ function SearchFeedItem({ item }: itemProps) {
   };
   return (
     <div
-      className="flex w-full cursor-pointer"
+      className="flex w-full cursor-pointer gap-4"
       onClick={() => handleMoveClick(item.id)}
     >
-      <div className="w-[100px] h-[100px] relative">
+      <div className="w-[100px] h-[100px]">
         <Image
           src={feedImage}
           alt="해당피드이미지"
-          fill
-          className="rounded-lg border"
+          width={100}
+          height={100}
+          className="rounded-lg border w-full h-full object-cover"
         />
       </div>
-      <div className="flex justify-between w-[300px] items-center px-4">
+      <div className="flex justify-between w-[218px] items-center">
         <div className="flex flex-col">
-          <h2>{item.title}</h2>
-          <p>{item.content}</p>
+          <h2 className="font-semibold text-[16px] text-main">{item.title}</h2>
+          <p className="font-pretendard line-clamp-1 text-sm text-sub1">
+            {item.content}
+          </p>
         </div>
         <div>
-          <HeartIcon className="w-4 h-4" />
+          <HeartIcon className="w-5 h-5" />
         </div>
       </div>
     </div>
