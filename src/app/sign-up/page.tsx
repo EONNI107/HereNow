@@ -33,7 +33,8 @@ function SignUpPage() {
 
   const isValidNickname = (nickname: string) => {
     const nicknameRegex = /^[가-힣a-zA-Z0-9]{2,20}$/;
-    return nicknameRegex.test(nickname);
+    const englishRegex = /^[a-zA-Z]{0,2}$/;
+    return nicknameRegex.test(nickname) && !englishRegex.test(nickname);
   };
 
   useEffect(() => {
