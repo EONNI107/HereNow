@@ -83,8 +83,8 @@ function SignInPage() {
                 type="email"
                 id="email"
                 ref={emailRef}
-                placeholder="아이디 (이메일)"
-                className="w-full px-3 py-2 border border-blue-300 rounded-md bg-transparent text-white placeholder-white"
+                placeholder="ex)email@naver.com"
+                className="w-full px-3 py-2 border border-blue-300 rounded-md bg-transparent text-white placeholder-[#B4B9C0]"
               />
             </div>
             <div>
