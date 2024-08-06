@@ -70,30 +70,30 @@ function SignUpPage() {
 
   return (
     <div className="w-full grid place-items-center">
-      <h2 className="text-2xl font-bold mb-6  w-full max-w-md pt-32 p-6">
+      <h2 className="text-2xl font-bold mb-6  w-full max-w-md pt-10 p-6">
         계정을 생성해주세요
       </h2>
       <div className="w-full max-w-md bg-white rounded-lg p-6">
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
             <label
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-base font-bold text-gray-700 mb-1"
               htmlFor="email"
             >
-              아이디 (이메일)
+              아이디 <span className="text-lg">(이메일)</span>
             </label>
             <input
               id="email"
               type="email"
               value={email}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="이메일을 입력하세요"
+              placeholder="ex)email@naver.com"
               onChange={onChangeEmail}
             />
           </div>
           <div>
             <label
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-base font-bold text-gray-700 mb-1"
               htmlFor="password"
             >
               비밀번호
@@ -104,13 +104,13 @@ function SignUpPage() {
               type="password"
               value={password}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="비밀번호를 입력하세요"
+              placeholder="영문 • 숫자 • 특수문자 | 8자 이상"
               onChange={onChangePassword}
             />
           </div>
           <div>
             <label
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-base font-bold text-gray-700 mb-1"
               htmlFor="passwordConfirm"
             >
               비밀번호 확인
@@ -121,13 +121,13 @@ function SignUpPage() {
               type="password"
               value={passwordConfirm}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="비밀번호를 다시 입력하세요"
+              placeholder="영문 • 숫자 • 특수문자 | 8자 이상"
               onChange={onChangePasswordConfirm}
             />
           </div>
           <div>
             <label
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-base font-bold text-gray-700 mb-1"
               htmlFor="nickname"
             >
               닉네임
@@ -138,15 +138,15 @@ function SignUpPage() {
               type="text"
               value={nickname}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="닉네임을 입력하세요"
+              placeholder="예) 홍길동"
               onChange={onChangeNickname}
             />
           </div>
-          <div className="pt-32">
+          <div className="pt-24">
             <button
               disabled={isSubmitting}
               type="submit"
-              className="w-full bg-[#118DFF] text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="w-full bg-[#118DFF] text-white py-3 px-5 rounded-xl hover:bg-[#118DFF] focus:outline-none focus:ring-2 focus:ring-[#118DFF] focus:ring-offset-2"
             >
               생성하기
             </button>
