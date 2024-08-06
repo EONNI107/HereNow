@@ -38,7 +38,7 @@ function SeachDetailPage() {
         <div
           onClick={handleFeedClick}
           className={`cursor-pointer py-4 px-3 flex justify-center w-full ${
-            isBorderShow && 'border-b-[3px] text-main border-b-[#118DFF]'
+            isBorderShow && 'border-b-[3px] text-main border-b-blue4'
           }`}
         >
           피드
@@ -46,7 +46,7 @@ function SeachDetailPage() {
         <div
           onClick={handleFestivalClick}
           className={`cursor-pointer py-4 px-3 flex justify-center w-full ${
-            !isBorderShow && 'border-b-[3px] text-main border-b-[#118DFF]'
+            !isBorderShow && 'border-b-[3px] text-main border-b-blue4'
           }`}
         >
           행사

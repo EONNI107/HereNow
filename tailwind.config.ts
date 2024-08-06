@@ -11,7 +11,7 @@ const config: Config = {
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
       },
-      backgroundColor: {
+      colors: {
         blue0: '#DBEEFF',
         blue4: '#118DFF',
         orange0: '#FFF4F0',
@@ -22,13 +22,10 @@ const config: Config = {
         gray12: '#4D535B',
         gray14: '#35393F',
         white: '#FFFFFF',
-      },
-      textColor: {
         main: '#212125',
         sub1: '#505050',
         sub2: '#767676',
         disabled: '#999999',
-        white: '#FFFFFF',
       },
     },
   },

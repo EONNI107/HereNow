@@ -55,7 +55,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const handleAttractionsClick = () => {
     setClickClass({
       title: '여행',
-      classname: 'border-[#118DFF] bg-blue0 text-main',
+      classname: 'border-blue4 bg-blue0 text-main',
     });
     const firstdata = resDatas[0];
     setResData(firstdata);
@@ -64,7 +64,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const handleCultureClick = () => {
     setClickClass({
       title: '문화',
-      classname: 'border-[#118DFF] bg-blue0 text-main',
+      classname: 'border-blue4 bg-blue0 text-main',
     });
     const firstdata = resDatas[1];
     setResData(firstdata);
@@ -73,7 +73,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const handleRestaurantClick = () => {
     setClickClass({
       title: '맛집',
-      classname: 'border-[#118DFF] bg-blue0 text-main',
+      classname: 'border-blue4 bg-blue0 text-main',
     });
     const firstdata = resDatas[2];
     setResData(firstdata);
@@ -82,7 +82,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const handleFestivalClick = () => {
     setClickClass({
       title: '행사',
-      classname: 'border-[#118DFF] bg-blue0 text-main',
+      classname: 'border-blue4 bg-blue0 text-main',
     });
     const firstdata = resDatas[3];
     setResData(firstdata);
@@ -100,7 +100,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
               clickClass.title === '여행'
                 ? clickClass.classname
-                : 'border-[#7D8591] bg-white text-sub1'
+                : 'border-sub2 bg-white text-sub1'
             }`}
             onClick={handleAttractionsClick}
           >
@@ -110,7 +110,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
               clickClass.title === '문화'
                 ? clickClass.classname
-                : 'border-[#7D8591] bg-white text-sub1'
+                : 'border-sub2 bg-white text-sub1'
             }`}
             onClick={handleCultureClick}
           >
@@ -120,7 +120,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
               clickClass.title === '맛집'
                 ? clickClass.classname
-                : 'border-[#7D8591] bg-white text-sub1'
+                : 'border-sub2 bg-white text-sub1'
             }`}
             onClick={handleRestaurantClick}
           >
@@ -130,7 +130,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
               clickClass.title === '행사'
                 ? clickClass.classname
-                : 'border-[#7D8591] bg-white text-sub1'
+                : 'border-sub2 bg-white text-sub1'
             }`}
             onClick={handleFestivalClick}
           >
