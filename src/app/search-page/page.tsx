@@ -34,11 +34,11 @@ function SeachDetailPage() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex w-full font-pretendard text-[18px] font-normal text-[#767676]">
+      <div className="flex w-full text-[18px] font-normal text-sub2">
         <div
           onClick={handleFeedClick}
           className={`cursor-pointer py-4 px-3 flex justify-center w-full ${
-            isBorderShow && 'border-b-[3px] text-[#000] border-b-[#118DFF]'
+            isBorderShow && 'border-b-[3px] text-main border-b-[#118DFF]'
           }`}
         >
           피드
@@ -46,7 +46,7 @@ function SeachDetailPage() {
         <div
           onClick={handleFestivalClick}
           className={`cursor-pointer py-4 px-3 flex justify-center w-full ${
-            !isBorderShow && 'border-b-[3px] text-[#000] border-b-[#118DFF]'
+            !isBorderShow && 'border-b-[3px] text-main border-b-[#118DFF]'
           }`}
         >
           행사

@@ -55,7 +55,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const handleAttractionsClick = () => {
     setClickClass({
       title: '여행',
-      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+      classname: 'border-[#118DFF] bg-blue0 text-main',
     });
     const firstdata = resDatas[0];
     setResData(firstdata);
@@ -64,7 +64,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const handleCultureClick = () => {
     setClickClass({
       title: '문화',
-      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+      classname: 'border-[#118DFF] bg-blue0 text-main',
     });
     const firstdata = resDatas[1];
     setResData(firstdata);
@@ -73,7 +73,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const handleRestaurantClick = () => {
     setClickClass({
       title: '맛집',
-      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+      classname: 'border-[#118DFF] bg-blue0 text-main',
     });
     const firstdata = resDatas[2];
     setResData(firstdata);
@@ -82,7 +82,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
   const handleFestivalClick = () => {
     setClickClass({
       title: '행사',
-      classname: 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]',
+      classname: 'border-[#118DFF] bg-blue0 text-main',
     });
     const firstdata = resDatas[3];
     setResData(firstdata);
@@ -100,7 +100,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
               clickClass.title === '여행'
                 ? clickClass.classname
-                : 'border-[#7D8591] bg-white text-[#505050]'
+                : 'border-[#7D8591] bg-white text-sub1'
             }`}
             onClick={handleAttractionsClick}
           >
@@ -110,7 +110,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
               clickClass.title === '문화'
                 ? clickClass.classname
-                : 'border-[#7D8591] bg-white text-[#505050]'
+                : 'border-[#7D8591] bg-white text-sub1'
             }`}
             onClick={handleCultureClick}
           >
@@ -120,7 +120,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
               clickClass.title === '맛집'
                 ? clickClass.classname
-                : 'border-[#7D8591] bg-white text-[#505050]'
+                : 'border-[#7D8591] bg-white text-sub1'
             }`}
             onClick={handleRestaurantClick}
           >
@@ -130,7 +130,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
             className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
               clickClass.title === '행사'
                 ? clickClass.classname
-                : 'border-[#7D8591] bg-white text-[#505050]'
+                : 'border-[#7D8591] bg-white text-sub1'
             }`}
             onClick={handleFestivalClick}
           >
@@ -138,8 +138,8 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
           </div>
         </div>
       </div>
-      <div className="w-full flex flex-col py-[13px] px-4 gap-4 bg-[#F9FAFA]">
-        <div className="w-full px-4 py-2 rounded-lg bg-[#FFF4F0] h-[72px]">
+      <div className="w-full flex flex-col py-[13px] px-4 gap-4 bg-gray0">
+        <div className="w-full px-4 py-2 rounded-lg bg-orange0 h-[72px]">
           <div className="w-full flex h-full gap-[7px]">
             <div className="flex w-[35px] h-[25px] items-center">
               <Image
@@ -181,7 +181,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
                       className="rounded-lg border w-full h-full object-cover"
                     />
                   </div>
-                  <div className="flex justify-between items-center font-semibold font-pretendard text-[16px] text-[#000] w-[218px]">
+                  <div className="flex justify-between items-center font-semibold text-[16px] text-main w-[218px]">
                     <p>{item.title}</p>
                     <div>
                       <HeartIcon className="w-5 h-5" />
@@ -208,7 +208,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
                       className="rounded-lg border w-full h-full object-cover"
                     />
                   </div>
-                  <div className="flex justify-between w-[300px] items-center px-4  text-[#000] font-semibold text-lg">
+                  <div className="flex justify-between w-[300px] items-center px-4 text-main font-semibold text-lg">
                     <p>{item.title}</p>
                     <div>
                       <HeartIcon className="w-5 h-5" />

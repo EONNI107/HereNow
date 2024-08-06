@@ -27,8 +27,8 @@ function LocalItem({ item, onclick }: NearbyTypePlace) {
         <p
           className={
             item.firstimage
-              ? ` z-1 text-[#fff] font-regular text-sm `
-              : ` z-1 text-[#000] font-regular text-sm`
+              ? ` z-1 text-white font-regular text-sm `
+              : ` z-1 text-main font-regular text-sm`
           }
         >
           {item.addr1}
@@ -36,8 +36,8 @@ function LocalItem({ item, onclick }: NearbyTypePlace) {
         <p
           className={
             item.firstimage
-              ? ` z-1 text-[#fff] font-semibold text-lg`
-              : ` z-1 text-[#000] font-semibold text-lg`
+              ? ` z-1 text-white font-semibold text-lg`
+              : ` z-1 text-main font-semibold text-lg`
           }
         >
           {item.title}

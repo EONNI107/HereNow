@@ -42,10 +42,10 @@ function SearchFeedItem({ item }: itemProps) {
       </div>
       <div className="flex justify-between w-[218px] items-center">
         <div className="flex flex-col">
-          <h2 className="font-semibold font-pretendard text-[16px] text-[#000]">
+          <h2 className="font-semibold font-pretendard text-[16px] text-main">
             {item.title}
           </h2>
-          <p className="font-pretendard line-clamp-1 text-sm text-[#505050]">
+          <p className="font-pretendard line-clamp-1 text-sm text-sub1">
             {item.content}
           </p>
         </div>
