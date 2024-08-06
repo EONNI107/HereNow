@@ -30,26 +30,32 @@ function LocalListPage({ region }: { region: string }) {
         selectedContentType={contentType}
         onContentTypeChange={setContentType}
       />
-      {isPending ? (
-        <div className="grid grid-cols-1 gap-4">
-          {[...Array(5)].map((_, index) => (
-            <SkeletonCard key={index} />
-          ))}
-        </div>
-      ) : (
-        data && (
-          <div className="grid grid-cols-1 gap-4">
-            {data.localList.map((item: Item) => (
-              <LocalListItem key={item.contentid} item={item} region={region} />
+      <div className="pt-5 bg-gray0">
+        {isPending ? (
+          <div className="grid grid-cols-1 gap-4 justify-items-center">
+            {[...Array(5)].map((_, index) => (
+              <SkeletonCard key={index} />
             ))}
           </div>
-        )
-      )}
-      <InfiniteScroll
-        hasNextPage={hasNextPage}
-        isFetchingNextPage={isFetchingNextPage}
-        fetchNextPage={fetchNextPage}
-      />
+        ) : (
+          data && (
+            <div className="grid grid-cols-1 gap-4 justify-items-center">
+              {data.localList.map((item: Item) => (
+                <LocalListItem
+                  key={item.contentid}
+                  item={item}
+                  region={region}
+                />
+              ))}
+            </div>
+          )
+        )}
+        <InfiniteScroll
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          fetchNextPage={fetchNextPage}
+        />
+      </div>
     </div>
   );
 }
