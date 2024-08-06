@@ -174,7 +174,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
                 >
                   <div className="w-[100px] h-[100px]">
                     <Image
-                      src={item.firstimage}
+                      src={item.firstimage || item.firstimage2 || '/No_Img.jpg'}
                       alt="이미지"
                       width={100}
                       height={100}
@@ -201,7 +201,7 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
                 >
                   <div className="w-[100px] h-[100px]">
                     <Image
-                      src={item.firstimage}
+                      src={item.firstimage || item.firstimage2 || '/No_Img.jpg'}
                       alt="이미지"
                       width={100}
                       height={100}
