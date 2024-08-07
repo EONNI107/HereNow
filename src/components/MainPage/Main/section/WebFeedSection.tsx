@@ -2,7 +2,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import WebFeedItem from './WebFeedItem';
-import { TableFeedUserType } from '@/types/mainType';
+import { TableFeedUserType } from '@/types/mainTypes';
 import SkeletonFeedItem from '../../Skeleton/SkeletonFeedItem';
 import { useRouter } from 'next/navigation';
 
@@ -24,7 +24,7 @@ function WebFeedSection() {
   return (
     <section className="flex flex-col gap-4 w-full px-4 py-4 mb-6">
       <div className="flex justify-between">
-        <h2 className="text-main font-semibold text-lg">지금 뜨고 있는 피드</h2>
+        <h2 className="text-main font-semibold text-lg">인기 있는 피드</h2>
         <button
           className="text-main font-regular text-sm"
           onClick={() => router.push('/feed')}

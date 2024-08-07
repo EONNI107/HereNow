@@ -25,15 +25,15 @@ function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
 
       {nearbyPlaces && (
         <div className="mx-2">
-          <div className="flex overflow-x-auto gap-4 mt-3 pb-4">
+          <div className="flex overflow-x-auto gap-4 mt-3 mb-8">
             {nearbyPlaces.map((place: NearbyPlace) => (
               <Link
                 key={place.contentid}
                 href={`/local/details/${place.contentid}`}
-                className="w-40"
+                className="w-32 mb-2"
               >
                 <div className="w-full">
-                  <div className="relative w-40 h-40 mb-2">
+                  <div className="relative w-32 h-32 mb-2">
                     <Image
                       className="rounded-lg object-cover"
                       src={place.firstimage || defaultImage}

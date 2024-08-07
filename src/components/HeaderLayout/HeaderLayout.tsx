@@ -27,7 +27,7 @@ function HeaderLayout() {
     router.refresh();
   };
   return (
-    <header className="bg-white fixed z-10 right-0 max-w-[375px] w-full left-0 mx-auto">
+    <header className="bg-white fixed z-10 right-0 p-1 w-full left-0 mx-auto">
       {isBackground ? (
         <div className="flex justify-center bg-white h-screen">
           <SearchForm setIsbg={setIsBackground} />
@@ -42,7 +42,7 @@ function HeaderLayout() {
         <div className="w-full flex justify-between items-center h-[50px]">
           {!isMainPage && (
             <button onClick={handleBack}>
-              <ChevronLeftIcon className="w-6 h-6" />
+              <ChevronLeftIcon className="w-6 h-6 ml-4" />
             </button>
           )}
 
@@ -61,7 +61,7 @@ function HeaderLayout() {
             </p>
           )}
 
-          <button onClick={handleShow} className="absolute right-2 z-10">
+          <button onClick={handleShow} className="absolute right-2 z-10 mr-4">
             <MagnifyingGlassIcon className="w-6 h-6" />
           </button>
         </div>

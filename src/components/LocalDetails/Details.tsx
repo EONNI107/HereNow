@@ -95,7 +95,7 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
           />
         </div>
       ) : null}
-      <div className="flex justify-between gap-2 mx-2">
+      <div className="flex justify-between gap-2 mx-4">
         <h1 className="text-2xl font-bold mb-4">{mainData?.title}</h1>
         {mainData?.contentid && (
           <LikeBtn
