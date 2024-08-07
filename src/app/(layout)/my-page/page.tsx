@@ -173,7 +173,7 @@ function MyPage() {
   };
 
   return (
-    <div className="pt-10 flex flex-col h-svh">
+    <div className="pt-10 flex flex-col">
       <div
         className={`flex items-center rounded-2xl w-full h-28 ${
           user ? 'bg-blue0' : 'bg-orange0'
@@ -189,7 +189,7 @@ function MyPage() {
               height={64}
             />
             <Link href="/sign-in">
-              <button className="px-4 py-2 bg-orange5 text-white rounded-xl text-sm whitespace-nowrap">
+              <button className="px-4 py-2 bg-orange3 text-white rounded-xl text-sm whitespace-nowrap">
                 로그인 · 회원가입하러가기
               </button>
             </Link>
@@ -212,7 +212,7 @@ function MyPage() {
                 {user && isEditing && (
                   <label
                     htmlFor="file-input"
-                    className="absolute bottom-0 right-0 p-0.5 cursor-pointer bg-orange5 rounded-full"
+                    className="absolute bottom-0 right-0 p-0.5 cursor-pointer bg-orange3 rounded-full"
                   >
                     <PenIcon />
                   </label>
@@ -270,7 +270,7 @@ function MyPage() {
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="m-2 w-24 rounded-md bg-orange5 text-white "
+                      className="m-2 w-24 rounded-md bg-orange3 text-white "
                     >
                       로그아웃
                     </button>

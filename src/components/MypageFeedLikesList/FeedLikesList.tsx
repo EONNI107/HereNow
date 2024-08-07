@@ -36,14 +36,14 @@ export default function FeedLikes() {
   }, [user?.id]);
 
   return (
-    <>
+    <div className="h-[calc((100svh_-_58px_-_92px)_*_0.7)] flex items-center justify-center">
       {feedLikes.length === 0 ? (
-        <div className="flex flex-col items-center h-full justify-center">
+        <div className="flex flex-col items-center justify-center">
           <PostIcon />
           <p className="mt-2">찜한 글이 없어요</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5 w-full h-full overflow-auto">
           {feedLikes.map((like) => {
             const post = like.Feeds;
             const postImages = post?.image
@@ -68,6 +68,6 @@ export default function FeedLikes() {
           })}
         </div>
       )}
-    </>
+    </div>
   );
 }
