@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
+export const POST = async (request: NextRequest) => {
   const { email, password, nickname } = await request.json();
   const supabase = createClient();
 
@@ -23,4 +23,4 @@ export async function POST(request: NextRequest) {
       { status: 201 },
     );
   }
-}
+};

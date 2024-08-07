@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import SearchForm from '../MainPage/search/SearchForm';
+import SearchForm from '../MainPage/Search/SearchForm';
 import {
   ChevronLeftIcon,
   MagnifyingGlassIcon,
@@ -17,8 +17,11 @@ function HeaderLayout() {
   const searchParams = params.get('q');
   const isMainPage = pathname === '/';
   const handleBack = () => {
-    if (pathname === '/') {
-      return;
+    if (pathname === '/feed') {
+      return router.push('/');
+    }
+    if (pathname.startsWith('/feed-detail/')) {
+      return router.push('/feed');
     }
     router.back();
   };
