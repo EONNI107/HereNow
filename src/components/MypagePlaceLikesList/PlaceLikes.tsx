@@ -41,9 +41,9 @@ export default function PlaceLikes() {
           <p className="mt-2">찜한 장소가 없어요</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5 w-full h-full overflow-auto">
+        <div className="grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full h-full overflow-auto">
           {placeLikes.map((place) => (
-            <div key={place.id} className="border rounded">
+            <div key={place.id}>
               <Link href={`/local/details/${place.placeId}`}>
                 <Image
                   src={place.imageUrl || '/No_Img.jpg'}

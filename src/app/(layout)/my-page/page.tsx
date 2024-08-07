@@ -173,7 +173,7 @@ function MyPage() {
   };
 
   return (
-    <div className="pt-10 flex flex-col">
+    <div className="pt-10 flex flex-col px-2">
       <div
         className={`flex items-center rounded-2xl w-full h-28 ${
           user ? 'bg-blue0' : 'bg-orange0'
@@ -315,7 +315,7 @@ function MyPage() {
         </button>
       </div>
 
-      <div className="flex flex-1 justify-center bg-gray0 px-4">
+      <div className="flex flex-1 justify-center bg-gray0 px-4 min-h-[60vh] ">
         {loading ? (
           <p>Loading...</p>
         ) : (

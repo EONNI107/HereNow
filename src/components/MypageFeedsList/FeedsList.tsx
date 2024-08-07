@@ -41,7 +41,7 @@ export default function FeedList() {
           <p className="mt-2">작성한 게시글이 없어요</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5 w-full h-full overflow-auto">
+        <div className="grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full h-full overflow-auto">
           {feedsList.map((post) => {
             const postImages = JSON.parse(post.image as string);
 
