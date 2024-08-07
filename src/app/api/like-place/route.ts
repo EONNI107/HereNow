@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export const GET = async (request: NextRequest) => {
   const supabase = createClient();
 
   const { searchParams } = new URL(request.url);
@@ -32,9 +32,9 @@ export async function GET(request: NextRequest) {
     console.error('예기치 못한 에러:', error);
     return NextResponse.json({ error: '내부서버 에러' }, { status: 500 });
   }
-}
+};
 
-export async function POST(request: NextRequest) {
+export const POST = async (request: NextRequest) => {
   const supabase = createClient();
 
   const { userId, placeId, imageUrl } = await request.json();
@@ -62,9 +62,9 @@ export async function POST(request: NextRequest) {
     console.error('예기치 못한 에러:', error);
     return NextResponse.json({ error: '내부서버 에러' }, { status: 500 });
   }
-}
+};
 
-export async function DELETE(request: NextRequest) {
+export const DELETE = async (request: NextRequest) => {
   const supabase = createClient();
 
   const { userId, placeId, imageUrl } = await request.json();
@@ -94,4 +94,4 @@ export async function DELETE(request: NextRequest) {
     console.error('예기치 못한 에러:', error);
     return NextResponse.json({ error: '내부서버 에러' }, { status: 500 });
   }
-}
+};

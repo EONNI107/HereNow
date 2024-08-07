@@ -95,7 +95,7 @@ function FeedWrite() {
         alert('피드 수정에 실패하였습니다.');
       } else {
         toast.success('피드가 성공적으로 수정되었습니다.');
-        router.push(`/feed-detail/${feedId}`);
+        router.replace(`/feed-detail/${feedId}`);
       }
     } else {
       const { data, error } = await supabase
@@ -119,7 +119,7 @@ function FeedWrite() {
       } else {
         toast.success('피드가 성공적으로 작성되었습니다.');
         const newFeedId = data[0].id;
-        router.push(`/feed-detail/${newFeedId}`);
+        router.replace(`/feed-detail/${newFeedId}`);
       }
     }
   };

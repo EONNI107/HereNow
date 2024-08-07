@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
-export async function GET(request: Request) {
+export const GET = async (request: Request) => {
   const supabase = createClient();
   const { searchParams } = new URL(request.url);
   const searchTitle = searchParams.get('searchValue');
@@ -18,4 +18,4 @@ export async function GET(request: Request) {
       { status: 500 },
     );
   }
-}
+};

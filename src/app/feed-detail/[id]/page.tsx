@@ -112,7 +112,7 @@ function PostPage({ params }: PostPageProps) {
       image: JSON.stringify(post.image),
     });
 
-    router.push(`/feed-write?${queryParams.toString()}`);
+    router.replace(`/feed-write?${queryParams.toString()}`);
   };
 
   const handleDelete = async () => {
@@ -129,7 +129,7 @@ function PostPage({ params }: PostPageProps) {
       toast.error('피드 삭제에 실패하였습니다.');
     } else {
       toast.success('피드가 성공적으로 삭제되었습니다.');
-      router.push('/feed');
+      router.replace('/feed');
     }
   };
 
@@ -166,6 +166,7 @@ function PostPage({ params }: PostPageProps) {
               width={800}
               height={600}
               className="w-full h-full object-cover"
+              priority
             />
           </SwiperSlide>
         ))}
