@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import SkeletonSearchItem from '@/components/MainPage/Skeleton/SkeletonSearchItem';
-import SearchIntroduction from '@/components/MainPage/Search/SearchIntroduction';
+import SearchIntroduction from '@/components/MainPage/SearchElements/SearchIntroduction';
 import { TableFeedType } from '@/types/mainTypes';
 import { showToast } from '@/utils/toastHelper';
-import SearchFeedItem from '@/components/MainPage/Search/SearchFeedItem';
+import SearchFeedItem from '@/components/MainPage/SearchElements/SearchFeedItem';
 
 type searchProps = {
   searchValue: string;
