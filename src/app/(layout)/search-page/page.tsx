@@ -1,6 +1,5 @@
 'use client';
 
-import { searchApi } from '@/components/MainPage/api/searchApi';
 import SearchFeed from '@/components/MainPage/SearchElements/SearchFeed';
 import SearchItem from '@/components/MainPage/SearchElements/SearchItem';
 import { NearbyPlace } from '@/types/localDetails';

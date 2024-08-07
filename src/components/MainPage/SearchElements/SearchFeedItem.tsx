@@ -2,7 +2,6 @@
 
 import { TableFeedType } from '@/types/mainTypes';
 import { showToast } from '@/utils/toastHelper';
-import { HeartIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
