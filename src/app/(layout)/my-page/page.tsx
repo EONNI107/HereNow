@@ -236,10 +236,10 @@ function MyPage() {
                         nickname: e.target.value,
                       })
                     }
-                    className="p-1 border rounded w-28"
+                    className="p-0 border border-black rounded w-28  bg-blue0"
                   />
                 ) : (
-                  <div className="text-gray-700">{profile?.nickname}</div>
+                  <div className="text-gray12">{profile?.nickname}</div>
                 )}
               </div>
             </div>
@@ -255,7 +255,7 @@ function MyPage() {
                     </button>
                     <button
                       onClick={() => setIsEditing(false)}
-                      className="m-2 w-24 rounded-md bg-gray12 text-white"
+                      className="m-2 w-24 rounded-md border-2 border-blue4 bg-blue0 text-blue4 py-0 px-4 text-sm font-bold"
                     >
                       취소
                     </button>
@@ -291,7 +291,7 @@ function MyPage() {
           }`}
           onClick={() => setSelectedTab('feedsList')}
         >
-          작성한 글
+          <strong>작성한 글</strong>
         </button>
         <button
           className={`p-2 flex-1 ${
@@ -301,7 +301,7 @@ function MyPage() {
           }`}
           onClick={() => setSelectedTab('feedLikes')}
         >
-          찜한 글
+          <strong>찜한 글</strong>
         </button>
         <button
           className={`p-2 flex-1 ${
@@ -311,7 +311,7 @@ function MyPage() {
           }`}
           onClick={() => setSelectedTab('placeLikes')}
         >
-          찜한 장소
+          <strong>찜한 장소</strong>
         </button>
       </div>
 
