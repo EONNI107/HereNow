@@ -125,6 +125,8 @@ function SignInPage() {
                 </Link>
               </div>
 
+              {/* -----------------소셜 로그인 기능 잠시 보류------------------------- */}
+
               {/* <div className="mt-auto">
                 <div className="flex items-center justify-center text-center mb-6">
                   <div className="flex-grow border-t-2 border-gray-300"></div>
