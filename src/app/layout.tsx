@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${pretendard.variable} font-pretendard bg-gray0`}>
+      <body className={`${pretendard.variable} font-pretendard`}>
         <QueryProvider>
           <div className="max-w-[375px] mx-auto">
             <ToastProvider>{children}</ToastProvider>

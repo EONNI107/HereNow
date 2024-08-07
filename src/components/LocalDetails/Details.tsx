@@ -84,7 +84,7 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
   return (
     <>
       {mainData?.firstimage ? (
-        <div className="relative w-full h-[300px] mx-auto mb-2">
+        <div className="relative w-full h-[250px] mx-auto mb-4">
           <Image
             src={mainData?.firstimage || defaultImage}
             alt="장소 이미지"

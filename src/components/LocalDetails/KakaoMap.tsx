@@ -10,7 +10,17 @@ function KakaoMap({
 }) {
   useKakaoLoader();
 
+  const isValidLocation =
+    latitude >= 33.1 &&
+    latitude <= 38.45 &&
+    longitude >= 125.06666667 &&
+    longitude <= 131.87222222;
+
   if (!latitude || !longitude) {
+    return null;
+  }
+
+  if (!isValidLocation) {
     return null;
   }
   return (
