@@ -136,7 +136,7 @@ function PostPage({ params }: PostPageProps) {
   const isAuthor = user?.id === post.userId;
 
   return (
-    <div>
+    <div className="bg-gray0">
       <div className="flex items-center justify-between h-14 mt-2 px-4">
         <div className="flex items-center">
           <Image
@@ -174,7 +174,7 @@ function PostPage({ params }: PostPageProps) {
         onCommentClick={() => setIsCommentModalOpen(true)}
         commentCount={commentCount}
       />
-      <div className="mx-4 px-4 py-2.5">
+      <div className="mx-4 px-4 py-2.5 bg-white rounded-3xl">
         <p className="text-2xl font-bold mb-2">{post.title}</p>
         <p className="text-sm text-gray-500 mb-2">
           {formatDate(post.createdAt)}
