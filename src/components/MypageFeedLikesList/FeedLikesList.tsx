@@ -45,7 +45,7 @@ export default function FeedLikes() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full overflow-auto">
+        <div className="h-[calc((100svh_-_58px_-_92px)_*_0.7)] grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full overflow-auto">
           {feedLikes.map((like) => {
             const post = like.Feeds;
             const postImages = post?.image
