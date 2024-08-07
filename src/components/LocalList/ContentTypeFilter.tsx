@@ -16,14 +16,14 @@ function ContentTypeFilter(props: ContentTypeFilterProps): React.ReactElement {
   const { selectedContentType, onContentTypeChange } = props;
 
   return (
-    <div className="font-semibold text-sm border-solid flex justify-center overflow-x-auto whitespace-nowrap mb-4 px-4">
+    <div className="text-sm border-solid flex justify-center overflow-x-auto whitespace-nowrap mb-4 px-4">
       {contentTypes.map((type) => (
         <button
           key={type.id}
           className={`px-4 py-2 mr-2 rounded-full border-[2px] ${
             selectedContentType === type.id
-              ? 'border-[#118DFF] bg-[#DBEEFF] text-[#111111]'
-              : 'border-[#7D8591] bg-white text-[#505050]'
+              ? 'border-blue4 bg-blue0 font-semibold text-main'
+              : 'border-gray8 bg-white font-regular text-sub1'
           }`}
           onClick={() => onContentTypeChange(type.id)}
         >
