@@ -11,9 +11,7 @@ function Skeleton({
   children,
 }: SkeletonProps) {
   return (
-    <div
-      className={`bg-gray-300 animate-pulse rounded-md p-5 ${width} ${height}`}
-    >
+    <div className={`bg-gray3 animate-pulse rounded-md p-5 ${width} ${height}`}>
       {children}
     </div>
   );

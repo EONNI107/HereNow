@@ -36,7 +36,7 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
   }
 
   return (
-    <div className="my-4">
+    <div className="my-4 bg-gray0">
       <Details
         mainData={mainData}
         additionalData={additionalData}
