@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import SearchForm from '../MainPage/Search/SearchForm';
 import {
   ChevronLeftIcon,
   MagnifyingGlassIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
+import SearchForm from '../MainPage/search/SearchForm';
 
 function HeaderLayout() {
   const [isBackground, setIsBackground] = useState<boolean>(false);
