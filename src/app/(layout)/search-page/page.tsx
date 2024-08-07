@@ -1,16 +1,14 @@
 'use client';
 
-import { searchApi } from '@/components/MainPage/api/searchApi';
 import SearchFeed from '@/components/MainPage/SearchElements/SearchFeed';
 import SearchItem from '@/components/MainPage/SearchElements/SearchItem';
 import { NearbyPlace } from '@/types/localDetails';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 export type SearchedType = Omit<NearbyPlace, 'dist'>;
 
 function SeachDetailPage() {
-  const [searchData, setSearchData] = useState<SearchedType[]>([]);
   const [isChange, setIsChange] = useState<boolean>(false);
   const [isBorderShow, setIsBorderShow] = useState<boolean>(true);
   const searchParams = useSearchParams();
@@ -24,13 +22,6 @@ function SeachDetailPage() {
     setIsBorderShow(false);
     setIsChange(true);
   };
-  useEffect(() => {
-    const searched = async () => {
-      const res: SearchedType[] = await searchApi(searchValue, '/api/search');
-      setSearchData(res);
-    };
-    searched();
-  }, [searchValue]);
 
   return (
     <div className="flex flex-col items-center justify-center">

@@ -44,7 +44,7 @@ const SearchFeed = ({ searchValue }: searchProps) => {
 
   const handleCategoryClick = async (category: string, title: string) => {
     setClickClass({
-      title,
+      title: title,
       classname: 'border-blue4 bg-blue0 text-main',
     });
 
@@ -62,10 +62,10 @@ const SearchFeed = ({ searchValue }: searchProps) => {
   };
 
   const categories = [
-    { title: '관광명소', label: '관광명소' },
-    { title: '문화시설', label: '문화시설' },
+    { title: '관광', label: '관광명소' },
+    { title: '문화', label: '문화시설' },
     { title: '맛집', label: '맛집' },
-    { title: '행사', label: '행사' },
+    { title: '축제' || '행사', label: '행사' },
   ];
 
   return (
@@ -76,7 +76,7 @@ const SearchFeed = ({ searchValue }: searchProps) => {
             <div
               key={category.title}
               className={`py-1 cursor-pointer w-full flex justify-center rounded-2xl border-[2px] ${
-                clickClass.title === category.title
+                clickClass.title === category.label
                   ? clickClass.classname
                   : 'border-sub2 bg-white text-sub1'
               }`}

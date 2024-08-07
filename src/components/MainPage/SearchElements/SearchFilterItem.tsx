@@ -1,6 +1,5 @@
 'use client';
 import { SearchedType } from '@/app/(layout)/search-page/page';
-import { HeartIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -31,9 +30,6 @@ function SearchFilterItem({ item }: SearchedTypeProp) {
       </div>
       <div className="flex justify-between items-center font-semibold text-[16px] text-main w-[218px]">
         <p>{item.title}</p>
-        <div>
-          <HeartIcon className="w-5 h-5" />
-        </div>
       </div>
     </div>
   );
