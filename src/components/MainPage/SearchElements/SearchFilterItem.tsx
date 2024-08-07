@@ -31,9 +31,6 @@ function SearchFilterItem({ item }: SearchedTypeProp) {
       </div>
       <div className="flex justify-between items-center font-semibold text-[16px] text-main w-[218px]">
         <p>{item.title}</p>
-        <div>
-          <HeartIcon className="w-5 h-5" />
-        </div>
       </div>
     </div>
   );

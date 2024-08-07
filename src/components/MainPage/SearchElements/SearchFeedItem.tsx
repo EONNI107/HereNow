@@ -47,9 +47,6 @@ function SearchFeedItem({ item }: itemProps) {
             {item.content}
           </p>
         </div>
-        <div>
-          <HeartIcon className="w-5 h-5" />
-        </div>
       </div>
     </div>
   );
