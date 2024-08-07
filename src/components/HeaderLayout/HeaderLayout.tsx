@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import SearchForm from '../MainPage/Search/SearchForm';
 import {
   ChevronLeftIcon,
   MagnifyingGlassIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
+import SearchForm from '../MainPage/search/SearchForm';
 
 function HeaderLayout() {
   const [isBackground, setIsBackground] = useState<boolean>(false);
@@ -30,7 +30,7 @@ function HeaderLayout() {
     router.refresh();
   };
   return (
-    <header className="bg-white fixed z-10 right-0 p-1 w-full left-0 mx-auto">
+    <header className="bg-white fixed z-10 right-0 p-1 w-full left-0 max-w-[375px] mx-auto">
       {isBackground ? (
         <div className="flex justify-center bg-white h-screen">
           <SearchForm setIsbg={setIsBackground} />
