@@ -49,7 +49,7 @@ function SeachDetailPage() {
             !isBorderShow && 'border-b-[3px] text-main border-b-blue4'
           }`}
         >
-          행사
+          로컬
         </div>
       </div>
       {isChange ? (

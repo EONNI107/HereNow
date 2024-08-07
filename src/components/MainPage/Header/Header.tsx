@@ -12,7 +12,7 @@ function Header({ title, content }: DataProps) {
       <div className="aspect-[16/9] w-full">
         <Image
           src={'/backgroundimage.png'}
-          alt="피드 상단 이미지"
+          alt="메인 상단 이미지"
           width={300}
           height={200}
           priority={true}
@@ -27,7 +27,7 @@ function Header({ title, content }: DataProps) {
           >
             글쓰러 가기
           </Link>
-          <h1 className="font-semibold text-[28px] text-white">
+          <h1 className="font-semibold text-[24px] text-white">
             <span className="block">{title}</span>
             {content}
           </h1>
