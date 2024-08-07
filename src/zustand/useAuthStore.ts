@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 
 type AuthStore = {
   user: User | null;
-  setUser: (user: User) => void;
+  setUser: (user: User | null) => void;
   logOut: () => void;
 };
 
