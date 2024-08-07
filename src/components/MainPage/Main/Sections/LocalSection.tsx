@@ -5,6 +5,7 @@ import LocalItem from './LocalItem';
 import { tourApi } from '@/app/api/tourApi';
 import { NearbyPlace } from '@/types/localDetails';
 import SkeletonLocalItem from '../../Skeleton/SkeletonLocalItem';
+import { showToast } from '@/utils/toastHelper';
 
 type PositionType = {
   coords: {
@@ -34,7 +35,7 @@ function LocalSection() {
       setLocalitems(items);
       setLoading(false);
     } catch (error) {
-      console.error('Failed to fetch location data:', error);
+      showToast('error', 'Failed to fetch location data');
       setLoading(false);
     }
   };
@@ -45,7 +46,7 @@ function LocalSection() {
   };
 
   const getLocationErr = (error: GeolocationError) => {
-    console.error('Failed to fetch location data:', error);
+    showToast('error', 'Failed to fetch location data');
   };
   const getLoaction = () => {
     const option = {

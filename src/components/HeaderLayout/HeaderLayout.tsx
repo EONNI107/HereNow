@@ -7,7 +7,7 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import SearchForm from '../MainPage/Search/SearchForm';
+import SearchForm from '../MainPage/SearchElements/SearchForm';
 
 function HeaderLayout() {
   const [isBackground, setIsBackground] = useState<boolean>(false);
