@@ -113,41 +113,44 @@ function SignInPage() {
                 처음이신가요?
               </Link>
             </div>
-            <div className="text-center text-sm text-white mb-6 mt-40">
-              ─────────── SNS계정으로 로그인하기 ───────────
-            </div>
-            <div className="mt-6 flex flex-col space-y-2">
-              <div>
-                <button
-                  type="button"
-                  onClick={() => signInWithOAuth('kakao')}
-                  className="w-full bg-[#F9E006] font-bold text-black py-2 px-4 rounded-md hover:bg-yellow-400 flex items-center justify-center"
-                >
-                  <Image
-                    src="/kakao_symbol.jpg"
-                    alt="Kakao"
-                    width={24}
-                    height={24}
-                  />
-                  <span className="ml-2">카카오로 로그인</span>
-                </button>
-              </div>
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => signInWithOAuth('google')}
-                  className="w-full bg-white font-bold text-black py-2 px-4 rounded-md border border-gray-300 hover:bg-gray-100 flex items-center justify-center"
-                >
-                  <Image
-                    src="/google_symbol.svg.jpg"
-                    alt="Google"
-                    width={24}
-                    height={24}
-                  />
-                  <span className="ml-2">구글로 로그인</span>
-                </button>
-              </div>
-            </div>
+
+            {/* <div className="mt-auto">
+                <div className="flex items-center justify-center text-center mb-6">
+                  <div className="flex-grow border-t-2 border-gray-300"></div>
+                  <span className="flex-shrink mx-4 text-xs sm:text-sm text-white font-semibold px-2">
+                    SNS계정으로 로그인하기
+                  </span>
+                  <div className="flex-grow border-t-2 border-gray-300"></div>
+                </div>
+                <div className="flex flex-col space-y-2 sm:space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => signInWithOAuth('kakao')}
+                    className="w-full bg-[#F9E006] font-bold text-black py-3 sm:py-4 px-4 rounded-md hover:bg-yellow-400 flex items-center justify-center text-sm"
+                  >
+                    <Image
+                      src="/kakao_symbol.jpg"
+                      alt="Kakao"
+                      width={24}
+                      height={24}
+                    />
+                    <span className="ml-2">카카오로 로그인</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => signInWithOAuth('google')}
+                    className="w-full bg-white font-bold text-black py-3 sm:py-4 px-4 rounded-md border border-gray3 hover:bg-gray-100 flex items-center justify-center text-sm"
+                  >
+                    <Image
+                      src="/google_symbol.svg.jpg"
+                      alt="Google"
+                      width={24}
+                      height={24}
+                    />
+                    <span className="ml-2">구글로 로그인</span>
+                  </button>
+                </div>
+              </div> */}
           </div>
         </div>
       </div>

@@ -12,6 +12,7 @@ import PlaceLikes from '@/components/MypagePlaceLikesList/PlaceLikes';
 import useAuthStore from '@/zustand/useAuthStore';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import axios from 'axios';
 
 type EditProfile = Pick<TablesInsert<'Users'>, 'nickname' | 'profileImage'>;
 
@@ -121,7 +122,7 @@ function MyPage() {
       }
     }
 
-    const { error } = await supabase
+    const { error: updateError } = await supabase
       .from('Users')
       .update({
         nickname: editProfile.nickname,
@@ -129,27 +130,45 @@ function MyPage() {
       })
       .eq('id', user.id);
 
-    if (error) {
-      showToast('error', `프로필 파일 업로드중 오류가 발생했습니다`);
-      console.log(error.message);
-    } else {
-      setProfile(() => {
-        return {
-          ...profile,
-          nickname: editProfile.nickname,
-          profileImage: imagePath,
-        };
-      });
+    if (updateError) throw updateError;
 
-      setUser({
-        ...user,
-        user_metadata: {
-          nickname: editProfile.nickname,
-          profileImage: imagePath,
-        },
-      });
-      setIsEditing(false);
-      showToast('success', '프로필 수정이 완료되었습니다.');
+    const { data, error: authError } = await supabase.auth.updateUser({
+      data: {
+        nickname: editProfile.nickname,
+        profileImage: imagePath,
+      },
+    });
+
+    if (authError) throw authError;
+
+    setProfile({
+      ...profile,
+      nickname: editProfile.nickname,
+      profileImage: imagePath,
+    });
+
+    setUser(data.user);
+
+    setIsEditing(false);
+    showToast('success', '프로필 수정이 완료되었습니다.');
+
+    const {
+      data: { user: refreshedUser },
+      error: refreshError,
+    } = await supabase.auth.getUser();
+    if (refreshError) throw refreshError;
+    setUser(refreshedUser);
+  };
+
+  const handleLogout = async () => {
+    const response = await axios.post(`/api/sign-out`);
+    if (response.status === 200) {
+      useAuthStore.getState().logOut();
+
+      showToast('success', '로그아웃이 완료 되었습니다');
+      router.push('/sign-in');
+    } else {
+      showToast('error', '로그아웃 중 오류가 발생했습니다');
     }
   };
 
@@ -250,11 +269,7 @@ function MyPage() {
                       프로필 수정
                     </button>
                     <button
-                      onClick={() => {
-                        useAuthStore.getState().logOut();
-                        showToast('success', '로그아웃이 완료 되었습니다');
-                        router.push('/sign-in');
-                      }}
+                      onClick={handleLogout}
                       className="m-2 w-24 rounded-md bg-[#FD8B59] text-white "
                     >
                       로그아웃
