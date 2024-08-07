@@ -89,7 +89,7 @@ const SearchFeed = ({ searchValue }: searchProps) => {
           ))}
         </div>
       </div>
-      <div className="w-full flex flex-col py-[13px] px-4 gap-4">
+      <div className="w-full flex flex-col py-[13px] px-4 gap-4 bg-gray0">
         <SearchIntroduction isIntroduce={false} />
         <div className="w-full flex flex-col gap-4">
           {isLoading

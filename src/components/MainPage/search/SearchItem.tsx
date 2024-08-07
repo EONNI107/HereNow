@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import SearchFilterItem from './SearchFilterItem';
 import { searchApi } from '../api/searchApi';
 import SkeletonSearchItem from '../Skeleton/SkeletonSearchItem';
-import { SearchedType } from '@/app/search-page/page';
 import SearchIntroduction from './SearchIntroduction';
+import { SearchedType } from '@/app/(layout)/search-page/page';
 
 type SearchItemProps = {
   searchValue: string;
@@ -74,7 +73,7 @@ const SearchItem = ({ searchValue }: SearchItemProps) => {
           ))}
         </div>
       </div>
-      <div className="w-full flex flex-col py-[13px] px-4 gap-4">
+      <div className="w-full flex flex-col py-[13px] px-4 gap-4 bg-gray0">
         <SearchIntroduction searchValue={searchValue} />
         <div className="w-full flex flex-col gap-4">
           {isSkeleton
