@@ -1,8 +1,8 @@
 'use client';
 
 import { searchApi } from '@/components/MainPage/api/searchApi';
-import SearchFeed from '@/components/MainPage/search/SearchFeed';
-import SearchItem from '@/components/MainPage/search/SearchItem';
+import SearchFeed from '@/components/MainPage/Search/SearchFeed';
+import SearchItem from '@/components/MainPage/Search/SearchItem';
 import { NearbyPlace } from '@/types/localDetails';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
