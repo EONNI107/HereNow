@@ -34,7 +34,7 @@ function SeachDetailPage() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex w-full text-[18px] font-normal text-sub2">
+      <div className="flex w-full text-[18px] font-normal text-sub2 bg-[#FFF]">
         <div
           onClick={handleFeedClick}
           className={`cursor-pointer py-4 px-3 flex justify-center w-full ${
@@ -49,12 +49,12 @@ function SeachDetailPage() {
             !isBorderShow && 'border-b-[3px] text-main border-b-blue4'
           }`}
         >
-          행사
+          로컬
         </div>
       </div>
       {isChange ? (
         <>
-          <SearchItem searchData={searchData} searchValue={searchValue} />
+          <SearchItem searchValue={searchValue} />
         </>
       ) : (
         <>

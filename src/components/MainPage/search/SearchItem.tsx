@@ -1,19 +1,18 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
+import SearchFilterItem from './SearchFilterItem';
 import { searchApi } from '../api/searchApi';
-import { SearchedType } from '@/app/search-page/page';
-import { useRouter } from 'next/navigation';
 import SkeletonSearchItem from '../Skeleton/SkeletonSearchItem';
-import { HeartIcon } from '@heroicons/react/24/outline';
+import SearchIntroduction from './SearchIntroduction';
+import { SearchedType } from '@/app/(layout)/search-page/page';
+
 type SearchItemProps = {
-  searchData: SearchedType[];
   searchValue: string;
 };
-function SearchItem({ searchData, searchValue }: SearchItemProps) {
+
+const SearchItem = ({ searchValue }: SearchItemProps) => {
   const [resData, setResData] = useState<SearchedType[]>([]);
-  const [resDatas, setResDatas] = useState<SearchedType[][]>([]);
   const [isShow, setIsShow] = useState<boolean>(true);
+  const [basicData, setBasicData] = useState<SearchedType[]>([]);
   const [isSkeleton, setIsSkeleton] = useState<boolean>(true);
   const [clickClass, setClickClass] = useState<{
     title: string;
@@ -22,205 +21,76 @@ function SearchItem({ searchData, searchValue }: SearchItemProps) {
     title: '',
     classname: '',
   });
-  const router = useRouter();
+
   useEffect(() => {
-    const datas = async () => {
-      const res: SearchedType[] = await searchApi(
-        searchValue,
-        '/api/search',
-        12,
-      );
-      const res2: SearchedType[] = await searchApi(
-        searchValue,
-        '/api/search',
-        14,
-      );
-      const res3: SearchedType[] = await searchApi(
-        searchValue,
-        '/api/search',
-        39,
-      );
-      const res4: SearchedType[] = await searchApi(
-        searchValue,
-        '/api/search',
-        15,
-      );
-      const resarrs = [res, res2, res3, res4];
-      setResDatas(resarrs);
+    const fetchBasicData = async () => {
+      const res = await searchApi(searchValue, '/api/search');
+      setBasicData(res);
       setIsSkeleton(false);
     };
-    datas();
+    fetchBasicData();
   }, [searchValue]);
 
-  const handleAttractionsClick = () => {
+  const handleCategoryClick = async (title: string, apiType: number) => {
+    const res: SearchedType[] = await searchApi(
+      searchValue,
+      '/api/search',
+      apiType,
+    );
+    setResData(res);
+    setIsShow(false);
     setClickClass({
-      title: '여행',
+      title,
       classname: 'border-blue4 bg-blue0 text-main',
     });
-    const firstdata = resDatas[0];
-    setResData(firstdata);
-    setIsShow(false);
-  };
-  const handleCultureClick = () => {
-    setClickClass({
-      title: '문화',
-      classname: 'border-blue4 bg-blue0 text-main',
-    });
-    const firstdata = resDatas[1];
-    setResData(firstdata);
-    setIsShow(false);
-  };
-  const handleRestaurantClick = () => {
-    setClickClass({
-      title: '맛집',
-      classname: 'border-blue4 bg-blue0 text-main',
-    });
-    const firstdata = resDatas[2];
-    setResData(firstdata);
-    setIsShow(false);
-  };
-  const handleFestivalClick = () => {
-    setClickClass({
-      title: '행사',
-      classname: 'border-blue4 bg-blue0 text-main',
-    });
-    const firstdata = resDatas[3];
-    setResData(firstdata);
-    setIsShow(false);
   };
 
-  const handleClick = (contentid: string) => {
-    router.push(`/local/details/${contentid}`);
-  };
+  const categories = [
+    { title: '관광명소', apiType: 12 },
+    { title: '문화시설', apiType: 14 },
+    { title: '맛집', apiType: 39 },
+    { title: '행사', apiType: 15 },
+  ];
+
   return (
     <>
-      <div className="flex w-full py-2 px-4">
+      <div className="flex w-full py-2 px-4 bg-[#FFF]">
         <div className="flex w-full items-center gap-3">
-          <div
-            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
-              clickClass.title === '여행'
-                ? clickClass.classname
-                : 'border-sub2 bg-white text-sub1'
-            }`}
-            onClick={handleAttractionsClick}
-          >
-            관광명소
-          </div>
-          <div
-            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
-              clickClass.title === '문화'
-                ? clickClass.classname
-                : 'border-sub2 bg-white text-sub1'
-            }`}
-            onClick={handleCultureClick}
-          >
-            문화시설
-          </div>
-          <div
-            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
-              clickClass.title === '맛집'
-                ? clickClass.classname
-                : 'border-sub2 bg-white text-sub1'
-            }`}
-            onClick={handleRestaurantClick}
-          >
-            맛집
-          </div>
-          <div
-            className={`py-1 cursor-pointer	w-full flex justify-center rounded-2xl border-[2px] ${
-              clickClass.title === '행사'
-                ? clickClass.classname
-                : 'border-sub2 bg-white text-sub1'
-            }`}
-            onClick={handleFestivalClick}
-          >
-            행사
-          </div>
+          {categories.map((category) => (
+            <div
+              key={category.title}
+              className={`py-1 cursor-pointer w-full flex justify-center rounded-2xl border-[2px] ${
+                clickClass.title === category.title
+                  ? clickClass.classname
+                  : 'border-sub2 bg-white text-sub1'
+              }`}
+              onClick={() =>
+                handleCategoryClick(category.title, category.apiType)
+              }
+            >
+              {category.title}
+            </div>
+          ))}
         </div>
       </div>
       <div className="w-full flex flex-col py-[13px] px-4 gap-4 bg-gray0">
-        <div className="w-full px-4 py-2 rounded-lg bg-orange0 h-[72px]">
-          <div className="w-full flex h-full gap-[7px]">
-            <div className="flex w-[35px] h-[25px] items-center">
-              <Image
-                src="/Event.png"
-                alt="행사아이콘"
-                width={20}
-                height={20}
-                className="w-full h-full"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <h2 className="font-semibold text-lg">행사</h2>
-              <p className="text-sm">
-                {searchValue}의 가볼만한 곳을 찾아드릴게요!
-              </p>
-            </div>
-          </div>
-        </div>
+        <SearchIntroduction searchValue={searchValue} />
         <div className="w-full flex flex-col gap-4">
-          {isSkeleton ? (
-            Array.from({ length: 10 }).map((_, index) => (
-              <SkeletonSearchItem key={index} />
-            ))
-          ) : isShow ? (
-            <>
-              {' '}
-              {searchData?.map((item) => (
-                <div
-                  key={item.contentid}
-                  className="w-full flex cursor-pointer gap-4"
-                  onClick={() => handleClick(item.contentid)}
-                >
-                  <div className="w-[100px] h-[100px]">
-                    <Image
-                      src={item.firstimage || item.firstimage2 || '/No_Img.jpg'}
-                      alt="이미지"
-                      width={100}
-                      height={100}
-                      className="rounded-lg border w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex justify-between items-center font-semibold text-[16px] text-main w-[218px]">
-                    <p>{item.title}</p>
-                    <div>
-                      <HeartIcon className="w-5 h-5" />
-                    </div>
-                  </div>
-                </div>
+          {isSkeleton
+            ? Array.from({ length: 10 }).map((_, index) => (
+                <SkeletonSearchItem key={index} />
+              ))
+            : isShow
+            ? basicData?.map((item) => (
+                <SearchFilterItem item={item} key={item.contentid} />
+              ))
+            : resData?.map((item) => (
+                <SearchFilterItem item={item} key={item.contentid} />
               ))}
-            </>
-          ) : (
-            <>
-              {' '}
-              {resData?.map((item) => (
-                <div
-                  key={item.contentid}
-                  className="w-full flex gap-3 cursor-pointer"
-                  onClick={() => handleClick(item.contentid)}
-                >
-                  <div className="w-[100px] h-[100px]">
-                    <Image
-                      src={item.firstimage || item.firstimage2 || '/No_Img.jpg'}
-                      alt="이미지"
-                      width={100}
-                      height={100}
-                      className="rounded-lg border w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex justify-between w-[300px] items-center px-4 text-main font-semibold text-lg">
-                    <p>{item.title}</p>
-                    <div>
-                      <HeartIcon className="w-5 h-5" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
         </div>
       </div>
     </>
   );
-}
+};
+
 export default SearchItem;

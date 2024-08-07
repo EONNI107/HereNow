@@ -5,7 +5,7 @@ import LocalSection from './Section/LocalSection';
 
 function Main() {
   return (
-    <main className="flex flex-col w-full">
+    <main className="flex flex-col w-full bg-gray0">
       <LocalItemList />
       <WebFeedSection />
       <LocalSection />
