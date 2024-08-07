@@ -47,7 +47,7 @@ function DetailLikeBtn({
             .select('id')
             .eq('feedId', postId)
             .eq('userId', userId)
-            .single();
+            .maybeSingle();
 
           if (likeError) {
             console.error(likeError);

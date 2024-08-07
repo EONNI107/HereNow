@@ -1,23 +1,9 @@
-import FeedListClient from '@/components/FeedList/FeedListClient';
+import FeedItemSkeleton from '@/components/FeedList/FeedItemSkeleton';
 import UserName from '@/components/FeedList/UserName';
-import { createClient } from '@/utils/supabase/server';
-import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
 import Link from 'next/link';
 
-async function FeedListPage() {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from('Feeds')
-    .select(`*, Users(profileImage, nickname), FeedLikes(id), FeedComments(id)`)
-    .order('createdAt', { ascending: false })
-    .range(0, 9);
-
-  if (error) {
-    console.error('Error fetching feeds:', error);
-    showToast('error', '피드 목록을 불러오는 중 오류가 발생했습니다.');
-  }
-
+function FeedLoading() {
   return (
     <div>
       <div className="relative mb-4">
@@ -48,9 +34,15 @@ async function FeedListPage() {
           </div>
         </div>
       </div>
-      {data && <FeedListClient initialFeeds={data || []} />}
+      <div className="container mx-auto p-4">
+        <div className="grid grid-cols-1 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <FeedItemSkeleton key={i} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
-export default FeedListPage;
+export default FeedLoading;

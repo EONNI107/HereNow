@@ -84,7 +84,7 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
   return (
     <>
       {mainData?.firstimage ? (
-        <div className="relative w-full h-[300px] mx-auto mb-2">
+        <div className="relative w-full h-[250px] mx-auto mb-4">
           <Image
             src={mainData?.firstimage || defaultImage}
             alt="장소 이미지"
@@ -95,7 +95,7 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
           />
         </div>
       ) : null}
-      <div className="flex justify-between gap-2 mx-2">
+      <div className="flex justify-between gap-2 mx-4">
         <h1 className="text-2xl font-bold mb-4">{mainData?.title}</h1>
         {mainData?.contentid && (
           <LikeBtn
