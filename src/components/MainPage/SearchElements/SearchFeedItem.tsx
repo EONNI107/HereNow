@@ -2,7 +2,6 @@
 
 import { TableFeedType } from '@/types/mainTypes';
 import { showToast } from '@/utils/toastHelper';
-import { HeartIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -46,9 +45,6 @@ function SearchFeedItem({ item }: itemProps) {
           <p className="font-pretendard line-clamp-1 text-sm text-sub1">
             {item.content}
           </p>
-        </div>
-        <div>
-          <HeartIcon className="w-5 h-5" />
         </div>
       </div>
     </div>
