@@ -36,16 +36,16 @@ export default function FeedLikes() {
   }, [user?.id]);
 
   return (
-    <div>
+    <div className="h-[calc((100svh_-_58px_-_92px)_*_0.7)] overflow-y-auto">
       {feedLikes.length === 0 ? (
-        <div className="h-[calc((100svh_-_58px_-_92px)_*_0.7)] flex justify-center">
+        <div className="h-full flex justify-center items-center">
           <div className="flex flex-col items-center justify-center">
             <PostIcon />
             <p className="mt-2">찜한 글이 없어요</p>
           </div>
         </div>
       ) : (
-        <div className="h-[calc((100svh_-_58px_-_92px)_*_0.7)] grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full overflow-auto">
+        <div className="grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full">
           {feedLikes.map((like) => {
             const post = like.Feeds;
             const postImages = post?.image
