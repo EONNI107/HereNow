@@ -23,7 +23,7 @@ function SearchIntroduction({
             />
           </div>
           <div className="flex flex-col gap-2">
-            <h2 className="font-semibold text-lg">행사</h2>
+            <h2 className="font-semibold text-lg">로컬</h2>
             <p className="text-sm">
               {searchValue}의 가볼만한 곳을 찾아드릴게요!
             </p>
