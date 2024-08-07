@@ -138,10 +138,10 @@ function FeedWrite() {
           {feedId ? '수정하기' : '등록'}
         </button>
       </div>
-      <div className="body flex flex-col">
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      <div className="body flex flex-col bg-gray0">
+        <form onSubmit={handleSubmit} className="flex flex-col m-4">
           <TitleInput value={title} onChange={setTitle} placeholder="제목" />
-          <hr className="border-gray-300 border" />
+          <hr className="border-gray-300 border mb-4" />
           <LocationButton
             region={region}
             sigungu={sigungu}
