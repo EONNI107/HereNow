@@ -59,59 +59,112 @@ function SignInPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center p-4 pt-20">
-      <Image
-        src="/RoginPage.jpg"
-        alt="로그인 배경화면"
-        layout="fill"
-        objectFit="cover"
-        className="z-[-1]"
-      />
-      <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center">
-        <div className="w-full">
-          <p className="text-sm mb-4 text-center font-semibold text-white">
-            찐 로컬들의 여행, 맛집 공유 앱
-          </p>
-          <p className="text-4xl mb-6 text-center text-white font-[양진체]">
-            지금, 여기
-          </p>
+    <div className="fixed inset-0 flex items-start justify-center overflow-hidden">
+      <div className="relative w-full max-w-md h-full">
+        <Image
+          src="/LoginPage.jpg"
+          alt="로그인 배경화면"
+          layout="fill"
+          objectFit="cover"
+          className="z-[-1]"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center overflow-y-auto sm:pt-8">
+          <div
+            className="w-full max-w-md px-4 py-4 sm:py-8 flex flex-col"
+            style={{ minHeight: '70vh' }}
+          >
+            <div className="">
+              <div className="text-center mb-8">
+                <p className="text-xs sm:text-sm mb-2 font-semibold text-white">
+                  찐 로컬들의 여행, 맛집 공유 앱
+                </p>
+                <p className="text-3xl sm:text-4xl text-white font-[양진체]">
+                  지금, 여기
+                </p>
+              </div>
 
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div>
-              <label className="text-white">아이디(이메일)</label>
-              <input
-                type="email"
-                id="email"
-                ref={emailRef}
-                placeholder="아이디 (이메일)"
-                className="w-full px-3 py-2 border border-blue-300 rounded-md bg-transparent text-white placeholder-white"
-              />
+              <form onSubmit={onSubmit} className="space-y-3 sm:space-y-4">
+                <div>
+                  <label className="text-white text-sm">아이디(이메일)</label>
+                  <input
+                    type="email"
+                    id="email"
+                    ref={emailRef}
+                    placeholder="ex)email@naver.com"
+                    className="w-full px-4 py-3 sm:py-4 border border-blue0 rounded-lg bg-transparent text-white placeholder-gray3 text-base"
+                  />
+                </div>
+                <div>
+                  <label className="text-white text-sm">비밀번호</label>
+                  <input
+                    ref={passwordRef}
+                    type="password"
+                    id="password"
+                    placeholder="*******"
+                    className="w-full px-4 py-3 sm:py-4 border border-blue0 rounded-lg bg-transparent text-white placeholder-gray3 text-base"
+                  />
+                </div>
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray3 text-sm sm:text-base"
+                  >
+                    로그인
+                  </button>
+                </div>
+              </form>
             </div>
-            <div>
-              <label className="text-white">비밀번호</label>
-              <input
-                ref={passwordRef}
-                type="password"
-                id="password"
-                placeholder="*******"
-                className="w-full px-3 py-2 border border-blue-300 rounded-md bg-transparent text-white placeholder-white"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-[#118DFF] text-white py-3 px-4 rounded-2xl hover:bg-gray-300"
-            >
-              로그인
-            </button>
-          </form>
-          <div>
-            <div className="mt-6 text-center">
-              <Link
-                href="/sign-up"
-                className="text-base text-white underline underline-offset-2 decoration-1"
-              >
-                처음이신가요?
-              </Link>
+
+            <div className="flex flex-col justify-between flex-grow mt-8">
+              <div className="text-center">
+                <Link
+                  href="/sign-up"
+                  className="text-sm sm:text-base text-white underline underline-offset-2 decoration-1"
+                >
+                  처음이신가요?
+                </Link>
+              </div>
+
+              {/* -----------------소셜 로그인 기능 잠시 보류------------------------- */}
+
+              {/* <div className="mt-auto">
+                <div className="flex items-center justify-center text-center mb-6">
+                  <div className="flex-grow border-t-2 border-gray-300"></div>
+                  <span className="flex-shrink mx-4 text-xs sm:text-sm text-white font-semibold px-2">
+                    SNS계정으로 로그인하기
+                  </span>
+                  <div className="flex-grow border-t-2 border-gray-300"></div>
+                </div>
+
+                <div className="flex flex-col space-y-2 sm:space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => signInWithOAuth('kakao')}
+                    className="w-full bg-[#F9E006] font-bold text-black py-3 sm:py-4 px-4 rounded-md hover:bg-yellow-400 flex items-center justify-center text-sm"
+                  >
+                    <Image
+                      src="/kakao_symbol.jpg"
+                      alt="Kakao"
+                      width={24}
+                      height={24}
+                    />
+                    <span className="ml-2">카카오로 로그인</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => signInWithOAuth('google')}
+                    className="w-full bg-white font-bold text-black py-3 sm:py-4 px-4 rounded-md border border-gray3 hover:bg-gray-100 flex items-center justify-center text-sm"
+                  >
+                    <Image
+                      src="/google_symbol.svg.jpg"
+                      alt="Google"
+                      width={24}
+                      height={24}
+                    />
+                    <span className="ml-2">구글로 로그인</span>
+                  </button>
+                </div>
+              </div> */}
             </div>
           </div>
         </div>
