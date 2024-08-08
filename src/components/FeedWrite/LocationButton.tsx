@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { MapPinIcon } from '@heroicons/react/24/outline';
-import LocationDropdown from './LocationDropdown';
+import LocationDropdown from '@/components/FeedWrite/LocationDropdown';
 
 type LocationButtonProps = {
   region: string;

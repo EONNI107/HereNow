@@ -34,6 +34,7 @@ function SignInPage() {
     }
     setUser(data.user);
     showToast('success', '로그인 성공');
+
     router.back();
   };
 
