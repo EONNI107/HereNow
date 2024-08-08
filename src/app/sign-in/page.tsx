@@ -38,24 +38,23 @@ function SignInPage() {
   };
 
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
-      options:
-        provider === 'google'
-          ? {
-              queryParams: {
-                access_type: 'offline',
-                prompt: 'consent',
-              },
-            }
-          : {},
+      // options: {
+      //   redirectTo: `${location.origin}/api/sign-in/callback`,
+      //   queryParams: {
+      //     access_type: 'offline',
+      //     prompt: 'select_account',
+      //   },
+      // },
     });
     if (error) {
       showToast('error', error.message);
       return;
     }
     showToast('success', `${provider}로 로그인 성공`);
-    router.push('/');
+    console.log(data);
+    // router.push('/');
   };
 
   return (
@@ -127,7 +126,7 @@ function SignInPage() {
 
               {/* -----------------소셜 로그인 기능 잠시 보류------------------------- */}
 
-              {/* <div className="mt-auto">
+              <div className="mt-auto">
                 <div className="flex items-center justify-center text-center mb-6">
                   <div className="flex-grow border-t-2 border-gray-300"></div>
                   <span className="flex-shrink mx-4 text-xs sm:text-sm text-white font-semibold px-2">
@@ -164,7 +163,7 @@ function SignInPage() {
                     <span className="ml-2">구글로 로그인</span>
                   </button>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
