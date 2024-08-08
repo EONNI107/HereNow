@@ -63,9 +63,9 @@ function SignInPage() {
         <Image
           src="/LoginPage.jpg"
           alt="로그인 배경화면"
-          layout="fill"
-          objectFit="cover"
-          className="z-[-1]"
+          width={300}
+          height={300}
+          className="absolute inset-0 z-[-1] h-full w-full object-cover"
           priority
         />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center overflow-y-auto sm:pt-8">
