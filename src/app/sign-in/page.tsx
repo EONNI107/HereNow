@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import useAuthStore from '@/zustand/useAuthStore';
 import Image from 'next/image';
+import axios from 'axios';
 
 function SignInPage() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -23,18 +24,16 @@ function SignInPage() {
       return showToast('error', '모든 항목을 입력해주세요');
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const response = await axios.post('/api/sign-in', { email, password });
 
-    if (error) {
-      showToast('error', error.message);
-      return;
+      setUser(response.data);
+      showToast('success', '로그인 성공');
+      router.push('/');
+    } catch (error) {
+      console.error('Login error:', error);
+      showToast('error', '로그인에 실패했습니다');
     }
-    setUser(data.user);
-    showToast('success', '로그인 성공');
-    router.back();
   };
 
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
@@ -67,6 +66,7 @@ function SignInPage() {
           layout="fill"
           objectFit="cover"
           className="z-[-1]"
+          priority
         />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center overflow-y-auto sm:pt-8">
           <div
