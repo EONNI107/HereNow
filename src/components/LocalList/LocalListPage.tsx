@@ -2,11 +2,11 @@
 
 import useLocalList from '@/hooks/useLocalList';
 import { useState } from 'react';
-import InfiniteScroll from './InfiniteScroll';
-import LocalListItem from './LocalListItem';
-import ContentTypeFilter from './ContentTypeFilter';
-import LoadingState from './LoadingState';
-import SkeletonCard from './SkeletonCard';
+import InfiniteScroll from '@/components/LocalList/InfiniteScroll';
+import LocalListItem from '@/components/LocalList/LocalListItem';
+import ContentTypeFilter from '@/components/LocalList/ContentTypeFilter';
+import LoadingState from '@/components/LocalList/LoadingState';
+import SkeletonCard from '@/components/LocalList/SkeletonCard';
 import { Item } from '@/types/localList';
 
 function LocalListPage({ region }: { region: string }) {

@@ -7,7 +7,7 @@ import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import { Feed } from '@/types/feed';
 import regionData from '@/data/regions.json';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { showToast } from '@/utils/toastHelper';
 import { PostgrestError } from '@supabase/supabase-js';
 
