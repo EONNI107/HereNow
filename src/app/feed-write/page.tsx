@@ -133,7 +133,7 @@ function FeedWrite() {
         ></ChevronLeftIcon>
         <button
           onClick={handleSubmit}
-          className="btn bg-blue4 px-2.5 py-1.5 w-12 h-9 rounded-lg font-semibold text-sm text-white"
+          className="btn bg-blue4 px-2.5 py-1.5 w-15 h-9 rounded-lg font-semibold text-sm text-white"
         >
           {feedId ? '수정하기' : '등록'}
         </button>
