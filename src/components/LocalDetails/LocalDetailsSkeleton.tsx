@@ -3,8 +3,8 @@ import Skeleton from '../Skeleton';
 function LocalDetailsSkeleton() {
   return (
     <div className="my-4">
-      <Skeleton height="h-[250px]" />
-      <div className="mt-4 space-y-4">
+      <Skeleton height="h-[250px] mb-[-8px]" />
+      <div className="mt-4 space-y-2">
         <Skeleton height="h-[340px]">
           <div className="bg-gray0 animate-pulse rounded-md h-8 w-[60%] mb-4" />
           <div className="bg-gray0 animate-pulse mt-5 rounded-md h-6 w-full mb-2 mx-auto" />
