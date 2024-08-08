@@ -125,23 +125,23 @@ function FeedWrite() {
   };
 
   return (
-    <div className="container mt-4">
-      <div className="header flex justify-between items-center mb-4">
+    <div className="container">
+      <div className="header flex justify-between items-center w-full h-12 px-2">
         <ChevronLeftIcon
           onClick={() => router.back()}
-          className="btn h-6 w-6 cursor-pointer"
+          className="btn h-5 w-5 ml-2 cursor-pointer"
         ></ChevronLeftIcon>
         <button
           onClick={handleSubmit}
-          className="btn bg-blue-500 px-2 py-1 rounded-md font-semibold text-14px text-white"
+          className="btn bg-blue4 px-2.5 py-1.5 w-12 h-9 rounded-lg font-semibold text-sm text-white"
         >
           {feedId ? '수정하기' : '등록'}
         </button>
       </div>
-      <div className="body flex flex-col">
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+      <div className="body flex flex-col bg-gray0">
+        <form onSubmit={handleSubmit} className="flex flex-col m-4">
           <TitleInput value={title} onChange={setTitle} placeholder="제목" />
-          <hr className="border-gray-300 border" />
+          <hr className="border-gray-300 border mb-4" />
           <LocationButton
             region={region}
             sigungu={sigungu}

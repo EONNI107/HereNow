@@ -29,7 +29,7 @@ function LocationDropdown({
       <select
         value={region}
         onChange={handleRegionChange}
-        className="input no-focus"
+        className="input no-focus bg-gray0 mb-2"
       >
         <option value="">시/도 선택</option>
         {regionsData.region.map((region) => (
@@ -43,7 +43,7 @@ function LocationDropdown({
         <select
           value={sigungu}
           onChange={handleSigunguChange}
-          className="input no-focus mt-2"
+          className="input no-focus mt-2 bg-gray0"
         >
           <option value="">시/군/구 선택</option>
           {regionsData.region
