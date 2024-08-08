@@ -32,7 +32,10 @@ type CommentsProps = {
 function Comments({ postId, onClose }: CommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState<string>('');
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
+  const [editingContent, setEditingContent] = useState<string>('');
   const [notification, setNotification] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const { user } = useAuthStore();
   const supabase = createClient();
 
@@ -95,58 +98,189 @@ function Comments({ postId, onClose }: CommentsProps) {
     }
   };
 
+  const handleEditClick = (comment: Comment) => {
+    setEditingCommentId(comment.id);
+    setEditingContent(comment.content);
+  };
+
+  const handleUpdateComment = async (commentId: number) => {
+    if (!user) {
+      toast(<LoginPrompt />, {
+        position: 'top-center',
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      });
+      return;
+    }
+
+    const { error } = await supabase
+      .from('FeedComments')
+      .update({ content: editingContent })
+      .eq('id', commentId)
+      .eq('userId', user.id);
+
+    if (error) {
+      console.error(error);
+      toast.error('댓글 수정에 실패하였습니다.');
+    } else {
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? { ...comment, content: editingContent }
+            : comment,
+        ),
+      );
+      setEditingCommentId(null);
+      setEditingContent('');
+      toast.success('댓글이 수정되었습니다.');
+    }
+  };
+
+  const handleDeleteComment = async (commentId: number) => {
+    if (!user) {
+      toast(<LoginPrompt />, {
+        position: 'top-center',
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      });
+      return;
+    }
+
+    const { error } = await supabase
+      .from('FeedComments')
+      .delete()
+      .eq('id', commentId)
+      .eq('userId', user.id);
+
+    if (error) {
+      console.error(error);
+      toast.error('댓글 삭제에 실패하였습니다.');
+    } else {
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== commentId),
+      );
+      toast.success('댓글이 삭제되었습니다.');
+      setConfirmDeleteId(null);
+    }
+  };
+
+  const confirmDelete = (commentId: number) => {
+    setConfirmDeleteId(commentId);
+  };
+
+  const cancelDelete = () => {
+    setConfirmDeleteId(null);
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-4 rounded-lg w-full h-[80vh] max-w-2xl relative overflow-auto mt-20">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-end justify-center">
+      <div className="bg-white rounded-t-2xl w-full h-[68%] flex flex-col">
         <XMarkIcon
           onClick={onClose}
-          className="absolute top-3 right-2 text-xl font-bold h-6 w-6 cursor-pointer"
+          className="text-xl ml-auto my-4 p-1 h-8 w-8 cursor-pointer mr-4"
         />
-        <hr className="border-gray-300 mt-8 mb-4" />
-        {notification && (
-          <div className="mb-4 p-2 bg-green-100 text-green-800 rounded">
-            {notification}
-          </div>
-        )}
-        <ul>
+        <hr className="border-gray-300 mx-4" />
+        <ul className="flex-grow overflow-y-auto px-4">
           {comments.map((comment) => (
-            <li key={comment.id} className="mb-6 flex items-center">
+            <li key={comment.id} className="py-4 flex">
               <Image
                 src={
                   comment.Users?.profileImage || '/path/to/default/avatar.png'
                 }
                 alt="User Avatar"
-                width={40}
-                height={40}
-                className="rounded-full mr-2"
+                width={48}
+                height={48}
+                className="rounded-full mr-6 w-12 h-12"
               />
-              <div>
+              <div className="items-center w-full">
                 <div className="flex">
-                  <p className="font-semibold text-14px mr-2">
+                  <p className="font-semibold text-[14px] mr-2">
                     {comment.Users?.nickname || '알 수 없음'}
                   </p>
-                  <p className="text-gray-500 text-14px">
+                  <p className="text-gray-500 text-[14px]">
                     {dayjs(comment.createdAt).fromNow()}
                   </p>
+                  {user?.id === comment.userId && (
+                    <span className="flex space-x-2 ml-2">
+                      {editingCommentId === comment.id ? (
+                        <button
+                          onClick={() => handleUpdateComment(comment.id)}
+                          className="text-blue-500 text-[14px]"
+                        >
+                          수정 완료
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleEditClick(comment)}
+                          className="text-blue-500 text-[14px]"
+                        >
+                          수정
+                        </button>
+                      )}
+                      <button
+                        onClick={() => confirmDelete(comment.id)}
+                        className="text-red-500 text-[14px]"
+                      >
+                        삭제
+                      </button>
+                    </span>
+                  )}
                 </div>
-                <p className="mt-1 text-14px">{comment.content}</p>
+                {editingCommentId === comment.id ? (
+                  <div>
+                    <textarea
+                      value={editingContent}
+                      onChange={(e) => setEditingContent(e.target.value)}
+                      className="textarea no-focus w-full mt-[7px]"
+                    />
+                  </div>
+                ) : (
+                  <p className="mt-[7px] text-[14px]">{comment.content}</p>
+                )}
               </div>
             </li>
           ))}
         </ul>
-        <form onSubmit={handleCommentSubmit} className="mt-4">
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글을 작성하세요"
-            required
-            className="textarea no-focus w-full"
-          />
-          <button type="submit" className="btn mt-2">
-            댓글 등록
-          </button>
+        <form onSubmit={handleCommentSubmit} className="w-full">
+          <div className="w-full flex items-end pt-1 pb-4 shadow-2xl">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="댓글을 입력하세요..."
+              required
+              className="textarea text-[16px] flex-grow no-focus mr-2 h-[56px] bg-blue0 rounded-xl p-4 ml-4"
+            />
+            <button
+              type="submit"
+              className="btn bg-blue3 py-1 px-2 rounded-md text-white text-[14px] mr-4"
+            >
+              댓글 등록
+            </button>
+          </div>
         </form>
       </div>
+
+      {confirmDeleteId !== null && (
+        <div className="fixed top-0 left-0 right-0 bg-white p-4 m-4 shadow-md rounded-lg z-50 mx-auto max-w-sm text-center">
+          <p className="text-gray-700 mb-4">정말 삭제하시겠습니까?</p>
+          <div className="flex justify-center space-x-4">
+            <button
+              onClick={() => handleDeleteComment(confirmDeleteId)}
+              className="bg-red-500 text-white px-4 py-2 rounded"
+            >
+              삭제
+            </button>
+            <button
+              onClick={cancelDelete}
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+            >
+              취소
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
