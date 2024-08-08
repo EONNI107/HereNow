@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 type ImageUploadProps = {
   images: File[];
@@ -51,7 +52,7 @@ function ImageUpload({
         accept="image/*"
         onChange={handleImageChange}
         multiple
-        className="input no-focus"
+        className="input no-focus text-sm"
       />
       {error && <p className="text-red-500">{error}</p>}
       <div className="image-previews flex space-x-2 mt-4 overflow-x-scroll">
@@ -64,13 +65,10 @@ function ImageUpload({
               layout="fill"
               objectFit="cover"
             />
-            <button
-              type="button"
+            <XMarkIcon
               onClick={() => handleImageDelete(index)}
-              className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-            >
-              X
-            </button>
+              className="absolute top-1 right-1 bg-gray2 bg-opacity-50 rounded-md h-5 cursor-pointer"
+            />
           </div>
         ))}
       </div>
