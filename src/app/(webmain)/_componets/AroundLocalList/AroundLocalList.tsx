@@ -1,12 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import FeedBar from '../LocalFeedList/FeedBar';
 import { useRouter } from 'next/navigation';
 import { NearbyPlace } from '@/types/localDetails';
 import { tourApi } from '@/app/api/tourApi';
 import { showToast } from '@/utils/toastHelper';
 import AroundLocalItem from './AroundLocalItem';
 import { Regions } from '@/types/mainTypes';
+import WebMainBar from '../WebMainBar';
 
 type PositionType = {
   coords: {
@@ -73,7 +73,7 @@ function AroundLocalList() {
   };
   return (
     <div className="flex flex-col gap-9">
-      <FeedBar
+      <WebMainBar
         title="내 주변에 숨은"
         content="로컬들이 공유하는 장소"
         url={`/local/${filterdata?.ename}`}

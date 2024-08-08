@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-function FeedBar({
+function WebMainBar({
   title,
   content,
   url,
@@ -32,4 +32,4 @@ function FeedBar({
   );
 }
 
-export default FeedBar;
+export default WebMainBar;
