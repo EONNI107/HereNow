@@ -95,7 +95,7 @@ function PostPage({ params }: PostPageProps) {
 
   const images = Array.isArray(post.image) ? post.image : [post.image];
   const userProfileImage =
-    post.userProfile?.profileImage || '/path/to/default/avatar.png';
+    post.userProfile?.profileImage || '/default-profile.jpg';
   const userNickname = post.userProfile?.nickname || '알 수 없음';
 
   const handleEdit = () => {
