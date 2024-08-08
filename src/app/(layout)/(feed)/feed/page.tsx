@@ -1,5 +1,6 @@
 import FeedListClient from '@/components/FeedList/FeedListClient';
 import UserName from '@/components/FeedList/UserName';
+import SendFeedWrite from '@/components/SendFeedWrite';
 import { createClient } from '@/utils/supabase/server';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -34,12 +35,7 @@ async function FeedListPage() {
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-15 flex flex-col justify-end p-8">
           <div className="flex flex-col space-y-2">
-            <Link
-              href={'/feed-write'}
-              className="self-start font-semibold bg-blue-500 text-white px-4 py-2 rounded-md"
-            >
-              글쓰러 가기
-            </Link>
+            <SendFeedWrite />
             <h1 className="font-semibold text-[24px] text-white">
               <span className="block">
                 <UserName />
