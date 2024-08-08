@@ -10,6 +10,7 @@ import ContentInput from '@/components/FeedWrite/ContentInput';
 import TitleInput from '@/components/FeedWrite/TitleInput';
 import useAuthStore from '@/zustand/useAuthStore';
 import { toast } from 'react-toastify';
+import { showToast } from '@/utils/toastHelper';
 
 function FeedWrite() {
   const [title, setTitle] = useState('');
@@ -47,6 +48,10 @@ function FeedWrite() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!title || !content || !region) {
+      return showToast('warning', '제목과 내용, 지역 선택을 기입해주세요.');
+    }
+
     if (!user) {
       toast.error('로그인이 필요합니다.');
       return;
@@ -76,7 +81,8 @@ function FeedWrite() {
     }
 
     const allImageUrls = [...existingImageUrls, ...imageUrls];
-    const imageUrlsString = JSON.stringify(allImageUrls);
+    const imageUrlsString =
+      allImageUrls.length === 0 ? null : JSON.stringify(allImageUrls);
 
     if (feedId) {
       const { error } = await supabase
@@ -133,7 +139,7 @@ function FeedWrite() {
         ></ChevronLeftIcon>
         <button
           onClick={handleSubmit}
-          className="btn bg-blue4 px-2.5 py-1.5 w-12 h-9 rounded-lg font-semibold text-sm text-white"
+          className="btn bg-blue4 px-2.5 py-1.5 w-15 h-9 rounded-lg font-semibold text-sm text-white"
         >
           {feedId ? '수정하기' : '등록'}
         </button>

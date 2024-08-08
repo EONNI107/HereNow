@@ -15,6 +15,7 @@ import Image from 'next/image';
 import useAuthStore from '@/zustand/useAuthStore';
 import { formatDate } from '@/utils/formatDate';
 import { toast } from 'react-toastify';
+import DeletePrompt from '@/components/DeletePrompt';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -116,11 +117,15 @@ function PostPage({ params }: PostPageProps) {
   };
 
   const handleDelete = async () => {
-    if (!user || user.id !== post.userId) {
-      toast.error('삭제 권한이 없습니다.');
-      return;
-    }
+    toast(<DeletePrompt onConfirm={performDelete} />, {
+      position: 'top-center',
+      autoClose: false,
+      closeOnClick: false,
+      closeButton: false,
+    });
+  };
 
+  const performDelete = async () => {
     const supabase = createClient();
     const { error } = await supabase.from('Feeds').delete().eq('id', post.id);
 
@@ -136,7 +141,7 @@ function PostPage({ params }: PostPageProps) {
   const isAuthor = user?.id === post.userId;
 
   return (
-    <div className="bg-gray0">
+    <div className="bg-gray0 pb-5">
       <div className="flex items-center justify-between h-14 mt-2 px-4">
         <div className="flex items-center">
           <Image
@@ -174,7 +179,7 @@ function PostPage({ params }: PostPageProps) {
         onCommentClick={() => setIsCommentModalOpen(true)}
         commentCount={commentCount}
       />
-      <div className="mx-4 px-4 py-2.5 bg-white rounded-3xl">
+      <div className="mx-4 mb-5 px-4 py-2.5 bg-white rounded-3xl">
         <p className="text-2xl font-bold mb-2">{post.title}</p>
         <p className="text-sm text-gray-500 mb-2">
           {formatDate(post.createdAt)}
@@ -182,16 +187,16 @@ function PostPage({ params }: PostPageProps) {
         <p className="text-base font-normal">{post.content}</p>
       </div>
       {isAuthor && (
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 ml-7">
           <button
             onClick={handleEdit}
-            className="btn border-2 border-[#118DFF] text-[#118DFF] bg-transparent px-4 py-2 rounded-md hover:bg-[#118DFF] hover:text-white transition-colors duration-300"
+            className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
           >
             수정하기
           </button>
           <button
             onClick={handleDelete}
-            className="btn border-2 border-[#118DFF] text-[#118DFF] bg-transparent px-4 py-2 rounded-md hover:bg-[#118DFF] hover:text-white transition-colors duration-300"
+            className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
           >
             삭제하기
           </button>
