@@ -34,16 +34,18 @@ export default function PlaceLikes() {
   }, [user?.id]);
 
   return (
-    <>
+    <div className="h-[calc((100svh_-_58px_-_92px)_*_0.7)] overflow-y-auto">
       {placeLikes.length === 0 ? (
-        <div className="flex flex-col items-center h-full justify-center">
-          <PostIcon />
-          <p className="mt-2">찜한 장소가 없어요</p>
+        <div className="h-full flex justify-center items-center">
+          <div className="flex flex-col items-center justify-center">
+            <PostIcon />
+            <p className="mt-2">찜한 장소가 없어요</p>
+          </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0.5">
+        <div className="grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full">
           {placeLikes.map((place) => (
-            <div key={place.id} className=" border rounded">
+            <div key={place.id}>
               <Link href={`/local/details/${place.placeId}`}>
                 <Image
                   src={place.imageUrl || '/No_Img.jpg'}
@@ -57,6 +59,6 @@ export default function PlaceLikes() {
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 }

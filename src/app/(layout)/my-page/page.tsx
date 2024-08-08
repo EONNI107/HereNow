@@ -173,14 +173,14 @@ function MyPage() {
   };
 
   return (
-    <div className="pt-10 flex flex-col h-svh">
+    <div className="pt-10 flex flex-col px-2">
       <div
         className={`flex items-center rounded-2xl w-full h-28 ${
-          user ? 'bg-[#DBEEFF]' : 'bg-[#FFF4F0]'
+          user ? 'bg-blue0' : 'bg-orange0'
         }`}
       >
         {!user ? (
-          <div className="flex justify-between items-center w-full p-8 bg-[#FFF4F0] rounded-2xl">
+          <div className="flex justify-between items-center w-full p-8 bg-orange0 rounded-2xl">
             <Image
               src="https://via.placeholder.com/150"
               className="h-16 w-16 rounded-full"
@@ -189,7 +189,7 @@ function MyPage() {
               height={64}
             />
             <Link href="/sign-in">
-              <button className="px-4 py-2 bg-[#FD8B59] text-white rounded-xl text-sm whitespace-nowrap">
+              <button className="px-4 py-2 bg-orange3 text-white rounded-xl text-sm whitespace-nowrap">
                 로그인 · 회원가입하러가기
               </button>
             </Link>
@@ -212,7 +212,7 @@ function MyPage() {
                 {user && isEditing && (
                   <label
                     htmlFor="file-input"
-                    className="absolute bottom-0 right-0 p-0.5 cursor-pointer bg-[#FD8B59] rounded-full"
+                    className="absolute bottom-0 right-0 p-0.5 cursor-pointer bg-orange3 rounded-full"
                   >
                     <PenIcon />
                   </label>
@@ -236,10 +236,10 @@ function MyPage() {
                         nickname: e.target.value,
                       })
                     }
-                    className="p-1 border rounded w-28"
+                    className="p-0 border border-black rounded w-28  bg-blue0"
                   />
                 ) : (
-                  <div className="text-gray-700">{profile?.nickname}</div>
+                  <div className="text-gray12">{profile?.nickname}</div>
                 )}
               </div>
             </div>
@@ -249,13 +249,13 @@ function MyPage() {
                   <>
                     <button
                       onClick={handleUpdate}
-                      className="m-2 w-24 rounded-md bg-sky-500 text-white"
+                      className="m-2 w-24 rounded-md bg-blue4 text-white"
                     >
                       수정 완료
                     </button>
                     <button
                       onClick={() => setIsEditing(false)}
-                      className="m-2 w-24 rounded-md bg-gray-500 text-white"
+                      className="m-2 w-24 rounded-md border-2 border-blue4 bg-blue0 text-blue4 py-0 px-4 text-sm font-bold"
                     >
                       취소
                     </button>
@@ -264,13 +264,13 @@ function MyPage() {
                   <>
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="m-2 w-24 rounded-md bg-sky-500 text-white"
+                      className="m-2 w-24 rounded-md bg-blue4 text-white"
                     >
                       프로필 수정
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="m-2 w-24 rounded-md bg-[#FD8B59] text-white "
+                      className="m-2 w-24 rounded-md bg-orange3 text-white "
                     >
                       로그아웃
                     </button>
@@ -286,36 +286,36 @@ function MyPage() {
         <button
           className={`p-2 flex-1 ${
             selectedTab === 'feedsList'
-              ? 'bg-white text-black border-b-4 border-[#118DFF]'
-              : 'text-gray-400 border-b-4 border-b-white'
+              ? 'bg-white text-black border-b-4 border-blue4'
+              : 'text-gray3 border-b-4 border-b-white'
           }`}
           onClick={() => setSelectedTab('feedsList')}
         >
-          작성한 글
+          <strong>작성한 글</strong>
         </button>
         <button
           className={`p-2 flex-1 ${
             selectedTab === 'feedLikes'
-              ? 'bg-white text-black border-b-4 border-[#118DFF]'
-              : 'text-gray-400 border-b-4 border-b-white'
+              ? 'bg-white text-black border-b-4 border-blue4'
+              : 'text-gray3 border-b-4 border-b-white'
           }`}
           onClick={() => setSelectedTab('feedLikes')}
         >
-          찜한 글
+          <strong>찜한 글</strong>
         </button>
         <button
           className={`p-2 flex-1 ${
             selectedTab === 'placeLikes'
-              ? 'bg-white text-black border-b-4 border-[#118DFF]'
-              : 'text-gray-400 border-b-4 border-b-white'
+              ? 'bg-white text-black border-b-4 border-blue4'
+              : 'text-gray3 border-b-4 border-b-white'
           }`}
           onClick={() => setSelectedTab('placeLikes')}
         >
-          찜한 장소
+          <strong>찜한 장소</strong>
         </button>
       </div>
 
-      <div className="flex flex-1 justify-center bg-gray-50 px-4">
+      <div className="flex flex-1 justify-center bg-gray0 px-4 min-h-[60vh] ">
         {loading ? (
           <p>Loading...</p>
         ) : (
