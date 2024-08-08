@@ -104,12 +104,21 @@ function SignInPage() {
                     className="w-full px-4 py-3 sm:py-4 border border-blue0 rounded-lg bg-transparent text-white placeholder-gray3 text-base"
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-2 flex flex-col gap-3">
                   <button
                     type="submit"
                     className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray3 text-sm sm:text-base"
                   >
                     로그인
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray3 text-sm sm:text-base"
+                    onClick={() => {
+                      router.push('/');
+                    }}
+                  >
+                    메인페이지로
                   </button>
                 </div>
               </form>

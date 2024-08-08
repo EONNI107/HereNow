@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { tourApi } from '../../tourApi';
+import { tourApi } from '@/app/api/tourApi';
 import regionData from '@/data/regions.json';
 import dayjs from 'dayjs';
 

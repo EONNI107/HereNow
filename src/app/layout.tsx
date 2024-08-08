@@ -1,11 +1,8 @@
 import ToastProvider from '@/providers/ToastProvider';
 import type { Metadata } from 'next';
-import './globals.css';
+import '@/app/globals.css';
 import QueryProvider from '@/providers/QueryProvider';
 import localFont from 'next/font/local';
-import Footer from '@/components/Footer';
-import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
-import { Suspense } from 'react';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',

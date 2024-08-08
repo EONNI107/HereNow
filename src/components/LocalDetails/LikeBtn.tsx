@@ -5,7 +5,7 @@ import { showToast } from '@/utils/toastHelper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import LoginPrompt from '../LoginPrompt';
+import LoginPrompt from '@/components/LoginPrompt';
 import useAuthStore from '@/zustand/useAuthStore';
 
 type LikeBtnProps = {

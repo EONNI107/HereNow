@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PostIcon from '../IconList/PostIcon';
+import PostIcon from '@/components/IconList/PostIcon';
 import { createClient } from '@/utils/supabase/client';
 import { Tables } from '@/types/supabase';
 import useAuthStore from '@/zustand/useAuthStore';
