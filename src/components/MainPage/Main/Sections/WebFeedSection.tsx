@@ -1,9 +1,9 @@
 'use client';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import WebFeedItem from './WebFeedItem';
+import WebFeedItem from '@/components/MainPage/Main/Sections/WebFeedItem';
 import { TableFeedUserType } from '@/types/mainTypes';
-import SkeletonFeedItem from '../../Skeleton/SkeletonFeedItem';
+import SkeletonFeedItem from '@/components/MainPage/Skeleton/SkeletonFeedItem';
 import { useRouter } from 'next/navigation';
 
 function WebFeedSection() {

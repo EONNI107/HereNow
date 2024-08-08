@@ -1,7 +1,7 @@
 import React from 'react';
-import LocalItemList from './Sections/LocalItemList';
-import WebFeedSection from './Sections/WebFeedSection';
-import LocalSection from './Sections/LocalSection';
+import LocalItemList from '@/components/MainPage/Main/Sections/LocalItemList';
+import WebFeedSection from '@/components/MainPage/Main/Sections/WebFeedSection';
+import LocalSection from '@/components/MainPage/Main/Sections/LocalSection';
 
 function Main() {
   return (

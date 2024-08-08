@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import SearchFilterItem from './SearchFilterItem';
-import { searchApi } from '../api/searchApi';
-import SkeletonSearchItem from '../Skeleton/SkeletonSearchItem';
-import SearchIntroduction from './SearchIntroduction';
+import { searchApi } from '@/components/MainPage/api/searchApi';
+import SkeletonSearchItem from '@/components/MainPage/Skeleton/SkeletonSearchItem';
+import SearchIntroduction from '@/components/MainPage/SearchElements/SearchIntroduction';
 import { SearchedType } from '@/app/(layout)/search-page/page';
 
 type SearchItemProps = {

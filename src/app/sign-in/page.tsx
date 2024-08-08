@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import useAuthStore from '@/zustand/useAuthStore';
 import Image from 'next/image';
+import axios from 'axios';
 
 function SignInPage() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -23,18 +24,16 @@ function SignInPage() {
       return showToast('error', '모든 항목을 입력해주세요');
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const response = await axios.post('/api/sign-in', { email, password });
 
-    if (error) {
-      showToast('error', error.message);
-      return;
+      setUser(response.data);
+      showToast('success', '로그인 성공');
+      router.push('/');
+    } catch (error) {
+      console.error('Login error:', error);
+      showToast('error', '로그인에 실패했습니다');
     }
-    setUser(data.user);
-    showToast('success', '로그인 성공');
-    router.back();
   };
 
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
@@ -67,6 +66,7 @@ function SignInPage() {
           layout="fill"
           objectFit="cover"
           className="z-[-1]"
+          priority
         />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center overflow-y-auto sm:pt-8">
           <div
@@ -104,12 +104,21 @@ function SignInPage() {
                     className="w-full px-4 py-3 sm:py-4 border border-blue0 rounded-lg bg-transparent text-white placeholder-gray3 text-base"
                   />
                 </div>
-                <div className="pt-2">
+                <div className="pt-2 flex flex-col gap-3">
                   <button
                     type="submit"
                     className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray3 text-sm sm:text-base"
                   >
                     로그인
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray3 text-sm sm:text-base"
+                    onClick={() => {
+                      router.push('/');
+                    }}
+                  >
+                    메인페이지로
                   </button>
                 </div>
               </form>

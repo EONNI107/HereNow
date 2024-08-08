@@ -16,6 +16,7 @@ import useAuthStore from '@/zustand/useAuthStore';
 import { formatDate } from '@/utils/formatDate';
 import { toast } from 'react-toastify';
 import DeletePrompt from '@/components/DeletePrompt';
+import FeedDetailSkeleton from '@/components/FeedDetail/FeedDetailSkeleton';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -90,12 +91,12 @@ function PostPage({ params }: PostPageProps) {
   }, [params.id]);
 
   if (!post) {
-    return <div>피드를 찾을 수 없습니다</div>;
+    return <FeedDetailSkeleton />;
   }
 
   const images = Array.isArray(post.image) ? post.image : [post.image];
   const userProfileImage =
-    post.userProfile?.profileImage || '/path/to/default/avatar.png';
+    post.userProfile?.profileImage || '/default-profile.jpg';
   const userNickname = post.userProfile?.nickname || '알 수 없음';
 
   const handleEdit = () => {

@@ -25,7 +25,7 @@ function FeedLoading() {
             >
               글쓰러 가기
             </Link>
-            <h1 className="font-semibold text-[28px] text-white">
+            <h1 className="font-semibold text-[24px] text-white">
               <span className="block">
                 <UserName />
               </span>
