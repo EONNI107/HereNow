@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { tourApi } from '../tourApi';
 
-export async function GET(request: Request) {
+export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('query');
   const contentId = searchParams.get('contentId');
@@ -27,4 +27,4 @@ export async function GET(request: Request) {
       { status: 500 },
     );
   }
-}
+};

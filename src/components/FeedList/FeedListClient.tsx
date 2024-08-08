@@ -8,18 +8,27 @@ import { useEffect, useState } from 'react';
 import { Feed } from '@/types/feed';
 import regionData from '@/data/regions.json';
 import LoadingSpinner from '../LoadingSpinner';
+import { showToast } from '@/utils/toastHelper';
+import { PostgrestError } from '@supabase/supabase-js';
 
 const FEEDS_PER_PAGE = 4;
 
 type FeedListClientProps = {
   initialFeeds: Feed[];
+  SupabaseError: PostgrestError | null;
 };
 
-function FeedListClient({ initialFeeds }: FeedListClientProps) {
+function FeedListClient({ initialFeeds, SupabaseError }: FeedListClientProps) {
   const supabase = createClient();
   const { ref, inView } = useInView();
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedSigungu, setSelectedSigungu] = useState('');
+
+  useEffect(() => {
+    if (SupabaseError) {
+      showToast('error', '피드 목록을 불러오는 중 오류가 발생했습니다.');
+    }
+  }, [SupabaseError]);
 
   const fetchFeeds = async ({ pageParam = 1 }) => {
     let query = supabase
@@ -84,8 +93,8 @@ function FeedListClient({ initialFeeds }: FeedListClientProps) {
   if (error) return <div>에러: {error.message}</div>;
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="mb-4 flex space-x-4">
+    <div className="container mx-auto">
+      <div className="mb-4 flex space-x-4 ml-4">
         <select
           value={selectedRegion}
           onChange={handleRegionChange}
@@ -115,28 +124,30 @@ function FeedListClient({ initialFeeds }: FeedListClientProps) {
           </select>
         )}
       </div>
-      <div className="grid grid-cols-1 gap-4">
-        {data.pages.map((page, i) => (
-          <div key={i}>
-            {page.map((feed) => (
-              <FeedListItem
-                key={feed.id}
-                feed={feed}
-                likesCount={feed.FeedLikes.length}
-                commentsCount={feed.FeedComments.length}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
-      <div ref={ref} className="text-[#767676] text-center py-4">
-        {isFetchingNextPage ? (
-          <LoadingSpinner />
-        ) : hasNextPage ? (
-          '더 보기'
-        ) : (
-          '더 이상 보여줄 피드가 없어요!'
-        )}
+      <div className="bg-gray0 p-4">
+        <div className="grid grid-cols-1 gap-4">
+          {data.pages.map((page, i) => (
+            <div key={i}>
+              {page.map((feed) => (
+                <FeedListItem
+                  key={feed.id}
+                  feed={feed}
+                  likesCount={feed.FeedLikes.length}
+                  commentsCount={feed.FeedComments.length}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div ref={ref} className="text-[#767676] text-center py-4">
+          {isFetchingNextPage ? (
+            <LoadingSpinner />
+          ) : hasNextPage ? (
+            '더 보기'
+          ) : (
+            '더 이상 보여줄 피드가 없어요!'
+          )}
+        </div>
       </div>
     </div>
   );

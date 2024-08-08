@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
 
-export async function POST(request: Request) {
+export const POST = async (request: Request) => {
   const supabase = createClient();
   const { searchValue, title } = await request.json();
   try {
@@ -18,4 +18,4 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
-}
+};
