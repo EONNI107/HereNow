@@ -136,8 +136,8 @@ function PostPage({ params }: PostPageProps) {
   const isAuthor = user?.id === post.userId;
 
   return (
-    <div className="container mx-auto relative">
-      <div className="flex items-center justify-between py-1 px-1">
+    <div className="bg-gray0">
+      <div className="flex items-center justify-between h-14 mt-2 px-4">
         <div className="flex items-center">
           <Image
             src={userProfileImage}
@@ -146,17 +146,14 @@ function PostPage({ params }: PostPageProps) {
             height={40}
             className="w-10 h-10 rounded-full mr-2"
           />
-          <p className="font-semibold text-14px text-gray-600">
-            {userNickname}
-          </p>
+          <p className="font-semibold text-sm">{userNickname}</p>
         </div>
-        <p className="font-semibold text-14px text-gray-600 text-right">{`${post.region} ${post.sigungu}`}</p>
+        <button className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg">{`${post.region} ${post.sigungu}`}</button>
       </div>
       <Swiper
         pagination={{ clickable: true }}
         navigation={true}
         modules={[Pagination, Navigation]}
-        className="mb-4"
       >
         {images.map((src, index) => (
           <SwiperSlide key={index}>
@@ -177,9 +174,13 @@ function PostPage({ params }: PostPageProps) {
         onCommentClick={() => setIsCommentModalOpen(true)}
         commentCount={commentCount}
       />
-      <p className="text-3xl font-bold mb-2">{post.title}</p>
-      <p className="text-sm text-gray-500 mb-4">{formatDate(post.createdAt)}</p>
-      <p className="text-16px mb-4">{post.content}</p>
+      <div className="mx-4 px-4 py-2.5 bg-white rounded-3xl">
+        <p className="text-2xl font-bold mb-2">{post.title}</p>
+        <p className="text-sm text-gray-500 mb-2">
+          {formatDate(post.createdAt)}
+        </p>
+        <p className="text-base font-normal">{post.content}</p>
+      </div>
       {isAuthor && (
         <div className="flex space-x-4">
           <button
