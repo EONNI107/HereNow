@@ -9,7 +9,7 @@ import Image from 'next/image';
 import useAuthStore from '@/zustand/useAuthStore';
 import { toast } from 'react-toastify';
 import LoginPrompt from '@/components/LoginPrompt';
-import DeletePrompt from '@/components/DeletePrompt'; // [변경] DeletePrompt import 추가
+import DeletePrompt from '@/components/DeletePrompt';
 
 dayjs.extend(relativeTime);
 
@@ -35,7 +35,6 @@ function Comments({ postId, onClose }: CommentsProps) {
   const [newComment, setNewComment] = useState<string>('');
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editingContent, setEditingContent] = useState<string>('');
-  const [notification, setNotification] = useState<string | null>(null);
   const { user } = useAuthStore();
   const supabase = createClient();
 
@@ -93,8 +92,6 @@ function Comments({ postId, onClose }: CommentsProps) {
         })),
       ]);
       setNewComment('');
-      setNotification('댓글이 등록되었습니다');
-      setTimeout(() => setNotification(null), 3000);
     }
   };
 
@@ -111,6 +108,11 @@ function Comments({ postId, onClose }: CommentsProps) {
         closeOnClick: false,
         closeButton: false,
       });
+      return;
+    }
+
+    if (!editingContent.trim()) {
+      toast.error('수정할 내용을 입력하세요.');
       return;
     }
 
@@ -166,7 +168,6 @@ function Comments({ postId, onClose }: CommentsProps) {
   };
 
   const confirmDelete = (commentId: number) => {
-    // [변경] toast를 사용하여 DeletePrompt 컴포넌트를 보여주고, 댓글 삭제 함수로 onConfirm 설정
     toast(<DeletePrompt onConfirm={() => handleDeleteComment(commentId)} />, {
       position: 'top-center',
       autoClose: false,
@@ -234,7 +235,7 @@ function Comments({ postId, onClose }: CommentsProps) {
                     <textarea
                       value={editingContent}
                       onChange={(e) => setEditingContent(e.target.value)}
-                      className="textarea no-focus w-full mt-[7px]"
+                      className={`textarea no-focus w-full mt-[7px] text-[14px] border border-gray-400 focus:border-gray-400 focus:outline-none`}
                     />
                   </div>
                 ) : (
@@ -245,19 +246,19 @@ function Comments({ postId, onClose }: CommentsProps) {
           ))}
         </ul>
         <form onSubmit={handleCommentSubmit} className="w-full">
-          <div className="w-full flex items-end pt-1 pb-4 shadow-2xl">
+          <div className="w-full flex items-center pt-1 pb-4 shadow-2xl">
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="댓글을 입력하세요..."
               required
-              className="textarea text-[16px] flex-grow no-focus mr-2 h-[56px] bg-blue0 rounded-xl p-4 ml-4"
+              className="textarea text-[16px] flex-grow no-focus mr-2 h-[48px] bg-blue0 rounded-xl p-2 ml-4"
             />
             <button
               type="submit"
-              className="btn bg-blue3 py-1 px-2 rounded-md text-white text-[14px] mr-4"
+              className="btn bg-blue3 px-5 h-[48px] rounded-xl text-white text-[16px] mr-4"
             >
-              댓글 등록
+              등록
             </button>
           </div>
         </form>
