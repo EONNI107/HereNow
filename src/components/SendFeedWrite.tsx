@@ -25,7 +25,7 @@ function SendFeedWrite() {
     <div>
       <button
         onClick={HandleOnClick}
-        className="self-start font-semibold bg-blue-500 text-white px-4 py-2 rounded-md"
+        className="self-start font-semibold bg-blue4 text-white px-4 py-2 rounded-md hover:bg-blue5"
       >
         글쓰러 가기
       </button>

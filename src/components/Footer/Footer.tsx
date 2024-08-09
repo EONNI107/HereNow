@@ -11,8 +11,8 @@ function Footer() {
   const { user } = useAuthStore();
 
   return (
-    <footer className="bg-white fixed z-10 right-0 p-1 w-full bottom-0 mx-auto">
-      <div className="flex justify-between px-5 py-5">
+    <footer className="bg-white fixed z-10 right-0 p-1 w-full h-[72px] bottom-0 mx-auto">
+      <div className="flex justify-between items-center h-full px-5">
         <Link
           href={'/'}
           className="w-[70px] h-[44px] flex flex-col items-center"

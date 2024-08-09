@@ -107,13 +107,13 @@ function SignInPage() {
                 <div className="pt-2 flex flex-col gap-3">
                   <button
                     type="submit"
-                    className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray3 text-sm sm:text-base"
+                    className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-blue5 text-sm sm:text-base"
                   >
                     로그인
                   </button>
                   <button
                     type="button"
-                    className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray3 text-sm sm:text-base"
+                    className="w-full bg-orange1 text-main py-4 sm:py-5 px-6 rounded-2xl hover:bg-orange2 text-sm sm:text-base"
                     onClick={() => {
                       router.push('/');
                     }}
