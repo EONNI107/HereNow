@@ -10,7 +10,7 @@ function AroundLocalItem({ item, onclick }: NearbyTypePlace) {
   return (
     <li
       onClick={onclick}
-      className="rounded-xl cursor-pointer w-full flex flex-col gap-4"
+      className="rounded-xl cursor-pointer w-full flex flex-col gap-4 items-center"
     >
       <div className="w-[384px] h-[264px]">
         <Image

@@ -72,14 +72,14 @@ function AroundLocalList() {
     router.push(`/local/details/${contentid}`);
   };
   return (
-    <div className="flex flex-col gap-9">
+    <div className="w-full flex flex-col gap-9">
       <WebMainBar
         title="내 주변에 숨은"
         content="로컬들이 공유하는 장소"
         url={`/local/${filterdata?.ename}`}
       />
-      <div className="flex gap-[42px] w-full">
-        <ul className="flex gap-[16px] w-full h-[331px]">
+      <div className="flex w-full">
+        <ul className="flex gap-[42px] w-full h-[331px]">
           {localitems.map((item: NearbyPlace) => (
             <AroundLocalItem
               key={item.contentid}
