@@ -9,6 +9,7 @@ import Image from 'next/image';
 import useAuthStore from '@/zustand/useAuthStore';
 import { toast } from 'react-toastify';
 import LoginPrompt from '@/components/LoginPrompt';
+import DeletePrompt from '@/components/DeletePrompt';
 
 dayjs.extend(relativeTime);
 
@@ -34,8 +35,6 @@ function Comments({ postId, onClose }: CommentsProps) {
   const [newComment, setNewComment] = useState<string>('');
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editingContent, setEditingContent] = useState<string>('');
-  const [notification, setNotification] = useState<string | null>(null);
-  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const { user } = useAuthStore();
   const supabase = createClient();
 
@@ -93,8 +92,6 @@ function Comments({ postId, onClose }: CommentsProps) {
         })),
       ]);
       setNewComment('');
-      setNotification('댓글이 등록되었습니다');
-      setTimeout(() => setNotification(null), 3000);
     }
   };
 
@@ -111,6 +108,11 @@ function Comments({ postId, onClose }: CommentsProps) {
         closeOnClick: false,
         closeButton: false,
       });
+      return;
+    }
+
+    if (!editingContent.trim()) {
+      toast.error('수정할 내용을 입력하세요.');
       return;
     }
 
@@ -162,16 +164,16 @@ function Comments({ postId, onClose }: CommentsProps) {
         prevComments.filter((comment) => comment.id !== commentId),
       );
       toast.success('댓글이 삭제되었습니다.');
-      setConfirmDeleteId(null);
     }
   };
 
   const confirmDelete = (commentId: number) => {
-    setConfirmDeleteId(commentId);
-  };
-
-  const cancelDelete = () => {
-    setConfirmDeleteId(null);
+    toast(<DeletePrompt onConfirm={() => handleDeleteComment(commentId)} />, {
+      position: 'top-center',
+      autoClose: false,
+      closeOnClick: false,
+      closeButton: false,
+    });
   };
 
   return (
@@ -233,7 +235,7 @@ function Comments({ postId, onClose }: CommentsProps) {
                     <textarea
                       value={editingContent}
                       onChange={(e) => setEditingContent(e.target.value)}
-                      className="textarea no-focus w-full mt-[7px]"
+                      className={`textarea no-focus w-full mt-[7px] text-[14px] border border-gray-400 focus:border-gray-400 focus:outline-none`}
                     />
                   </div>
                 ) : (
@@ -244,43 +246,23 @@ function Comments({ postId, onClose }: CommentsProps) {
           ))}
         </ul>
         <form onSubmit={handleCommentSubmit} className="w-full">
-          <div className="w-full flex items-end pt-1 pb-4 shadow-2xl">
+          <div className="w-full flex items-center pt-1 pb-4 shadow-2xl">
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="댓글을 입력하세요..."
               required
-              className="textarea text-[16px] flex-grow no-focus mr-2 h-[56px] bg-blue0 rounded-xl p-4 ml-4"
+              className="textarea text-[16px] flex-grow no-focus mr-2 h-[48px] bg-blue0 rounded-xl p-2 ml-4"
             />
             <button
               type="submit"
-              className="btn bg-blue3 py-1 px-2 rounded-md text-white text-[14px] mr-4"
+              className="btn bg-blue3 px-5 h-[48px] rounded-xl text-white text-[16px] mr-4"
             >
-              댓글 등록
+              등록
             </button>
           </div>
         </form>
       </div>
-
-      {confirmDeleteId !== null && (
-        <div className="fixed top-0 left-0 right-0 bg-white p-4 m-4 shadow-md rounded-lg z-50 mx-auto max-w-sm text-center">
-          <p className="text-gray-700 mb-4">정말 삭제하시겠습니까?</p>
-          <div className="flex justify-center space-x-4">
-            <button
-              onClick={() => handleDeleteComment(confirmDeleteId)}
-              className="bg-red-500 text-white px-4 py-2 rounded"
-            >
-              삭제
-            </button>
-            <button
-              onClick={cancelDelete}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
-            >
-              취소
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
