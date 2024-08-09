@@ -8,7 +8,6 @@ type DeletePromptProps = {
 
 function DeletePrompt({ onConfirm }: DeletePromptProps) {
   const router = useRouter();
-  4;
   const pathname = usePathname();
 
   const closeToast = () => toast.dismiss();
