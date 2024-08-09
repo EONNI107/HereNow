@@ -9,6 +9,7 @@ import Image from 'next/image';
 import useAuthStore from '@/zustand/useAuthStore';
 import { toast } from 'react-toastify';
 import LoginPrompt from '@/components/LoginPrompt';
+import DeletePrompt from '@/components/DeletePrompt'; // [변경] DeletePrompt import 추가
 
 dayjs.extend(relativeTime);
 
@@ -35,7 +36,6 @@ function Comments({ postId, onClose }: CommentsProps) {
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editingContent, setEditingContent] = useState<string>('');
   const [notification, setNotification] = useState<string | null>(null);
-  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const { user } = useAuthStore();
   const supabase = createClient();
 
@@ -162,16 +162,17 @@ function Comments({ postId, onClose }: CommentsProps) {
         prevComments.filter((comment) => comment.id !== commentId),
       );
       toast.success('댓글이 삭제되었습니다.');
-      setConfirmDeleteId(null);
     }
   };
 
   const confirmDelete = (commentId: number) => {
-    setConfirmDeleteId(commentId);
-  };
-
-  const cancelDelete = () => {
-    setConfirmDeleteId(null);
+    // [변경] toast를 사용하여 DeletePrompt 컴포넌트를 보여주고, 댓글 삭제 함수로 onConfirm 설정
+    toast(<DeletePrompt onConfirm={() => handleDeleteComment(commentId)} />, {
+      position: 'top-center',
+      autoClose: false,
+      closeOnClick: false,
+      closeButton: false,
+    });
   };
 
   return (
@@ -261,26 +262,6 @@ function Comments({ postId, onClose }: CommentsProps) {
           </div>
         </form>
       </div>
-
-      {confirmDeleteId !== null && (
-        <div className="fixed top-0 left-0 right-0 bg-white p-4 m-4 shadow-md rounded-lg z-50 mx-auto max-w-sm text-center">
-          <p className="text-gray-700 mb-4">정말 삭제하시겠습니까?</p>
-          <div className="flex justify-center space-x-4">
-            <button
-              onClick={() => handleDeleteComment(confirmDeleteId)}
-              className="bg-red-500 text-white px-4 py-2 rounded"
-            >
-              삭제
-            </button>
-            <button
-              onClick={cancelDelete}
-              className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
-            >
-              취소
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
