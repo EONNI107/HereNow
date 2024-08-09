@@ -3,18 +3,52 @@ import Image from 'next/image';
 import { fromNow } from '@/utils/formatDate';
 import { showToast } from '@/utils/toastHelper';
 import Link from 'next/link';
-import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
-import { HeartIcon } from '@heroicons/react/24/solid';
+import {
+  ChatBubbleOvalLeftEllipsisIcon,
+  HeartIcon,
+} from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/utils/supabase/client';
+import HeartIconSolid from './HeartIconSolid';
 
 function FeedListItem({
   feed,
   likesCount,
   commentsCount,
+  userId,
 }: {
   feed: Feed;
   likesCount: number;
   commentsCount: number;
+  userId: string | null;
 }) {
+  const [isLiked, setIsLiked] = useState(false);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const checkLikeStatus = async () => {
+      if (!userId) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('FeedLikes')
+          .select('id')
+          .eq('feedId', feed.id)
+          .eq('userId', userId)
+          .maybeSingle();
+
+        if (error) {
+          console.error('Error checking like status:', error);
+        } else {
+          setIsLiked(!!data);
+        }
+      } catch (err) {
+        console.error('Error in checkLikeStatus:', err);
+      }
+    };
+
+    checkLikeStatus();
+  }, [feed.id, userId, supabase]);
   let feedImage = '/No_Img.jpg';
 
   if (feed.image) {
@@ -26,6 +60,7 @@ function FeedListItem({
       showToast('error', '이미지를 불러오는 중 오류가 발생했습니다.');
     }
   }
+
   return (
     <div>
       <Link href={`/feed-detail/${feed.id}`} className="p-4  rounded-3xl">
@@ -42,7 +77,7 @@ function FeedListItem({
               {feed.Users?.nickname}
             </span>
           </div>
-          <span className="text-[12px] text-[#767676]">
+          <span className="text-[12px] text-sub2">
             {fromNow(feed.createdAt)}
           </span>
         </div>
@@ -57,12 +92,16 @@ function FeedListItem({
         </div>
         <div className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-[#212125] text-[18px] font-semibold">
+            <h2 className="text-main text-[18px] font-semibold">
               {feed.title}
             </h2>
-            <div className="flex items-center space-x-3 text-xs text-[#505050]">
+            <div className="flex items-center space-x-3 text-xs text-sub1">
               <div className="flex items-center space-x-1">
-                <HeartIcon className="w-5 h-5 text-[#ff5c5c]" />
+                {isLiked ? (
+                  <HeartIconSolid />
+                ) : (
+                  <HeartIcon className="w-5 h-5" />
+                )}
                 <span>{likesCount}</span>
               </div>
               <div className="flex items-center space-x-1">
@@ -71,7 +110,7 @@ function FeedListItem({
               </div>
             </div>
           </div>
-          <p className="text-[14px] text-[#767676]">
+          <p className="text-[14px] text-sub2 ">
             {feed.region && <span>{feed.region}</span>}
             {feed.region && feed.sigungu && ' '}
             {feed.sigungu && <span>{feed.sigungu}</span>}

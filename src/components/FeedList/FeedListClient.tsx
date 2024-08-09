@@ -16,9 +16,14 @@ const FEEDS_PER_PAGE = 4;
 type FeedListClientProps = {
   initialFeeds: Feed[];
   SupabaseError: PostgrestError | null;
+  userId: string | null;
 };
 
-function FeedListClient({ initialFeeds, SupabaseError }: FeedListClientProps) {
+function FeedListClient({
+  initialFeeds,
+  SupabaseError,
+  userId,
+}: FeedListClientProps) {
   const supabase = createClient();
   const { ref, inView } = useInView();
   const [selectedRegion, setSelectedRegion] = useState('');
@@ -134,12 +139,13 @@ function FeedListClient({ initialFeeds, SupabaseError }: FeedListClientProps) {
                   feed={feed}
                   likesCount={feed.FeedLikes.length}
                   commentsCount={feed.FeedComments.length}
+                  userId={userId}
                 />
               ))}
             </div>
           ))}
         </div>
-        <div ref={ref} className="text-[#767676] text-center py-4">
+        <div ref={ref} className="text-sub2 text-center py-4">
           {isFetchingNextPage ? (
             <LoadingSpinner />
           ) : hasNextPage ? (

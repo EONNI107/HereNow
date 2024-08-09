@@ -27,7 +27,7 @@ const WebFeedItem = ({ feedItem }: feedTypeProps) => {
     <>
       <div className="flex flex-col items-center">
         <div
-          className="w-[150px] h-[150px] relative cursor-pointer "
+          className="w-[163.5px] h-[150px] relative cursor-pointer "
           onClick={() => handleFeedMove(feedItem.id)}
         >
           <Image
@@ -35,9 +35,8 @@ const WebFeedItem = ({ feedItem }: feedTypeProps) => {
             alt="피드이미지"
             width={150}
             height={150}
-            className="border rounded-2xl object-cover w-full h-full
-          
-            "
+            className="border rounded-2xl object-cover w-full h-full"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent rounded-xl"></div>
           <div className="absolute bottom-3 left-3 felx flex-col text-white z-1">
@@ -46,7 +45,7 @@ const WebFeedItem = ({ feedItem }: feedTypeProps) => {
           </div>
         </div>
 
-        <div className="w-full flex mt-2 ml-8 gap-1">
+        <div className="w-full flex mt-2 ml-2 gap-1">
           <div className="w-[25px] h-[25px]">
             <Image
               src={feedItem.Users.profileImage || feedImage}
