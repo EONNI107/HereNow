@@ -142,7 +142,7 @@ function PostPage({ params }: PostPageProps) {
   const isAuthor = user?.id === post.userId;
 
   return (
-    <div className="bg-gray0 pb-5">
+    <div className="bg-gray0 min-h-screen pb-5">
       <div className="flex items-center justify-between h-14 mt-2 px-4">
         <div className="flex items-center">
           <Image
