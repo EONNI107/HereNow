@@ -4,7 +4,12 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  CheckCircleIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import useAuthStore from '@/zustand/useAuthStore';
 import { toast } from 'react-toastify';
@@ -188,9 +193,7 @@ function Comments({ postId, onClose }: CommentsProps) {
           {comments.map((comment) => (
             <li key={comment.id} className="py-4 flex">
               <Image
-                src={
-                  comment.Users?.profileImage || '/path/to/default/avatar.png'
-                }
+                src={comment.Users?.profileImage || '/default-profile.jpg'}
                 alt="User Avatar"
                 width={48}
                 height={48}
@@ -205,27 +208,27 @@ function Comments({ postId, onClose }: CommentsProps) {
                     {dayjs(comment.createdAt).fromNow()}
                   </p>
                   {user?.id === comment.userId && (
-                    <span className="flex space-x-2 ml-2">
+                    <span className="flex space-x-2 ml-5">
                       {editingCommentId === comment.id ? (
                         <button
                           onClick={() => handleUpdateComment(comment.id)}
-                          className="text-blue-500 text-[14px]"
+                          className="text-blue4 text-[14px]"
                         >
-                          수정 완료
+                          <CheckCircleIcon className="w-5 h-5" />
                         </button>
                       ) : (
                         <button
                           onClick={() => handleEditClick(comment)}
-                          className="text-blue-500 text-[14px]"
+                          className="text-blue4 text-[14px]"
                         >
-                          수정
+                          <PencilSquareIcon className="w-5 h-5" />
                         </button>
                       )}
                       <button
                         onClick={() => confirmDelete(comment.id)}
-                        className="text-red-500 text-[14px]"
+                        className="text-orange4 text-[14px]"
                       >
-                        삭제
+                        <TrashIcon className="w-5 h-5" />
                       </button>
                     </span>
                   )}

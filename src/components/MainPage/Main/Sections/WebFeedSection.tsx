@@ -29,7 +29,12 @@ function WebFeedSection() {
           className="text-main font-regular text-sm"
           onClick={() => router.push('/feed')}
         >
-          더보러가기
+          <p
+            className="underline underline-offset-2 text-orange3 self-baseline 
+"
+          >
+            {'더보기 >'}
+          </p>
         </button>
       </div>
       <div className="grid gap-4 grid-cols-2 grid-rows-2 w-full h-full">
