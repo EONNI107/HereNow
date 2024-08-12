@@ -23,7 +23,7 @@ function FeedItem({ feedItem }: feedTypeProps) {
     router.push(`/feed-detail/${Id}`);
   };
   return (
-    <div className="w-full h-[320px] flex flex-col gap-4">
+    <div className="w-full h-[336px] flex flex-col gap-4">
       <div
         className="w-[288px] h-[288px] cursor-pointer relative"
         onClick={() => handleFeedMove(feedItem.id)}
@@ -37,7 +37,7 @@ function FeedItem({ feedItem }: feedTypeProps) {
             
               "
         />
-        <div className="w-[288px] h-[272px] absolute inset-0 bg-gradient-to-r from-black/50 to-transparent rounded-xl"></div>
+        <div className="w-full h-full absolute inset-0 bg-gradient-to-r from-black/50 to-transparent rounded-xl"></div>
         <div className="absolute bottom-8 left-8 felx flex-col text-white z-1">
           <p className="line-clamp-1 text-sm">{feedItem.region}</p>
           <p className="line-clamp-1">{feedItem.title}</p>
@@ -45,7 +45,7 @@ function FeedItem({ feedItem }: feedTypeProps) {
       </div>
 
       <div className="w-full flex gap-4 items-center">
-        <div className="w-[32px] h-[32px]">
+        <div className="w-[32px] h-[32px] shrink-0">
           <Image
             src={feedItem.Users.profileImage || feedImage}
             alt="프로필이미지"
@@ -55,7 +55,7 @@ function FeedItem({ feedItem }: feedTypeProps) {
           />
         </div>
         <div>
-          <h1>{feedItem.Users.nickname}</h1>
+          <h1 className="line-clamp-1">{feedItem.Users.nickname}</h1>
         </div>
       </div>
     </div>

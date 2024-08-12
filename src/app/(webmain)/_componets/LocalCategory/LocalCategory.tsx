@@ -7,6 +7,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 function LocalCategory() {
   const router = useRouter();
@@ -19,7 +20,9 @@ function LocalCategory() {
   return (
     <section className="w-full py-10 cursor-pointer flex gap-[34px] items-center">
       <div>
-        <button className="button-prev bg-gray-300 rounded-full p-2"></button>
+        <button className="button-prev cursor-pointer">
+          <ChevronLeftIcon />
+        </button>
       </div>
       <Swiper
         modules={[Navigation, Pagination]}
@@ -30,6 +33,8 @@ function LocalCategory() {
         slidesPerView={10}
         slidesPerGroup={1}
         className="w-[1124px] py-[40px]"
+        loop={true}
+        loopAdditionalSlides={1}
       >
         {regions.region.map((i) => (
           <SwiperSlide key={i.ename} className="flex justify-center">
@@ -52,7 +57,9 @@ function LocalCategory() {
         ))}
       </Swiper>
       <div>
-        <button className="button-next bg-gray-300 rounded-full p-2"></button>
+        <button className="button-next cursor-pointer">
+          <ChevronRightIcon />
+        </button>
       </div>
     </section>
   );
