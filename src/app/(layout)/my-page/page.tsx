@@ -147,17 +147,14 @@ function MyPage() {
       profileImage: imagePath,
     });
 
-    setUser(data.user);
+    setUser({
+      ...user,
+      nickname: editProfile.nickname,
+      profileImage: imagePath,
+    });
 
     setIsEditing(false);
     showToast('success', '프로필 수정이 완료되었습니다.');
-
-    const {
-      data: { user: refreshedUser },
-      error: refreshError,
-    } = await supabase.auth.getUser();
-    if (refreshError) throw refreshError;
-    setUser(refreshedUser);
   };
 
   const handleLogout = async () => {

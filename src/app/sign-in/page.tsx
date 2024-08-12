@@ -5,7 +5,7 @@ import { showToast } from '@/utils/toastHelper';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import useAuthStore from '@/zustand/useAuthStore';
+import useAuthStore, { AuthUser } from '@/zustand/useAuthStore';
 import Image from 'next/image';
 
 function SignInPage() {
@@ -29,10 +29,28 @@ function SignInPage() {
     });
 
     if (error) {
-      showToast('error', error.message);
+      showToast('error', '');
       return;
     }
-    setUser(data.user);
+    const { user } = data;
+    const { data: userProfile, error: profileError } = await supabase
+      .from('Users')
+      .select('nickname, profileImage, email')
+      .eq('id', user.id)
+      .single();
+    if (profileError) {
+      showToast('error', '사용자 프로필을 가져오는 데 실패했습니다.');
+      return;
+    }
+    const userInfo = {
+      id: user.id,
+      email: userProfile.email,
+      nickname: userProfile.nickname,
+      profileImage: userProfile.profileImage,
+    };
+    console.log(userInfo);
+
+    setUser(userInfo);
     showToast('success', '로그인 성공');
     router.back();
   };
@@ -40,13 +58,13 @@ function SignInPage() {
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
-      // options: {
-      //   redirectTo: `${location.origin}/api/sign-in/callback`,
-      //   queryParams: {
-      //     access_type: 'offline',
-      //     prompt: 'select_account',
-      //   },
-      // },
+      options: {
+        redirectTo: `${location.origin}/api/sign-in/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'select_account',
+        },
+      },
     });
     if (error) {
       showToast('error', error.message);
