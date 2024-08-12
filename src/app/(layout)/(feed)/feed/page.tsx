@@ -16,7 +16,7 @@ async function FeedListPage() {
     .from('Feeds')
     .select(`*, Users(profileImage, nickname), FeedLikes(id), FeedComments(id)`)
     .order('createdAt', { ascending: false })
-    .range(0, 9);
+    .range(0, 3);
 
   if (error) {
     console.error('Error fetching feeds:', error);
