@@ -49,17 +49,16 @@ export default function FeedList() {
 
             return (
               <div key={post.id}>
-                {postImages && postImages.length > 0 && (
-                  <Link href={`/feed-detail/${post.id}`}>
-                    <Image
-                      src={postImages[0]}
-                      alt="이미지"
-                      width={200}
-                      height={200}
-                      className="rounded aspect-square object-cover"
-                    />
-                  </Link>
-                )}
+                <Link href={`/feed-detail/${post.id}`}>
+                  <Image
+                    src={postImages ? postImages[0] : '/No_Img.jpg'}
+                    alt="이미지"
+                    width={200}
+                    height={200}
+                    priority
+                    className="rounded aspect-square object-cover"
+                  />
+                </Link>
               </div>
             );
           })}

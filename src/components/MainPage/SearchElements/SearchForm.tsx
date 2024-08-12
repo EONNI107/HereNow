@@ -51,7 +51,7 @@ function SearchForm({ setIsbg }: SetIsBgProps) {
     <div className="flex flex-col items-center pt-2 mx-auto">
       <form onSubmit={handleClick}>
         <input
-          className="border bg-[#ECEDEF] rounded-lg px-1 py-1 h-[25px]"
+          className="border bg-gray1 rounded-lg px-1 py-1 h-[25px]"
           type="text"
           value={inputValue}
           onChange={handleInputChange}

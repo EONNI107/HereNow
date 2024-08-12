@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'react-toastify';
 
@@ -8,13 +8,16 @@ type DeletePromptProps = {
 
 function DeletePrompt({ onConfirm }: DeletePromptProps) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const closeToast = () => toast.dismiss();
   const handleConfirm = async () => {
     closeToast();
     await onConfirm();
     setTimeout(() => {
-      router.push('/feed');
+      if (!pathname.startsWith('/feed-detail/')) {
+        router.push('/feed');
+      }
     }, 300);
   };
 

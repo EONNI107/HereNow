@@ -4,7 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { createClient } from '@/utils/supabase/client';
 import FeedListItem from '@/components/FeedList/FeedListItem';
 import { useInView } from 'react-intersection-observer';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Feed } from '@/types/feed';
 import regionData from '@/data/regions.json';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -16,13 +16,18 @@ const FEEDS_PER_PAGE = 4;
 type FeedListClientProps = {
   initialFeeds: Feed[];
   SupabaseError: PostgrestError | null;
+  userId: string | null;
 };
 
-function FeedListClient({ initialFeeds, SupabaseError }: FeedListClientProps) {
+function FeedListClient({
+  initialFeeds,
+  SupabaseError,
+  userId,
+}: FeedListClientProps) {
   const supabase = createClient();
   const { ref, inView } = useInView();
   const [selectedRegion, setSelectedRegion] = useState('');
-  const [selectedSigungu, setSelectedSigungu] = useState('');
+  const [sortOption, setSortOption] = useState('latest');
 
   useEffect(() => {
     if (SupabaseError) {
@@ -35,15 +40,19 @@ function FeedListClient({ initialFeeds, SupabaseError }: FeedListClientProps) {
       .from('Feeds')
       .select(
         `*, Users(profileImage, nickname), FeedLikes(id), FeedComments(id)`,
-      )
-      .order('createdAt', { ascending: false })
-      .range(pageParam * FEEDS_PER_PAGE, (pageParam + 1) * FEEDS_PER_PAGE - 1);
+      );
+
+    if (sortOption === 'latest') {
+      query = query.order('createdAt', { ascending: false });
+    }
+
+    query = query.range(
+      pageParam * FEEDS_PER_PAGE,
+      (pageParam + 1) * FEEDS_PER_PAGE - 1,
+    );
 
     if (selectedRegion) {
       query = query.eq('region', selectedRegion);
-    }
-    if (selectedSigungu) {
-      query = query.eq('sigungu', selectedSigungu);
     }
 
     const { data, error } = await query;
@@ -61,7 +70,7 @@ function FeedListClient({ initialFeeds, SupabaseError }: FeedListClientProps) {
     isPending,
     refetch,
   } = useInfiniteQuery({
-    queryKey: ['feeds', selectedRegion, selectedSigungu],
+    queryKey: ['feeds', selectedRegion, sortOption],
     queryFn: fetchFeeds,
     initialPageParam: 1,
     initialData: { pages: [initialFeeds], pageParams: [0] },
@@ -78,16 +87,34 @@ function FeedListClient({ initialFeeds, SupabaseError }: FeedListClientProps) {
 
   useEffect(() => {
     refetch();
-  }, [selectedRegion, selectedSigungu, refetch]);
+  }, [selectedRegion, refetch]);
 
   const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedRegion(event.target.value);
-    setSelectedSigungu('');
   };
 
-  const handleSigunguChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSigungu(event.target.value);
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortOption(event.target.value);
   };
+
+  const sortedFeeds = useMemo(() => {
+    if (!data) return [];
+
+    const allFeeds = data.pages.flatMap((page) => page);
+
+    switch (sortOption) {
+      case 'mostLikes':
+        return [...allFeeds].sort(
+          (a, b) => b.FeedLikes.length - a.FeedLikes.length,
+        );
+      case 'mostComments':
+        return [...allFeeds].sort(
+          (a, b) => b.FeedComments.length - a.FeedComments.length,
+        );
+      default:
+        return allFeeds;
+    }
+  }, [data, sortOption]);
 
   if (isPending) return <div>로딩 중...</div>;
   if (error) return <div>에러: {error.message}</div>;
@@ -107,39 +134,30 @@ function FeedListClient({ initialFeeds, SupabaseError }: FeedListClientProps) {
             </option>
           ))}
         </select>
-        {selectedRegion && (
-          <select
-            value={selectedSigungu}
-            onChange={handleSigunguChange}
-            className="p-2 border rounded"
-          >
-            <option value="">모든 시/군/구</option>
-            {regionData.region
-              .find((r) => r.name === selectedRegion)
-              ?.sigungu.map((s) => (
-                <option key={s.code} value={s.name}>
-                  {s.name}
-                </option>
-              ))}
-          </select>
-        )}
+        <select
+          value={sortOption}
+          onChange={handleSortChange}
+          className="p-2 border rounded"
+        >
+          <option value="latest">최신순</option>
+          <option value="mostLikes">찜한순</option>
+          <option value="mostComments">댓글순</option>
+        </select>
       </div>
+
       <div className="bg-gray0 p-4">
         <div className="grid grid-cols-1 gap-4">
-          {data.pages.map((page, i) => (
-            <div key={i}>
-              {page.map((feed) => (
-                <FeedListItem
-                  key={feed.id}
-                  feed={feed}
-                  likesCount={feed.FeedLikes.length}
-                  commentsCount={feed.FeedComments.length}
-                />
-              ))}
-            </div>
+          {sortedFeeds.map((feed) => (
+            <FeedListItem
+              key={feed.id}
+              feed={feed}
+              likesCount={feed.FeedLikes.length}
+              commentsCount={feed.FeedComments.length}
+              userId={userId}
+            />
           ))}
         </div>
-        <div ref={ref} className="text-[#767676] text-center py-4">
+        <div ref={ref} className="text-sub2 text-center py-4">
           {isFetchingNextPage ? (
             <LoadingSpinner />
           ) : hasNextPage ? (
