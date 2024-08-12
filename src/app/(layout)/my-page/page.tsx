@@ -143,7 +143,7 @@ function MyPage() {
 
     setProfile({
       ...profile,
-      nickname: editProfile.nickname,
+      nickname: editProfile?.nickname ?? null,
       profileImage: imagePath,
     });
 
