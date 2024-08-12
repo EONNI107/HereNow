@@ -50,7 +50,7 @@ function HeaderLayout() {
           )}
 
           {searchParams ? (
-            <p className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-[#118DFF] text-xl">
+            <p className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-blue4 text-xl">
               {searchParams}
             </p>
           ) : (
@@ -58,7 +58,7 @@ function HeaderLayout() {
               onClick={() => {
                 router.push('/');
               }}
-              className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-[#118DFF] text-xl pb-2 cursor-pointer"
+              className="absolute left-1/2 transform -translate-x-1/2 font-['양진체'] text-blue4 text-xl pb-2 cursor-pointer"
             >
               지금,여기
             </p>

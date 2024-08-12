@@ -13,6 +13,6 @@ export type Feed = {
 };
 
 export type Users = {
-  nickname: string;
+  nickname: string | null;
   profileImage: string | null;
 };

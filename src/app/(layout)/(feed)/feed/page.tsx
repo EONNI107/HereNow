@@ -3,16 +3,20 @@ import UserName from '@/components/FeedList/UserName';
 import SendFeedWrite from '@/components/SendFeedWrite';
 import { createClient } from '@/utils/supabase/server';
 import Image from 'next/image';
-import Link from 'next/link';
 
 async function FeedListPage() {
   const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const userId = user?.id || null;
 
   const { data, error } = await supabase
     .from('Feeds')
     .select(`*, Users(profileImage, nickname), FeedLikes(id), FeedComments(id)`)
     .order('createdAt', { ascending: false })
-    .range(0, 9);
+    .range(0, 3);
 
   if (error) {
     console.error('Error fetching feeds:', error);
@@ -49,6 +53,7 @@ async function FeedListPage() {
         <FeedListClient
           initialFeeds={data || []}
           SupabaseError={SupabaseError}
+          userId={userId}
         />
       )}
     </div>
