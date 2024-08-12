@@ -12,7 +12,6 @@ import React, { useState } from 'react';
 import { DetailProps } from '@/types/localDetails';
 
 function Details({ mainData, additionalData, typeId }: DetailProps) {
-  const defaultImage = '/No_Img.jpg';
   const [isExpanded, setIsExpanded] = useState(false);
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -83,18 +82,6 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
 
   return (
     <>
-      {mainData?.firstimage ? (
-        <div className="relative w-full h-[250px] mx-auto mb-4">
-          <Image
-            src={mainData?.firstimage || defaultImage}
-            alt="장소 이미지"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-contain"
-            priority
-          />
-        </div>
-      ) : null}
       <div className="flex justify-between gap-2 mx-4">
         <h1 className="text-2xl font-bold mb-4">{mainData?.title}</h1>
         {mainData?.contentid && (
