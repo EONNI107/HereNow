@@ -31,10 +31,10 @@ function WebHeader() {
     setInputValue('');
   };
   return (
-    <div className="w-full py-4 px-[340px] flex justify-center fixed right-0 left-0 mx-auto bg-[#999] z-10">
-      <div className="flex gap-x-[90px] min-w-[1240px] h-[46px]">
+    <div className="w-full py-4 px-[314px] flex justify-center fixed right-0 left-0 mx-auto z-10 box-shadow bg-[#fff]">
+      <div className="flex gap-x-[90px] min-w-[1293px] h-[46px]">
         <div className="grow-0 font-medium text-[36px] flex justify-center items-center">
-          <p>지금,여기</p>
+          <p className="font-[양진체] text-blue4">지금,여기</p>
         </div>
         <form
           onClick={() => setIsbg(true)}
@@ -42,21 +42,23 @@ function WebHeader() {
             e.preventDefault();
             handleClick();
           }}
-          className="grow py-3.5 px-6 rounded-3xl bg-[#F2F1FA] flex justify-between gap-[240px]"
+          className="grow py-3.5 px-6 rounded-3xl bg-[#ecedef] flex justify-between gap-[240px]"
         >
           <input
             type="text"
             placeholder="검색창"
-            className="w-full bg-[#F2F1FA] h-[18px]"
+            className="w-full bg-[#ecedef] h-[18px]"
             value={inputValue}
             onChange={handleInputChange}
           />
           <button>
-            <MagnifyingGlassIcon className="w-4 h-4" />
+            <MagnifyingGlassIcon className="w-4 h-4 text-gray8" />
           </button>
         </form>
         <div className="grow-0 flex justify-center items-center">
-          <button className="py-2 px-4 bg-[#CACACA]">시작하기</button>
+          <button className="py-2 px-4 bg-orange3 rounded-lg text-base font-semibold leading-[150%] text-gray0">
+            시작하기
+          </button>
         </div>
       </div>
       {isbg && <WebRecentSearch />}

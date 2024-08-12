@@ -6,7 +6,7 @@ function layout({ children }: PropsWithChildren) {
   return (
     <div className="w-full">
       <WebHeader />
-      <div className="pt-[76px] pb-[130px]"> {children}</div>
+      <div className="pt-[76px] pb-[244px]"> {children}</div>
       <WebFooter />
     </div>
   );

@@ -23,7 +23,7 @@ function WebRecentSearch() {
     setIsbg(false);
   };
   return (
-    <div className="w-full h-screen fixed top-[78px] pt-[70px] px-[340px] bg-gray-500">
+    <div className="w-full h-screen fixed top-[78px] pt-[70px] px-[340px] bg-white">
       <div className="w-[1240px] flex flex-col gap-12">
         <div className="flex justify-between">
           <p className="text-[32px]">최근검색어</p>
@@ -39,17 +39,17 @@ function WebRecentSearch() {
             return (
               <div
                 key={index}
-                className="flex border-[2px] rounded-2xl px-3 py-1 mb-1 gap-2 hover:border-blue4 hover:bg-blue0 hover:text-main"
+                className="flex border-[2px] py-3 px-8 rounded-3xl hover:border-blue4 hover:bg-blue0 hover:text-main"
               >
                 <li
-                  className="list-none cursor-pointer "
+                  className="list-none cursor-pointer justify-center items-center flex gap-[24px] text-2xl font-medium"
                   onClick={handleMoveClick}
                 >
                   {item}
+                  <button onClick={() => handleClose(item)}>
+                    <XMarkIcon className="w-7 h-7" />
+                  </button>
                 </li>
-                <button onClick={() => handleClose(item)}>
-                  <XMarkIcon className="w-4 h-4" />
-                </button>
               </div>
             );
           })}

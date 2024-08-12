@@ -9,7 +9,7 @@ function WebMainBar({
 }: {
   title: string;
   content: string;
-  url: string | number;
+  url?: string | number;
 }) {
   const router = useRouter();
   return (
@@ -23,9 +23,9 @@ function WebMainBar({
       <div className="flex items-end">
         <button
           onClick={() => router.push(`${url}`)}
-          className="border-solid border-[#FD8B59] border text-[#FD8B59] text-base not-italic font-semibold leading-[150%] py-2 px-4 rounded-xl"
+          className="border-solid border-orange3 border text-orange3 text-base not-italic font-semibold leading-[150%] py-2 px-4 rounded-xl"
         >
-          더 보러가기
+          더보기
         </button>
       </div>
     </div>
