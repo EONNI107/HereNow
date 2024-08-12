@@ -26,7 +26,7 @@ type Comment = {
   createdAt: string;
   Users: {
     profileImage: string | null;
-    nickname: string;
+    nickname: string | null;
   } | null;
 };
 
@@ -88,13 +88,15 @@ function Comments({ postId, onClose }: CommentsProps) {
     } else if (data) {
       setComments((prevComments) => [
         ...prevComments,
-        ...data.map((comment) => ({
-          ...comment,
-          Users: comment.Users || {
-            profileImage: null,
-            nickname: '알 수 없음',
-          },
-        })),
+        ...data.map(
+          (comment): Comment => ({
+            ...comment,
+            Users: comment.Users || {
+              profileImage: null,
+              nickname: null,
+            },
+          }),
+        ),
       ]);
       setNewComment('');
     }
