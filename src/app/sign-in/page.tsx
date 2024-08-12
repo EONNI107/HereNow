@@ -48,7 +48,6 @@ function SignInPage() {
       nickname: userProfile.nickname,
       profileImage: userProfile.profileImage,
     };
-    console.log(userInfo);
 
     setUser(userInfo);
     showToast('success', '로그인 성공');
@@ -70,8 +69,7 @@ function SignInPage() {
       showToast('error', error.message);
       return;
     }
-    showToast('success', `${provider}로 로그인 성공`);
-    console.log(data);
+    showToast('success', `${provider}로 로그인중 입니다.`);
     router.push('/');
   };
 
@@ -81,10 +79,11 @@ function SignInPage() {
         <Image
           src="/LoginPage.jpg"
           alt="로그인 배경화면"
-          layout="fill"
-          objectFit="cover"
-          className="z-[-1]"
+          fill
+          priority
+          className="z-[-1] object-cover"
         />
+
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center overflow-y-auto sm:pt-8">
           <div
             className="w-full max-w-md px-4 py-4 sm:py-8 flex flex-col"
@@ -141,8 +140,6 @@ function SignInPage() {
                   처음이신가요?
                 </Link>
               </div>
-
-              {/* -----------------소셜 로그인 기능 잠시 보류------------------------- */}
 
               <div className="mt-auto">
                 <div className="flex items-center justify-center text-center mb-6">

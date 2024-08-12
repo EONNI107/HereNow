@@ -4,7 +4,6 @@ import Main from '@/components/MainPage/Main';
 import useAuthStore from '@/zustand/useAuthStore';
 function Home() {
   const { user } = useAuthStore();
-  console.log(user);
   return (
     <>
       <Header

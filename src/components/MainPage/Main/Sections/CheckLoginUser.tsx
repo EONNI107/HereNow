@@ -10,10 +10,6 @@ function CheckLoginUser() {
   const getUser = async () => {
     const { data, error } = await supabase.auth.getUser();
 
-    if (error) {
-      showToast('error', '사용자를 가져오는 중에 오류가 발생했습니다.');
-      return;
-    }
     if (data.user) {
       const { data: userData, error: userError } = await supabase
         .from('Users')
@@ -22,16 +18,11 @@ function CheckLoginUser() {
         .single();
 
       if (userError) {
-        showToast('error', '사용자를 가져오는 중에 오류가 발생했습니다.');
         return;
       }
       if (userData) {
         setUser(userData);
-        showToast('success', '사용자 정보가 업데이트되었습니다.');
       }
-    } else {
-      logOut();
-      showToast('success', '로그아웃되었습니다');
     }
   };
 

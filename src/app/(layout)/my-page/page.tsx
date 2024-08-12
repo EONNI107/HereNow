@@ -143,13 +143,13 @@ function MyPage() {
 
     setProfile({
       ...profile,
-      nickname: editProfile.nickname ?? null,
+      nickname: editProfile.nickname || '',
       profileImage: imagePath,
     });
 
     setUser({
       ...user,
-      nickname: editProfile.nickname ?? null,
+      nickname: editProfile.nickname || '',
       profileImage: imagePath,
     });
 
