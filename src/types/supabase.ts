@@ -83,30 +83,36 @@ export type Database = {
       }
       Feeds: {
         Row: {
+          commentsCount: number
           content: string
           createdAt: string
           id: number
           image: string | null
+          likesCount: number
           region: string | null
           sigungu: string | null
           title: string
           userId: string
         }
         Insert: {
+          commentsCount?: number
           content: string
           createdAt?: string
           id?: number
           image?: string | null
+          likesCount?: number
           region?: string | null
           sigungu?: string | null
           title: string
           userId?: string
         }
         Update: {
+          commentsCount?: number
           content?: string
           createdAt?: string
           id?: number
           image?: string | null
+          likesCount?: number
           region?: string | null
           sigungu?: string | null
           title?: string
@@ -188,25 +194,25 @@ export type Database = {
           createdAt: string
           email: string
           id: string
-          nickname: string
+          nickname: string | null
           profileImage: string | null
-          provider: string | null
+          provider: string
         }
         Insert: {
           createdAt?: string
           email: string
           id?: string
-          nickname: string
+          nickname?: string | null
           profileImage?: string | null
-          provider?: string | null
+          provider?: string
         }
         Update: {
           createdAt?: string
           email?: string
           id?: string
-          nickname?: string
+          nickname?: string | null
           profileImage?: string | null
-          provider?: string | null
+          provider?: string
         }
         Relationships: [
           {

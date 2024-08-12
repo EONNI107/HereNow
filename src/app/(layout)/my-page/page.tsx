@@ -143,13 +143,13 @@ function MyPage() {
 
     setProfile({
       ...profile,
-      nickname: editProfile.nickname,
+      nickname: editProfile.nickname ?? null,
       profileImage: imagePath,
     });
 
     setUser({
       ...user,
-      nickname: editProfile.nickname,
+      nickname: editProfile.nickname ?? null,
       profileImage: imagePath,
     });
 
@@ -177,16 +177,17 @@ function MyPage() {
         }`}
       >
         {!user ? (
-          <div className="flex justify-between items-center w-full p-8 bg-orange0 rounded-2xl">
+          <div className="flex justify-between items-center w-full p-5 bg-orange0 rounded-2xl">
             <Image
-              src="https://via.placeholder.com/150"
+              src="/default-profile.jpg"
               className="h-16 w-16 rounded-full"
               alt="Profile"
-              width={64}
-              height={64}
+              width={200}
+              height={200}
+              priority
             />
             <Link href="/sign-in">
-              <button className="px-4 py-2 bg-orange3 text-white rounded-xl text-sm whitespace-nowrap">
+              <button className="px-4 py-2 bg-orange3 text-white rounded-xl text-sm whitespace-nowrap hover:bg-orange4">
                 로그인 · 회원가입하러가기
               </button>
             </Link>
@@ -199,12 +200,12 @@ function MyPage() {
                   src={
                     imagePreview ||
                     profile?.profileImage ||
-                    'https://via.placeholder.com/150'
+                    '/default-profile.jpg'
                   }
                   className="h-16 w-16 rounded-full"
                   alt="Profile"
-                  width={64}
-                  height={64}
+                  width={200}
+                  height={200}
                 />
                 {user && isEditing && (
                   <label
@@ -221,8 +222,8 @@ function MyPage() {
                   className="hidden"
                 />
               </div>
-              <div>
-                <div className="font-medium">{profile?.email}</div>
+              <div className="flex flex-col gap-1">
+                <div className="text-xs text-sub1 px-1">{profile?.email}</div>
                 {isEditing ? (
                   <input
                     type="text"
@@ -233,26 +234,26 @@ function MyPage() {
                         nickname: e.target.value,
                       })
                     }
-                    className="p-0 border border-black rounded w-28  bg-blue0"
+                    className="px-1 border border-gray12 rounded w-28 bg-blue0"
                   />
                 ) : (
-                  <div className="text-gray12">{profile?.nickname}</div>
+                  <div className="text-main px-1">{profile?.nickname}</div>
                 )}
               </div>
             </div>
             {user && (
-              <div className="flex flex-col items-center ">
+              <div className="flex flex-col items-center gap-2">
                 {isEditing ? (
                   <>
                     <button
                       onClick={handleUpdate}
-                      className="m-2 w-24 rounded-md bg-blue4 text-white"
+                      className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
                     >
                       수정 완료
                     </button>
                     <button
                       onClick={() => setIsEditing(false)}
-                      className="m-2 w-24 rounded-md border-2 border-blue4 bg-blue0 text-blue4 py-0 px-4 text-sm font-bold"
+                      className="w-24 rounded-xl border-2 border-blue4 bg-blue0 text-blue4 p-1 px-4 text-sm font-bold hover:bg-blue1"
                     >
                       취소
                     </button>
@@ -261,13 +262,13 @@ function MyPage() {
                   <>
                     <button
                       onClick={() => setIsEditing(true)}
-                      className="m-2 w-24 rounded-md bg-blue4 text-white"
+                      className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
                     >
                       프로필 수정
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="m-2 w-24 rounded-md bg-orange3 text-white "
+                      className="w-24 rounded-xl bg-orange3 text-white p-1 hover:bg-orange4"
                     >
                       로그아웃
                     </button>
@@ -288,7 +289,7 @@ function MyPage() {
           }`}
           onClick={() => setSelectedTab('feedsList')}
         >
-          <strong>작성한 글</strong>
+          <p>작성한 글</p>
         </button>
         <button
           className={`p-2 flex-1 ${
@@ -298,7 +299,7 @@ function MyPage() {
           }`}
           onClick={() => setSelectedTab('feedLikes')}
         >
-          <strong>찜한 글</strong>
+          <p>찜한 글</p>
         </button>
         <button
           className={`p-2 flex-1 ${
@@ -308,7 +309,7 @@ function MyPage() {
           }`}
           onClick={() => setSelectedTab('placeLikes')}
         >
-          <strong>찜한 장소</strong>
+          <p>찜한 장소</p>
         </button>
       </div>
 

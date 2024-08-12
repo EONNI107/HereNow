@@ -29,7 +29,7 @@ function SignInPage() {
     });
 
     if (error) {
-      showToast('error', '');
+      showToast('error', '사용자 프로필을 가져오는 데 실패했습니다.');
       return;
     }
     const { user } = data;
@@ -72,7 +72,7 @@ function SignInPage() {
     }
     showToast('success', `${provider}로 로그인 성공`);
     console.log(data);
-    // router.push('/');
+    router.push('/');
   };
 
   return (

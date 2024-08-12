@@ -70,7 +70,7 @@ const SearchFeed = ({ searchValue }: searchProps) => {
 
   return (
     <>
-      <div className="flex w-full py-2 px-4 bg-[#FFF]">
+      <div className="flex w-full py-2 px-4 bg-white">
         <div className="flex w-full items-center gap-3">
           {categories.map((category) => (
             <div

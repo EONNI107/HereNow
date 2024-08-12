@@ -1,10 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import LocalItem from './LocalItem';
+import LocalItem from '@/components/MainPage/Main/Sections/LocalItem';
 import { tourApi } from '@/app/api/tourApi';
 import { NearbyPlace } from '@/types/localDetails';
-import SkeletonLocalItem from '../../Skeleton/SkeletonLocalItem';
+import SkeletonLocalItem from '@/components/MainPage/Skeleton/SkeletonLocalItem';
 import { showToast } from '@/utils/toastHelper';
 
 type PositionType = {

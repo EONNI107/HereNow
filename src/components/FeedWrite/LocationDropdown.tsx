@@ -25,11 +25,11 @@ function LocationDropdown({
   };
 
   return (
-    <>
+    <div className="flex flex-col mb-2">
       <select
         value={region}
         onChange={handleRegionChange}
-        className="input no-focus bg-gray0 mb-2"
+        className="input bg-gray0 mb-4 border-2 rounded"
       >
         <option value="">시/도 선택</option>
         {regionsData.region.map((region) => (
@@ -43,7 +43,7 @@ function LocationDropdown({
         <select
           value={sigungu}
           onChange={handleSigunguChange}
-          className="input no-focus mt-2 bg-gray0"
+          className="input mb-2 bg-gray0 border-2 rounded"
         >
           <option value="">시/군/구 선택</option>
           {regionsData.region
@@ -55,7 +55,7 @@ function LocationDropdown({
             ))}
         </select>
       )}
-    </>
+    </div>
   );
 }
 
