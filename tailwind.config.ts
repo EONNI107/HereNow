@@ -7,6 +7,9 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      padding: { xl: '20px' },
+    },
     extend: {
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],

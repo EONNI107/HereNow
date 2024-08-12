@@ -9,6 +9,6 @@ export type Post = {
   createdAt: string;
   userProfile?: {
     profileImage: string | null;
-    nickname: string;
+    nickname: string | null;
   };
 };
