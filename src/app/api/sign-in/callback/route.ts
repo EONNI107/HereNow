@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+export const GET = async (request: Request) => {
   const { searchParams, origin } = new URL(request.url);
 
   const code = searchParams.get('code');
@@ -19,4 +19,4 @@ export async function GET(request: Request) {
   }
 
   return NextResponse.redirect(`${origin}/auth/auth-error`);
-}
+};
