@@ -29,7 +29,7 @@ function SignInPage() {
     });
 
     if (error) {
-      showToast('error', '사용자 프로필을 가져오는 데 실패했습니다.');
+      showToast('error', '아이디,비밀번호가 일치하지 않습니다.');
       return;
     }
     const { user } = data;
@@ -51,7 +51,7 @@ function SignInPage() {
 
     setUser(userInfo);
     showToast('success', '로그인 성공');
-    router.back();
+    router.push('/');
   };
 
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
