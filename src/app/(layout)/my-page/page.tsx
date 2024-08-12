@@ -143,11 +143,7 @@ function MyPage() {
 
     setProfile({
       ...profile,
-<<<<<<< HEAD
       nickname: editProfile.nickname ?? null,
-=======
-      nickname: editProfile?.nickname ?? null,
->>>>>>> 2a6b1013cc5b7969f3b183254be4bc5ec2024dcf
       profileImage: imagePath,
     });
 
