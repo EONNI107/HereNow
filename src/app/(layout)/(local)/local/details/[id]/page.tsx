@@ -8,6 +8,7 @@ import {
   useMainData,
   useNearbyPlaces,
 } from '@/hooks/useLocalDetails';
+import Image from 'next/image';
 import React from 'react';
 
 function LocalDetailsPage({ params }: { params: { id: number } }) {
@@ -37,13 +38,33 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
 
   return (
     <div className="my-4 bg-gray0">
-      <Details
-        mainData={mainData}
-        additionalData={additionalData}
-        typeId={typeId}
-      />
-      <KakaoMap latitude={latitude} longitude={longitude} />
-      <NearbyPlaces nearbyPlaces={nearbyPlaces} />
+      {mainData?.firstimage ? (
+        <div className="relative w-full h-[310px] xl:w-[1240px] xl:h-[700px] mx-auto mb-4">
+          <Image
+            src={mainData?.firstimage || '/No_Img.jpg'}
+            alt="장소 이미지"
+            fill
+            sizes="(max-width: 1240px) 100vw, 1240px"
+            className="object-contain w-full"
+            priority
+          />
+        </div>
+      ) : null}
+      <div className="container mx-auto">
+        <div className="xl:flex xl:gap-10">
+          <div className="xl:w-[800px]">
+            <Details
+              mainData={mainData}
+              additionalData={additionalData}
+              typeId={typeId}
+            />
+            <KakaoMap latitude={latitude} longitude={longitude} />
+          </div>
+          <div className="xl:w-[400px] mt-8 xl:mt-0">
+            <NearbyPlaces nearbyPlaces={nearbyPlaces} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
