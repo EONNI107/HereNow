@@ -5,9 +5,8 @@ import { showToast } from '@/utils/toastHelper';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import useAuthStore from '@/zustand/useAuthStore';
+import useAuthStore, { AuthUser } from '@/zustand/useAuthStore';
 import Image from 'next/image';
-import axios from 'axios';
 
 function SignInPage() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -24,36 +23,53 @@ function SignInPage() {
       return showToast('error', '모든 항목을 입력해주세요');
     }
 
-    try {
-      const response = await axios.post('/api/sign-in', { email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      setUser(response.data);
-      showToast('success', '로그인 성공');
-      router.push('/');
-    } catch (error) {
-      console.error('Login error:', error);
-      showToast('error', '로그인에 실패했습니다');
+    if (error) {
+      showToast('error', '아이디,비밀번호가 일치하지 않습니다.');
+      return;
     }
+    const { user } = data;
+    const { data: userProfile, error: profileError } = await supabase
+      .from('Users')
+      .select('nickname, profileImage, email')
+      .eq('id', user.id)
+      .single();
+    if (profileError) {
+      showToast('error', '사용자 프로필을 가져오는 데 실패했습니다.');
+      return;
+    }
+    const userInfo = {
+      id: user.id,
+      email: userProfile.email,
+      nickname: userProfile.nickname,
+      profileImage: userProfile.profileImage,
+    };
+
+    setUser(userInfo);
+    showToast('success', '로그인 성공');
+    router.push('/');
   };
 
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
-      options:
-        provider === 'google'
-          ? {
-              queryParams: {
-                access_type: 'offline',
-                prompt: 'consent',
-              },
-            }
-          : {},
+      options: {
+        redirectTo: `${location.origin}/api/sign-in/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'select_account',
+        },
+      },
     });
     if (error) {
       showToast('error', error.message);
       return;
     }
-    showToast('success', `${provider}로 로그인 성공`);
+    showToast('success', `${provider}로 로그인중 입니다.`);
     router.push('/');
   };
 
@@ -63,11 +79,11 @@ function SignInPage() {
         <Image
           src="/LoginPage.jpg"
           alt="로그인 배경화면"
-          width={300}
-          height={300}
-          className="absolute inset-0 z-[-1] h-full w-full object-cover"
+          fill
           priority
+          className="z-[-1] object-cover"
         />
+
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center overflow-y-auto sm:pt-8">
           <div
             className="w-full max-w-md px-4 py-4 sm:py-8 flex flex-col"
@@ -104,21 +120,12 @@ function SignInPage() {
                     className="w-full px-4 py-3 sm:py-4 border border-blue0 rounded-lg bg-transparent text-white placeholder-gray3 text-base"
                   />
                 </div>
-                <div className="pt-2 flex flex-col gap-3">
+                <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-blue5 text-sm sm:text-base"
+                    className="w-full bg-blue4 text-white py-4 sm:py-5 px-6 rounded-2xl hover:bg-gray3 text-sm sm:text-base"
                   >
                     로그인
-                  </button>
-                  <button
-                    type="button"
-                    className="w-full bg-orange1 text-main py-4 sm:py-5 px-6 rounded-2xl hover:bg-orange2 text-sm sm:text-base"
-                    onClick={() => {
-                      router.push('/');
-                    }}
-                  >
-                    메인페이지로
                   </button>
                 </div>
               </form>
@@ -134,9 +141,7 @@ function SignInPage() {
                 </Link>
               </div>
 
-              {/* -----------------소셜 로그인 기능 잠시 보류------------------------- */}
-
-              {/* <div className="mt-auto">
+              <div className="mt-auto">
                 <div className="flex items-center justify-center text-center mb-6">
                   <div className="flex-grow border-t-2 border-gray-300"></div>
                   <span className="flex-shrink mx-4 text-xs sm:text-sm text-white font-semibold px-2">
@@ -173,7 +178,7 @@ function SignInPage() {
                     <span className="ml-2">구글로 로그인</span>
                   </button>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

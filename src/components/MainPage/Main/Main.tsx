@@ -1,7 +1,8 @@
 import React from 'react';
-import LocalItemList from '@/components/MainPage/Main/Sections/LocalItemList';
-import WebFeedSection from '@/components/MainPage/Main/Sections/WebFeedSection';
-import LocalSection from '@/components/MainPage/Main/Sections/LocalSection';
+import LocalItemList from './Sections/LocalItemList';
+import WebFeedSection from './Sections/WebFeedSection';
+import LocalSection from './Sections/LocalSection';
+import CheckLoginUser from './Sections/CheckLoginUser';
 
 function Main() {
   return (
@@ -9,6 +10,7 @@ function Main() {
       <LocalItemList />
       <WebFeedSection />
       <LocalSection />
+      <CheckLoginUser />
     </main>
   );
 }
