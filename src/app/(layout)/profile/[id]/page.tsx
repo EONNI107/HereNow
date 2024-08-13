@@ -58,7 +58,6 @@ function MyPage({ params }: { params: { id: string } }) {
       }
     }
   };
-  console.log(user);
   useEffect(() => {
     fetchProfile();
   }, [user, params.id]);
