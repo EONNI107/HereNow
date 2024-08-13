@@ -16,7 +16,8 @@ import axios from 'axios';
 
 type EditProfile = Pick<TablesInsert<'Users'>, 'nickname' | 'profileImage'>;
 
-function MyPage() {
+function MyPage({ params }: { params: { id: string } }) {
+  console.log(params.id);
   const { user, setUser } = useAuthStore();
   const supabase = createClient();
   const router = useRouter();
