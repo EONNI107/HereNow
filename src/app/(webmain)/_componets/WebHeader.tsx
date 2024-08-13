@@ -25,7 +25,7 @@ function WebHeader() {
     setInputValue(e.target.value);
   };
   const handleClick = () => {
-    router.push(`/search-page?q=${inputValue}`);
+    router.push(`/websearch-page?q=${inputValue}`);
     setIsbg(false);
     addToStorage();
     setInputValue('');

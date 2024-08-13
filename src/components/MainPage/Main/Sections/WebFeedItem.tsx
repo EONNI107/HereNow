@@ -25,7 +25,7 @@ const WebFeedItem = ({ feedItem }: feedTypeProps) => {
   };
   return (
     <>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-full gap-3">
         <div
           className="w-[150px] h-[150px] relative cursor-pointer "
           onClick={() => handleFeedMove(feedItem.id)}
@@ -46,7 +46,7 @@ const WebFeedItem = ({ feedItem }: feedTypeProps) => {
           </div>
         </div>
 
-        <div className="w-full flex mt-2 ml-8 gap-1">
+        <div className="flex w-[150px] justify-start gap-2">
           <div className="w-[25px] h-[25px]">
             <Image
               src={feedItem.Users.profileImage || feedImage}
@@ -57,7 +57,7 @@ const WebFeedItem = ({ feedItem }: feedTypeProps) => {
             />
           </div>
           <div>
-            <h1>{feedItem.Users.nickname}</h1>
+            <h1 className="line-clamp-1">{feedItem.Users.nickname}</h1>
           </div>
         </div>
       </div>
