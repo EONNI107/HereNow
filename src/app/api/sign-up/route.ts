@@ -10,7 +10,7 @@ export const POST = async (request: NextRequest) => {
     password,
     options: {
       data: {
-        nickname,
+        name: nickname,
       },
     },
   });

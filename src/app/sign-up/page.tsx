@@ -32,7 +32,7 @@ function SignUpPage() {
   };
 
   const isValidNickname = (nickname: string) => {
-    const nicknameRegex = /^[가-힣a-zA-Z0-9]{2,20}$/;
+    const nicknameRegex = /^[가-힣a-zA-Z0-9]{2,8}$/;
     const englishRegex = /^[a-zA-Z]{0,2}$/;
     return nicknameRegex.test(nickname) && !englishRegex.test(nickname);
   };
@@ -70,6 +70,8 @@ function SignUpPage() {
       showToast('error', `비밀번호를 입력하세요`);
     } else if (password !== passwordConfirm) {
       showToast('error', `비밀번호가 같지 않습니다`);
+    } else if (password === passwordConfirm) {
+      showToast('success', `비밀번호가 일치 합니다`);
     }
   };
 
@@ -77,10 +79,7 @@ function SignUpPage() {
     if (e.target.value === '') {
       showToast('error', `닉네임을 입력해주세요`);
     } else if (!isValidNickname(e.target.value)) {
-      showToast(
-        'error',
-        '닉네임은 2~20자의 한글, 영문, 숫자만 사용 가능합니다',
-      );
+      showToast('error', '닉네임은 2~8자의 한글, 영문, 숫자만 사용 가능합니다');
     }
   };
 
@@ -188,7 +187,7 @@ function SignUpPage() {
               type="text"
               value={nickname}
               className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
-              placeholder="2~20자의 한글, 영문, 숫자"
+              placeholder="2~8자의 한글, 영문, 숫자"
               onChange={onChangeNickname}
             />
           </div>
