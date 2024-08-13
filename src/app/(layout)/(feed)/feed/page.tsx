@@ -27,14 +27,14 @@ async function FeedListPage() {
   return (
     <div>
       <div className="relative mb-4">
-        <div className="aspect-[16/9] w-full">
+        <div className="aspect-[16/9] w-full h-[500px] overflow-hidden">
           <Image
-            src={'/AreaDetail-Main.jpg'}
+            src={'/Main-Banner.jpg'}
             alt="피드 상단 이미지"
-            width={300}
-            height={200}
-            priority={true}
-            className="object-cover w-full"
+            width={1600}
+            height={900}
+            priority
+            className="object-cover w-full h-full"
           />
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-15 flex flex-col justify-end p-8">
