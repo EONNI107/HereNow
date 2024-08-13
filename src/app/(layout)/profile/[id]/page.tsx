@@ -294,9 +294,9 @@ function MyPage({ params }: { params: { id: string } }) {
         </div>
       ) : (
         <div className="flex justify-center w-full mt-6">
-          <div className="flex justify-center w-1/3">
-            <div className="p-2 w-full text-center bg-white text-black border-b-4">
-              <p>작성한 글</p>
+          <div className="flex justify-center w-11/12">
+            <div className="p-2 w-full text-center bg-white text-black border-b-4 border-blue4">
+              <p className="text-xl font-semibold">작성한 글</p>
             </div>
           </div>
         </div>
