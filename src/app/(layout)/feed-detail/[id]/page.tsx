@@ -17,6 +17,7 @@ import { formatDate } from '@/utils/formatDate';
 import { toast } from 'react-toastify';
 import DeletePrompt from '@/components/DeletePrompt';
 import FeedDetailSkeleton from '@/components/FeedDetail/FeedDetailSkeleton';
+import PopularPosts from '@/components/FeedDetail/PopularPosts';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -45,8 +46,11 @@ async function fetchPost(id: string): Promise<Post | null> {
     region: data.region || '',
     sigungu: data.sigungu || '',
     userProfile: data.Users
-      ? { profileImage: data.Users.profileImage, nickname: data.Users.nickname }
-      : { profileImage: null, nickname: '알 수 없음' },
+      ? {
+          profileImage: data.Users.profileImage,
+          nickname: data.Users.nickname ?? '알 수 없음',
+        }
+      : { profileImage: null, nickname: '알 수 없음' }, // 기본값으로 '알 수 없음' 지정
   };
 }
 
@@ -142,7 +146,7 @@ function PostPage({ params }: PostPageProps) {
   const isAuthor = user?.id === post.userId;
 
   return (
-    <div className="bg-gray0 min-h-screen pb-5">
+    <div className="min-h-screen bg-gray0 pb-5">
       <div className="flex items-center justify-between h-14 mt-2 px-4">
         <div className="flex items-center">
           <Image
@@ -211,6 +215,7 @@ function PostPage({ params }: PostPageProps) {
           />
         </div>
       )}
+      <PopularPosts userId={post.userId} userNickname={userNickname} />
     </div>
   );
 }
