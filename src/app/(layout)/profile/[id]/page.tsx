@@ -11,13 +11,11 @@ import FeedLikes from '@/components/MypageFeedLikesList/FeedLikesList';
 import PlaceLikes from '@/components/MypagePlaceLikesList/PlaceLikes';
 import useAuthStore from '@/zustand/useAuthStore';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import axios from 'axios';
 
 type EditProfile = Pick<TablesInsert<'Users'>, 'nickname' | 'profileImage'>;
 
 function MyPage({ params }: { params: { id: string } }) {
-  console.log(params.id);
   const { user, setUser } = useAuthStore();
   const supabase = createClient();
   const router = useRouter();
@@ -26,11 +24,12 @@ function MyPage({ params }: { params: { id: string } }) {
   const [editProfile, setEditProfile] = useState<EditProfile>();
   const [newImageFile, setNewImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-
   const [loading, setLoading] = useState(true);
   const [selectedTab, setSelectedTab] = useState<
     'feedsList' | 'feedLikes' | 'placeLikes'
   >('feedsList');
+
+  const isMyPage = params.id === user?.id;
 
   const fetchUserProfile = async (userId: string) => {
     const { data, error } = await supabase
@@ -41,7 +40,6 @@ function MyPage({ params }: { params: { id: string } }) {
 
     if (error) {
       showToast('error', `프로필 정보 불러오는 중에 오류가 발생했습니다`);
-      console.log(error.message);
       return null;
     }
     return data;
@@ -49,7 +47,7 @@ function MyPage({ params }: { params: { id: string } }) {
 
   const fetchProfile = async () => {
     if (user) {
-      const profileData = await fetchUserProfile(user.id);
+      const profileData = await fetchUserProfile(params.id);
       if (profileData) {
         setProfile(profileData);
         setEditProfile({
@@ -59,10 +57,10 @@ function MyPage({ params }: { params: { id: string } }) {
       }
     }
   };
-
+  console.log(user);
   useEffect(() => {
     fetchProfile();
-  }, [user]);
+  }, [user, params.id]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -172,177 +170,154 @@ function MyPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="pt-10 flex flex-col px-2">
-      <div
-        className={`flex items-center rounded-2xl w-full h-28 ${
-          user ? 'bg-blue0' : 'bg-orange0'
-        }`}
-      >
-        {!user ? (
-          <div className="flex justify-between items-center w-full p-5 bg-orange0 rounded-2xl">
-            <Image
-              src="/default-profile.jpg"
-              className="h-16 w-16 rounded-full"
-              alt="Profile"
-              width={200}
-              height={200}
-              priority
-            />
-            <Link href="/sign-in">
-              <button className="px-4 py-2 bg-orange3 text-white rounded-xl text-sm whitespace-nowrap hover:bg-orange4">
-                로그인 · 회원가입하러가기
-              </button>
-            </Link>
-          </div>
-        ) : (
-          <div className="relative flex items-center w-full justify-between p-5">
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <Image
-                  src={
-                    imagePreview ||
-                    profile?.profileImage ||
-                    '/default-profile.jpg'
-                  }
-                  className="h-16 w-16 rounded-full"
-                  alt="Profile"
-                  width={200}
-                  height={200}
-                />
-                {user && isEditing && (
-                  <label
-                    htmlFor="file-input"
-                    className="absolute bottom-0 right-0 p-0.5 cursor-pointer bg-orange3 rounded-full"
-                  >
-                    <PenIcon />
-                  </label>
-                )}
+      <div className="flex items-center rounded-2xl w-full h-28 bg-blue0">
+        <div className="relative flex items-center w-full justify-between p-5">
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <Image
+                src={
+                  imagePreview ||
+                  profile?.profileImage ||
+                  '/default-profile.jpg'
+                }
+                className="h-16 w-16 rounded-full"
+                alt="Profile"
+                width={200}
+                height={200}
+              />
+              {isMyPage && isEditing && (
+                <label
+                  htmlFor="file-input"
+                  className="absolute bottom-0 right-0 p-0.5 cursor-pointer bg-orange3 rounded-full"
+                >
+                  <PenIcon />
+                </label>
+              )}
+              {isMyPage && (
                 <input
                   type="file"
                   id="file-input"
                   onChange={handleImageChange}
                   className="hidden"
                 />
-              </div>
-              <div className="flex flex-col gap-1">
-                <div className="text-xs text-sub1 px-1">{profile?.email}</div>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={editProfile?.nickname || ''}
-                    onChange={(e) =>
-                      setEditProfile({
-                        ...editProfile,
-                        nickname: e.target.value,
-                      })
-                    }
-                    className="px-1 border border-gray12 rounded w-28 bg-blue0"
-                  />
-                ) : (
-                  <div className="text-main px-1">{profile?.nickname}</div>
-                )}
-              </div>
+              )}
             </div>
-            {user && (
-              <div className="flex flex-col items-center gap-2">
-                {isEditing ? (
-                  <>
-                    <button
-                      onClick={handleUpdate}
-                      className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
-                    >
-                      수정 완료
-                    </button>
-                    <button
-                      onClick={() => setIsEditing(false)}
-                      className="w-24 rounded-xl border-2 border-blue4 bg-blue0 text-blue4 p-1 px-4 text-sm font-bold hover:bg-blue1"
-                    >
-                      취소
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
-                    >
-                      프로필 수정
-                    </button>
-                    <button
-                      onClick={handleLogout}
-                      className="w-24 rounded-xl bg-orange3 text-white p-1 hover:bg-orange4"
-                    >
-                      로그아웃
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
+            <div className="flex flex-col gap-1">
+              <div className="text-xs text-sub1 px-1">{profile?.email}</div>
+              {isMyPage && isEditing ? (
+                <input
+                  type="text"
+                  value={editProfile?.nickname || ''}
+                  onChange={(e) =>
+                    setEditProfile({
+                      ...editProfile,
+                      nickname: e.target.value,
+                    })
+                  }
+                  className="px-1 border border-gray12 rounded w-28 bg-blue0"
+                />
+              ) : (
+                <div className="text-main px-1">{profile?.nickname}</div>
+              )}
+            </div>
           </div>
-        )}
+          {isMyPage && (
+            <div className="flex flex-col items-center gap-2">
+              {isEditing ? (
+                <>
+                  <button
+                    onClick={handleUpdate}
+                    className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
+                  >
+                    수정 완료
+                  </button>
+                  <button
+                    onClick={() => setIsEditing(false)}
+                    className="w-24 rounded-xl border-2 border-blue4 bg-blue0 text-blue4 p-1 px-4 text-sm font-bold hover:bg-blue1"
+                  >
+                    취소
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
+                  >
+                    프로필 수정
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="w-24 rounded-xl bg-orange3 text-white p-1 hover:bg-orange4"
+                  >
+                    로그아웃
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="flex justify-center w-full mt-6">
-        <button
-          className={`p-2 flex-1 ${
-            selectedTab === 'feedsList'
-              ? 'bg-white text-black border-b-4 border-blue4'
-              : 'text-gray3 border-b-4 border-b-white'
-          }`}
-          onClick={() => setSelectedTab('feedsList')}
-        >
-          <p>작성한 글</p>
-        </button>
-        <button
-          className={`p-2 flex-1 ${
-            selectedTab === 'feedLikes'
-              ? 'bg-white text-black border-b-4 border-blue4'
-              : 'text-gray3 border-b-4 border-b-white'
-          }`}
-          onClick={() => setSelectedTab('feedLikes')}
-        >
-          <p>찜한 글</p>
-        </button>
-        <button
-          className={`p-2 flex-1 ${
-            selectedTab === 'placeLikes'
-              ? 'bg-white text-black border-b-4 border-blue4'
-              : 'text-gray3 border-b-4 border-b-white'
-          }`}
-          onClick={() => setSelectedTab('placeLikes')}
-        >
-          <p>찜한 장소</p>
-        </button>
-      </div>
+      {isMyPage ? (
+        <div className="flex justify-center w-full mt-6">
+          <button
+            className={`p-2 flex-1 ${
+              selectedTab === 'feedsList'
+                ? 'bg-white text-black border-b-4 border-blue4'
+                : 'text-gray3 border-b-4 border-b-white'
+            }`}
+            onClick={() => setSelectedTab('feedsList')}
+          >
+            <p>작성한 글</p>
+          </button>
+          <button
+            className={`p-2 flex-1 ${
+              selectedTab === 'feedLikes'
+                ? 'bg-white text-black border-b-4 border-blue4'
+                : 'text-gray3 border-b-4 border-b-white'
+            }`}
+            onClick={() => setSelectedTab('feedLikes')}
+          >
+            <p>찜한 글</p>
+          </button>
+          <button
+            className={`p-2 flex-1 ${
+              selectedTab === 'placeLikes'
+                ? 'bg-white text-black border-b-4 border-blue4'
+                : 'text-gray3 border-b-4 border-b-white'
+            }`}
+            onClick={() => setSelectedTab('placeLikes')}
+          >
+            <p>찜한 장소</p>
+          </button>
+        </div>
+      ) : (
+        <div className="flex justify-center w-full mt-6">
+          <div className="flex justify-center w-1/3">
+            <div className="p-2 w-full text-center bg-white text-black border-b-4">
+              <p>작성한 글</p>
+            </div>
+          </div>
+        </div>
+      )}
 
-      <div className="flex flex-1 justify-center bg-gray0 px-4 min-h-[60vh] ">
+      <div className="flex flex-1 justify-center bg-gray0 px-4 min-h-[60vh]">
         {loading ? (
           <p>Loading...</p>
         ) : (
           <div>
-            {selectedTab === 'feedsList' &&
-              (user ? (
-                <FeedsList />
-              ) : (
-                <p className="flex justify-center items-center h-full">
-                  로그인 후 이용 가능합니다.
-                </p>
-              ))}
-            {selectedTab === 'feedLikes' &&
-              (user ? (
-                <FeedLikes />
-              ) : (
-                <p className="flex justify-center items-center h-full">
-                  로그인 후 이용 가능합니다.
-                </p>
-              ))}
-            {selectedTab === 'placeLikes' &&
-              (user ? (
-                <PlaceLikes />
-              ) : (
-                <p className="flex justify-center items-center h-full">
-                  로그인 후 이용 가능합니다.
-                </p>
-              ))}
+            {isMyPage ? (
+              <>
+                {selectedTab === 'feedsList' && (
+                  <FeedsList userId={params.id} />
+                )}
+                {selectedTab === 'feedLikes' && <FeedLikes />}
+                {selectedTab === 'placeLikes' && <PlaceLikes />}
+              </>
+            ) : (
+              <FeedsList userId={params.id} />
+            )}
           </div>
         )}
       </div>
