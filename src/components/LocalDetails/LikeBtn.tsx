@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { HeartIcon } from '@heroicons/react/24/outline';
-import { ShareIcon } from '@heroicons/react/24/outline';
-import { showToast } from '@/utils/toastHelper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -11,9 +9,14 @@ import useAuthStore from '@/zustand/useAuthStore';
 type LikeBtnProps = {
   placeId: string;
   imageUrl: string;
+  isInNearbyPlaces?: boolean;
 };
 
-function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
+function LikeBtn({
+  placeId,
+  imageUrl,
+  isInNearbyPlaces = false,
+}: LikeBtnProps) {
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
@@ -90,26 +93,32 @@ function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
     }
   };
 
-  const handleShareBtn = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      showToast('success', '현재 페이지 주소가 복사되었습니다.');
-    } catch (err) {
-      console.error('복사 실패', err);
-      showToast('error', '현재 페이지 주소 복사를 실패하였습니다.');
-    }
-  };
-
   return (
-    <div className="items-center flex gap-2 mb-4">
-      <button onClick={handleLike} className="focus:outline-none">
+    <div>
+      <button
+        onClick={handleLike}
+        className={`flex gap-2 justify-center xl:bg-blue4 xl:border border-blue4 xl:p-2 xl:rounded-lg xl:w-24 ${
+          isInNearbyPlaces && 'xl:bg-transparent xl:border-none'
+        }`}
+      >
         <HeartIcon
-          className={`w-6 h-6 ${liked ? 'text-red-500' : 'text-gray-400'}`}
-          fill={liked ? '#ff5c5c' : 'none'}
+          className={`w-6 h-6 ${
+            isInNearbyPlaces
+              ? liked
+                ? 'xl:text-orange5 xl:fill-orange5 xl:ml-auto'
+                : 'xl:text-gray3 xl:ml-auto'
+              : liked
+              ? 'text-orange5 fill-orange5 xl:fill-white xl:text-white'
+              : 'text-gray3 xl:text-white'
+          }`}
         />
-      </button>
-      <button onClick={handleShareBtn}>
-        <ShareIcon className="w-5 h-5" />
+        <span
+          className={`hidden xl:inline-flex text-white ${
+            isInNearbyPlaces && 'xl:hidden'
+          }`}
+        >
+          공감
+        </span>
       </button>
     </div>
   );
