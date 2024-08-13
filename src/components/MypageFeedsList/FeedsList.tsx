@@ -7,7 +7,7 @@ import { showToast } from '@/utils/toastHelper';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function FeedList() {
+export default function FeedList({ userId }: { userId: string }) {
   const [feedsList, setFeedsList] = useState<Tables<'Feeds'>[]>([]);
   const { user } = useAuthStore();
 
@@ -19,7 +19,7 @@ export default function FeedList() {
         const { data, error } = await supabase
           .from('Feeds')
           .select('*')
-          .eq('userId', user.id);
+          .eq('userId', userId);
 
         if (error) {
           showToast('error', '슈퍼베이스 불러오는중 오류가 발생했습니다');
