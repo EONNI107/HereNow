@@ -40,6 +40,7 @@ function MyPage({ params }: { params: { id: string } }) {
 
     if (error) {
       showToast('error', `프로필 정보 불러오는 중에 오류가 발생했습니다`);
+      d;
       return null;
     }
     return data;

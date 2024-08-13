@@ -187,7 +187,7 @@ function SignUpPage() {
               type="text"
               value={nickname}
               className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
-              placeholder="2~20자의 한글, 영문, 숫자"
+              placeholder="2~8자의 한글, 영문, 숫자"
               onChange={onChangeNickname}
             />
           </div>
