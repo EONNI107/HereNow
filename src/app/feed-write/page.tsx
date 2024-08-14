@@ -48,8 +48,16 @@ function FeedWrite() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!title || !content || !region) {
-      return showToast('warning', '제목과 내용, 지역 선택을 기입해주세요.');
+    if (
+      !title ||
+      !content ||
+      !region ||
+      (images.length === 0 && existingImageUrls.length === 0)
+    ) {
+      return showToast(
+        'warning',
+        '제목과 내용, 지역 선택, 그리고 이미지를 첨부해주세요.',
+      );
     }
 
     if (!user) {
