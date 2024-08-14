@@ -6,10 +6,12 @@ import {
   ClockIcon,
   MapPinIcon,
   PhoneIcon,
+  ShareIcon,
 } from '@heroicons/react/24/outline';
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { DetailProps } from '@/types/localDetails';
+import Image from 'next/image';
+import { showToast } from '@/utils/toastHelper';
 
 function Details({ mainData, additionalData, typeId }: DetailProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -76,28 +78,63 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
   const restdate = getRestDate();
   const hours = getHours();
   const filteredOverview =
-    mainData?.overview.replace(/<br\s*\/?>/gi, ' ') || '';
+    mainData?.overview
+      .replace(/<br\s*\/?>/gi, '')
+      .replace(/&gt;/g, '')
+      .replace(/&lt;/g, '') || '';
   const filteredHours = hours?.replace(/<br\s*\/?>/gi, ' ') || '';
   const filteredRestDate = restdate?.replace(/<br\s*\/?>/gi, ' ') || '';
 
+  const handleShareBtn = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      showToast('success', '현재 페이지 주소가 복사되었습니다.');
+    } catch (err) {
+      console.error('복사 실패', err);
+      showToast('error', '현재 페이지 주소 복사를 실패하였습니다.');
+    }
+  };
+
   return (
     <>
-      <div className="flex justify-between gap-2 mx-4">
-        <h1 className="text-2xl font-bold mb-4">{mainData?.title}</h1>
-        {mainData?.contentid && (
-          <LikeBtn
-            imageUrl={mainData?.firstimage}
-            placeId={mainData.contentid}
+      {mainData?.firstimage ? (
+        <div className="relative w-full h-[310px] xl:w-[800px] xl:h-[600px] mx-auto mb-6 xl:mb-9">
+          <Image
+            src={mainData?.firstimage || '/No_Img.jpg'}
+            alt="장소 이미지"
+            fill
+            sizes="(max-width: 1240px) 100vw, 1240px"
+            className="object-contain w-full"
+            priority
           />
+        </div>
+      ) : null}
+
+      <div className="flex flex-row-reverse justify-between gap-2 mx-4 xl:mx-0 xl:flex-col">
+        {mainData?.contentid && (
+          <div className="items-center flex gap-2 xl:gap-9 mb-4 xl:mb-6">
+            <LikeBtn
+              imageUrl={mainData.firstimage}
+              placeId={mainData.contentid}
+            />
+            <button
+              onClick={handleShareBtn}
+              className="flex gap-2 justify-center xl:border border-gray8 xl:p-2 xl:rounded-lg xl:w-24"
+            >
+              <ShareIcon className="w-5 h-5" />
+              <span className="hidden xl:inline-flex text-gray12">공유</span>
+            </button>
+          </div>
         )}
+        <h1 className="text-2xl mb-4 xl:text-5xl xl:mb-6">{mainData?.title}</h1>
       </div>
 
       <div className="flex flex-col space-y-4">
-        <div className="flex flex-col mx-4">
+        <div className="flex flex-col mx-4 xl:mx-0">
           <p className={`${isExpanded ? '' : 'line-clamp-4'}`}>
             {filteredOverview}
           </p>
-          {filteredOverview.length > 128 && (
+          {filteredOverview.length > 200 && (
             <button
               className="text-gray-500 mt-1 text-sm underline text-left"
               onClick={handleExpand}
@@ -106,7 +143,7 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
             </button>
           )}
         </div>
-        <div className="flex-col space-y-4 mx-4">
+        <div className="flex-col space-y-4 mx-4 xl:mx-0">
           <p className="flex gap-2">
             <MapPinIcon className="w-t h-5" /> {mainData?.addr1}
           </p>
