@@ -129,7 +129,7 @@ function FeedListClient({
           <select
             value={selectedRegion}
             onChange={handleRegionChange}
-            className="p-2 border rounded w-full xl:w-auto"
+            className="p-2 border rounded w-full xl:w-[500px]"
           >
             <option value="">모든 지역</option>
             {regionData.region.map((r) => (
@@ -158,7 +158,7 @@ function FeedListClient({
         </p>
       </div>
       <div className="bg-gray0 p-4 xl:bg-white">
-        <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 xl:grid-cols-2 xl:gap-x-8 xl:gap-y-16">
           {sortedFeeds.map((feed) => (
             <FeedListItem
               key={feed.id}

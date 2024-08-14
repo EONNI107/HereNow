@@ -68,97 +68,96 @@ function FeedListItem({
   };
 
   return (
-    <div>
-      <Link href={`/feed-detail/${feed.id}`} className="p-4 rounded-3xl">
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <Image
-                src={feed.Users?.profileImage || '/default-profile.jpg'}
-                alt="유저 프로필 이미지"
-                width={48}
-                height={48}
-                className="w-6 h-6 xl:w-[72px] xl:h-[72px] border rounded-full mr-4"
-              />
-              <span className="text-[14px] xl:text-[24px] font-regular">
-                {feed.Users?.nickname}
-              </span>
-            </div>
-            <span className="text-[12px] xl:text-[20px] text-sub2 ">
-              {fromNow(feed.createdAt)}
+    <div className="xl:flex xl:flex-col xl:h-full p-4 rounded-3xl">
+      <div className="xl:flex xl:flex-col xl:h-full">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <Image
+              src={feed.Users?.profileImage || '/default-profile.jpg'}
+              alt="유저 프로필 이미지"
+              width={48}
+              height={48}
+              className="w-6 h-6 xl:w-14 xl:h-14 border rounded-full mr-4"
+            />
+            <span className="text-[14px] xl:text-[24px] font-regular">
+              {feed.Users?.nickname}
             </span>
           </div>
-          <div className="relative w-full h-48 xl:w-[572px] xl:h-[550px] overflow-hidden border rounded-3xl xl:rounded-[32px] group">
-            <Image
-              src={feedImage}
-              alt="피드 썸네일"
-              width={300}
-              height={200}
-              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-              <p className="text-white text-[28px] font-semibold text-center">
-                {feed.region && <span>{feed.region}</span>}
-                {feed.region && feed.sigungu && ' '}
-                {feed.sigungu && <span>{feed.sigungu}</span>}
-              </p>
-            </div>
-          </div>
-          <div className="p-4">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="line-clamp-1 text-main text-[18px] font-semibold xl:text-[24px] xl:font-medium">
-                {feed.title}
-              </h2>
-              <div className="flex items-center space-x-3 text-xs text-sub1 xl:hidden">
-                <div className="flex items-center space-x-1">
-                  {isLiked ? (
-                    <HeartIconSolid />
-                  ) : (
-                    <HeartIcon className="w-5 h-5" />
-                  )}
-                  <span>{likesCount}</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <ChatBubbleOvalLeftEllipsisIcon className="w-5 h-5" />
-                  <span>{commentsCount}</span>
-                </div>
-              </div>
-            </div>
-            <div className="hidden xl:block">
-              <p className="line-clamp-1 font-medium text-sub1 text-[20px]">
-                {feed.content}
-              </p>
-              <div
-                onClick={handleMoveFeedDetail}
-                className="text-orange4 font-semibold"
-              >
-                더보기
-              </div>
-              <div className="flex items-center space-x-3 text-xs text-sub1 mt-2">
-                <div className="flex items-center space-x-1">
-                  {isLiked ? (
-                    <HeartIconSolid />
-                  ) : (
-                    <HeartIcon className="w-10 h-10" />
-                  )}
-                  <span className="font-medium text-[20px]">{likesCount}</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <ChatBubbleOvalLeftEllipsisIcon className="w-10 h-10" />
-                  <span className="font-medium text-[20px]">
-                    {commentsCount}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <p className="block xl:hidden text-[14px] font-semibold text-sub2 ">
+          <span className="text-[12px] xl:text-[20px] text-sub2 xl:ml-auto xl:pl-4">
+            {fromNow(feed.createdAt)}
+          </span>
+        </div>
+        <div
+          className="relative w-full h-48 xl:h-[300px] overflow-hidden border rounded-3xl xl:rounded-[32px] group cursor-pointer"
+          onClick={handleMoveFeedDetail}
+        >
+          <Image
+            src={feedImage}
+            alt="피드 썸네일"
+            width={300}
+            height={200}
+            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+            <p className="text-white text-[28px] font-semibold text-center">
               {feed.region && <span>{feed.region}</span>}
               {feed.region && feed.sigungu && ' '}
               {feed.sigungu && <span>{feed.sigungu}</span>}
             </p>
           </div>
         </div>
-      </Link>
+        <div className="p-4 xl:flex-grow xl:flex xl:flex-col">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="line-clamp-1 text-main text-[18px] font-semibold xl:text-[24px] xl:font-medium">
+              {feed.title}
+            </h2>
+            <div className="flex items-center space-x-3 text-xs text-sub1 xl:hidden">
+              <div className="flex items-center space-x-1">
+                {isLiked ? (
+                  <HeartIconSolid />
+                ) : (
+                  <HeartIcon className="w-5 h-5" />
+                )}
+                <span>{likesCount}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <ChatBubbleOvalLeftEllipsisIcon className="w-5 h-5" />
+                <span>{commentsCount}</span>
+              </div>
+            </div>
+          </div>
+          <div className="hidden xl:block xl:flex-grow">
+            <p className="line-clamp-1 font-medium text-sub1 text-[20px] mb-2">
+              {feed.content}
+            </p>
+            <div
+              onClick={handleMoveFeedDetail}
+              className="text-orange4 font-semibold cursor-pointer"
+            >
+              더보기
+            </div>
+          </div>
+          <div className="hidden xl:flex items-center space-x-3  text-sub1 mt-4">
+            <div className="flex items-center space-x-1">
+              {isLiked ? (
+                <HeartIconSolid />
+              ) : (
+                <HeartIcon className="w-10 h-10" />
+              )}
+              <span className="font-medium text-[20px]">{likesCount}</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <ChatBubbleOvalLeftEllipsisIcon className="w-10 h-10" />
+              <span className="font-medium text-[20px]">{commentsCount}</span>
+            </div>
+          </div>
+          <p className="block xl:hidden text-[14px] font-semibold text-sub2 ">
+            {feed.region && <span>{feed.region}</span>}
+            {feed.region && feed.sigungu && ' '}
+            {feed.sigungu && <span>{feed.sigungu}</span>}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
