@@ -17,12 +17,9 @@ import { formatDate } from '@/utils/formatDate';
 import { toast } from 'react-toastify';
 import DeletePrompt from '@/components/DeletePrompt';
 import FeedDetailSkeleton from '@/components/FeedDetail/FeedDetailSkeleton';
+import PopularPosts from '@/components/FeedDetail/PopularPosts'; // Import the new component
 
 const supabase = createClient();
-
-type PostWithLikes = Post & {
-  like_count?: number;
-};
 
 async function fetchPost(id: string): Promise<Post | null> {
   const { data, error } = await supabase
@@ -72,53 +69,6 @@ async function fetchCommentCount(postId: number): Promise<number> {
   return count || 0;
 }
 
-async function getPopularPosts(userId: string): Promise<PostWithLikes[]> {
-  const { data: feeds, error: feedsError } = await supabase
-    .from('Feeds')
-    .select('id, title, image, region, sigungu, userId, content, createdAt')
-    .eq('userId', userId);
-
-  if (feedsError) {
-    console.error('Error fetching feeds:', feedsError);
-    return [];
-  }
-
-  // 모든 FeedLikes 데이터를 가져와서 수동으로 집계
-  const { data: likes, error: likesError } = await supabase
-    .from('FeedLikes')
-    .select('*')
-    .in(
-      'feedId',
-      feeds.map((feed) => feed.id),
-    );
-
-  if (likesError) {
-    console.error('Error fetching likes:', likesError);
-    return [];
-  }
-
-  // feedId 별로 좋아요 수를 집계
-  const likeCounts = feeds.reduce((acc, feed) => {
-    const likeCount = likes.filter((like) => like.feedId === feed.id).length;
-    acc[feed.id] = likeCount;
-    return acc;
-  }, {} as Record<number, number>);
-
-  const postsWithLikes = feeds.map((feed) => {
-    return {
-      ...feed,
-      image: feed.image ? JSON.parse(feed.image) : [],
-      region: feed.region || '',
-      sigungu: feed.sigungu || '',
-      like_count: likeCounts[feed.id] || 0,
-    };
-  });
-
-  postsWithLikes.sort((a, b) => (b.like_count || 0) - (a.like_count || 0));
-
-  return postsWithLikes.slice(0, 4);
-}
-
 type PostPageProps = {
   params: { id: string };
 };
@@ -127,7 +77,6 @@ function PostPage({ params }: PostPageProps) {
   const [post, setPost] = useState<Post | null>(null);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
-  const [popularPosts, setPopularPosts] = useState<PostWithLikes[]>([]);
   const { user } = useAuthStore();
   const router = useRouter();
 
@@ -140,11 +89,6 @@ function PostPage({ params }: PostPageProps) {
 
       const fetchedCommentCount = await fetchCommentCount(parseInt(params.id));
       setCommentCount(fetchedCommentCount);
-
-      if (fetchedPost?.userId) {
-        const posts = await getPopularPosts(fetchedPost.userId);
-        setPopularPosts(posts);
-      }
     };
 
     fetchData();
@@ -270,36 +214,8 @@ function PostPage({ params }: PostPageProps) {
           />
         </div>
       )}
-      <div className="mt-8">
-        <hr className="border-gray-300" />
-        <h3 className="text-lg font-semibold mt-4">
-          {userNickname}님의 인기글이에요
-        </h3>
-        <button
-          onClick={() => router.push(`/my-page/${post.userId}`)}
-          className="text-blue4 mt-2 border-blue4 border-[1px] rounded-[16px] px-4 py-2"
-        >
-          프로필 보기
-        </button>
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          {popularPosts.map((post) => (
-            <div
-              key={post.id}
-              className="relative w-full h-40 bg-cover bg-center cursor-pointer"
-              style={{ backgroundImage: `url(${post.image[0] || ''})` }}
-              onClick={() => router.push(`/feed-detail/${post.id}`)}
-            >
-              <div className="bg-black bg-opacity-20 text-white p-2 w-full h-full">
-                <p className="text-sm">
-                  {post.region} {post.sigungu}
-                </p>
-                <p className="text-sm font-bold">{post.title}</p>
-                <p className="text-xs">좋아요 {post.like_count}개</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <PopularPosts userId={post.userId} />{' '}
+      {/* Use the new PopularPosts component */}
     </div>
   );
 }
