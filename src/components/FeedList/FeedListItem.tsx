@@ -88,14 +88,14 @@ function FeedListItem({
           </span>
         </div>
         <div
-          className="relative w-full h-48 xl:h-[300px] overflow-hidden border rounded-3xl xl:rounded-[32px] group cursor-pointer"
+          className="relative w-full h-48 xl:h-[400px] overflow-hidden border rounded-3xl xl:rounded-[32px] group cursor-pointer"
           onClick={handleMoveFeedDetail}
         >
           <Image
             src={feedImage}
             alt="피드 썸네일"
             width={300}
-            height={200}
+            height={300}
             className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
