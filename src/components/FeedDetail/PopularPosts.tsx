@@ -11,7 +11,7 @@ type PostWithLikes = Post & {
 
 type PopularPostsProps = {
   userId: string;
-  userNickname: string; // 유저 닉네임 추가
+  userNickname: string;
 };
 
 async function getPopularPosts(userId: string): Promise<PostWithLikes[]> {
