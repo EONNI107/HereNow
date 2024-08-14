@@ -3,14 +3,16 @@ import React from 'react';
 
 function MainBanner() {
   return (
-    <div className="w-full max-w-[1920px] max-h-[700px] relative">
-      <Image
-        src="/Main-Banner.jpg"
-        alt="배너이미지"
-        width={1920}
-        height={700}
-        className="w-full h-full object-cover"
-      />
+    <div className="w-full max-w-[1920px] max-h-[700px] relative -z-10">
+      <div className="w-auto h-auto">
+        <Image
+          src="/Main-Banner.jpg"
+          alt="배너이미지"
+          width={1920}
+          height={700}
+          className="w-full h-full object-cover"
+        />
+      </div>
       <div className="gap-[24px] flex flex-col justify-center items-center absolute bottom-[180px] left-[250px]">
         <div className="w-[420px]">
           <h2 className="text-5xl font-semibold leading-[150%]">

@@ -31,7 +31,7 @@ function WebHeader() {
     setInputValue('');
   };
   return (
-    <header className="w-full py-4 px-[314px] flex justify-center fixed right-0 left-0 mx-auto z-10 box-shadow bg-[#fff]">
+    <header className="w-full py-4 px-[314px] flex justify-center fixed right-0 left-0 mx-auto z-10 box-shadow bg-white">
       <div className="flex gap-x-[90px] min-w-[1293px] h-[46px]">
         <div className="grow-0 font-medium text-[36px] flex justify-center items-center">
           <p className="font-[양진체] text-blue4">지금,여기</p>
