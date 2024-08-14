@@ -24,11 +24,6 @@ type PostWithLikes = Post & {
   like_count?: number;
 };
 
-type FeedLike = {
-  feedId: number;
-  id: number;
-};
-
 async function fetchPost(id: string): Promise<Post | null> {
   const { data, error } = await supabase
     .from('Feeds')
@@ -146,14 +141,14 @@ function PostPage({ params }: PostPageProps) {
       const fetchedCommentCount = await fetchCommentCount(parseInt(params.id));
       setCommentCount(fetchedCommentCount);
 
-      if (user) {
-        const posts = await getPopularPosts(user.id);
+      if (fetchedPost?.userId) {
+        const posts = await getPopularPosts(fetchedPost.userId);
         setPopularPosts(posts);
       }
     };
 
     fetchData();
-  }, [params.id, user]);
+  }, [params.id]);
 
   if (!post) {
     return <FeedDetailSkeleton />;
@@ -281,7 +276,7 @@ function PostPage({ params }: PostPageProps) {
           {userNickname}님의 인기글이에요
         </h3>
         <button
-          onClick={() => router.push(`/my-page/${user?.id}`)}
+          onClick={() => router.push(`/my-page/${post.userId}`)}
           className="text-blue4 mt-2 border-blue4 border-[1px] rounded-[16px] px-4 py-2"
         >
           프로필 보기
