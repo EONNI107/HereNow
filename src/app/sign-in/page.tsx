@@ -48,7 +48,6 @@ function SignInPage() {
       nickname: userProfile.nickname,
       profileImage: userProfile.profileImage,
     };
-
     setUser(userInfo);
     showToast('success', '로그인 성공');
     router.push('/');
@@ -96,7 +95,12 @@ function SignInPage() {
             <div className="lg:w-1/2 lg:px-[80px]">
               <form onSubmit={onSubmit} className="space-y-3">
                 <div>
-                  <label className="text-white text-sm">아이디(이메일)</label>
+                  <div className="hidden lg:block text-black font-bold text-4xl text-center mb-3">
+                    로그인
+                  </div>
+                  <label className="text-white lg:text-black text-sm">
+                    아이디(이메일)
+                  </label>
                   <input
                     type="email"
                     id="email"
@@ -106,7 +110,9 @@ function SignInPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-white text-sm">비밀번호</label>
+                  <label className="text-white lg:text-black text-sm">
+                    비밀번호
+                  </label>
                   <input
                     ref={passwordRef}
                     type="password"
@@ -125,11 +131,11 @@ function SignInPage() {
                 </div>
               </form>
 
-              <div className="flex flex-col justify-between flex-grow mt-8">
-                <div className="text-center">
+              <div className="flex flex-col justify-between flex-grow mt-4">
+                <div className="text-center mb-20">
                   <Link
                     href="/sign-up"
-                    className="text-sm text-white underline underline-offset-2 decoration-1"
+                    className="text-sm text-white underline underline-offset-2 decoration-1 lg:text-black"
                   >
                     처음이신가요?
                   </Link>
@@ -138,7 +144,7 @@ function SignInPage() {
                 <div className="mt-auto">
                   <div className="flex items-center justify-center text-center mb-6">
                     <div className="flex-grow border-t-2 border-gray-300"></div>
-                    <span className="flex-shrink mx-4 text-xs text-white font-semibold px-2">
+                    <span className="flex-shrink mx-4 text-xs text-white font-semibold px-2 lg:text-sub1">
                       SNS계정으로 로그인하기
                     </span>
                     <div className="flex-grow border-t-2 border-gray-300"></div>
@@ -148,7 +154,7 @@ function SignInPage() {
                     <button
                       type="button"
                       onClick={() => signInWithOAuth('kakao')}
-                      className="w-full bg-[#F9E006] font-bold text-black py-3 px-4 rounded-md hover:bg-yellow-400 flex items-center justify-center text-sm"
+                      className="w-full bg-[#F9E006] font-bold text-black py-3 px-4 rounded-2xl hover:bg-yellow-400 flex items-center justify-center text-sm"
                     >
                       <Image
                         src="/kakao_symbol.jpg"
@@ -161,7 +167,7 @@ function SignInPage() {
                     <button
                       type="button"
                       onClick={() => signInWithOAuth('google')}
-                      className="w-full bg-white font-bold text-black py-3 px-4 rounded-md border border-gray3 hover:bg-gray-100 flex items-center justify-center text-sm"
+                      className="w-full bg-white font-bold text-black py-3 px-4 rounded-2xl border border-gray3 hover:bg-gray-100 flex items-center justify-center text-sm"
                     >
                       <Image
                         src="/google_symbol.svg.jpg"

@@ -102,7 +102,6 @@ function MyPage({ params }: { params: { id: string } }) {
 
     if (error) {
       showToast('error', `이미지 업로드 중 오류가 발생했습니다`);
-      console.log(error.message);
       return null;
     }
 
