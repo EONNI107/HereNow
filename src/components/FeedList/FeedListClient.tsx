@@ -120,7 +120,7 @@ function FeedListClient({
   if (error) return <div>에러: {error.message}</div>;
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="xl:container mx-auto px-4">
       <div className="mb-4 xl:bg-gray0 xl:p-4 xl:rounded-lg xl:border xl:border-gray8">
         <h2 className="hidden xl:block text-[20px] font-bold mb-2 text-center">
           빠르게 보고싶은 글이 있나요?
@@ -157,7 +157,7 @@ function FeedListClient({
           로컬들이 몰래 알려주는 장소를 찾아보세요
         </p>
       </div>
-      <div className="bg-gray-100 p-4 xl:bg-white">
+      <div className="bg-gray0 p-4 xl:bg-white">
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
           {sortedFeeds.map((feed) => (
             <FeedListItem

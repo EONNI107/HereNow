@@ -84,7 +84,7 @@ function FeedListItem({
                 {feed.Users?.nickname}
               </span>
             </div>
-            <span className="text-[12px] xl:text-[20px] text-sub2">
+            <span className="text-[12px] xl:text-[20px] text-sub2 ">
               {fromNow(feed.createdAt)}
             </span>
           </div>
