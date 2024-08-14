@@ -7,6 +7,7 @@ type ImageUploadProps = {
   setImages: (files: File[]) => void;
   imagePreviews: string[];
   setImagePreviews: (previews: string[]) => void;
+  handleImageDelete?: (index: number) => void; // index를 받도록 수정
 };
 
 function ImageUpload({
@@ -14,6 +15,7 @@ function ImageUpload({
   setImages,
   imagePreviews,
   setImagePreviews,
+  handleImageDelete, // index를 받는 외부 삭제 핸들러
 }: ImageUploadProps) {
   const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +33,7 @@ function ImageUpload({
     }
   };
 
-  const handleImageDelete = (index: number) => {
+  const handleLocalImageDelete = (index: number) => {
     const newImages = images.filter((_, i) => i !== index);
     setImages(newImages);
 
@@ -66,7 +68,13 @@ function ImageUpload({
               objectFit="cover"
             />
             <XMarkIcon
-              onClick={() => handleImageDelete(index)}
+              onClick={() => {
+                if (handleImageDelete) {
+                  handleImageDelete(index); // index를 사용하여 외부 삭제 핸들러 호출
+                } else {
+                  handleLocalImageDelete(index); // 내부 삭제 핸들러 호출
+                }
+              }}
               className="absolute top-1 right-1 bg-gray2 bg-opacity-50 rounded-md h-5 cursor-pointer"
             />
           </div>

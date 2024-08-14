@@ -3,14 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import LocationButton from '@/components/FeedWrite/LocationButton';
 import ImageUpload from '@/components/FeedWrite/ImageUpload';
-import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import ContentInput from '@/components/FeedWrite/ContentInput';
 import TitleInput from '@/components/FeedWrite/TitleInput';
 import useAuthStore from '@/zustand/useAuthStore';
 import { toast } from 'react-toastify';
 import { showToast } from '@/utils/toastHelper';
+
+const supabase = createClient();
 
 function FeedWrite() {
   const [title, setTitle] = useState('');
@@ -20,13 +22,13 @@ function FeedWrite() {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [existingImageUrls, setExistingImageUrls] = useState<string[]>([]);
+  const [deletedImageUrls, setDeletedImageUrls] = useState<string[]>([]);
   const [feedId, setFeedId] = useState<string | null>(null);
 
   const router = useRouter();
-  const supabase = createClient();
   const { user } = useAuthStore();
-
   const searchParams = useSearchParams();
+
   useEffect(() => {
     const id = searchParams.get('id');
     const title = searchParams.get('title');
@@ -40,10 +42,20 @@ function FeedWrite() {
     if (content) setContent(content);
     if (region) setRegion(region);
     if (sigungu) setSigungu(sigungu);
-    if (image) setExistingImageUrls(JSON.parse(image));
-
-    if (image) setImagePreviews(JSON.parse(image));
+    if (image) {
+      const existingImages = JSON.parse(image);
+      setExistingImageUrls(existingImages);
+      setImagePreviews(existingImages);
+    }
   }, [searchParams]);
+
+  const handleImageDelete = (index: number) => {
+    const imageUrlToDelete = imagePreviews[index];
+
+    setExistingImageUrls((prev) => prev.filter((_, i) => i !== index));
+    setDeletedImageUrls((prev) => [...prev, imageUrlToDelete]);
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +64,7 @@ function FeedWrite() {
       !title ||
       !content ||
       !region ||
-      (images.length === 0 && existingImageUrls.length === 0)
+      (!images.length && !existingImageUrls.length)
     ) {
       return showToast(
         'warning',
@@ -167,6 +179,7 @@ function FeedWrite() {
             setImages={setImages}
             imagePreviews={imagePreviews}
             setImagePreviews={setImagePreviews}
+            handleImageDelete={handleImageDelete}
           />
           <ContentInput
             value={content}
