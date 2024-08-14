@@ -17,9 +17,34 @@ import { formatDate } from '@/utils/formatDate';
 import { toast } from 'react-toastify';
 import DeletePrompt from '@/components/DeletePrompt';
 import FeedDetailSkeleton from '@/components/FeedDetail/FeedDetailSkeleton';
+import PopularPosts from '@/components/FeedDetail/PopularPosts';
+
+import regionsData from '@/data/regions.json';
+
+type Sigungu = {
+  rnum: number;
+  code: string;
+  name: string;
+};
+
+type Region = {
+  rnum: number;
+  code: string;
+  name: string;
+  ename: string;
+  image: string;
+  sigungu: Sigungu[];
+};
+
+type RegionsData = {
+  region: Region[];
+};
+
+const regions: RegionsData = regionsData as RegionsData;
+
+const supabase = createClient();
 
 async function fetchPost(id: string): Promise<Post | null> {
-  const supabase = createClient();
   const { data, error } = await supabase
     .from('Feeds')
     .select(
@@ -45,13 +70,15 @@ async function fetchPost(id: string): Promise<Post | null> {
     region: data.region || '',
     sigungu: data.sigungu || '',
     userProfile: data.Users
-      ? { profileImage: data.Users.profileImage, nickname: data.Users.nickname }
+      ? {
+          profileImage: data.Users.profileImage,
+          nickname: data.Users.nickname ?? '알 수 없음',
+        }
       : { profileImage: null, nickname: '알 수 없음' },
   };
 }
 
 async function fetchCommentCount(postId: number): Promise<number> {
-  const supabase = createClient();
   const { count, error } = await supabase
     .from('FeedComments')
     .select('id', { count: 'exact', head: true })
@@ -127,7 +154,6 @@ function PostPage({ params }: PostPageProps) {
   };
 
   const performDelete = async () => {
-    const supabase = createClient();
     const { error } = await supabase.from('Feeds').delete().eq('id', post.id);
 
     if (error) {
@@ -139,10 +165,23 @@ function PostPage({ params }: PostPageProps) {
     }
   };
 
+  const handleRegionClick = () => {
+    const regionData = regions.region.find(
+      (region) => region.name === post.region,
+    );
+    const englishRegionName = regionData ? regionData.ename : '';
+
+    if (englishRegionName) {
+      router.push(`/local/${englishRegionName}`);
+    } else {
+      toast.error('해당 지역의 영어 이름을 찾을 수 없습니다.');
+    }
+  };
+
   const isAuthor = user?.id === post.userId;
 
   return (
-    <div className="bg-gray0 min-h-screen pb-5">
+    <div className="min-h-screen bg-gray0 pb-5">
       <div className="flex items-center justify-between h-14 mt-2 px-4">
         <div className="flex items-center">
           <Image
@@ -154,7 +193,12 @@ function PostPage({ params }: PostPageProps) {
           />
           <p className="font-semibold text-sm">{userNickname}</p>
         </div>
-        <button className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg">{`${post.region} ${post.sigungu}`}</button>
+        <button
+          onClick={handleRegionClick}
+          className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg"
+        >
+          {`${post.region} ${post.sigungu}`}
+        </button>
       </div>
       <Swiper
         pagination={{ clickable: true }}
@@ -188,7 +232,7 @@ function PostPage({ params }: PostPageProps) {
         <p className="text-base font-normal">{post.content}</p>
       </div>
       {isAuthor && (
-        <div className="flex space-x-4 ml-7">
+        <div className="flex space-x-4 ml-[16px]">
           <button
             onClick={handleEdit}
             className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
@@ -211,6 +255,7 @@ function PostPage({ params }: PostPageProps) {
           />
         </div>
       )}
+      <PopularPosts userId={post.userId} userNickname={userNickname} />
     </div>
   );
 }
