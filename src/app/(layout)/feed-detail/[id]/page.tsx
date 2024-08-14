@@ -17,7 +17,33 @@ import { formatDate } from '@/utils/formatDate';
 import { toast } from 'react-toastify';
 import DeletePrompt from '@/components/DeletePrompt';
 import FeedDetailSkeleton from '@/components/FeedDetail/FeedDetailSkeleton';
-import PopularPosts from '@/components/FeedDetail/PopularPosts'; // Import the new component
+import PopularPosts from '@/components/FeedDetail/PopularPosts';
+
+// regions.json 파일을 import
+import regionsData from '@/data/regions.json';
+
+// 타입 선언
+type Sigungu = {
+  rnum: number;
+  code: string;
+  name: string;
+};
+
+type Region = {
+  rnum: number;
+  code: string;
+  name: string;
+  ename: string;
+  image: string;
+  sigungu: Sigungu[];
+};
+
+type RegionsData = {
+  region: Region[];
+};
+
+// regionsData의 타입을 명시적으로 지정
+const regions: RegionsData = regionsData as RegionsData;
 
 const supabase = createClient();
 
@@ -142,6 +168,20 @@ function PostPage({ params }: PostPageProps) {
     }
   };
 
+  const handleRegionClick = () => {
+    // regions.json에서 현재 지역의 영어 이름을 찾기
+    const regionData = regions.region.find(
+      (region) => region.name === post.region,
+    );
+    const englishRegionName = regionData ? regionData.ename : '';
+
+    if (englishRegionName) {
+      router.push(`/local/${englishRegionName}`);
+    } else {
+      toast.error('해당 지역의 영어 이름을 찾을 수 없습니다.');
+    }
+  };
+
   const isAuthor = user?.id === post.userId;
 
   return (
@@ -157,7 +197,13 @@ function PostPage({ params }: PostPageProps) {
           />
           <p className="font-semibold text-sm">{userNickname}</p>
         </div>
-        <button className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg">{`${post.region} ${post.sigungu}`}</button>
+        {/* 지역 정보 클릭 가능하게 수정 */}
+        <button
+          onClick={handleRegionClick}
+          className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg"
+        >
+          {`${post.region} ${post.sigungu}`}
+        </button>
       </div>
       <Swiper
         pagination={{ clickable: true }}
@@ -214,8 +260,8 @@ function PostPage({ params }: PostPageProps) {
           />
         </div>
       )}
-      <PopularPosts userId={post.userId} />{' '}
-      {/* Use the new PopularPosts component */}
+      {/* userNickname을 PopularPosts 컴포넌트로 전달 */}
+      <PopularPosts userId={post.userId} userNickname={userNickname} />
     </div>
   );
 }

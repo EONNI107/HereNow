@@ -11,6 +11,7 @@ type PostWithLikes = Post & {
 
 type PopularPostsProps = {
   userId: string;
+  userNickname: string; // 유저 닉네임 추가
 };
 
 async function getPopularPosts(userId: string): Promise<PostWithLikes[]> {
@@ -58,7 +59,8 @@ async function getPopularPosts(userId: string): Promise<PostWithLikes[]> {
   return postsWithLikes.slice(0, 4);
 }
 
-function PopularPosts({ userId }: PopularPostsProps) {
+function PopularPosts({ userId, userNickname }: PopularPostsProps) {
+  // userNickname 사용
   const [popularPosts, setPopularPosts] = useState<PostWithLikes[]>([]);
   const router = useRouter();
 
@@ -74,7 +76,9 @@ function PopularPosts({ userId }: PopularPostsProps) {
   return (
     <div className="mt-8">
       <hr className="border-gray-300" />
-      <h3 className="text-lg font-semibold mt-4">인기글</h3>
+      <h3 className="text-lg font-semibold mt-4 mx-[16px]">
+        {userNickname}님의 인기글이에요 {/* 헤더 변경 */}
+      </h3>
       <button
         onClick={() => router.push(`/my-page/${userId}`)}
         className="text-blue4 mt-2 border-blue4 border-[1px] rounded-[16px] px-4 py-2"
