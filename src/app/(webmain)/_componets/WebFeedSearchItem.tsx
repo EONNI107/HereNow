@@ -53,7 +53,7 @@ function WebFeedSearchItem() {
             <h3 className="text-2xl font-medium leading-[150%]">피드</h3>
           </div>
           <div className="w-full flex flex-col gap-4">
-            {feedData.map((item) => (
+            {feedData?.map((item) => (
               <WebFeedItem item={item} key={item.id} />
             ))}
           </div>
@@ -63,7 +63,7 @@ function WebFeedSearchItem() {
             <h3 className="text-2xl font-medium leading-[150%]">행사</h3>
           </div>
           <div className="w-full flex flex-col gap-4">
-            {basicData.map((item) => (
+            {basicData?.map((item) => (
               <WebSearchItem item={item} key={item.contentid} />
             ))}
           </div>
