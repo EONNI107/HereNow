@@ -169,92 +169,134 @@ function MyPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="pt-10 flex flex-col px-2">
-      <div className="flex items-center rounded-2xl w-full h-28 bg-blue0">
-        <div className="relative flex items-center w-full justify-between p-5">
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <Image
-                src={
-                  imagePreview ||
-                  profile?.profileImage ||
-                  '/default-profile.jpg'
-                }
-                className="h-16 w-16 rounded-full"
-                alt="Profile"
-                width={200}
-                height={200}
-              />
-              {isMyPage && isEditing && (
-                <label
-                  htmlFor="file-input"
-                  className="absolute bottom-0 right-0 p-0.5 cursor-pointer bg-orange3 rounded-full"
-                >
-                  <PenIcon />
-                </label>
-              )}
-              {isMyPage && (
-                <input
-                  type="file"
-                  id="file-input"
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
-              )}
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="text-xs text-sub1 px-1">{profile?.email}</div>
-              {isMyPage && isEditing ? (
-                <input
-                  type="text"
-                  value={editProfile?.nickname || ''}
-                  onChange={(e) =>
-                    setEditProfile({
-                      ...editProfile,
-                      nickname: e.target.value,
-                    })
+      <div className="w-full max-w-4xl mx-auto">
+        <div className="xl:hidden flex items-center rounded-2xl w-full h-28 bg-blue-50">
+          <div className="relative flex items-center w-full justify-between p-5">
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <Image
+                  src={
+                    imagePreview ||
+                    profile?.profileImage ||
+                    '/default-profile.jpg'
                   }
-                  className="px-1 border border-gray12 rounded w-28 bg-blue0"
+                  className="h-16 w-16 rounded-full"
+                  alt="Profile"
+                  width={200}
+                  height={200}
                 />
-              ) : (
-                <div className="text-main px-1">{profile?.nickname}</div>
-              )}
+                {isMyPage && isEditing && (
+                  <label
+                    htmlFor="file-input"
+                    className="absolute bottom-0 right-0 p-0.5 cursor-pointer bg-orange3 rounded-full"
+                  >
+                    <PenIcon />
+                  </label>
+                )}
+                {isMyPage && (
+                  <input
+                    type="file"
+                    id="file-input"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="text-xs text-sub1 px-1">{profile?.email}</div>
+                {isMyPage && isEditing ? (
+                  <input
+                    type="text"
+                    value={editProfile?.nickname || ''}
+                    onChange={(e) =>
+                      setEditProfile({
+                        ...editProfile,
+                        nickname: e.target.value,
+                      })
+                    }
+                    className="px-1 border border-gray12 rounded w-28 bg-blue0"
+                  />
+                ) : (
+                  <div className="text-main px-1">{profile?.nickname}</div>
+                )}
+              </div>
+            </div>
+            {isMyPage && (
+              <div className="flex flex-col items-center gap-2">
+                {isEditing ? (
+                  <>
+                    <button
+                      onClick={handleUpdate}
+                      className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
+                    >
+                      수정 완료
+                    </button>
+                    <button
+                      onClick={() => setIsEditing(false)}
+                      className="w-24 rounded-xl border-2 border-blue4 bg-blue0 text-blue4 p-1 px-4 text-sm font-bold hover:bg-blue1"
+                    >
+                      취소
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => setIsEditing(true)}
+                      className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
+                    >
+                      프로필 수정
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="w-24 rounded-xl bg-orange3 text-white p-1 hover:bg-orange4"
+                    >
+                      로그아웃
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="hidden xl:block max-w-2xl mx-auto w-full rounded-lg">
+          <h2 className="text-2xl font-bold mb-4">내 프로필</h2>
+          <div className="flex">
+            <div className="flex items-center pr-8 border-r border-gray-300">
+              <div className="relative w-24 h-[92px] mr-4">
+                <Image
+                  src={
+                    imagePreview ||
+                    profile?.profileImage ||
+                    '/default-profile.jpg'
+                  }
+                  className="rounded-full"
+                  alt="Profile"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+              <button className="bg-blue4 text-white px-4 py-2 rounded-xl">
+                프로필 사진 수정
+              </button>
+            </div>
+            <div className="flex flex-col justify-center flex-grow pl-8">
+              <div className="mb-4 flex items-center">
+                <p className="text-gray-600 w-20">이메일</p>
+                <p>{profile?.email}</p>
+              </div>
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center">
+                  <p className="text-gray-600 w-20">닉네임</p>
+                  <p>{profile?.nickname}</p>
+                </div>
+                <div>
+                  <button className="bg-blue4 text-white px-4 py-2 rounded-md mr-36">
+                    수정
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-          {isMyPage && (
-            <div className="flex flex-col items-center gap-2">
-              {isEditing ? (
-                <>
-                  <button
-                    onClick={handleUpdate}
-                    className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
-                  >
-                    수정 완료
-                  </button>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className="w-24 rounded-xl border-2 border-blue4 bg-blue0 text-blue4 p-1 px-4 text-sm font-bold hover:bg-blue1"
-                  >
-                    취소
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className="w-24 rounded-xl bg-blue4 text-white p-2 hover:bg-blue5"
-                  >
-                    프로필 수정
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="w-24 rounded-xl bg-orange3 text-white p-1 hover:bg-orange4"
-                  >
-                    로그아웃
-                  </button>
-                </>
-              )}
-            </div>
-          )}
         </div>
       </div>
 

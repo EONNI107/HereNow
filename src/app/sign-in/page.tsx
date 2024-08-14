@@ -106,7 +106,7 @@ function SignInPage() {
                     id="email"
                     ref={emailRef}
                     placeholder="ex)email@naver.com"
-                    className="w-full px-4 py-3 border border-blue0 rounded-lg bg-transparent text-white placeholder-gray3 text-base"
+                    className="w-full px-4 py-3 border border-blue0 rounded-lg bg-transparent text-white lg:text-black placeholder-gray3 text-base"
                   />
                 </div>
                 <div>
@@ -118,7 +118,7 @@ function SignInPage() {
                     type="password"
                     id="password"
                     placeholder="*******"
-                    className="w-full px-4 py-3 border border-blue0 rounded-lg bg-transparent text-white placeholder-gray3 text-base"
+                    className="w-full px-4 py-3 border border-blue0 rounded-lg bg-transparent text-white lg:text-black placeholder-gray3 text-base"
                   />
                 </div>
                 <div className="pt-2">
