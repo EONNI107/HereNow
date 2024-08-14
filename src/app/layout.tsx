@@ -24,7 +24,7 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     <html lang="en">
       <body className={`${pretendard.variable} font-pretendard`}>
         <QueryProvider>
-          <div className="container mx-auto xl:max-w-screen-xl">
+          <div className="mx-auto">
             <ToastProvider>{children}</ToastProvider>
           </div>
         </QueryProvider>

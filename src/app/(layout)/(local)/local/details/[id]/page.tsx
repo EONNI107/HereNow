@@ -36,17 +36,19 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
   }
 
   return (
-    <div className="mt-4 flex flex-col bg-gray0 mx-auto xl:mt-0 xl:max-h-[2000px] xl:mb-5 xl:flex xl:flex-row xl:justify-center xl:gap-10">
-      <div className="xl:w-[800px] xl:mt-11">
-        <Details
-          mainData={mainData}
-          additionalData={additionalData}
-          typeId={typeId}
-        />
-        <KakaoMap latitude={latitude} longitude={longitude} />
-      </div>
-      <div className="xl:w-[400px] mt-8 xl:mt-20">
-        <NearbyPlaces nearbyPlaces={nearbyPlaces} />
+    <div className="xl:container xl:max-w-screen-xl">
+      <div className="mt-4 flex flex-col bg-gray0 mx-auto xl:mt-0 xl:max-h-[2000px] xl:mb-5 xl:flex xl:flex-row xl:justify-center xl:gap-10">
+        <div className="xl:w-[800px] xl:mt-11">
+          <Details
+            mainData={mainData}
+            additionalData={additionalData}
+            typeId={typeId}
+          />
+          <KakaoMap latitude={latitude} longitude={longitude} />
+        </div>
+        <div className="xl:w-[400px] mt-8 xl:mt-20">
+          <NearbyPlaces nearbyPlaces={nearbyPlaces} />
+        </div>
       </div>
     </div>
   );

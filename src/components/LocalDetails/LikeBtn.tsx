@@ -20,6 +20,7 @@ function LikeBtn({
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
+
   const userId = user?.id;
 
   useEffect(() => {
@@ -97,17 +98,17 @@ function LikeBtn({
     <div>
       <button
         onClick={handleLike}
-        className={`flex gap-2 justify-center xl:bg-blue4 xl:border border-blue4 xl:p-2 xl:rounded-lg xl:w-24 ${
+        className={`flex gap-2 justify-center xl:hover:bg-blue5 xl:bg-blue4 xl:border border-blue4 xl:p-2 xl:rounded-lg xl:w-24 ${
           isInNearbyPlaces &&
-          'xl:bg-transparent xl:border-none xl:w-10 xl:p-0 xl:algin'
+          'xl:bg-transparent xl:hover:bg-transparent xl:border-none xl:w-4 xl:p-0 xl:algin'
         }`}
       >
         <div className="">
           <HeartIcon
-            className={`w-6 h-6  ${
+            className={`w-6 h-6 ${liked && 'animate-pop'} ${
               isInNearbyPlaces
                 ? liked
-                  ? 'xl:text-orange5 xl:fill-orange5'
+                  ? 'animate-pop xl:text-orange5 xl:fill-orange5'
                   : 'xl:text-gray3'
                 : liked
                 ? 'text-orange5 fill-orange5 xl:fill-white xl:text-white'

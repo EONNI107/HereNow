@@ -39,7 +39,7 @@ function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
                   />
                 </div>
                 <div className="xl:block hidden">
-                  <div className="xl:flex xl:flex-row border-l border-r border-b rounded-b-xl bg-white p-2 text-xl">
+                  <div className="xl:flex xl:flex-row border-l border-r border-b rounded-b-xl bg-white xl:p-3 xl:pr-6 text-xl">
                     <div className="flex-grow truncate xl:p-2">
                       {place.title}
                     </div>
