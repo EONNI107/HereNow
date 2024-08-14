@@ -121,7 +121,7 @@ function LikeBtn({
             isInNearbyPlaces && 'xl:hidden'
           }`}
         >
-          공감
+          찜
         </span>
       </button>
     </div>
