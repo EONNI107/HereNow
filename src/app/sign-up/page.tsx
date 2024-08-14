@@ -117,92 +117,96 @@ function SignUpPage() {
   };
 
   return (
-    <div className="w-full grid place-items-center">
-      <h2 className="text-2xl font-bold mb-6 w-full max-w-md pt-10 p-6">
-        계정을 생성해주세요
-      </h2>
-      <div className="w-full max-w-md bg-white rounded-lg p-6">
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div>
-            <label
-              className="block text-base font-bold text-gray12 mb-1"
-              htmlFor="email"
-            >
-              아이디(이메일)
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
-              placeholder="ex)email@naver.com"
-              onChange={onChangeEmail}
-              onBlur={handleEmailBlur}
-            />
-          </div>
-          <div>
-            <label
-              className="block text-base font-bold text-gray12 mb-1"
-              htmlFor="password"
-            >
-              비밀번호
-            </label>
-            <input
-              onBlur={handlePasswordBlur}
-              id="password"
-              type="password"
-              value={password}
-              className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
-              placeholder="영문 • 숫자 • 특수문자 | 8자 이상"
-              onChange={onChangePassword}
-            />
-          </div>
-          <div>
-            <label
-              className="block text-base font-bold text-gray12 mb-1"
-              htmlFor="passwordConfirm"
-            >
-              비밀번호 확인
-            </label>
-            <input
-              onBlur={handlePasswordConfirmBlur}
-              id="passwordConfirm"
-              type="password"
-              value={passwordConfirm}
-              className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
-              placeholder="영문 • 숫자 • 특수문자 | 8자 이상"
-              onChange={onChangePasswordConfirm}
-            />
-          </div>
-          <div>
-            <label
-              className="block text-base font-bold text-gray12 mb-1"
-              htmlFor="nickname"
-            >
-              닉네임
-            </label>
-            <input
-              onBlur={handleNicknameBlur}
-              id="nickname"
-              type="text"
-              value={nickname}
-              className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
-              placeholder="2~8자의 한글, 영문, 숫자"
-              onChange={onChangeNickname}
-            />
-          </div>
-          <div className="pt-24">
-            <button
-              disabled={!isFormValid || isSubmitting}
-              type="submit"
-              className={`w-full py-3 px-5 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                isFormValid ? 'bg-blue4 text-white' : 'bg-gray3 text-white '
-              }`}
-            >
-              생성하기
-            </button>
-          </div>
-        </form>
+    <div className="container xl:max-w-screen-xl mx-auto min-h-screen flex flex-col xl:justify-center xl:items-center">
+      <div className="w-full max-w-md mx-auto xl:mx-0">
+        <h2 className="text-2xl font-bold mb-6 w-full max-w-md pt-10 p-6 xl:text-center">
+          <span className="xl:hidden">계정을 생성해주세요</span>
+          <span className="hidden xl:inline text-4xl text-black">회원가입</span>
+        </h2>
+        <div className="w-full bg-white rounded-xl p-6">
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div>
+              <label
+                className="block text-base font-bold text-gray12 mb-1"
+                htmlFor="email"
+              >
+                아이디(이메일)
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
+                placeholder="ex)email@naver.com"
+                onChange={onChangeEmail}
+                onBlur={handleEmailBlur}
+              />
+            </div>
+            <div>
+              <label
+                className="block text-base font-bold text-gray12 mb-1"
+                htmlFor="password"
+              >
+                비밀번호
+              </label>
+              <input
+                onBlur={handlePasswordBlur}
+                id="password"
+                type="password"
+                value={password}
+                className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
+                placeholder="영문 • 숫자 • 특수문자 | 8자 이상"
+                onChange={onChangePassword}
+              />
+            </div>
+            <div>
+              <label
+                className="block text-base font-bold text-gray12 mb-1"
+                htmlFor="passwordConfirm"
+              >
+                비밀번호 확인
+              </label>
+              <input
+                onBlur={handlePasswordConfirmBlur}
+                id="passwordConfirm"
+                type="password"
+                value={passwordConfirm}
+                className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
+                placeholder="영문 • 숫자 • 특수문자 | 8자 이상"
+                onChange={onChangePasswordConfirm}
+              />
+            </div>
+            <div>
+              <label
+                className="block text-base font-bold text-gray12 mb-1"
+                htmlFor="nickname"
+              >
+                닉네임
+              </label>
+              <input
+                onBlur={handleNicknameBlur}
+                id="nickname"
+                type="text"
+                value={nickname}
+                className="w-full px-3 py-2 border border-gray3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue4"
+                placeholder="2~8자의 한글, 영문, 숫자"
+                onChange={onChangeNickname}
+              />
+            </div>
+            <div className="pt-24">
+              <button
+                disabled={!isFormValid || isSubmitting}
+                type="submit"
+                className={`w-full py-3 px-5 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  isFormValid ? 'bg-blue4 text-white' : 'bg-gray3 text-white'
+                }`}
+              >
+                <span className="xl:hidden">생성하기</span>
+                <span className="hidden xl:inline">가입</span>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
