@@ -74,7 +74,7 @@ function SignInPage() {
 
   return (
     <div className="h-dvh">
-      <div className="relative w-full h-full max-w-[1240px] mx-auto">
+      <div className="relative h-full container xl:max-w-screen-xl">
         <Image
           src="/LoginPage.jpg"
           alt="로그인 배경화면"
