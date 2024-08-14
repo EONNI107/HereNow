@@ -98,20 +98,23 @@ function LikeBtn({
       <button
         onClick={handleLike}
         className={`flex gap-2 justify-center xl:bg-blue4 xl:border border-blue4 xl:p-2 xl:rounded-lg xl:w-24 ${
-          isInNearbyPlaces && 'xl:bg-transparent xl:border-none'
+          isInNearbyPlaces &&
+          'xl:bg-transparent xl:border-none xl:w-10 xl:p-0 xl:algin'
         }`}
       >
-        <HeartIcon
-          className={`w-6 h-6 ${
-            isInNearbyPlaces
-              ? liked
-                ? 'xl:text-orange5 xl:fill-orange5 xl:ml-auto'
-                : 'xl:text-gray3 xl:ml-auto'
-              : liked
-              ? 'text-orange5 fill-orange5 xl:fill-white xl:text-white'
-              : 'text-gray3 xl:text-white'
-          }`}
-        />
+        <div className="">
+          <HeartIcon
+            className={`w-6 h-6  ${
+              isInNearbyPlaces
+                ? liked
+                  ? 'xl:text-orange5 xl:fill-orange5'
+                  : 'xl:text-gray3'
+                : liked
+                ? 'text-orange5 fill-orange5 xl:fill-white xl:text-white'
+                : 'text-gray3 xl:text-white'
+            }`}
+          />
+        </div>
         <span
           className={`hidden xl:inline-flex text-white ${
             isInNearbyPlaces && 'xl:hidden'

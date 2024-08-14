@@ -47,6 +47,7 @@ function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
                       onClick={(e) => {
                         e.preventDefault();
                       }}
+                      className="self-center"
                     >
                       <LikeBtn
                         imageUrl={place.firstimage}
