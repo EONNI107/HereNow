@@ -5,7 +5,7 @@ import { showToast } from '@/utils/toastHelper';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import useAuthStore from '@/zustand/useAuthStore';
+import useAuthStore, { AuthUser } from '@/zustand/useAuthStore';
 import Image from 'next/image';
 
 function SignInPage() {
@@ -29,32 +29,47 @@ function SignInPage() {
     });
 
     if (error) {
-      showToast('error', error.message);
+      showToast('error', '아이디,비밀번호가 일치하지 않습니다.');
       return;
     }
-    setUser(data.user);
+    const { user } = data;
+    const { data: userProfile, error: profileError } = await supabase
+      .from('Users')
+      .select('nickname, profileImage, email')
+      .eq('id', user.id)
+      .single();
+    if (profileError) {
+      showToast('error', '사용자 프로필을 가져오는 데 실패했습니다.');
+      return;
+    }
+    const userInfo = {
+      id: user.id,
+      email: userProfile.email,
+      nickname: userProfile.nickname,
+      profileImage: userProfile.profileImage,
+    };
+
+    setUser(userInfo);
     showToast('success', '로그인 성공');
-    router.back();
+    router.push('/');
   };
 
   const signInWithOAuth = async (provider: 'google' | 'kakao') => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
-      options:
-        provider === 'google'
-          ? {
-              queryParams: {
-                access_type: 'offline',
-                prompt: 'consent',
-              },
-            }
-          : {},
+      options: {
+        redirectTo: `${location.origin}/api/sign-in/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'select_account',
+        },
+      },
     });
     if (error) {
       showToast('error', error.message);
       return;
     }
-    showToast('success', `${provider}로 로그인 성공`);
+    showToast('success', `${provider}로 로그인중 입니다.`);
     router.push('/');
   };
 
@@ -64,10 +79,11 @@ function SignInPage() {
         <Image
           src="/LoginPage.jpg"
           alt="로그인 배경화면"
-          layout="fill"
-          objectFit="cover"
-          className="z-[-1]"
+          fill
+          priority
+          className="z-[-1] object-cover"
         />
+
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center overflow-y-auto sm:pt-8">
           <div
             className="w-full max-w-md px-4 py-4 sm:py-8 flex flex-col"
@@ -125,9 +141,7 @@ function SignInPage() {
                 </Link>
               </div>
 
-              {/* -----------------소셜 로그인 기능 잠시 보류------------------------- */}
-
-              {/* <div className="mt-auto">
+              <div className="mt-auto">
                 <div className="flex items-center justify-center text-center mb-6">
                   <div className="flex-grow border-t-2 border-gray-300"></div>
                   <span className="flex-shrink mx-4 text-xs sm:text-sm text-white font-semibold px-2">
@@ -164,7 +178,7 @@ function SignInPage() {
                     <span className="ml-2">구글로 로그인</span>
                   </button>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

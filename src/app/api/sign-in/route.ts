@@ -5,7 +5,7 @@ export const POST = async (request: NextRequest) => {
   const { email, password } = await request.json();
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
@@ -13,9 +13,6 @@ export const POST = async (request: NextRequest) => {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   } else {
-    return NextResponse.json(
-      { message: `로그인에 성공했습니다` },
-      { status: 201 },
-    );
+    return NextResponse.json(data.user, { status: 201 });
   }
 };

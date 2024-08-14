@@ -1,9 +1,9 @@
 'use client';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import WebFeedItem from './WebFeedItem';
+import WebFeedItem from '@/components/MainPage/Main/Sections/WebFeedItem';
 import { TableFeedUserType } from '@/types/mainTypes';
-import SkeletonFeedItem from '../../Skeleton/SkeletonFeedItem';
+import SkeletonFeedItem from '@/components/MainPage/Skeleton/SkeletonFeedItem';
 import { useRouter } from 'next/navigation';
 
 function WebFeedSection() {
@@ -29,7 +29,12 @@ function WebFeedSection() {
           className="text-main font-regular text-sm"
           onClick={() => router.push('/feed')}
         >
-          더보러가기
+          <p
+            className="underline underline-offset-2 text-orange3 self-baseline 
+"
+          >
+            {'더보기 >'}
+          </p>
         </button>
       </div>
       <div className="grid gap-4 grid-cols-2 grid-rows-2 w-full h-full">

@@ -15,6 +15,8 @@ import Image from 'next/image';
 import useAuthStore from '@/zustand/useAuthStore';
 import { formatDate } from '@/utils/formatDate';
 import { toast } from 'react-toastify';
+import DeletePrompt from '@/components/DeletePrompt';
+import FeedDetailSkeleton from '@/components/FeedDetail/FeedDetailSkeleton';
 
 async function fetchPost(id: string): Promise<Post | null> {
   const supabase = createClient();
@@ -89,12 +91,12 @@ function PostPage({ params }: PostPageProps) {
   }, [params.id]);
 
   if (!post) {
-    return <div>피드를 찾을 수 없습니다</div>;
+    return <FeedDetailSkeleton />;
   }
 
   const images = Array.isArray(post.image) ? post.image : [post.image];
   const userProfileImage =
-    post.userProfile?.profileImage || '/path/to/default/avatar.png';
+    post.userProfile?.profileImage || '/default-profile.jpg';
   const userNickname = post.userProfile?.nickname || '알 수 없음';
 
   const handleEdit = () => {
@@ -116,11 +118,15 @@ function PostPage({ params }: PostPageProps) {
   };
 
   const handleDelete = async () => {
-    if (!user || user.id !== post.userId) {
-      toast.error('삭제 권한이 없습니다.');
-      return;
-    }
+    toast(<DeletePrompt onConfirm={performDelete} />, {
+      position: 'top-center',
+      autoClose: false,
+      closeOnClick: false,
+      closeButton: false,
+    });
+  };
 
+  const performDelete = async () => {
     const supabase = createClient();
     const { error } = await supabase.from('Feeds').delete().eq('id', post.id);
 
@@ -136,8 +142,8 @@ function PostPage({ params }: PostPageProps) {
   const isAuthor = user?.id === post.userId;
 
   return (
-    <div className="container mx-auto relative">
-      <div className="flex items-center justify-between py-1 px-1">
+    <div className="bg-gray0 min-h-screen pb-5">
+      <div className="flex items-center justify-between h-14 mt-2 px-4">
         <div className="flex items-center">
           <Image
             src={userProfileImage}
@@ -146,17 +152,14 @@ function PostPage({ params }: PostPageProps) {
             height={40}
             className="w-10 h-10 rounded-full mr-2"
           />
-          <p className="font-semibold text-14px text-gray-600">
-            {userNickname}
-          </p>
+          <p className="font-semibold text-sm">{userNickname}</p>
         </div>
-        <p className="font-semibold text-14px text-gray-600 text-right">{`${post.region} ${post.sigungu}`}</p>
+        <button className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg">{`${post.region} ${post.sigungu}`}</button>
       </div>
       <Swiper
         pagination={{ clickable: true }}
         navigation={true}
         modules={[Pagination, Navigation]}
-        className="mb-4"
       >
         {images.map((src, index) => (
           <SwiperSlide key={index}>
@@ -177,20 +180,24 @@ function PostPage({ params }: PostPageProps) {
         onCommentClick={() => setIsCommentModalOpen(true)}
         commentCount={commentCount}
       />
-      <p className="text-3xl font-bold mb-2">{post.title}</p>
-      <p className="text-sm text-gray-500 mb-4">{formatDate(post.createdAt)}</p>
-      <p className="text-16px mb-4">{post.content}</p>
+      <div className="mx-4 mb-5 px-4 py-2.5 bg-white rounded-3xl">
+        <p className="text-2xl font-bold mb-2">{post.title}</p>
+        <p className="text-sm text-gray-500 mb-2">
+          {formatDate(post.createdAt)}
+        </p>
+        <p className="text-base font-normal">{post.content}</p>
+      </div>
       {isAuthor && (
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 ml-7">
           <button
             onClick={handleEdit}
-            className="btn border-2 border-[#118DFF] text-[#118DFF] bg-transparent px-4 py-2 rounded-md hover:bg-[#118DFF] hover:text-white transition-colors duration-300"
+            className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
           >
             수정하기
           </button>
           <button
             onClick={handleDelete}
-            className="btn border-2 border-[#118DFF] text-[#118DFF] bg-transparent px-4 py-2 rounded-md hover:bg-[#118DFF] hover:text-white transition-colors duration-300"
+            className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
           >
             삭제하기
           </button>

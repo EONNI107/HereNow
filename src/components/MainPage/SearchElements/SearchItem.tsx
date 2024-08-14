@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import SearchFilterItem from './SearchFilterItem';
-import { searchApi } from '../api/searchApi';
-import SkeletonSearchItem from '../Skeleton/SkeletonSearchItem';
-import SearchIntroduction from './SearchIntroduction';
+import { searchApi } from '@/components/MainPage/api/searchApi';
+import SkeletonSearchItem from '@/components/MainPage/Skeleton/SkeletonSearchItem';
+import SearchIntroduction from '@/components/MainPage/SearchElements/SearchIntroduction';
 import { SearchedType } from '@/app/(layout)/search-page/page';
 
 type SearchItemProps = {
@@ -54,7 +54,7 @@ const SearchItem = ({ searchValue }: SearchItemProps) => {
 
   return (
     <>
-      <div className="flex w-full py-2 px-4 bg-[#FFF]">
+      <div className="flex w-full py-2 px-4 bg-white">
         <div className="flex w-full items-center gap-3">
           {categories.map((category) => (
             <div

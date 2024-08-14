@@ -1,4 +1,4 @@
-import { Tables } from './supabase';
+import { Tables } from '@/types/supabase';
 
 export type Sigungu = {
   rnum: number;

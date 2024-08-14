@@ -121,22 +121,25 @@ function DetailLikeBtn({
   };
 
   return (
-    <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center gap-1">
-        <button onClick={handleLike} className="focus:outline-none">
+    <div className="flex items-center justify-between h-14 px-4">
+      <div className="flex items-center">
+        <button onClick={handleLike} className="focus:outline-none w-6 h-6 m-2">
           <HeartIcon
-            className={`w-6 h-6 ${liked ? 'text-red-500' : 'text-gray-400'}`}
+            className={`${liked ? 'text-red-500' : 'text-black'}`}
             fill={liked ? '#ff5c5c' : 'none'}
           />
         </button>
-        <span>{likeCount}</span>
-        <button onClick={onCommentClick} className="focus:outline-none ml-4">
+        <span className="mr-4">{likeCount}</span>
+        <button
+          onClick={onCommentClick}
+          className="focus:outline-none w-6 h-6 m-2"
+        >
           <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6 cursor-pointer" />
         </button>
         <span>{commentCount}</span>
       </div>
       <button onClick={handleShareBtn}>
-        <ShareIcon className="w-5 h-5 grid justify-items-end" />
+        <ShareIcon className="w-6 h-6 m-2" />
       </button>
     </div>
   );

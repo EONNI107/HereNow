@@ -6,7 +6,7 @@ export default function PostIcon() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="size-16"
+      className="size-16 stroke-gray8"
     >
       <path
         strokeLinecap="round"

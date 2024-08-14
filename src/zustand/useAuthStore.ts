@@ -1,10 +1,11 @@
-import { User } from '@supabase/supabase-js';
+import { Tables } from '@/types/supabase';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+export type AuthUser = Omit<Tables<'Users'>, 'createdAt' | 'provider'>;
 type AuthStore = {
-  user: User | null;
-  setUser: (user: User | null) => void;
+  user: AuthUser | null;
+  setUser: (user: AuthUser | null) => void;
   logOut: () => void;
 };
 

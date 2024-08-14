@@ -1,8 +1,12 @@
 import ToastProvider from '@/providers/ToastProvider';
 import type { Metadata } from 'next';
-import './globals.css';
+import '@/app/globals.css';
 import QueryProvider from '@/providers/QueryProvider';
 import localFont from 'next/font/local';
+import Footer from '@/components/Footer';
+import HeaderLayout from '@/components/HeaderLayout/HeaderLayout';
+import { Suspense } from 'react';
+
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
   display: 'swap',
@@ -23,7 +27,7 @@ function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     <html lang="en">
       <body className={`${pretendard.variable} font-pretendard`}>
         <QueryProvider>
-          <div className="max-w-[1920px] mx-auto">
+          <div className="xl:container mx-auto">
             <ToastProvider>{children}</ToastProvider>
           </div>
         </QueryProvider>

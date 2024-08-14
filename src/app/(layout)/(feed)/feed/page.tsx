@@ -1,17 +1,22 @@
 import FeedListClient from '@/components/FeedList/FeedListClient';
 import UserName from '@/components/FeedList/UserName';
+import SendFeedWrite from '@/components/SendFeedWrite';
 import { createClient } from '@/utils/supabase/server';
 import Image from 'next/image';
-import Link from 'next/link';
 
 async function FeedListPage() {
   const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const userId = user?.id || null;
 
   const { data, error } = await supabase
     .from('Feeds')
     .select(`*, Users(profileImage, nickname), FeedLikes(id), FeedComments(id)`)
     .order('createdAt', { ascending: false })
-    .range(0, 9);
+    .range(0, 3);
 
   if (error) {
     console.error('Error fetching feeds:', error);
@@ -34,12 +39,7 @@ async function FeedListPage() {
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-15 flex flex-col justify-end p-8">
           <div className="flex flex-col space-y-2">
-            <Link
-              href={'/feed-write'}
-              className="self-start font-semibold bg-blue-500 text-white px-4 py-2 rounded-md"
-            >
-              글쓰러 가기
-            </Link>
+            <SendFeedWrite />
             <h1 className="font-semibold text-[24px] text-white">
               <span className="block">
                 <UserName />
@@ -53,6 +53,7 @@ async function FeedListPage() {
         <FeedListClient
           initialFeeds={data || []}
           SupabaseError={SupabaseError}
+          userId={userId}
         />
       )}
     </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import 'react-toastify/ReactToastify.css';
-import '../app/globals.css';
+import '@/app/globals.css';
 import { ToastContainer } from 'react-toastify';
 
 interface ToastProviderProps {
