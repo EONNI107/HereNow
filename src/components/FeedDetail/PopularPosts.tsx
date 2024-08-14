@@ -60,7 +60,6 @@ async function getPopularPosts(userId: string): Promise<PostWithLikes[]> {
 }
 
 function PopularPosts({ userId, userNickname }: PopularPostsProps) {
-  // userNickname 사용
   const [popularPosts, setPopularPosts] = useState<PostWithLikes[]>([]);
   const router = useRouter();
 
@@ -74,31 +73,32 @@ function PopularPosts({ userId, userNickname }: PopularPostsProps) {
   }, [userId]);
 
   return (
-    <div className="mt-8">
-      <hr className="border-gray-300" />
-      <h3 className="text-lg font-semibold mt-4 mx-[16px]">
-        {userNickname}님의 인기글이에요 {/* 헤더 변경 */}
+    <div className="mt-[42px]">
+      <hr className="border-gray-300 mx-[16px]" />
+      <h3 className="text-xl font-semibold mt-[42px] mx-[16px]">
+        {userNickname}님의 인기글이에요
       </h3>
-      <button
-        onClick={() => router.push(`/my-page/${userId}`)}
-        className="text-blue4 mt-2 border-blue4 border-[1px] rounded-[16px] px-4 py-2"
-      >
-        프로필 보기
-      </button>
-      <div className="grid grid-cols-2 gap-4 mt-4">
+      <div className="px-[16px] my-[24px]">
+        <button
+          onClick={() => router.push(`/my-page/${userId}`)}
+          className="text-blue4 border-blue4 border-[1px] rounded-[16px] py-[16px] w-full text-[16px] font-semibold"
+        >
+          {userNickname}님 프로필 보러가기
+        </button>
+      </div>
+      <div className="grid grid-cols-2 gap-[15px] mx-[16px]">
         {popularPosts.map((post) => (
           <div
             key={post.id}
-            className="relative w-full h-40 bg-cover bg-center cursor-pointer"
+            className="relative w-full aspect-square bg-cover bg-center cursor-pointer rounded-[16px]"
             style={{ backgroundImage: `url(${post.image[0] || ''})` }}
             onClick={() => router.push(`/feed-detail/${post.id}`)}
           >
-            <div className="bg-black bg-opacity-20 text-white p-2 w-full h-full">
+            <div className="absolute bottom-0 left-0 text-white p-[15px] w-full h-full rounded-[16px] bg-black bg-opacity-40 flex flex-col justify-end">
               <p className="text-sm">
                 {post.region} {post.sigungu}
               </p>
-              <p className="text-sm font-bold">{post.title}</p>
-              <p className="text-xs">좋아요 {post.like_count}개</p>
+              <p className="text-lg font-semibold">{post.title}</p>
             </div>
           </div>
         ))}

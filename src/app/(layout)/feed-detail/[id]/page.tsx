@@ -237,7 +237,7 @@ function PostPage({ params }: PostPageProps) {
         <p className="text-base font-normal">{post.content}</p>
       </div>
       {isAuthor && (
-        <div className="flex space-x-4 ml-7">
+        <div className="flex space-x-4 ml-[16px]">
           <button
             onClick={handleEdit}
             className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
