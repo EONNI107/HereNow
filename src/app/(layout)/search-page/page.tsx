@@ -39,7 +39,7 @@ function SeachDetailPage() {
   }, [isMobile]);
   return (
     <>
-      {isMobile ? (
+      {window.innerWidth < 1000 ? (
         <div className="flex flex-col items-center justify-center">
           <div className="flex w-full text-[18px] font-normal text-sub2 bg-white">
             <div

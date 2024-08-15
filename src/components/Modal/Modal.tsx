@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { create } from 'zustand';
-import { useCookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 import { showToast } from '@/utils/toastHelper';
 type ModalProps = {
   isShow: boolean;
@@ -22,7 +22,6 @@ export const useModal = create<ModalProps>((set) => {
 function Modal() {
   const [cookies, setCookies] = useCookies();
   const { isShow, SetShow, SetIsGetPosition } = useModal();
-  console.log(cookies);
   const getExpiredDate = (days: number) => {
     const date = new Date();
     date.setDate(date.getDate() + days);

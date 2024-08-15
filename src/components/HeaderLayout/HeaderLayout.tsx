@@ -48,7 +48,7 @@ function HeaderLayout() {
   };
   return (
     <>
-      {isMobile ? (
+      {window.innerWidth < 1000 ? (
         <header className="bg-white fixed z-10 right-0 p-1 w-full left-0 mx-auto">
           {isBackground ? (
             <div className="flex justify-center bg-white h-screen">

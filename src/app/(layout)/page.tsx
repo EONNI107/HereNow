@@ -24,7 +24,7 @@ function Home() {
 
   return (
     <>
-      {isMobile ? (
+      {window.innerWidth < 1000 ? (
         <>
           <Header
             title={user ? `${user.nickname}님만의` : '여러분만의'}

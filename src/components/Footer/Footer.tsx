@@ -28,7 +28,7 @@ function Footer() {
 
   return (
     <>
-      {isMobile ? (
+      {window.innerWidth < 1000 ? (
         <footer className="bg-white fixed z-10 right-0 p-1 w-full h-[72px] bottom-0 mx-auto">
           <div className="flex justify-between items-center h-full px-5">
             <Link

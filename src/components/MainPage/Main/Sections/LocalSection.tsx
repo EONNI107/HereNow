@@ -6,6 +6,8 @@ import { tourApi } from '@/app/api/tourApi';
 import { NearbyPlace } from '@/types/localDetails';
 import SkeletonLocalItem from '@/components/MainPage/Skeleton/SkeletonLocalItem';
 import { showToast } from '@/utils/toastHelper';
+import { useModal } from '@/components/Modal/Modal';
+import { useCookies } from 'react-cookie';
 
 type PositionType = {
   coords: {
@@ -21,6 +23,9 @@ type GeolocationError = {
 
 function LocalSection() {
   const router = useRouter();
+  const { isGetPosition, isShow } = useModal();
+  const [cookies, setCookies] = useCookies();
+
   const [localitems, setLocalitems] = useState<NearbyPlace[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
@@ -60,9 +65,19 @@ function LocalSection() {
       option,
     );
   };
+
+  const getSortLoaction = () => {
+    if (!isShow && isGetPosition) {
+      getLoaction();
+    }
+  };
+
   useEffect(() => {
-    getLoaction();
-  }, []);
+    if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
+      getLoaction();
+    }
+    getSortLoaction();
+  }, [isShow]);
 
   const handleClick = (contentid: string) => {
     router.push(`/local/details/${contentid}`);
