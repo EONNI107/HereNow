@@ -2,7 +2,7 @@
 
 import { createClient } from '@/utils/supabase/client';
 import { showToast } from '@/utils/toastHelper';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import PenIcon from '@/components/IconList/PenIcon';
 import Image from 'next/image';
 import { Tables, TablesInsert } from '@/types/supabase';
@@ -28,9 +28,9 @@ function MyPage({ params }: { params: { id: string } }) {
   const [selectedTab, setSelectedTab] = useState<
     'feedsList' | 'feedLikes' | 'placeLikes'
   >('feedsList');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isMyPage = params.id === user?.id;
-
   const fetchUserProfile = async (userId: string) => {
     const { data, error } = await supabase
       .from('Users')
@@ -94,7 +94,9 @@ function MyPage({ params }: { params: { id: string } }) {
       reader.readAsDataURL(e.target.files[0]);
     }
   };
-
+  const handleProfileImageClick = () => {
+    fileInputRef.current?.click();
+  };
   const uploadImage = async (file: File) => {
     const { data, error } = await supabase.storage
       .from('profileImage')
@@ -168,8 +170,8 @@ function MyPage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="pt-10 flex flex-col px-2">
-      <div className="w-full max-w-4xl mx-auto">
+    <div className="container xl:max-w-screen-xl mx-auto pt-10 flex flex-col px-2">
+      <div className="w-full">
         <div className="xl:hidden flex items-center rounded-2xl w-full h-28 bg-blue-50">
           <div className="relative flex items-center w-full justify-between p-5">
             <div className="flex items-center space-x-4">
@@ -258,11 +260,11 @@ function MyPage({ params }: { params: { id: string } }) {
             )}
           </div>
         </div>
-        <div className="hidden xl:block max-w-2xl mx-auto w-full rounded-lg">
-          <h2 className="text-2xl font-bold mb-4">내 프로필</h2>
+        <div className="hidden xl:block w-full rounded-lg">
+          <h2 className="text-[32px] font-bold mb-[40px]">내 프로필</h2>
           <div className="flex">
-            <div className="flex items-center pr-8 border-r border-gray-300">
-              <div className="relative w-24 h-[92px] mr-4">
+            <div className="flex items-center px-4 border-r border-gray-300 w-1/2">
+              <div className="relative w-24 h-24 mr-[64px]">
                 <Image
                   src={
                     imagePreview ||
@@ -275,28 +277,37 @@ function MyPage({ params }: { params: { id: string } }) {
                   objectFit="cover"
                 />
               </div>
-              <button className="bg-blue4 text-white px-4 py-2 rounded-xl">
+              <button
+                className="bg-blue4 text-white px-8 py-4 rounded-[16px] text-[20px]"
+                onClick={handleProfileImageClick}
+              >
                 프로필 사진 수정
               </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                className="hidden"
+                accept="image/*"
+              />
             </div>
-            <div className="flex flex-col justify-center flex-grow pl-8">
-              <div className="mb-4 flex items-center">
-                <p className="text-gray-600 w-20">이메일</p>
-                <p>{profile?.email}</p>
+            <div className="flex flex-col justify-center flex-grow pl-[112px] px-4 w-1/2">
+              <div className="mb-[28px] flex items-center">
+                <p className="text-sub1 w-[92px] text-[18px]">이메일</p>
+                <p className="text-sub2">{profile?.email}</p>
               </div>
-              <div className="mb-4 flex items-center justify-between">
+              <div className="flex items-center ">
                 <div className="flex items-center">
-                  <p className="text-gray-600 w-20">닉네임</p>
-                  <p>{profile?.nickname}</p>
+                  <p className="text-sub1 w-[92px] text-[18px]">닉네임</p>
+                  <p className="text-[20px] font-bold">{profile?.nickname}</p>
                 </div>
-                <div>
-                  <button className="bg-blue4 text-white px-4 py-2 rounded-md mr-36">
-                    수정
-                  </button>
+                <div className="ml-12">
+                  <button className=" text-blue4 ">수정</button>
                 </div>
               </div>
             </div>
           </div>
+          <hr className="my-[36px] border-t-2 border-gray4 w-full" />
         </div>
       </div>
 
@@ -343,11 +354,11 @@ function MyPage({ params }: { params: { id: string } }) {
         </div>
       )}
 
-      <div className="flex flex-1 justify-center bg-gray0 px-4 min-h-[60vh]">
+      <div className="flex flex-1 justify-center bg-gray0 px-4">
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <div>
+          <>
             {isMyPage ? (
               <>
                 {selectedTab === 'feedsList' && (
@@ -359,7 +370,7 @@ function MyPage({ params }: { params: { id: string } }) {
             ) : (
               <FeedsList userId={params.id} />
             )}
-          </div>
+          </>
         )}
       </div>
     </div>

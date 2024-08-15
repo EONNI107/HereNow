@@ -10,31 +10,28 @@ import Link from 'next/link';
 export default function FeedList({ userId }: { userId: string }) {
   const [feedsList, setFeedsList] = useState<Tables<'Feeds'>[]>([]);
   const { user } = useAuthStore();
-
+  const supabase = createClient();
   useEffect(() => {
-    const supabase = createClient();
     const fetchFeeds = async () => {
       if (!user) return;
-      try {
-        const { data, error } = await supabase
-          .from('Feeds')
-          .select('*')
-          .eq('userId', userId);
+      const { data, error } = await supabase
+        .from('Feeds')
+        .select('*')
+        .eq('userId', userId);
 
-        if (error) {
-          showToast('error', '슈퍼베이스 불러오는중 오류가 발생했습니다');
-          console.log(error.message);
-        }
-        if (!data) return;
-        setFeedsList(data);
-      } catch {}
+      if (error) {
+        showToast('error', '슈퍼베이스 불러오는중 오류가 발생했습니다');
+        console.log(error.message);
+      }
+      if (!data) return;
+      setFeedsList(data);
     };
 
     fetchFeeds();
   }, [user?.id]);
 
   return (
-    <div className="h-[calc((100svh_-_58px_-_92px)_*_0.7)] overflow-y-auto">
+    <div className="h-[calc(100dvh-355px)] w-full overflow-y-auto">
       {feedsList.length === 0 ? (
         <div className="h-full flex justify-center items-center">
           <div className="flex flex-col items-center justify-center">
@@ -43,23 +40,31 @@ export default function FeedList({ userId }: { userId: string }) {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full">
+        <div className="pt-4 flex flex-col gap-4">
           {feedsList.map((post) => {
             const postImages = JSON.parse(post.image as string);
 
             return (
-              <div key={post.id}>
-                <Link href={`/feed-detail/${post.id}`}>
-                  <Image
-                    src={postImages ? postImages[0] : '/No_Img.jpg'}
-                    alt="이미지"
-                    width={200}
-                    height={200}
-                    priority
-                    className="rounded aspect-square object-cover"
-                  />
-                </Link>
-              </div>
+              <Link
+                href={`/feed-detail/${post.id}`}
+                key={post.id}
+                className="flex items-center space-x-4 align-it"
+              >
+                <Image
+                  src={postImages ? postImages[0] : '/No_Img.jpg'}
+                  alt="이미지"
+                  width={100}
+                  height={100}
+                  priority
+                  className="rounded-[8px] aspect-square object-cover"
+                />
+                <div className="items-baseline w-[100%] overflow-hidden">
+                  <strong className="font-semibold">{post.title}</strong>
+                  <div className="mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
+                    {post.content}
+                  </div>
+                </div>
+              </Link>
             );
           })}
         </div>

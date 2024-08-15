@@ -1,6 +1,5 @@
 'use client';
 import useAuthStore from '@/zustand/useAuthStore';
-import React from 'react';
 
 function UserName() {
   const { user } = useAuthStore();
