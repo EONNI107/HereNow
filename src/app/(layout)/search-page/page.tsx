@@ -36,7 +36,7 @@ function SeachDetailPage() {
 
     // 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
     return () => window.removeEventListener('resize', handleResize);
-  }, [window.innerWidth]);
+  }, [isMobile]);
   return (
     <>
       {isMobile ? (

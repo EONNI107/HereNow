@@ -3,20 +3,25 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { create } from 'zustand';
 import { useCookies } from 'react-cookie';
+import { showToast } from '@/utils/toastHelper';
 type ModalProps = {
   isShow: boolean;
   SetShow: (state: boolean) => void;
+  isGetPosition: boolean;
+  SetIsGetPosition: (state: boolean) => void;
 };
 export const useModal = create<ModalProps>((set) => {
   return {
     isShow: false,
+    isGetPosition: false,
     SetShow: (state: boolean) => set({ isShow: state }),
+    SetIsGetPosition: (state: boolean) => set({ isGetPosition: state }),
   };
 });
 
 function Modal() {
   const [cookies, setCookies] = useCookies();
-  const { isShow, SetShow } = useModal();
+  const { isShow, SetShow, SetIsGetPosition } = useModal();
   console.log(cookies);
   const getExpiredDate = (days: number) => {
     const date = new Date();
@@ -27,12 +32,32 @@ function Modal() {
   const closeModalUntilExpires = () => {
     const expires = getExpiredDate(3);
     setCookies('MODAL_EXPIRES', true, { path: '/', expires });
-    SetShow(false);
+    if (confirm('위치를 승인하시겠습니까?')) {
+      const expires = getExpiredDate(3);
+      setCookies('MODAL_LOCATION', true, { path: '/', expires });
+      SetShow(false);
+    } else {
+      SetShow(false);
+      SetIsGetPosition(false);
+      showToast('info', '위치승인 거부하였습니다.');
+    }
   };
   useEffect(() => {
     if (cookies['MODAL_EXPIRES']) return SetShow(false);
     SetShow(true);
   }, []);
+
+  const confirmShow = () => {
+    if (confirm('위치를 승인하시겠습니까?')) {
+      SetShow(false);
+      SetIsGetPosition(true);
+    } else {
+      SetShow(false);
+      SetIsGetPosition(false);
+
+      showToast('info', '위치승인 거부하였습니다.');
+    }
+  };
   return (
     <>
       <div>
@@ -52,7 +77,7 @@ function Modal() {
               <button onClick={closeModalUntilExpires}>
                 오늘은 그만 볼래요
               </button>
-              <button onClick={() => SetShow(false)}>닫기</button>
+              <button onClick={confirmShow}>닫기</button>
             </div>
           </div>
         )}

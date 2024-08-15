@@ -9,7 +9,7 @@ export const defaultToastOptions: ToastOptions = {
   draggable: true,
   progress: undefined,
   theme: 'colored',
-  transition: Slide
+  transition: Slide,
 };
 
 type ToastType = 'success' | 'error' | 'info' | 'warning' | 'default';
@@ -22,7 +22,11 @@ type ToastType = 'success' | 'error' | 'info' | 'warning' | 'default';
  * @param {ToastOptions} [options=defaultToastOption]
  * @return {Id}
  */
-export const showToast = (type: ToastType, content: ToastContent, options: Partial<ToastOptions> = {}): Id => {
+export const showToast = (
+  type: ToastType,
+  content: ToastContent,
+  options: Partial<ToastOptions> = {},
+): Id => {
   const optionsToApply = { ...defaultToastOptions, ...options };
 
   switch (type) {

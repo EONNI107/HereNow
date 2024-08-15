@@ -7,6 +7,8 @@ import { showToast } from '@/utils/toastHelper';
 import AroundLocalItem from './AroundLocalItem';
 import { Regions } from '@/types/mainTypes';
 import WebMainBar from '../WebMainBar';
+import { useModal } from '@/components/Modal/Modal';
+import { useCookies } from 'react-cookie';
 
 type PositionType = {
   coords: {
@@ -20,12 +22,13 @@ type GeolocationError = {
   message: string;
 };
 function AroundLocalList() {
+  const { isGetPosition, isShow } = useModal();
   const router = useRouter();
   const [localitems, setLocalitems] = useState<NearbyPlace[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
   const { region }: Regions = require('@/data/regions.json');
-
+  const [cookies, setCookies] = useCookies();
   const getLocationData = async (latitude: number, longitude: number) => {
     try {
       const res = await tourApi(
@@ -61,9 +64,19 @@ function AroundLocalList() {
       option,
     );
   };
+
+  const getSortLoaction = () => {
+    if (!isShow && isGetPosition) {
+      getLoaction();
+    }
+  };
+
   useEffect(() => {
-    getLoaction();
-  }, []);
+    if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
+      getLoaction();
+    }
+    getSortLoaction();
+  }, [isShow]);
 
   const filtercode = localitems[0]?.areacode;
   const filterdata = region.find((e) => e.code === filtercode);
