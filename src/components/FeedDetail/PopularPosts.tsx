@@ -80,7 +80,7 @@ function PopularPosts({ userId, userNickname }: PopularPostsProps) {
       </h3>
       <div className="px-[16px] my-[24px]">
         <button
-          onClick={() => router.push(`/my-page/${userId}`)}
+          onClick={() => router.push(`/profile/${userId}`)}
           className="text-blue4 border-blue4 border-[1px] rounded-[16px] py-[16px] w-full text-[16px] font-semibold"
         >
           {userNickname}님 프로필 보러가기
