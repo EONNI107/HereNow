@@ -11,7 +11,7 @@ type NearbyPlacesProps = {
 function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
   const defaultImage = '/No_Img.jpg';
   const { user } = useAuthStore();
-  const nickname = user?.user_metadata.nickname;
+  const nickname = user?.nickname;
 
   return (
     <div className="xl:w-[400px] xl:h-[1075px]">

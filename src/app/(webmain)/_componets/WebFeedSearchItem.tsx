@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { searchApi } from '@/components/MainPage/api/searchApi';
 import { useSearchParams } from 'next/navigation';
-import { SearchedType } from '@/app/(layout)/search-page/page';
 import WebSearchItem from './WebSearchItem';
 import axios from 'axios';
 import { TableFeedType } from '@/types/mainTypes';
 import { showToast } from '@/utils/toastHelper';
 import WebFeedItem from './WebFeedItem';
+import { SearchedType } from '@/components/SearchMain/SearchMain';
 
 function WebFeedSearchItem() {
   const [basicData, setBasicData] = useState<SearchedType[]>([]);
