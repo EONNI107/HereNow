@@ -24,13 +24,15 @@ function KakaoMap({
   }
 
   return (
-    <div className="mt-5 flex-col space-y-4 border-y-2 border-gray-300 mx-2 pb-6">
-      <p className="mt-4 font-bold">해당 위치는 이곳이에요</p>
+    <div className="mt-5 flex-col space-y-4 border-y-2 border-gray3 mx-2 pb-6 xl:mx-0 xl:border-y-0 xl:border-t-2 xl:mt-12">
+      <p className="mt-4 font-bold xl:my-12 xl:text-xl">
+        해당 위치는 이곳이에요
+      </p>
       <Map
         id="map"
         center={{ lat: latitude, lng: longitude }}
         level={4}
-        className="w-full h-[200px] rounded-md"
+        className="w-full h-[200px] rounded-md xl:h-[480px]"
       >
         <MapMarker position={{ lat: latitude, lng: longitude }} />
       </Map>
