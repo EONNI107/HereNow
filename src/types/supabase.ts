@@ -83,36 +83,30 @@ export type Database = {
       }
       Feeds: {
         Row: {
-          commentsCount: number
           content: string
           createdAt: string
           id: number
           image: string | null
-          likesCount: number
           region: string | null
           sigungu: string | null
           title: string
           userId: string
         }
         Insert: {
-          commentsCount?: number
           content: string
           createdAt?: string
           id?: number
           image?: string | null
-          likesCount?: number
           region?: string | null
           sigungu?: string | null
           title: string
           userId?: string
         }
         Update: {
-          commentsCount?: number
           content?: string
           createdAt?: string
           id?: number
           image?: string | null
-          likesCount?: number
           region?: string | null
           sigungu?: string | null
           title?: string
@@ -133,21 +127,21 @@ export type Database = {
           content: string
           createdAt: string
           id: number
-          placeId: string
+          placeId: number
           userId: string
         }
         Insert: {
           content: string
-          createdAt: string
+          createdAt?: string
           id?: number
-          placeId: string
+          placeId: number
           userId?: string
         }
         Update: {
           content?: string
           createdAt?: string
           id?: number
-          placeId?: string
+          placeId?: number
           userId?: string
         }
         Relationships: [
@@ -162,21 +156,27 @@ export type Database = {
       }
       PlaceLikes: {
         Row: {
+          content: string | null
           id: number
           imageUrl: string | null
           placeId: string
+          title: string | null
           userId: string
         }
         Insert: {
+          content?: string | null
           id?: number
           imageUrl?: string | null
           placeId: string
+          title?: string | null
           userId?: string
         }
         Update: {
+          content?: string | null
           id?: number
           imageUrl?: string | null
           placeId?: string
+          title?: string | null
           userId?: string
         }
         Relationships: [
@@ -194,7 +194,7 @@ export type Database = {
           createdAt: string
           email: string
           id: string
-          nickname: string | null
+          nickname: string
           profileImage: string | null
           provider: string
         }
@@ -202,7 +202,7 @@ export type Database = {
           createdAt?: string
           email: string
           id?: string
-          nickname?: string | null
+          nickname: string
           profileImage?: string | null
           provider?: string
         }
@@ -210,7 +210,7 @@ export type Database = {
           createdAt?: string
           email?: string
           id?: string
-          nickname?: string | null
+          nickname?: string
           profileImage?: string | null
           provider?: string
         }

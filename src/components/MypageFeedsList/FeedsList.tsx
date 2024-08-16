@@ -11,6 +11,7 @@ export default function FeedList({ userId }: { userId: string }) {
   const [feedsList, setFeedsList] = useState<Tables<'Feeds'>[]>([]);
   const { user } = useAuthStore();
   const supabase = createClient();
+
   useEffect(() => {
     const fetchFeeds = async () => {
       if (!user) return;
@@ -40,7 +41,7 @@ export default function FeedList({ userId }: { userId: string }) {
           </div>
         </div>
       ) : (
-        <div className="pt-4 flex flex-col gap-4">
+        <div className="pt-4 xl:pt-[28px] grid grid-cols-1 md:grid-cols-2 gap-4">
           {feedsList.map((post) => {
             const postImages = JSON.parse(post.image as string);
 
@@ -48,21 +49,22 @@ export default function FeedList({ userId }: { userId: string }) {
               <Link
                 href={`/feed-detail/${post.id}`}
                 key={post.id}
-                className="flex items-center space-x-4 align-it"
+                className="flex items-center space-x-4 transition-shadow duration-200"
               >
                 <Image
                   src={postImages ? postImages[0] : '/No_Img.jpg'}
                   alt="이미지"
                   width={100}
                   height={100}
-                  priority
-                  className="rounded-[8px] aspect-square object-cover"
+                  className="rounded-[8px] object-cover w-[100px] h-[100px] xl:w-[190px] xl:h-[120px]"
                 />
-                <div className="items-baseline w-[100%] overflow-hidden">
-                  <strong className="font-semibold">{post.title}</strong>
-                  <div className="mt-2 whitespace-nowrap overflow-hidden text-ellipsis">
+                <div className="flex-1 min-w-0 xl:w-full">
+                  <strong className="font-semibold text-[16px] xl:text-[24px] block mb-2 truncate">
+                    {post.title}
+                  </strong>
+                  <p className="text-sub1 xl:text-[18px] text-[14px] line-clamp-2 xl:line-clamp-1">
                     {post.content}
-                  </div>
+                  </p>
                 </div>
               </Link>
             );

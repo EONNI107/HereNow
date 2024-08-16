@@ -28,6 +28,8 @@ function MyPage({ params }: { params: { id: string } }) {
   const [selectedTab, setSelectedTab] = useState<
     'feedsList' | 'feedLikes' | 'placeLikes'
   >('feedsList');
+  const [isEditingNickname, setIsEditingNickname] = useState(false);
+  const [newNickname, setNewNickname] = useState('');
 
   const isMyPage = params.id === user?.id;
 
@@ -193,6 +195,48 @@ function MyPage({ params }: { params: { id: string } }) {
     showToast('success', '프로필 수정이 완료되었습니다.');
   };
 
+  const handleNicknameEdit = () => {
+    if (isEditingNickname) {
+      handleNicknameUpdate();
+    } else {
+      setNewNickname(profile?.nickname || '');
+      setIsEditingNickname(true);
+    }
+  };
+
+  const handleNicknameUpdate = async () => {
+    if (!user || !profile) return;
+
+    const { error: updateError } = await supabase
+      .from('Users')
+      .update({ nickname: newNickname })
+      .eq('id', user.id);
+
+    if (updateError) {
+      showToast('error', '닉네임 업데이트 중 오류가 발생했습니다');
+      return;
+    }
+
+    const { error: authError } = await supabase.auth.updateUser({
+      data: { nickname: newNickname },
+    });
+
+    if (authError) {
+      showToast('error', '닉네임 업데이트 중 오류가 발생했습니다');
+      return;
+    }
+
+    setProfile({ ...profile, nickname: newNickname });
+    setUser({ ...user, nickname: newNickname });
+    setIsEditingNickname(false);
+    showToast('success', '닉네임이 성공적으로 업데이트되었습니다');
+  };
+
+  const handleNicknameEditCancel = () => {
+    setIsEditingNickname(false);
+    setNewNickname(profile?.nickname || '');
+  };
+
   const handleLogout = async () => {
     const response = await axios.post(`/api/sign-out`);
     if (response.status === 200) {
@@ -335,13 +379,57 @@ function MyPage({ params }: { params: { id: string } }) {
                 <p className="text-sub1 w-[92px] text-[18px]">이메일</p>
                 <p className="text-sub2">{profile?.email}</p>
               </div>
-              <div className="flex items-center ">
+              <div className="flex items-center">
                 <div className="flex items-center">
                   <p className="text-sub1 w-[92px] text-[18px]">닉네임</p>
-                  <p className="text-[20px] font-bold">{profile?.nickname}</p>
+                  {isEditingNickname ? (
+                    <input
+                      type="text"
+                      value={newNickname}
+                      onChange={(e) => setNewNickname(e.target.value)}
+                      className="px-2 py-1 w-[100px]"
+                    />
+                  ) : (
+                    <p className="text-[20px]  w-[100px] font-bold">
+                      {profile?.nickname}
+                    </p>
+                  )}
                 </div>
                 <div className="ml-12">
-                  <button className=" text-blue4 ">수정</button>
+                  {isMyPage ? (
+                    isEditingNickname ? (
+                      <>
+                        <button
+                          className="text-blue4 mr-2"
+                          onClick={handleNicknameEdit}
+                        >
+                          수정 완료
+                        </button>
+                        <button
+                          className="text-gray5"
+                          onClick={handleNicknameEditCancel}
+                        >
+                          취소
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="text-blue4 mr-4"
+                          onClick={handleNicknameEdit}
+                        >
+                          수정
+                        </button>
+                        <button className="text-orange3" onClick={handleLogout}>
+                          로그아웃
+                        </button>
+                      </>
+                    )
+                  ) : (
+                    <button className="text-orange3" onClick={handleLogout}>
+                      로그아웃
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -350,50 +438,85 @@ function MyPage({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      {isMyPage ? (
-        <div className="flex justify-center w-full mt-6">
-          <button
-            className={`p-2 flex-1 ${
-              selectedTab === 'feedsList'
-                ? 'bg-white text-black border-b-4 border-blue4'
-                : 'text-gray3 border-b-4 border-b-white'
-            }`}
-            onClick={() => setSelectedTab('feedsList')}
-          >
-            <p>작성한 글</p>
-          </button>
-          <button
-            className={`p-2 flex-1 ${
-              selectedTab === 'feedLikes'
-                ? 'bg-white text-black border-b-4 border-blue4'
-                : 'text-gray3 border-b-4 border-b-white'
-            }`}
-            onClick={() => setSelectedTab('feedLikes')}
-          >
-            <p>찜한 글</p>
-          </button>
-          <button
-            className={`p-2 flex-1 ${
-              selectedTab === 'placeLikes'
-                ? 'bg-white text-black border-b-4 border-blue4'
-                : 'text-gray3 border-b-4 border-b-white'
-            }`}
-            onClick={() => setSelectedTab('placeLikes')}
-          >
-            <p>찜한 장소</p>
-          </button>
-        </div>
-      ) : (
-        <div className="flex justify-center w-full mt-6">
-          <div className="flex justify-center w-11/12">
-            <div className="p-2 w-full text-center bg-white text-black border-b-4 border-blue4">
-              <p className="text-xl font-semibold">작성한 글</p>
+      <div className="w-full mt-6">
+        {isMyPage ? (
+          <div>
+            <div className="hidden xl:block text-4xl font-bold mb-4">
+              내 피드
+            </div>
+            <div className="flex justify-center xl:justify-start flex-grow">
+              <button
+                className={`p-2 flex-1 xl:flex-none xl:px-4 ${
+                  selectedTab === 'feedsList'
+                    ? 'bg-white text-black border-b-4 border-blue4'
+                    : 'text-black border-b-4 border-white hover:text-black'
+                }`}
+                onClick={() => setSelectedTab('feedsList')}
+              >
+                <p
+                  className={`text-lg ${
+                    selectedTab === 'feedsList'
+                      ? 'font-extrabold text-blue4'
+                      : 'font-normal text-black'
+                  }`}
+                >
+                  작성한 글
+                </p>
+              </button>
+              <button
+                className={`p-2 flex-1 xl:flex-none xl:px-4 ${
+                  selectedTab === 'feedLikes'
+                    ? 'bg-white text-black border-b-4 border-blue4'
+                    : 'text-black border-b-4 border-white hover:text-black'
+                }`}
+                onClick={() => setSelectedTab('feedLikes')}
+              >
+                <p
+                  className={`text-lg ${
+                    selectedTab === 'feedLikes'
+                      ? 'font-extrabold text-blue4'
+                      : 'font-normal text-black'
+                  }`}
+                >
+                  찜한 글
+                </p>
+              </button>
+              <button
+                className={`p-2 flex-1 xl:flex-none xl:px-4 ${
+                  selectedTab === 'placeLikes'
+                    ? 'bg-white text-black border-b-4 border-blue4'
+                    : 'text-black border-b-4 border-white hover:text-black'
+                }`}
+                onClick={() => setSelectedTab('placeLikes')}
+              >
+                <p
+                  className={`text-lg ${
+                    selectedTab === 'placeLikes'
+                      ? 'font-extrabold text-blue4'
+                      : 'font-normal text-black'
+                  }`}
+                >
+                  찜한 장소
+                </p>
+              </button>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="">
+            <div className="">
+              <div className="hidden xl:block text-4xl font-bold mb-4">
+                피드
+              </div>
+              <p className="text-lg font-extrabold text-blue4 ml-3">
+                작성한 글
+              </p>
+              <div className="mt-2 border-b-4 border-blue4 w-24"></div>
+            </div>
+          </div>
+        )}
+      </div>
 
-      <div className="flex flex-1 justify-center bg-gray0 px-4">
+      <div className="flex flex-1 justify-center bg-gray0 xl:bg-transparent px-4">
         {loading ? (
           <p>Loading...</p>
         ) : (
