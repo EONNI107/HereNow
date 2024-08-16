@@ -1,5 +1,7 @@
 # 🍀 프로젝트명 : 지금, 여기
 
+<img alt="image" src="public/readme-brochure.png">
+
 # 소개
 
 ## 1. 프로젝트 소개
