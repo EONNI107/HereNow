@@ -2,7 +2,7 @@
 
 import { createClient } from '@/utils/supabase/client';
 import { showToast } from '@/utils/toastHelper';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import PenIcon from '@/components/IconList/PenIcon';
 import Image from 'next/image';
 import { Tables, TablesInsert } from '@/types/supabase';
@@ -28,9 +28,9 @@ function MyPage({ params }: { params: { id: string } }) {
   const [selectedTab, setSelectedTab] = useState<
     'feedsList' | 'feedLikes' | 'placeLikes'
   >('feedsList');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isMyPage = params.id === user?.id;
+
   const fetchUserProfile = async (userId: string) => {
     const { data, error } = await supabase
       .from('Users')
@@ -40,7 +40,6 @@ function MyPage({ params }: { params: { id: string } }) {
 
     if (error) {
       showToast('error', `프로필 정보 불러오는 중에 오류가 발생했습니다`);
-
       return null;
     }
     return data;
@@ -58,6 +57,7 @@ function MyPage({ params }: { params: { id: string } }) {
       }
     }
   };
+
   useEffect(() => {
     fetchProfile();
   }, [user, params.id]);
@@ -66,6 +66,7 @@ function MyPage({ params }: { params: { id: string } }) {
     const fetchPosts = async () => {
       setLoading(true);
       try {
+        // 여기에 게시물을 가져오는 로직을 구현하세요
       } catch (error) {
         showToast(
           'error',
@@ -84,7 +85,7 @@ function MyPage({ params }: { params: { id: string } }) {
     fetchPosts();
   }, [selectedTab]);
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setNewImageFile(e.target.files[0]);
       const reader = new FileReader();
@@ -92,11 +93,46 @@ function MyPage({ params }: { params: { id: string } }) {
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(e.target.files[0]);
+
+      // XL 화면에서만 즉시 업데이트
+      if (window.innerWidth >= 1280) {
+        await handleImmediateImageUpdate(e.target.files[0]);
+      }
     }
   };
-  const handleProfileImageClick = () => {
-    fileInputRef.current?.click();
+
+  const handleImmediateImageUpdate = async (file: File) => {
+    if (!user || !profile) return;
+
+    const path = await uploadImage(file);
+    if (path) {
+      const imagePath = `https://cuxcqeqwbwfuxipnozwy.supabase.co/storage/v1/object/public/profileImage/${path}`;
+
+      const { error: updateError } = await supabase
+        .from('Users')
+        .update({ profileImage: imagePath })
+        .eq('id', user.id);
+
+      if (updateError) {
+        showToast('error', '프로필 이미지 업데이트 중 오류가 발생했습니다');
+        return;
+      }
+
+      const { error: authError } = await supabase.auth.updateUser({
+        data: { profileImage: imagePath },
+      });
+
+      if (authError) {
+        showToast('error', '프로필 이미지 업데이트 중 오류가 발생했습니다');
+        return;
+      }
+
+      setProfile({ ...profile, profileImage: imagePath });
+      setUser({ ...user, profileImage: imagePath });
+      showToast('success', '프로필 이미지가 업데이트되었습니다');
+    }
   };
+
   const uploadImage = async (file: File) => {
     const { data, error } = await supabase.storage
       .from('profileImage')
@@ -263,7 +299,7 @@ function MyPage({ params }: { params: { id: string } }) {
         <div className="hidden xl:block w-full rounded-lg">
           <h2 className="text-[32px] font-bold mb-[40px]">내 프로필</h2>
           <div className="flex">
-            <div className="flex items-center px-4 border-r border-gray-300 w-1/2">
+            <div className="flex items-center px-4 border-r border-gray-300 w-1/5">
               <div className="relative w-24 h-24 mr-[64px]">
                 <Image
                   src={
@@ -276,20 +312,23 @@ function MyPage({ params }: { params: { id: string } }) {
                   layout="fill"
                   objectFit="cover"
                 />
+                {isMyPage && (
+                  <label
+                    htmlFor="xl-file-input"
+                    className="absolute bottom-0 right-0 p-1 cursor-pointer bg-orange3 rounded-full"
+                  >
+                    <PenIcon />
+                  </label>
+                )}
+                {isMyPage && (
+                  <input
+                    type="file"
+                    id="xl-file-input"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                )}
               </div>
-              <button
-                className="bg-blue4 text-white px-8 py-4 rounded-[16px] text-[20px]"
-                onClick={handleProfileImageClick}
-              >
-                프로필 사진 수정
-              </button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleImageChange}
-                className="hidden"
-                accept="image/*"
-              />
             </div>
             <div className="flex flex-col justify-center flex-grow pl-[112px] px-4 w-1/2">
               <div className="mb-[28px] flex items-center">
