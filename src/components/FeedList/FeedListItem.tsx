@@ -76,7 +76,7 @@ function FeedListItem({
               alt="유저 프로필 이미지"
               width={48}
               height={48}
-              className="w-6 h-6 xl:w-14 xl:h-14 border rounded-full mr-4"
+              className="w-6 h-6 xl:w-12 xl:h-12 border rounded-full mr-4"
             />
             <span className="text-[14px] xl:text-[24px] font-regular">
               {feed.Users?.nickname}
@@ -87,7 +87,7 @@ function FeedListItem({
           </span>
         </div>
         <div
-          className="relative w-full h-48 xl:w-[480px] xl:h-[400px] overflow-hidden border rounded-3xl xl:rounded-[32px] group cursor-pointer"
+          className="relative w-full h-48  xl:h-[400px] overflow-hidden border rounded-3xl xl:rounded-[32px] group cursor-pointer"
           onClick={handleMoveFeedDetail}
         >
           <Image
@@ -97,7 +97,7 @@ function FeedListItem({
             height={300}
             className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
             <p className="text-white text-[28px] font-semibold text-center">
               {feed.region && <span>{feed.region}</span>}
               {feed.region && feed.sigungu && ' '}
@@ -138,15 +138,11 @@ function FeedListItem({
           </div>
           <div className="hidden xl:flex items-center space-x-3  text-sub1 mt-4">
             <div className="flex items-center space-x-1">
-              {isLiked ? (
-                <HeartIconSolid />
-              ) : (
-                <HeartIcon className="w-10 h-10" />
-              )}
+              {isLiked ? <HeartIconSolid /> : <HeartIcon className="w-8 h-8" />}
               <span className="font-medium text-[20px]">{likesCount}</span>
             </div>
             <div className="flex items-center space-x-1">
-              <ChatBubbleOvalLeftEllipsisIcon className="w-10 h-10" />
+              <ChatBubbleOvalLeftEllipsisIcon className="w-8 h-8" />
               <span className="font-medium text-[20px]">{commentsCount}</span>
             </div>
           </div>

@@ -120,7 +120,7 @@ function FeedListClient({
   if (error) return <div>에러: {error.message}</div>;
 
   return (
-    <div className="xl:container mx-auto px-4">
+    <div className="lg:container xl:max-w-6xl px-4">
       <div className="mb-4 xl:bg-gray0 xl:p-4 xl:rounded-lg xl:border xl:border-gray8">
         <h2 className="hidden xl:block text-[20px] font-bold mb-2 text-center">
           빠르게 보고싶은 글이 있나요?
