@@ -72,6 +72,11 @@ function SignInPage() {
     router.push('/');
   };
 
+  const handleHomeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    router.push('/');
+  };
+
   return (
     <div className="h-dvh">
       <div className="relative h-full container xl:max-w-screen-xl">
@@ -127,6 +132,14 @@ function SignInPage() {
                     className="w-full bg-blue4 text-white py-4 px-6 rounded-2xl hover:bg-gray3 text-sm"
                   >
                     로그인
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleHomeClick}
+                    className="w-full bg-orange3 text-white py-4 px-6 rounded-2xl hover:bg-gray3 text-sm mt-3"
+                  >
+                    홈으로
                   </button>
                 </div>
               </form>
