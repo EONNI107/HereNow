@@ -2,7 +2,6 @@ import { Feed } from '@/types/feed';
 import Image from 'next/image';
 import { fromNow } from '@/utils/formatDate';
 import { showToast } from '@/utils/toastHelper';
-import Link from 'next/link';
 import {
   ChatBubbleOvalLeftEllipsisIcon,
   HeartIcon,
