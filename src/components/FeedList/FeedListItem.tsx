@@ -51,7 +51,7 @@ function FeedListItem({
 
     checkLikeStatus();
   }, [feed.id, userId, supabase]);
-  let feedImage = '/No_Img.jpg';
+  let feedImage = '/NoImg-v2.png';
 
   if (feed.image) {
     try {
@@ -88,7 +88,7 @@ function FeedListItem({
           </span>
         </div>
         <div
-          className="relative w-full h-48 xl:h-[400px] overflow-hidden border rounded-3xl xl:rounded-[32px] group cursor-pointer"
+          className="relative w-full h-48 xl:w-[480px] xl:h-[400px] overflow-hidden border rounded-3xl xl:rounded-[32px] group cursor-pointer"
           onClick={handleMoveFeedDetail}
         >
           <Image

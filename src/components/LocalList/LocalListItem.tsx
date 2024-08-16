@@ -7,7 +7,7 @@ import { getSigunguName } from '@/utils/getSigunguName';
 import { HeartIcon } from '@heroicons/react/24/outline';
 
 function LocalListItem({ item, region }: { item: Item; region: string }) {
-  const defaultImage = '/No_Img.jpg';
+  const defaultImage = '/NoImg-v3.png';
   const selectedRegion = regionData.region.find(
     (r) => r.ename.toLowerCase() === region.toLowerCase(),
   );
