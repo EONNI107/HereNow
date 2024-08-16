@@ -10,7 +10,7 @@ type NearbyPlacesProps = {
 };
 
 function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
-  const defaultImage = '/No_Img.jpg';
+  const defaultImage = '/NoImg-v3.png';
   const { user } = useAuthStore();
   const nickname = user?.nickname;
 

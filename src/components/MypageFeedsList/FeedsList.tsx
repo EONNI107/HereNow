@@ -51,7 +51,7 @@ export default function FeedList({ userId }: { userId: string }) {
               <div key={post.id}>
                 <Link href={`/feed-detail/${post.id}`}>
                   <Image
-                    src={postImages ? postImages[0] : '/No_Img.jpg'}
+                    src={postImages ? postImages[0] : '/NoImg-v3.png'}
                     alt="이미지"
                     width={200}
                     height={200}
