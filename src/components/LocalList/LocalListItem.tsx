@@ -4,6 +4,7 @@ import Link from 'next/link';
 import regionData from '@/data/regions.json';
 import { getRegionNameKorean } from '@/utils/getRegionName';
 import { getSigunguName } from '@/utils/getSigunguName';
+import { HeartIcon } from '@heroicons/react/24/outline';
 
 function LocalListItem({ item, region }: { item: Item; region: string }) {
   const defaultImage = '/No_Img.jpg';
@@ -14,18 +15,18 @@ function LocalListItem({ item, region }: { item: Item; region: string }) {
     <Link
       href={`/local/details/${item.contentid}`}
       key={item.contentid}
-      className="border rounded-3xl overflow-hidden shadow-xl relative w-[343px] h-[140px]"
+      className="border rounded-3xl overflow-hidden shadow-xl relative w-[343px] h-[140px] xl:w-auto xl:h-auto xl:rounded-xl group"
     >
-      <div className="relative h-full">
+      <div className="relative">
         <Image
           src={item.firstimage || defaultImage}
-          width={300}
-          height={200}
+          width={600}
+          height={480}
           alt={item.title}
           className="object-cover w-full h-48"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex flex-col justify-center p-4">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent flex flex-col justify-center p-4 xl:hidden">
           <div className="max-w-[70%]">
             <p className="font-regular text-sm text-white mb-1">
               {getRegionNameKorean(region)}{' '}
@@ -35,6 +36,20 @@ function LocalListItem({ item, region }: { item: Item; region: string }) {
               {item.title}
             </h2>
           </div>
+        </div>
+        <div className="hidden xl:flex absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 items-center justify-center">
+          <div className="text-white text-center">
+            <p className="font-semibold text-lg">
+              {getRegionNameKorean(region)}{' '}
+              {getSigunguName(selectedRegion?.code || '', item.sigungucode)}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="hidden xl:block">
+        <div className="flex items-center justify-between border-l border-r border-b rounded-b-xl bg-white p-3">
+          <h2 className="font-semibold text-lg truncate pr-4">{item.title}</h2>
+          <HeartIcon className="w-6 h-6 flex-shrink-0" />
         </div>
       </div>
     </Link>
