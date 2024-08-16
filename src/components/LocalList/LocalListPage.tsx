@@ -40,6 +40,20 @@ function LocalListPage({ region }: { region: string }) {
         selectedContentType={contentType}
         onContentTypeChange={setContentType}
       />
+      <div className="flex justify-center">
+        <select
+          value={area}
+          onChange={(e) => setArea(e.target.value)}
+          className="p-2 border border-gray3 rounded"
+        >
+          <option value="">모든 지역</option>
+          {areas?.sigungu.map((a) => (
+            <option key={a.code} value={a.code}>
+              {a.name}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="hidden xl:block text-center my-8">
         <h3 className="text-[32px] text-blue4 font-semibold mb-3">
           {getRegionNameKorean(region)} 주변에 갈만한 곳은?
@@ -49,20 +63,6 @@ function LocalListPage({ region }: { region: string }) {
         </p>
       </div>
       <div className="flex justify-center">
-        <div className="flex justify-end">
-          <select
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-            className="p-2 border border-gray3 rounded"
-          >
-            <option value="">모든 지역</option>
-            {areas?.sigungu.map((a) => (
-              <option key={a.code} value={a.code}>
-                {a.name}
-              </option>
-            ))}
-          </select>
-        </div>
         <div className="pt-5 bg-gray0 xl:bg-white xl:max-w-[1240px]">
           {isPending ? (
             <div className="grid grid-cols-1 gap-4 justify-items-center xl:grid-cols-2 xl:gap-8 xl:justify-items-stretch xl:px-4">
