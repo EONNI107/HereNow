@@ -78,11 +78,11 @@ function FeedListItem({
               height={48}
               className="w-6 h-6 xl:w-12 xl:h-12 border rounded-full mr-4"
             />
-            <span className="text-[14px] xl:text-[24px] font-regular">
+            <span className="text-[14px] xl:text-[20px] font-regular">
               {feed.Users?.nickname}
             </span>
           </div>
-          <span className="text-[12px] xl:text-[20px] text-sub2 xl:ml-auto xl:pl-4">
+          <span className="text-[12px] xl:text-[15px] text-sub2 xl:ml-auto xl:pl-4">
             {fromNow(feed.createdAt)}
           </span>
         </div>
@@ -107,7 +107,7 @@ function FeedListItem({
         </div>
         <div className="p-4 xl:flex-grow xl:flex xl:flex-col">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="line-clamp-1 text-main text-[18px] font-semibold xl:text-[24px] xl:font-medium">
+            <h2 className="line-clamp-1 text-main text-[18px] font-semibold xl:text-[22px] xl:font-medium">
               {feed.title}
             </h2>
             <div className="flex items-center space-x-3 text-xs text-sub1 xl:hidden">
@@ -126,7 +126,7 @@ function FeedListItem({
             </div>
           </div>
           <div className="hidden xl:block xl:flex-grow">
-            <p className="line-clamp-1 font-medium text-sub1 text-[20px] mb-2">
+            <p className="line-clamp-1 font-medium text-sub1 text-[18px] mb-2">
               {feed.content}
             </p>
             <div

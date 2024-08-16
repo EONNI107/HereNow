@@ -158,7 +158,7 @@ function FeedListClient({
         </p>
       </div>
       <div className="bg-gray0 p-4 xl:bg-white">
-        <div className="grid grid-cols-1 gap-8 xl:grid-cols-2 xl:gap-x-8 xl:gap-y-16">
+        <div className="grid grid-cols-1 gap-8 xl:grid-cols-2 xl:gap-x-6 xl:gap-y-16">
           {sortedFeeds.map((feed) => (
             <FeedListItem
               key={feed.id}
