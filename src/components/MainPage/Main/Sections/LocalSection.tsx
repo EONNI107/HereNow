@@ -8,6 +8,7 @@ import SkeletonLocalItem from '@/components/MainPage/Skeleton/SkeletonLocalItem'
 import { showToast } from '@/utils/toastHelper';
 import { useModal } from '@/components/Modal/Modal';
 import { useCookies } from 'react-cookie';
+import Image from 'next/image';
 
 type PositionType = {
   coords: {
@@ -23,8 +24,10 @@ type GeolocationError = {
 
 function LocalSection() {
   const router = useRouter();
-  const { isGetPosition, isShow } = useModal();
+
+  const { isGetPosition, SetIsGetPosition } = useModal();
   const [cookies, setCookies] = useCookies();
+  const [isNotLocation, setIsNotLocation] = useState<boolean>(false);
 
   const [localitems, setLocalitems] = useState<NearbyPlace[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -65,19 +68,21 @@ function LocalSection() {
       option,
     );
   };
-
   const getSortLoaction = () => {
-    if (!isShow && isGetPosition) {
-      getLoaction();
+    if (isGetPosition) {
+      setIsNotLocation(true);
     }
   };
-
   useEffect(() => {
-    if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
-      getLoaction();
-    }
+    getLoaction();
     getSortLoaction();
-  }, [isShow]);
+    if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
+      SetIsGetPosition(true);
+    }
+    // else if (!(cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION'])) {
+    //   setIsNotLocation(true);
+    // }
+  }, [isGetPosition]);
 
   const handleClick = (contentid: string) => {
     router.push(`/local/details/${contentid}`);
@@ -90,21 +95,33 @@ function LocalSection() {
         </h2>
         <button hidden={true}></button>
       </div>
-      <div className="w-full">
-        <ul className="w-full">
-          {loading
-            ? Array.from({ length: 2 }).map((_, index) => (
-                <SkeletonLocalItem key={index} />
-              ))
-            : localitems.map((item: NearbyPlace) => (
-                <LocalItem
-                  key={item.contentid}
-                  item={item}
-                  onclick={() => handleClick(item.contentid)}
-                />
-              ))}
-        </ul>
-      </div>
+      {isNotLocation ? (
+        <div className="w-full">
+          <ul className="w-full">
+            {loading
+              ? Array.from({ length: 2 }).map((_, index) => (
+                  <SkeletonLocalItem key={index} />
+                ))
+              : localitems.map((item: NearbyPlace) => (
+                  <LocalItem
+                    key={item.contentid}
+                    item={item}
+                    onclick={() => handleClick(item.contentid)}
+                  />
+                ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="w-full flex justify-center items-center">
+          <Image
+            src="/No_Location.jpg"
+            alt="notLocation"
+            width={400}
+            height={180}
+            className="object-cover w-full h-full"
+          />
+        </div>
+      )}
     </section>
   );
 }

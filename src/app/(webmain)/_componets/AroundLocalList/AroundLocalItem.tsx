@@ -17,7 +17,7 @@ function AroundLocalItem({ item, onclick }: NearbyTypePlace) {
           src={
             item.firstimage
               ? item.firstimage || item.firstimage2
-              : '/No_Img.jpg'
+              : '/NoImg-v3.png'
           }
           alt="축제이미지"
           width={384}

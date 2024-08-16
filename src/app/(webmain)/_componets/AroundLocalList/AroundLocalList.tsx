@@ -9,6 +9,7 @@ import { Regions } from '@/types/mainTypes';
 import WebMainBar from '../WebMainBar';
 import { useModal } from '@/components/Modal/Modal';
 import { useCookies } from 'react-cookie';
+import Image from 'next/image';
 
 type PositionType = {
   coords: {
@@ -22,8 +23,9 @@ type GeolocationError = {
   message: string;
 };
 function AroundLocalList() {
-  const { isGetPosition, isShow } = useModal();
+  const { isGetPosition, SetIsGetPosition } = useModal();
   const router = useRouter();
+  const [isNotLocation, setIsNotLocation] = useState<boolean>(false);
   const [localitems, setLocalitems] = useState<NearbyPlace[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
@@ -64,19 +66,21 @@ function AroundLocalList() {
       option,
     );
   };
-
   const getSortLoaction = () => {
-    if (!isShow && isGetPosition) {
-      getLoaction();
+    if (isGetPosition) {
+      setIsNotLocation(true);
     }
   };
-
   useEffect(() => {
-    if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
-      getLoaction();
-    }
+    getLoaction();
     getSortLoaction();
-  }, [isShow]);
+    if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
+      SetIsGetPosition(true);
+    }
+    // else if (!(cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION'])) {
+    //   setIsNotLocation(true);
+    // }
+  }, [isGetPosition]);
 
   const filtercode = localitems[0]?.areacode;
   const filterdata = region.find((e) => e.code === filtercode);
@@ -85,24 +89,43 @@ function AroundLocalList() {
     router.push(`/local/details/${contentid}`);
   };
   return (
-    <div className="w-full flex flex-col gap-9">
-      <WebMainBar
-        title="내 주변에 숨은"
-        content="로컬들이 공유하는 장소"
-        url={`/local/${filterdata?.ename}`}
-      />
-      <div className="flex w-full">
-        <ul className="flex gap-[42px] w-full h-[331px]">
-          {localitems.map((item: NearbyPlace) => (
-            <AroundLocalItem
-              key={item.contentid}
-              item={item}
-              onclick={() => handleClick(item.contentid)}
-            />
-          ))}
-        </ul>
-      </div>
-    </div>
+    <>
+      {isNotLocation ? (
+        <div className="w-full flex flex-col gap-9">
+          <WebMainBar
+            title="내 주변에 숨은"
+            content="로컬들이 공유하는 장소"
+            url={`/local/${filterdata?.ename}`}
+          />
+          <div className="flex w-full">
+            <ul className="flex gap-[42px] w-full h-[331px]">
+              {localitems.map((item: NearbyPlace) => (
+                <AroundLocalItem
+                  key={item.contentid}
+                  item={item}
+                  onclick={() => handleClick(item.contentid)}
+                />
+              ))}
+            </ul>
+          </div>
+        </div>
+      ) : (
+        <div className="w-full flex flex-col justify-center items-center gap-[64px]">
+          <WebMainBar
+            title="가장 인기있는"
+            content="내 주변의 관광명소"
+            url={`/local/${filterdata?.ename}`}
+          />
+          <Image
+            src="/No_Location.jpg"
+            alt="notLocation"
+            width={1240}
+            height={180}
+            className="object-cover w-full h-full"
+          />
+        </div>
+      )}
+    </>
   );
 }
 

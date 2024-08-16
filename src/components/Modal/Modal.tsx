@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { create } from 'zustand';
 import { Cookies, useCookies } from 'react-cookie';
 import { showToast } from '@/utils/toastHelper';
+
 type ModalProps = {
   isShow: boolean;
   SetShow: (state: boolean) => void;
@@ -29,12 +30,13 @@ function Modal() {
   };
 
   const closeModalUntilExpires = () => {
-    const expires = getExpiredDate(3);
+    const expires = getExpiredDate(1);
     setCookies('MODAL_EXPIRES', true, { path: '/', expires });
     if (confirm('위치를 승인하시겠습니까?')) {
-      const expires = getExpiredDate(3);
+      const expires = getExpiredDate(1);
       setCookies('MODAL_LOCATION', true, { path: '/', expires });
       SetShow(false);
+      SetIsGetPosition(true);
     } else {
       SetShow(false);
       SetIsGetPosition(false);
@@ -42,7 +44,8 @@ function Modal() {
     }
   };
   useEffect(() => {
-    if (cookies['MODAL_EXPIRES']) return SetShow(false);
+    if (cookies['MODAL_LOCATION'] && cookies['MODAL_EXPIRES'])
+      return SetShow(false);
     SetShow(true);
   }, []);
 
@@ -53,7 +56,6 @@ function Modal() {
     } else {
       SetShow(false);
       SetIsGetPosition(false);
-
       showToast('info', '위치승인 거부하였습니다.');
     }
   };
@@ -61,7 +63,7 @@ function Modal() {
     <>
       <div>
         {isShow && (
-          <div className="rounded-t-3xl absolute right-[26%] top-[80%] z-10 max-w-[1920px]">
+          <div className="rounded-t-3xl absolute right-[26%] top-[80%] z-30 max-w-[1920px]">
             <div className="max-w-[736px] max-h-[828px]">
               <Image
                 src="/Pop-Up.png"
@@ -83,7 +85,7 @@ function Modal() {
       </div>
       <div
         className={`${
-          !isShow ? 'hidden' : 'bg-black/[0.25] fixed w-full h-screen z-9'
+          !isShow ? 'hidden' : 'bg-black/[0.25] fixed w-full h-screen z-20'
         }`}
       ></div>
     </>

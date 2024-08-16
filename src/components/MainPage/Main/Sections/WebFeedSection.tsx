@@ -18,7 +18,6 @@ function WebFeedSection() {
     const res = await axios.get('/api/supabase-feeduserdata');
     const items = res.data.data as TableFeedUserType[];
     setFeedItems(items);
-    console.log(items);
     setIsLoading(false);
   };
 
