@@ -19,6 +19,7 @@ export const GET = async (
   try {
     const response = await tourApi.get(
       `areaBasedList1?numOfRows=10&pageNo=${pageNo}&MobileOS=etc&MobileApp=HereNow&_type=json&listYN=Y&arrange=R&contentTypeId=${contentTypeId}&areaCode=${areaCode}&serviceKey=${serviceKey}`,
+      // `areaBasedList1?MobileOS=ETC&MobileApp=HereNow&_type=json&arrange=O&contentTypeId=${contentTypeId}&areaCode=1&sigunguCode=2&serviceKey=${serviceKey}`
     );
 
     return NextResponse.json({
