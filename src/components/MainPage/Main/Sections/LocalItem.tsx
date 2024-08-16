@@ -14,7 +14,9 @@ function LocalItem({ item, onclick }: NearbyTypePlace) {
     >
       <Image
         src={
-          item.firstimage ? item.firstimage || item.firstimage2 : '/No_Img.jpg'
+          item.firstimage
+            ? item.firstimage || item.firstimage2
+            : '/NoImg-v1.png'
         }
         alt="축제이미지"
         width={368}

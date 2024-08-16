@@ -12,7 +12,7 @@ type itemProps = {
 function SearchFeedItem({ item }: itemProps) {
   const router = useRouter();
 
-  let feedImage = '/No_Img.jpg';
+  let feedImage = '/NoImg-v3.png';
   if (item.image) {
     try {
       const parsedImage = JSON.parse(item.image) as string;
