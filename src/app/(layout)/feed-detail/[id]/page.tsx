@@ -102,6 +102,17 @@ function PostPage({ params }: PostPageProps) {
   const [commentCount, setCommentCount] = useState(0);
   const { user } = useAuthStore();
   const router = useRouter();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const updateMedia = () => {
+      setIsDesktop(window.innerWidth >= 1280);
+    };
+
+    updateMedia();
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -182,80 +193,163 @@ function PostPage({ params }: PostPageProps) {
 
   return (
     <div className="min-h-screen bg-gray0 pb-5">
-      <div className="flex items-center justify-between h-14 mt-2 px-4">
-        <div className="flex items-center">
-          <Image
-            src={userProfileImage}
-            alt="User Avatar"
-            width={40}
-            height={40}
-            className="w-10 h-10 rounded-full mr-2"
-          />
-          <p className="font-semibold text-sm">{userNickname}</p>
-        </div>
-        <button
-          onClick={handleRegionClick}
-          className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg"
-        >
-          {`${post.region} ${post.sigungu}`}
-        </button>
-      </div>
-      <Swiper
-        pagination={{ clickable: true }}
-        navigation={true}
-        modules={[Pagination, Navigation]}
-      >
-        {images.map((src, index) => (
-          <SwiperSlide key={index}>
-            <Image
-              src={src}
-              alt={`Image ${index}`}
-              width={800}
-              height={600}
-              className="w-full h-full object-cover"
-              priority
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <DetailLikeBtn
-        postId={post.id}
-        userId={user?.id ?? ''}
-        onCommentClick={() => setIsCommentModalOpen(true)}
-        commentCount={commentCount}
-      />
-      <div className="mx-4 mb-5 px-4 py-2.5 bg-white rounded-3xl">
-        <p className="text-2xl font-bold mb-2">{post.title}</p>
-        <p className="text-sm text-gray-500 mb-2">
-          {formatDate(post.createdAt)}
-        </p>
-        <p className="text-base font-normal">{post.content}</p>
-      </div>
-      {isAuthor && (
-        <div className="flex space-x-4 ml-[16px]">
-          <button
-            onClick={handleEdit}
-            className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
+      {isDesktop ? (
+        // 웹 시안 레이아웃
+        <div className="xl:px-[340px] xl:pt-[32px]">
+          <Swiper
+            pagination={{ clickable: true }}
+            navigation={true}
+            modules={[Pagination, Navigation]}
           >
-            수정하기
-          </button>
-          <button
-            onClick={handleDelete}
-            className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
-          >
-            삭제하기
-          </button>
+            {images.map((src, index) => (
+              <SwiperSlide key={index}>
+                <Image
+                  src={src}
+                  alt={`Image ${index}`}
+                  width={800}
+                  height={600}
+                  className="w-full h-full object-cover"
+                  priority
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          <div className="xl:flex xl:space-x-10 mt-[64px]">
+            {/* 왼쪽 섹션 */}
+            <div className="flex flex-col xl:w-[800px]">
+              <button
+                onClick={handleRegionClick}
+                className="font-medium text-[20px] text-white bg-orange3 px-3 py-1.5 rounded-lg self-start"
+              >
+                {`${post.region} ${post.sigungu}`}
+              </button>
+              <p className="text-[48px] font-medium mt-[48px]">{post.title}</p>
+              <p className="text-base font-normal mt-[24px]">{post.content}</p>
+              <hr className="border-t border-gray-300 my-[48px]" />
+              <div className="flex">
+                <DetailLikeBtn
+                  postId={post.id}
+                  userId={user?.id ?? ''}
+                  onCommentClick={() => setIsCommentModalOpen(true)}
+                  commentCount={commentCount}
+                />
+              </div>
+              {isCommentModalOpen && (
+                <div className="fixed inset-0 z-50">
+                  <Comments
+                    postId={post.id}
+                    onClose={() => setIsCommentModalOpen(false)}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* 오른쪽 섹션 */}
+            <div className="flex flex-col xl:w-[400px]">
+              <div className="bg-blue1 p-[16px] rounded-[18px] shadow">
+                <div className="flex items-center space-x-4">
+                  <Image
+                    src={userProfileImage}
+                    alt="User Avatar"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full"
+                  />
+                  <div>
+                    <p className="font-semibold">{userNickname}</p>
+                    <button
+                      onClick={() => router.push(`/profile/${post.userId}`)}
+                      className="text-blue4 font-semibold text-sm mt-1"
+                    >
+                      프로필 보기
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <PopularPosts userId={post.userId} userNickname={userNickname} />
+            </div>
+          </div>
         </div>
-      )}
-      {isCommentModalOpen && (
-        <div className="fixed inset-0 z-50">
-          <Comments
+      ) : (
+        // 모바일 시안 레이아웃
+        <div>
+          <div className="flex items-center justify-between h-14 mt-2 px-4">
+            <div className="flex items-center">
+              <Image
+                src={userProfileImage}
+                alt="User Avatar"
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full mr-2"
+              />
+              <p className="font-semibold text-sm">{userNickname}</p>
+            </div>
+            <button
+              onClick={handleRegionClick}
+              className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg"
+            >
+              {`${post.region} ${post.sigungu}`}
+            </button>
+          </div>
+          <Swiper
+            pagination={{ clickable: true }}
+            navigation={true}
+            modules={[Pagination, Navigation]}
+          >
+            {images.map((src, index) => (
+              <SwiperSlide key={index}>
+                <Image
+                  src={src}
+                  alt={`Image ${index}`}
+                  width={800}
+                  height={600}
+                  className="w-full h-full object-cover"
+                  priority
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <DetailLikeBtn
             postId={post.id}
-            onClose={() => setIsCommentModalOpen(false)}
+            userId={user?.id ?? ''}
+            onCommentClick={() => setIsCommentModalOpen(true)}
+            commentCount={commentCount}
           />
+          <div className="mx-4 mb-5 px-4 py-2.5 bg-white rounded-3xl">
+            <p className="text-2xl font-bold mb-2">{post.title}</p>
+            <p className="text-sm text-gray-500 mb-2">
+              {formatDate(post.createdAt)}
+            </p>
+            <p className="text-base font-normal">{post.content}</p>
+          </div>
+          {isAuthor && (
+            <div className="flex space-x-4 ml-[16px]">
+              <button
+                onClick={handleEdit}
+                className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
+              >
+                수정하기
+              </button>
+              <button
+                onClick={handleDelete}
+                className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
+              >
+                삭제하기
+              </button>
+            </div>
+          )}
+          {isCommentModalOpen && (
+            <div className="fixed inset-0 z-50">
+              <Comments
+                postId={post.id}
+                onClose={() => setIsCommentModalOpen(false)}
+              />
+            </div>
+          )}
+          <PopularPosts userId={post.userId} userNickname={userNickname} />
         </div>
       )}
-      <PopularPosts userId={post.userId} userNickname={userNickname} />
     </div>
   );
 }
