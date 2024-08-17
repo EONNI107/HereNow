@@ -23,7 +23,9 @@ function WebFeedSearchItem() {
             searchValue: query,
           },
         });
-        setFeedData(res.data.data as TableFeedType[]);
+        const datas = res.data.data;
+        const sortedData = datas.slice(0, 4);
+        setFeedData(sortedData as TableFeedType[]);
       } catch (error) {
         showToast('error', '피드를 불러오는데 오류가 발생했습니다.');
       }
@@ -31,7 +33,8 @@ function WebFeedSearchItem() {
     const searchData = async () => {
       try {
         const res = await searchApi(query, '/api/search');
-        setBasicData(res);
+        const sortedData = res.slice(0, 4);
+        setBasicData(sortedData);
       } catch (error) {
         showToast('error', '피드를 불러오는데 오류가 발생했습니다.');
       }
