@@ -77,9 +77,6 @@ function AroundLocalList() {
     if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
       SetIsGetPosition(true);
     }
-    // else if (!(cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION'])) {
-    //   setIsNotLocation(true);
-    // }
   }, [isGetPosition]);
 
   const filtercode = localitems[0]?.areacode;
@@ -93,21 +90,19 @@ function AroundLocalList() {
       {isNotLocation ? (
         <div className="w-full flex flex-col gap-9">
           <WebMainBar
-            title="내 주변에 숨은"
-            content="로컬들이 공유하는 장소"
+            title="가장 인기있는"
+            content="내 주변의 관광명소"
             url={`/local/${filterdata?.ename}`}
           />
-          <div className="flex w-full">
-            <ul className="flex gap-[42px] w-full h-[331px]">
-              {localitems.map((item: NearbyPlace) => (
-                <AroundLocalItem
-                  key={item.contentid}
-                  item={item}
-                  onclick={() => handleClick(item.contentid)}
-                />
-              ))}
-            </ul>
-          </div>
+          <ul className="flex gap-[42px]">
+            {localitems.map((item: NearbyPlace) => (
+              <AroundLocalItem
+                key={item.contentid}
+                item={item}
+                onclick={() => handleClick(item.contentid)}
+              />
+            ))}
+          </ul>
         </div>
       ) : (
         <div className="w-full flex flex-col justify-center items-center gap-[64px]">

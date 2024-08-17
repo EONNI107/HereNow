@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 
 function FooterMain() {
   const { user } = useAuthStore();
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 1000);
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 1024);
 
   const handleLoginPrompt = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ function FooterMain() {
   useEffect(() => {
     // 윈도우 창의 크기를 감지하는 함수
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1000);
+      setIsMobile(window.innerWidth < 1024);
     };
     // 컴포넌트가 처음 마운트 될 때와 창 크기 변화 시에 실행
     // 초기 실행

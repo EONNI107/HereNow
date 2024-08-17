@@ -3,7 +3,7 @@ import React from 'react';
 
 function WebFooter() {
   return (
-    <div className=" w-full h-[244px] bg-white flex justify-center items-center">
+    <div className=" w-full bg-white flex justify-center items-center py-[86px]">
       <div className="flex justify-between w-[1240px]">
         <div className="flex flex-col gap-[16px]">
           <h2 className="text-4xl font-medium leading-[normal] text-blue4 font-[양진체]">

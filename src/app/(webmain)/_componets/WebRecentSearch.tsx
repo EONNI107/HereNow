@@ -23,7 +23,7 @@ function WebRecentSearch() {
     setIsbg(false);
   };
   return (
-    <div className="w-full h-screen fixed top-[78px] flex justify-center bg-white pt-[80px]">
+    <div className="w-full h-screen fixed top-[78px] flex justify-center bg-white pt-[80px] left-0">
       <div className="w-[1240px] flex flex-col gap-12">
         <div className="flex justify-between">
           <p className="text-[32px]">최근검색어</p>

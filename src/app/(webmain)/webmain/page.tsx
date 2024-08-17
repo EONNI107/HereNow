@@ -6,7 +6,7 @@ import MainBanner from '../_componets/MainBanner';
 
 function WebMainPage() {
   return (
-    <div className="w-full flex flex-col items-center gap-y-9">
+    <div className="w-full flex flex-col items-center gap-y-9 justify-center">
       {/* 메인배너이미지 */}
       <MainBanner />
       <div className="w-full max-w-[1240px] flex flex-col mx-[340px] gap-y-[96px]">

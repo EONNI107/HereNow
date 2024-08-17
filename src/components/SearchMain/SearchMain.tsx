@@ -12,7 +12,7 @@ function SearchMain() {
   const [isBorderShow, setIsBorderShow] = useState<boolean>(true);
   const searchParams = useSearchParams();
   const searchValue = searchParams.get('q') as string;
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 1000);
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 1024);
 
   const handleFeedClick = () => {
     setIsBorderShow(true);
@@ -25,7 +25,7 @@ function SearchMain() {
   useEffect(() => {
     // 윈도우 창의 크기를 감지하는 함수
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 1000);
+      setIsMobile(window.innerWidth < 1024);
     };
     // 컴포넌트가 처음 마운트 될 때와 창 크기 변화 시에 실행
     handleResize(); // 초기 실행

@@ -54,8 +54,8 @@ function WebHeader() {
     logOut();
   };
   return (
-    <header className="w-full py-4 fixed right-0 left-0 mx-auto z-10 box-shadow bg-white px-[340px]">
-      <div className="flex gap-x-[90px] max-w-[1293px] mx-auto">
+    <header className="w-full py-4 fixed right-0 left-0 mx-auto z-10 box-shadow bg-white flex justify-center items-center">
+      <div className="flex gap-x-[90px] w-[1293px]">
         <div
           className="grow-0 font-medium text-[36px] flex justify-center items-center cursor-pointer"
           onClick={() => router.push('/')}
