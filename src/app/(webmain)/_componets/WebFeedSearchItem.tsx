@@ -8,10 +8,12 @@ import { TableFeedType } from '@/types/mainTypes';
 import { showToast } from '@/utils/toastHelper';
 import WebFeedItem from './WebFeedItem';
 import { SearchedType } from '@/components/SearchMain/SearchMain';
+import SkeletonWebSearch from '@/components/MainPage/Skeleton/SkeletonWebSearch';
 
 function WebFeedSearchItem() {
   const [basicData, setBasicData] = useState<SearchedType[]>([]);
   const [feedData, setFeedData] = useState<TableFeedType[]>([]);
+  const [isSkeleton, setIsSkeleton] = useState<boolean>(true);
   const params = useSearchParams();
   const query = params.get('q') as string;
 
@@ -26,6 +28,7 @@ function WebFeedSearchItem() {
         const datas = res.data.data;
         const sortedData = datas.slice(0, 4);
         setFeedData(sortedData as TableFeedType[]);
+        setIsSkeleton(false);
       } catch (error) {
         showToast('error', '피드를 불러오는데 오류가 발생했습니다.');
       }
@@ -35,6 +38,7 @@ function WebFeedSearchItem() {
         const res = await searchApi(query, '/api/search');
         const sortedData = res.slice(0, 4);
         setBasicData(sortedData);
+        setIsSkeleton(false);
       } catch (error) {
         showToast('error', '피드를 불러오는데 오류가 발생했습니다.');
       }
@@ -56,9 +60,13 @@ function WebFeedSearchItem() {
             <h3 className="text-2xl font-medium leading-[150%]">피드</h3>
           </div>
           <div className="w-full flex flex-col gap-4">
-            {feedData?.map((item) => (
-              <WebFeedItem item={item} key={item.id} />
-            ))}
+            {isSkeleton
+              ? Array.from({ length: 4 }).map((_: unknown, index) => (
+                  <SkeletonWebSearch key={index} />
+                ))
+              : feedData?.map((item) => (
+                  <WebFeedItem item={item} key={item.id} />
+                ))}
           </div>
         </div>
         <div className="w-full flex flex-col items-center gap-y-[39px]">
@@ -66,9 +74,13 @@ function WebFeedSearchItem() {
             <h3 className="text-2xl font-medium leading-[150%]">행사</h3>
           </div>
           <div className="w-full flex flex-col gap-4">
-            {basicData?.map((item) => (
-              <WebSearchItem item={item} key={item.contentid} />
-            ))}
+            {isSkeleton
+              ? Array.from({ length: 4 }).map((_: unknown, index) => (
+                  <SkeletonWebSearch key={index} />
+                ))
+              : basicData?.map((item) => (
+                  <WebSearchItem item={item} key={item.contentid} />
+                ))}
           </div>
         </div>
       </div>

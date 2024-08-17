@@ -4,9 +4,11 @@ import FeedItem from './FeedItem';
 import { TableFeedUserType } from '@/types/mainTypes';
 import axios from 'axios';
 import WebMainBar from '../WebMainBar';
+import SkeletonWebFeed from '@/components/MainPage/Skeleton/SkeletonWebFeed';
 
 function LocalFeedList() {
   const [feedItems, setFeedItems] = useState<TableFeedUserType[] | null>([]);
+  const [isSkeleton, setIsSkeleton] = useState<boolean>(true);
   useEffect(() => {
     feedUserDatas();
   }, []);
@@ -17,6 +19,7 @@ function LocalFeedList() {
       (a, b) => b.FeedLikes.length - a.FeedLikes.length,
     );
     setFeedItems(sortedItems);
+    setIsSkeleton(false);
   };
 
   return (
@@ -27,9 +30,13 @@ function LocalFeedList() {
         url="/feed"
       />
       <div className="grid grid-cols-4 grid-rows-2 gap-7">
-        {feedItems?.map((item) => (
-          <FeedItem feedItem={item} key={item.id} />
-        ))}
+        {isSkeleton
+          ? Array.from({ length: 8 }).map((_: unknown, index) => (
+              <SkeletonWebFeed key={index} />
+            ))
+          : feedItems?.map((item) => (
+              <FeedItem feedItem={item} key={item.id} />
+            ))}
       </div>
     </div>
   );

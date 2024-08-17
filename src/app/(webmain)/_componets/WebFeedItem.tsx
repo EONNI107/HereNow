@@ -41,7 +41,7 @@ function WebFeedItem({ item }: itemProps) {
         />
       </div>
       <div className="flex">
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-center">
           <h2 className="font-semibold text-[16px] text-main line-clamp-1">
             {item.title}
           </h2>

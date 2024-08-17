@@ -10,6 +10,7 @@ import WebMainBar from '../WebMainBar';
 import { useModal } from '@/components/Modal/Modal';
 import { useCookies } from 'react-cookie';
 import Image from 'next/image';
+import SkeletonLocation from '@/components/MainPage/Skeleton/SkeletonLocation';
 
 type PositionType = {
   coords: {
@@ -95,13 +96,17 @@ function AroundLocalList() {
             url={`/local/${filterdata?.ename}`}
           />
           <ul className="flex gap-[42px]">
-            {localitems.map((item: NearbyPlace) => (
-              <AroundLocalItem
-                key={item.contentid}
-                item={item}
-                onclick={() => handleClick(item.contentid)}
-              />
-            ))}
+            {loading
+              ? Array.from({ length: 3 }).map((_, index) => (
+                  <SkeletonLocation key={index} />
+                ))
+              : localitems.map((item: NearbyPlace) => (
+                  <AroundLocalItem
+                    key={item.contentid}
+                    item={item}
+                    onclick={() => handleClick(item.contentid)}
+                  />
+                ))}
           </ul>
         </div>
       ) : (
