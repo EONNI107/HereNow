@@ -72,8 +72,8 @@ function WebHeader() {
         >
           <input
             type="text"
-            placeholder="검색창"
-            className="w-full bg-[#ecedef] h-[18px]"
+            placeholder={`${user ? user?.nickname + '님' : '여러분'} 환영해요!`}
+            className="w-full bg-[#ecedef] focus:outline-none"
             value={inputValue}
             onChange={handleInputChange}
           />

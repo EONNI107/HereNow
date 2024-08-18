@@ -22,7 +22,7 @@ function MainBanner() {
     }
   };
   return (
-    <div className="w-full max-w-[1920px] max-h-[700px] relative">
+    <div className="w-full max-w-[1920px] max-h-[700px] relative overflow-hidden">
       <div className="w-auto h-auto">
         <Image
           src="/Main-Banner.jpg"
@@ -32,7 +32,7 @@ function MainBanner() {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="gap-[24px] flex flex-col justify-center items-center absolute bottom-[150px] left-[260px]">
+      <div className="gap-[24px] flex flex-col justify-center items-center absolute top-[25%] left-[10%]">
         <div className="w-[420px]">
           <h2 className="text-5xl font-semibold leading-[150%]">
             {user ? `${user.nickname}님` : '여러분'}
@@ -42,7 +42,7 @@ function MainBanner() {
         </div>
         <div
           onClick={HandleOnClick}
-          className="cursor-pointer w-full px-[28px] py-[16px] flex justify-center items-center rounded-2xl bg-blue4 text-white"
+          className="cursor-pointer w-[420px] px-[28px] py-[16px] flex justify-center items-center rounded-2xl bg-blue4 text-white"
         >
           <button className="text-[1.75rem] font-semibold leading-[150%]">
             글쓰러가기
