@@ -48,7 +48,7 @@ export default function PlaceLikes() {
             <div key={place.id}>
               <Link href={`/local/details/${place.placeId}`}>
                 <Image
-                  src={place.imageUrl || '/No_Img.jpg'}
+                  src={place.imageUrl || '/NoImg-v3.png'}
                   alt={'찜한 장소 이미지'}
                   width={200}
                   height={200}
