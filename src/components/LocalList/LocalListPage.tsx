@@ -66,7 +66,7 @@ function LocalListPage({ region }: { region: string }) {
         <div className="pt-5 bg-gray0 xl:bg-white xl:max-w-[1240px]">
           {isPending ? (
             <div className="grid grid-cols-1 gap-4 justify-items-center xl:grid-cols-2 xl:gap-8 xl:justify-items-stretch xl:px-4">
-              {[...Array(5)].map((_, index) => (
+              {[...Array(6)].map((_, index) => (
                 <SkeletonCard key={index} />
               ))}
             </div>
