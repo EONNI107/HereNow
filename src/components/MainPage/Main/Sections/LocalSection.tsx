@@ -54,7 +54,10 @@ function LocalSection() {
   };
 
   const getLocationErr = (error: GeolocationError) => {
-    showToast('error', 'Failed to fetch location data');
+    showToast(
+      'error',
+      '데스크탑이나 스마트폰의 위치를 직접 승인해주시기 바랍니다.',
+    );
   };
   const getLoaction = () => {
     const option = {
@@ -70,18 +73,16 @@ function LocalSection() {
   };
   const getSortLoaction = () => {
     if (isGetPosition) {
+      getLoaction();
       setIsNotLocation(true);
     }
   };
   useEffect(() => {
-    getLoaction();
     getSortLoaction();
     if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
+      getLoaction();
       SetIsGetPosition(true);
     }
-    // else if (!(cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION'])) {
-    //   setIsNotLocation(true);
-    // }
   }, [isGetPosition]);
 
   const handleClick = (contentid: string) => {
