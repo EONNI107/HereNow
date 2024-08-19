@@ -49,16 +49,15 @@ function FeedWrite() {
       setImagePreviews(existingImages);
     }
 
-    // 화면 크기 체크
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1280);
     };
 
-    handleResize(); // 초기 실행 시 화면 크기 체크
-    window.addEventListener('resize', handleResize); // 리사이즈 이벤트 리스너 등록
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize); // 리스너 제거
+      window.removeEventListener('resize', handleResize);
     };
   }, [searchParams]);
 

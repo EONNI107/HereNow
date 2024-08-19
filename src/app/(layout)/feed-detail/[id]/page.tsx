@@ -102,7 +102,7 @@ function PostPage({ params }: PostPageProps) {
   const { user } = useAuthStore();
   const router = useRouter();
   const [isDesktop, setIsDesktop] = useState(false);
-  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false); // 모바일 시안에서 모달 상태 관리
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
   useEffect(() => {
     const updateMedia = () => {
