@@ -60,9 +60,6 @@ export default function PlaceLikes() {
                   <strong className="font-semibold text-lg xl:text-2xl block mb-2 truncate">
                     {place.title}
                   </strong>
-                  <p className="text-sub1 xl:text-lg line-clamp-2 xl:line-clamp-1">
-                    {place.content}
-                  </p>
                 </div>
               </Link>
             );

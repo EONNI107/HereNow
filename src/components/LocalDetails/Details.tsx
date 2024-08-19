@@ -117,7 +117,6 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
               imageUrl={mainData.firstimage}
               placeId={mainData.contentid}
               title={mainData.title}
-              content={filteredOverview}
             />
             <button
               onClick={handleShareBtn}

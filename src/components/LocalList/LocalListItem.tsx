@@ -54,6 +54,7 @@ function LocalListItem({ item, region }: { item: Item; region: string }) {
             imageUrl={item.firstimage}
             placeId={item.contentid}
             isInLocalList={true}
+            title={item.title}
           />
         </div>
       </div>

@@ -8,7 +8,6 @@ import useAuthStore from '@/zustand/useAuthStore';
 
 type LikeBtnProps = {
   title: string;
-  content: string;
   placeId: string;
   imageUrl: string;
   isInNearbyPlaces?: boolean;
@@ -19,7 +18,6 @@ function LikeBtn({
   placeId,
   imageUrl,
   title,
-  content,
   isInNearbyPlaces = false,
   isInLocalList = false,
 }: LikeBtnProps) {
@@ -51,7 +49,6 @@ function LikeBtn({
         placeId,
         imageUrl,
         title,
-        content,
       });
     },
     onMutate: async () => {
