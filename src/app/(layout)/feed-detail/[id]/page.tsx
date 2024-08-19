@@ -194,7 +194,7 @@ function PostPage({ params }: PostPageProps) {
   return (
     <div className="min-h-screen bg-gray0 pb-5">
       {isDesktop ? (
-        // 웹 시안 레이아웃
+        // 웹 시안
         <div className="xl:px-[340px] xl:pt-[32px]">
           <Swiper
             pagination={{ clickable: true }}
@@ -237,7 +237,6 @@ function PostPage({ params }: PostPageProps) {
                   commentCount={commentCount}
                 />
               </div>
-              {/* 댓글 입력창과 댓글 목록 */}
               <Comments postId={post.id} onClose={() => {}} />
             </div>
 
@@ -270,7 +269,7 @@ function PostPage({ params }: PostPageProps) {
           </div>
         </div>
       ) : (
-        // 모바일 시안 레이아웃
+        // 모바일 시안
         <div>
           <div className="flex items-center justify-between h-14 mt-2 px-4">
             <div className="flex items-center">
@@ -311,7 +310,7 @@ function PostPage({ params }: PostPageProps) {
           <DetailLikeBtn
             postId={post.id}
             userId={user?.id ?? ''}
-            onCommentClick={() => setIsCommentModalOpen(true)} // 모바일 시안에서는 모달 열기
+            onCommentClick={() => setIsCommentModalOpen(true)}
             commentCount={commentCount}
           />
           <div className="mx-4 mb-5 px-4 py-2.5 bg-white rounded-3xl">

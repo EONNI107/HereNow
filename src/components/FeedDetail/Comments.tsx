@@ -33,7 +33,7 @@ type Comment = {
 
 type CommentsProps = {
   postId: number;
-  onClose?: () => void; // 모바일 모달을 닫기 위한 함수, 웹 시안에서는 사용되지 않음
+  onClose?: () => void;
 };
 
 function Comments({ postId, onClose }: CommentsProps) {
