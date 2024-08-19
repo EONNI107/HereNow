@@ -18,14 +18,15 @@ export const GET = async (
   const areaCode = selectedRegion?.code;
   const { searchParams } = new URL(request.url);
   const pageNo = searchParams.get('pageNo') || '1';
+  const sigunguCode = searchParams.get('sigunguCode');
 
   const today = dayjs().format('YYYYMMDD');
 
   try {
     const response = await tourApi.get(
-      `searchFestival1?numOfRows=10&pageNo=${pageNo}&MobileOS=etc&MobileApp=HereNow&_type=json&listYN=Y&arrange=R&eventStartDate=${today}&areaCode=${areaCode}&serviceKey=${serviceKey}`,
+      `searchFestival1?numOfRows=10&pageNo=${pageNo}&MobileOS=etc&MobileApp=HereNow&_type=json&listYN=Y&arrange=R&eventStartDate=${today}&areaCode=${areaCode}&sigunguCode=${sigunguCode}&serviceKey=${serviceKey}`,
     );
-
+    console.log(sigunguCode);
     return NextResponse.json({
       localList: response.data.response.body?.items?.item ?? [],
       totalPage: Math.ceil(

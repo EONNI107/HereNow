@@ -20,7 +20,6 @@ dayjs.extend(relativeTime);
 
 type Comment = {
   id: number;
-  feedId: number;
   content: string;
   userId: string;
   createdAt: string;
@@ -30,13 +29,17 @@ type Comment = {
   } | null;
 };
 
+type FeedComment = Comment & { feedId: number };
+type PlaceComment = Comment & { placeId: number };
+
 type CommentsProps = {
-  postId: number;
+  postId?: number;
+  placeId?: number;
   onClose: () => void;
 };
 
-function Comments({ postId, onClose }: CommentsProps) {
-  const [comments, setComments] = useState<Comment[]>([]);
+function Comments({ postId, placeId, onClose }: CommentsProps) {
+  const [comments, setComments] = useState<(FeedComment | PlaceComment)[]>([]);
   const [newComment, setNewComment] = useState<string>('');
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editingContent, setEditingContent] = useState<string>('');
@@ -45,25 +48,37 @@ function Comments({ postId, onClose }: CommentsProps) {
 
   useEffect(() => {
     const fetchComments = async () => {
-      const { data, error } = await supabase
-        .from('FeedComments')
-        .select('*, Users (profileImage, nickname)')
-        .eq('feedId', postId)
-        .order('createdAt', { ascending: true });
+      if (postId) {
+        const { data, error } = await supabase
+          .from('FeedComments')
+          .select('*, Users (profileImage, nickname)')
+          .eq('feedId', postId)
+          .order('createdAt', { ascending: true });
 
-      if (error) {
-        console.error(error);
-      } else if (data) {
-        setComments(data as Comment[]);
+        if (error) {
+          console.error(error);
+        } else if (data) {
+          setComments(data as FeedComment[]);
+        }
+      } else if (placeId) {
+        const { data, error } = await supabase
+          .from('PlaceComments')
+          .select('*, Users (profileImage, nickname)')
+          .eq('placeId', placeId)
+          .order('createdAt', { ascending: true });
+
+        if (error) {
+          console.error(error);
+        } else if (data) {
+          setComments(data as PlaceComment[]);
+        }
       }
     };
-
     fetchComments();
-  }, [postId, supabase]);
+  }, [postId, placeId, supabase]);
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!user) {
       toast(<LoginPrompt />, {
         position: 'top-center',
@@ -74,31 +89,60 @@ function Comments({ postId, onClose }: CommentsProps) {
       return;
     }
 
-    const { data, error } = await supabase
-      .from('FeedComments')
-      .insert({
-        feedId: postId,
-        content: newComment,
-        userId: user.id,
-      })
-      .select('*, Users (profileImage, nickname)');
+    if (postId) {
+      const { data, error } = await supabase
+        .from('FeedComments')
+        .insert({
+          feedId: postId,
+          content: newComment,
+          userId: user.id,
+        })
+        .select('*, Users (profileImage, nickname)');
 
-    if (error) {
-      console.error(error);
-    } else if (data) {
-      setComments((prevComments) => [
-        ...prevComments,
-        ...data.map(
-          (comment): Comment => ({
-            ...comment,
-            Users: comment.Users || {
-              profileImage: null,
-              nickname: null,
-            },
-          }),
-        ),
-      ]);
-      setNewComment('');
+      if (error) {
+        console.error(error);
+      } else if (data) {
+        setComments((prevComments) => [
+          ...prevComments,
+          ...data.map(
+            (comment): FeedComment => ({
+              ...comment,
+              Users: comment.Users || {
+                profileImage: null,
+                nickname: null,
+              },
+            }),
+          ),
+        ]);
+        setNewComment('');
+      }
+    } else if (placeId) {
+      const { data, error } = await supabase
+        .from('PlaceComments')
+        .insert({
+          placeId: placeId,
+          content: newComment,
+          userId: user.id,
+        })
+        .select('*, Users (profileImage, nickname)');
+
+      if (error) {
+        console.error(error);
+      } else if (data) {
+        setComments((prevComments) => [
+          ...prevComments,
+          ...data.map(
+            (comment): PlaceComment => ({
+              ...comment,
+              Users: comment.Users || {
+                profileImage: null,
+                nickname: null,
+              },
+            }),
+          ),
+        ]);
+        setNewComment('');
+      }
     }
   };
 
@@ -122,9 +166,8 @@ function Comments({ postId, onClose }: CommentsProps) {
       toast.error('수정할 내용을 입력하세요.');
       return;
     }
-
     const { error } = await supabase
-      .from('FeedComments')
+      .from(postId ? 'FeedComments' : 'PlaceComments')
       .update({ content: editingContent })
       .eq('id', commentId)
       .eq('userId', user.id);
@@ -140,10 +183,11 @@ function Comments({ postId, onClose }: CommentsProps) {
             : comment,
         ),
       );
-      setEditingCommentId(null);
-      setEditingContent('');
-      toast.success('댓글이 수정되었습니다.');
     }
+
+    setEditingCommentId(null);
+    setEditingContent('');
+    toast.success('댓글이 수정되었습니다.');
   };
 
   const handleDeleteComment = async (commentId: number) => {
@@ -158,7 +202,7 @@ function Comments({ postId, onClose }: CommentsProps) {
     }
 
     const { error } = await supabase
-      .from('FeedComments')
+      .from(postId ? 'FeedComments' : 'PlaceComments')
       .delete()
       .eq('id', commentId)
       .eq('userId', user.id);
