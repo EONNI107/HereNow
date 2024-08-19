@@ -353,10 +353,9 @@ function MyPage({ params }: { params: { id: string } }) {
                     profile?.profileImage ||
                     '/default-profile.jpg'
                   }
-                  className="rounded-full"
+                  className="rounded-full object-cover"
                   alt="Profile"
-                  layout="fill"
-                  objectFit="cover"
+                  fill
                 />
                 {isMyPage && (
                   <label

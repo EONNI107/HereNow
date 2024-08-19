@@ -15,7 +15,7 @@ function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
   const nickname = user?.nickname;
 
   return (
-    <div className="xl:w-[400px]">
+    <div className="xl:w-[400px] overflow-y-scroll xl:overflow-hidden">
       <p className="font-bold text-md mx-2 mb-4 xl:text-2xl">
         {!user ? '이런 곳은 어때요?' : `${nickname}님, 이런 곳은 어때요?`}
       </p>

@@ -4,9 +4,10 @@ import { toast } from 'react-toastify';
 
 type DeletePromptProps = {
   onConfirm: () => Promise<void>;
+  isComment?: boolean;
 };
 
-function DeletePrompt({ onConfirm }: DeletePromptProps) {
+function DeletePrompt({ onConfirm, isComment = false }: DeletePromptProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -14,11 +15,12 @@ function DeletePrompt({ onConfirm }: DeletePromptProps) {
   const handleConfirm = async () => {
     closeToast();
     await onConfirm();
-    setTimeout(() => {
-      if (!pathname.startsWith('/feed-detail/')) {
+
+    if (!isComment && !pathname.startsWith('/feed-detail/')) {
+      setTimeout(() => {
         router.push('/feed');
-      }
-    }, 300);
+      }, 300);
+    }
   };
 
   return (
@@ -36,9 +38,7 @@ function DeletePrompt({ onConfirm }: DeletePromptProps) {
         </button>
         <button
           className="bg-blue-500 w-32 text-white px-3 py-1 rounded"
-          onClick={() => {
-            handleConfirm();
-          }}
+          onClick={handleConfirm}
         >
           확인
         </button>

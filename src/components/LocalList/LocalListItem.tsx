@@ -13,7 +13,7 @@ function LocalListItem({ item, region }: { item: Item; region: string }) {
   );
 
   return (
-    <div className="border rounded-3xl overflow-hidden shadow-xl relative w-[343px] h-[140px] xl:w-auto xl:h-auto xl:rounded-xl group">
+    <div className="border rounded-3xl overflow-hidden shadow-xl relative w-[343px] h-[155px] xl:w-[399px] xl:h-[258px] xl:rounded-xl group">
       <div className="relative">
         <Link href={`/local/details/${item.contentid}`}>
           <Image
@@ -30,7 +30,7 @@ function LocalListItem({ item, region }: { item: Item; region: string }) {
                 {getRegionNameKorean(region)}{' '}
                 {getSigunguName(selectedRegion?.code || '', item.sigungucode)}
               </p>
-              <h2 className="font-semibold text-lg text-white mb-1">
+              <h2 className="font-semibold text-[18px] text-white mb-1 line-clamp-1">
                 {item.title}
               </h2>
             </div>
@@ -49,7 +49,9 @@ function LocalListItem({ item, region }: { item: Item; region: string }) {
       </div>
       <div className="hidden xl:block">
         <div className="flex items-center justify-between border-l border-r border-b rounded-b-xl bg-white p-3">
-          <h2 className="font-semibold text-lg truncate pr-4">{item.title}</h2>
+          <h2 className="font-semibold text-[20px] pr-4 line-clamp-1">
+            {item.title}
+          </h2>
           <LikeBtn
             imageUrl={item.firstimage}
             placeId={item.contentid}

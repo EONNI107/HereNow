@@ -30,6 +30,7 @@ function MainBanner() {
           width={1920}
           height={700}
           className="w-full h-full object-cover"
+          priority
         />
       </div>
       <div className="gap-[30px] flex flex-col justify-center items-start absolute top-[40%] left-[10%] w-[30%] h-[30%] text-[150%]">

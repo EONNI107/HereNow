@@ -156,7 +156,7 @@ function PostPage({ params }: PostPageProps) {
   };
 
   const handleDelete = async () => {
-    toast(<DeletePrompt onConfirm={performDelete} />, {
+    toast(<DeletePrompt onConfirm={performDelete} isComment={false} />, {
       position: 'top-center',
       autoClose: false,
       closeOnClick: false,

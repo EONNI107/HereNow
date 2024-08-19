@@ -20,23 +20,27 @@ function WebFooter() {
           </div>
         </div>
         <div className="flex justify-center items-center gap-2">
-          <button className="w-28 h-11 shrink-0 rounded-lg border-[#E5E5EC] border text-sm not-italic font-normal leading-5 flex justify-center items-center gap-1">
+          <button className="w-auto h-auto px-4 py-3 shrink-0 rounded-lg border-[#E5E5EC] border text-sm not-italic font-normal leading-5 flex justify-center items-center gap-1">
             <Image
               src="/app-store.jpg"
               alt="App이미지"
               width={24}
               height={24}
+              priority
+              className="w-full h-full"
             />
-            <p>App Store</p>
+            <p className="shrink-0">App Store</p>
           </button>
-          <button className="w-28 h-11 shrink-0 rounded-lg border-[#E5E5EC] border text-sm not-italic font-normal leading-5 flex justify-center items-center gap-1">
+          <button className="w-auto h-auto px-4 py-3 shrink-0 rounded-lg border-[#E5E5EC] border text-sm not-italic font-normal leading-5 flex justify-center items-center gap-1">
             <Image
               src="/play-store.jpg"
               alt="play이미지"
               width={24}
               height={24}
+              priority
+              className="w-full h-full"
             />
-            <p>Play Store</p>
+            <p className="shrink-0">Play Store</p>
           </button>
         </div>
       </div>
