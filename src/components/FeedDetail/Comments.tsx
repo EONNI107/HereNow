@@ -244,44 +244,46 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
   };
   console.log('isDesktop => ', isDesktop);
   return isDesktop ? (
-    // 데스크톱 버전
-    <div className="w-full mt-8">
-      <form onSubmit={handleCommentSubmit} className="w-full mb-4">
+    <div className="w-full mt-[1.6vw]">
+      <form onSubmit={handleCommentSubmit} className="w-full mb-[0.8vw]">
         <div className="w-full flex items-center">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="웹 댓글 작성폼"
             required
-            className="textarea w-[720px] text-[16px] flex h-[48px] bg-gray-100 rounded-xl items-center p-2 resize-none"
+            className="textarea w-[38vw] text-[0.8vw] flex h-[2.4vw] bg-gray-100 rounded-xl items-center p-2 resize-none"
           />
           <button
             type="submit"
-            className="btn bg-blue4 w-[80px] h-[48px] rounded-xl text-white text-[16px] ml-4"
+            className="btn bg-blue4 w-[4vw] h-[2.4vw] rounded-xl text-white text-[0.8vw] ml-[0.8vw]"
           >
             등록
           </button>
         </div>
       </form>
-      <ul className="overflow-y-auto px-4 max-h-[400px]">
+      <ul className="overflow-y-auto px-[0.8vw] max-h-[21vw]">
         {comments
           .slice(0, showAllComments ? comments.length : 3)
           .map((comment) => (
-            <li key={comment.id} className="py-4 flex border-b border-gray-300">
+            <li
+              key={comment.id}
+              className="py-[1vw] flex border-b border-gray-300"
+            >
               <Image
                 src={comment.Users?.profileImage || '/default-profile.jpg'}
                 alt="User Avatar"
                 width={48}
                 height={48}
-                className="rounded-full mr-4 w-12 h-12"
+                className="rounded-full mr-[0.8vw] w-[2.5vw] h-[2.5vw]"
               />
               <div className="flex flex-col w-full">
                 <div className="flex justify-between">
-                  <div className="flex">
-                    <p className="font-semibold text-[14px] mr-2">
+                  <div className="flex items-center">
+                    <p className="font-semibold text-[0.9vw] mr-[0.4vw]">
                       {comment.Users?.nickname || '알 수 없음'}
                     </p>
-                    <p className="text-gray-500 text-[12px]">
+                    <p className="text-gray-500 text-[0.8vw]">
                       {fromNow(comment.createdAt)}
                     </p>
                   </div>
@@ -290,21 +292,21 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
                       {editingCommentId === comment.id ? (
                         <button
                           onClick={() => handleUpdateComment(comment.id)}
-                          className="text-blue4 text-[14px]"
+                          className="text-blue4 text-[0.7vw]"
                         >
-                          <CheckCircleIcon className="w-5 h-5" />
+                          <CheckCircleIcon className="w-[1vw] h-[1vw]" />
                         </button>
                       ) : (
                         <button
                           onClick={() => handleEditClick(comment)}
-                          className="text-blue4 text-[14px]"
+                          className="text-blue4 text-[0.8vw]"
                         >
                           수정
                         </button>
                       )}
                       <button
                         onClick={() => confirmDelete(comment.id)}
-                        className="text-orange4 text-[14px]"
+                        className="text-orange4 text-[0.8vw]"
                       >
                         삭제
                       </button>
@@ -315,10 +317,10 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
                   <textarea
                     value={editingContent}
                     onChange={(e) => setEditingContent(e.target.value)}
-                    className="textarea w-full mt-2 text-[14px] border border-gray-300 resize-none"
+                    className="textarea w-full mt-2 text-[0.8vw] border border-gray-300 resize-none"
                   />
                 ) : (
-                  <p className="mt-2 text-[14px]">{comment.content}</p>
+                  <p className="mt-2 text-[0.8vw]">{comment.content}</p>
                 )}
               </div>
             </li>
@@ -328,11 +330,11 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
         <div className="mt-[18px] flex justify-center">
           <button
             onClick={() => setShowAllComments(!showAllComments)}
-            className="text-[14px] font-semibold flex items-center"
+            className="text-[0.8vw] font-semibold flex items-center"
           >
             {showAllComments ? '접기' : '더보기'}
             <ChevronDownIcon
-              className={`w-[16px] h-[16px] ml-[16px] ${
+              className={`w-[1vw] h-[1vw] ml-[0.8vw] ${
                 showAllComments ? 'transform rotate-180' : ''
               }`}
             />
@@ -341,7 +343,6 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
       )}
     </div>
   ) : (
-    // 모바일 시안
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-end justify-center">
       <div className="bg-white rounded-t-2xl w-full h-[68%] flex flex-col">
         <XMarkIcon
