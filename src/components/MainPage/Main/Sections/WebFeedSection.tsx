@@ -17,7 +17,13 @@ function WebFeedSection() {
   const feedUserDatas = async () => {
     const res = await axios.get('/api/supabase-feeduserdata');
     const items = res.data.data as TableFeedUserType[];
-    setFeedItems(items);
+
+    const sortedItems = items.sort(
+      (a, b) => b.FeedLikes.length - a.FeedLikes.length,
+    );
+    const slicedItems = sortedItems.slice(0, 4);
+
+    setFeedItems(slicedItems);
     setIsLoading(false);
   };
 

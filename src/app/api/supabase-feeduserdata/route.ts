@@ -8,7 +8,7 @@ export const GET = async (request: Request) => {
     const response = await supabase
       .from('Feeds')
       .select('*, FeedLikes(feedId), Users(nickname, profileImage)')
-      .limit(4);
+      .limit(8);
     return NextResponse.json(response);
   } catch (error) {
     console.error(error);

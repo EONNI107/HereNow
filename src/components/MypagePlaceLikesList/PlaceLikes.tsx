@@ -10,31 +10,29 @@ import Link from 'next/link';
 export default function PlaceLikes() {
   const [placeLikes, setPlaceLikes] = useState<Tables<'PlaceLikes'>[]>([]);
   const { user } = useAuthStore();
+  const supabase = createClient();
 
   useEffect(() => {
-    const supabase = createClient();
     const fetchPlaceLikes = async () => {
       if (!user) return;
-      try {
-        const { data, error } = await supabase
-          .from('PlaceLikes')
-          .select('*')
-          .eq('userId', user.id);
+      const { data, error } = await supabase
+        .from('PlaceLikes')
+        .select('*')
+        .eq('userId', user.id);
 
-        if (error) {
-          showToast('error', '슈퍼베이스 불러오는중 오류가 발생했습니다');
-          console.log(error.message);
-        }
-        if (!data) return;
-        setPlaceLikes(data);
-      } catch {}
+      if (error) {
+        showToast('error', '슈퍼베이스 불러오는중 오류가 발생했습니다');
+        console.log(error.message);
+      }
+      if (!data) return;
+      setPlaceLikes(data);
     };
 
     fetchPlaceLikes();
   }, [user?.id]);
 
   return (
-    <div className="h-[calc((100svh_-_58px_-_92px)_*_0.7)] overflow-y-auto">
+    <div className="h-[calc(100dvh-355px)] w-full overflow-y-auto">
       {placeLikes.length === 0 ? (
         <div className="h-full flex justify-center items-center">
           <div className="flex flex-col items-center justify-center">
@@ -43,20 +41,29 @@ export default function PlaceLikes() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full">
-          {placeLikes.map((place) => (
-            <div key={place.id}>
-              <Link href={`/local/details/${place.placeId}`}>
+        <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {placeLikes.map((place) => {
+            return (
+              <Link
+                href={`/local/details/${place.placeId}`}
+                key={place.id}
+                className="flex items-center space-x-4 p-4 transition-shadow duration-200"
+              >
                 <Image
-                  src={place.imageUrl || '/NoImg-v3.png'}
-                  alt={'찜한 장소 이미지'}
-                  width={200}
-                  height={200}
-                  className="rounded aspect-square object-cover"
+                  src={place.imageUrl || '/No_Img.jpg'}
+                  alt="이미지"
+                  width={100}
+                  height={100}
+                  className="rounded-[8px] object-cover w-[100px] h-[100px] xl:w-[190px] xl:h-[120px]"
                 />
+                <div className="flex-1 min-w-0 xl:w-full">
+                  <strong className="font-semibold text-lg xl:text-2xl block mb-2 truncate">
+                    {place.title}
+                  </strong>
+                </div>
               </Link>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
