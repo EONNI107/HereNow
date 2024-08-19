@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
-import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, HomeIcon } from '@heroicons/react/24/outline';
 import LocationButton from '@/components/FeedWrite/LocationButton';
 import ImageUpload from '@/components/FeedWrite/ImageUpload';
 import ContentInput from '@/components/FeedWrite/ContentInput';
@@ -24,6 +24,7 @@ function FeedWrite() {
   const [existingImageUrls, setExistingImageUrls] = useState<string[]>([]);
   const [deletedImageUrls, setDeletedImageUrls] = useState<string[]>([]);
   const [feedId, setFeedId] = useState<string | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   const router = useRouter();
   const { user } = useAuthStore();
@@ -47,6 +48,17 @@ function FeedWrite() {
       setExistingImageUrls(existingImages);
       setImagePreviews(existingImages);
     }
+
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1280);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [searchParams]);
 
   const handleImageDelete = (index: number) => {
@@ -151,12 +163,19 @@ function FeedWrite() {
   };
 
   return (
-    <div className="container">
+    <div>
       <div className="header flex justify-between items-center w-full h-12 px-2">
-        <ChevronLeftIcon
-          onClick={() => router.back()}
-          className="btn h-5 w-5 ml-2 cursor-pointer"
-        ></ChevronLeftIcon>
+        {isDesktop ? (
+          <HomeIcon
+            onClick={() => router.push('/')}
+            className="btn h-5 w-5 ml-2 cursor-pointer"
+          />
+        ) : (
+          <ChevronLeftIcon
+            onClick={() => router.back()}
+            className="btn h-5 w-5 ml-2 cursor-pointer"
+          />
+        )}
         <button
           onClick={handleSubmit}
           className="btn bg-blue4 px-2.5 py-1.5 w-15 h-9 rounded-lg font-semibold text-sm text-white"
@@ -166,26 +185,82 @@ function FeedWrite() {
       </div>
       <div className="body flex flex-col bg-gray0">
         <form onSubmit={handleSubmit} className="flex flex-col m-4">
-          <TitleInput value={title} onChange={setTitle} placeholder="제목" />
-          <hr className="border-gray-300 border mb-4" />
-          <LocationButton
-            region={region}
-            sigungu={sigungu}
-            setRegion={setRegion}
-            setSigungu={setSigungu}
-          />
-          <ImageUpload
-            images={images}
-            setImages={setImages}
-            imagePreviews={imagePreviews}
-            setImagePreviews={setImagePreviews}
-            handleImageDelete={handleImageDelete}
-          />
-          <ContentInput
-            value={content}
-            onChange={setContent}
-            placeholder="내용을 입력해주세요"
-          />
+          {isDesktop ? (
+            // 웹 시안
+            <>
+              <TitleInput
+                value={title}
+                onChange={setTitle}
+                placeholder="제목"
+              />
+              <hr className="border-gray-300 border mb-4" />
+              <div className="flex flex-row space-x-4 mb-4">
+                <ImageUpload
+                  images={images}
+                  setImages={setImages}
+                  imagePreviews={imagePreviews}
+                  setImagePreviews={setImagePreviews}
+                  handleImageDelete={handleImageDelete}
+                />
+                <LocationButton
+                  region={region}
+                  sigungu={sigungu}
+                  setRegion={setRegion}
+                  setSigungu={setSigungu}
+                />
+              </div>
+              <div className="flex overflow-x-auto space-x-2 mb-4">
+                {imagePreviews.map((src, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={src}
+                      alt={`preview-${index}`}
+                      className="h-20 w-20 object-cover"
+                    />
+                    <button
+                      onClick={() => handleImageDelete(index)}
+                      className="absolute top-0 right-0 bg-red-500 text-white rounded-full"
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <ContentInput
+                value={content}
+                onChange={setContent}
+                placeholder="내용을 입력해주세요"
+              />
+            </>
+          ) : (
+            // 모바일 시안
+            <>
+              <TitleInput
+                value={title}
+                onChange={setTitle}
+                placeholder="제목"
+              />
+              <hr className="border-gray-300 border mb-4" />
+              <LocationButton
+                region={region}
+                sigungu={sigungu}
+                setRegion={setRegion}
+                setSigungu={setSigungu}
+              />
+              <ImageUpload
+                images={images}
+                setImages={setImages}
+                imagePreviews={imagePreviews}
+                setImagePreviews={setImagePreviews}
+                handleImageDelete={handleImageDelete}
+              />
+              <ContentInput
+                value={content}
+                onChange={setContent}
+                placeholder="내용을 입력해주세요"
+              />
+            </>
+          )}
         </form>
       </div>
     </div>

@@ -27,6 +27,17 @@ function DetailLikeBtn({
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const supabase = createClient();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const updateMedia = () => {
+      setIsDesktop(window.innerWidth >= 1280);
+    };
+
+    updateMedia();
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  }, []);
 
   useEffect(() => {
     const fetchLikes = async () => {
@@ -120,7 +131,38 @@ function DetailLikeBtn({
     }
   };
 
-  return (
+  return isDesktop ? (
+    // 웹 시안
+    <div className="flex items-center justify-between">
+      <div className="flex items-center">
+        <button
+          onClick={handleLike}
+          className="flex w-[123px] h-[46px] bg-blue4 focus:outline-none items-center rounded-[12px] justify-center"
+        >
+          <span className="flex items-center text-white text-[20px] font-semibold">
+            <HeartIcon
+              className={`${
+                liked ? 'text-red-500' : 'text-white'
+              } w-6 h-6 mr-[16px]`}
+              fill={liked ? '#ff5c5c' : 'none'}
+            />{' '}
+            공감 {likeCount}
+          </span>
+        </button>
+        <span className="mx-[24px] text-gray-700 flex text-[20px] font-semibold bg-blue0 w-[123px] h-[46px] items-center border-blue4 border-[1px] rounded-[12px] justify-center">
+          <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6 cursor-pointer mr-[16px]" />
+          댓글 {commentCount}
+        </span>
+      </div>
+      <button
+        onClick={handleShareBtn}
+        className="flex text-[20px] font-semibold w-[107px] h-[46px] bg-gray0 items-center border-gray8 border-[1px] rounded-[12px] justify-center"
+      >
+        <ShareIcon className="w-6 h-6 mr-[16px]" /> 공유
+      </button>
+    </div>
+  ) : (
+    // 모바일 시안
     <div className="flex items-center justify-between h-14 px-4">
       <div className="flex items-center">
         <button onClick={handleLike} className="focus:outline-none w-6 h-6 m-2">
