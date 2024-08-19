@@ -170,10 +170,10 @@ function SignInPage() {
                       className="w-full bg-[#F9E006] font-bold text-black py-3 px-4 rounded-2xl hover:bg-yellow-400 flex items-center justify-center text-sm"
                     >
                       <Image
-                        src="/kakao_symbol.jpg"
+                        src="/kakao_symbol.png"
                         alt="Kakao"
-                        width={24}
-                        height={24}
+                        width={16}
+                        height={16}
                       />
                       <span className="ml-2">카카오로 로그인</span>
                     </button>
@@ -183,10 +183,10 @@ function SignInPage() {
                       className="w-full bg-white font-bold text-black py-3 px-4 rounded-2xl border border-gray3 hover:bg-gray-100 flex items-center justify-center text-sm"
                     >
                       <Image
-                        src="/google_symbol.svg.jpg"
+                        src="/google_symbol.png"
                         alt="Google"
-                        width={24}
-                        height={24}
+                        width={20}
+                        height={20}
                       />
                       <span className="ml-2">구글로 로그인</span>
                     </button>

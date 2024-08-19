@@ -141,11 +141,11 @@ function DetailLikeBtn({
           <span className="flex items-center text-white text-[1vw] font-semibold">
             <HeartIcon
               className={`${
-                liked ? 'text-red-500' : 'text-white'
+                liked ? 'xl:fill-white xl:text-white animate-pop' : 'text-white'
               } w-[1.3vw] h-[1.3vw] mr-[0.8vw]`}
-              fill={liked ? '#ff5c5c' : 'none'}
+              fill={liked ? '#ff5c5c ' : 'none'}
             />{' '}
-            공감 {likeCount}
+            찜 {likeCount}
           </span>
         </button>
         <span className="mx-[1.25vw] text-gray-700 flex text-[1vw] font-semibold bg-blue0 w-[6.4vw] h-[2.4vw] items-center border-blue4 border-[1px] rounded-[12px] justify-center">
@@ -165,7 +165,7 @@ function DetailLikeBtn({
       <div className="flex items-center">
         <button onClick={handleLike} className="focus:outline-none w-6 h-6 m-2">
           <HeartIcon
-            className={`${liked ? 'text-red-500' : 'text-black'}`}
+            className={`${liked ? 'text-red-500 animate-pop' : 'text-black'}`}
             fill={liked ? '#ff5c5c' : 'none'}
           />
         </button>

@@ -10,7 +10,7 @@ export const GET = async (request: Request) => {
 
   try {
     const response = await tourApi.get(
-      `locationBasedList1?numOfRows=5&MobileOS=ETC&MobileApp=HereNow&_type=json&arrange=Q&mapX=${latitude}&mapY=${longitude}&radius=4000&contentTypeId=${typeId}&serviceKey=${serviceKey}
+      `locationBasedList1?numOfRows=6&MobileOS=ETC&MobileApp=HereNow&_type=json&arrange=Q&mapX=${latitude}&mapY=${longitude}&radius=4000&contentTypeId=${typeId}&serviceKey=${serviceKey}
     `,
     );
     return NextResponse.json(response.data);
