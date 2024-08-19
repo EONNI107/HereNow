@@ -120,7 +120,7 @@ function PopularPosts({ userId, userNickname }: PopularPostsProps) {
         <div className="px-[16px] my-[24px]">
           <button
             onClick={() => router.push(`/profile/${userId}`)}
-            className="text-blue4 border-blue4 border-[1px] rounded-[16px] py-[16px] w-full text-[16px] font-semibold"
+            className="text-blue4 border-blue4 border-[1px] rounded-[16px] py-[16px] w-full text-[16px] font-semibold hover:bg-blue5 hover:text-white transition-colors duration-300"
           >
             {userNickname}님 프로필 보러가기
           </button>

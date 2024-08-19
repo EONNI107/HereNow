@@ -218,7 +218,7 @@ function PostPage({ params }: PostPageProps) {
             <div className="flex flex-col xl:w-[41.7vw]">
               <button
                 onClick={handleRegionClick}
-                className="font-medium text-[1vw] text-white bg-orange3 px-[0.8vw] py-[0.4vw] rounded-[12px] self-start w-[10.7vw] h-[2.4vw]"
+                className="font-medium text-[1vw] text-white bg-orange3 px-[0.8vw] py-[0.4vw] rounded-[12px] self-start w-[10.7vw] h-[2.4vw] hover:bg-orange4 hover:text-white transition-colors duration-300"
               >
                 {`${post.region} ${post.sigungu}`}
               </button>
@@ -230,15 +230,15 @@ function PostPage({ params }: PostPageProps) {
                   <div className="flex space-x-4 ml-[16px] items-end">
                     <button
                       onClick={handleEdit}
-                      className="btn border-2 border-blue4 text-blue4 font-semibold text-[1vw] bg-transparent rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300 w-[5vw] h-[2.5vw]"
+                      className="btn border-[1px] border-blue4 text-white font-semibold text-[1vw] bg-blue4 rounded-md hover:bg-blue5 hover:text-white transition-colors duration-300 w-[5vw] h-[2.5vw]"
                     >
-                      수정하기
+                      수정
                     </button>
                     <button
                       onClick={handleDelete}
-                      className="btn border-2 border-blue4 text-blue4 font-semibold text-[1vw] bg-transparent rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300 w-[5vw] h-[2.5vw]"
+                      className="btn border-[1px] border-blue4 text-blue4 font-semibold text-[1vw] bg-gray1 rounded-md hover:bg-gray2 hover:text-blue4 transition-colors duration-300 w-[5vw] h-[2.5vw]"
                     >
-                      삭제하기
+                      삭제
                     </button>
                   </div>
                 )}
@@ -275,7 +275,7 @@ function PostPage({ params }: PostPageProps) {
                 <div>
                   <button
                     onClick={() => router.push(`/profile/${post.userId}`)}
-                    className="text-gray0 font-medium text-[1.2vw] bg-blue4 w-full h-[3.2vw] rounded-[16px] mt-[1.3vw]"
+                    className="text-gray0 font-medium text-[1.2vw] bg-blue4 w-full h-[3.2vw] rounded-[16px] mt-[1.3vw] hover:bg-blue5 hover:text-white transition-colors duration-300"
                   >
                     프로필 구경하기
                   </button>
@@ -300,7 +300,7 @@ function PostPage({ params }: PostPageProps) {
             </div>
             <button
               onClick={handleRegionClick}
-              className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg"
+              className="font-semibold text-sm text-white bg-orange3 px-3 py-1.5 rounded-lg hover:bg-orange4 hover:text-white transition-colors duration-300"
             >
               {`${post.region} ${post.sigungu}`}
             </button>
@@ -337,18 +337,18 @@ function PostPage({ params }: PostPageProps) {
             <p className="text-base font-normal">{post.content}</p>
           </div>
           {isAuthor && (
-            <div className="flex space-x-4 ml-[16px]">
+            <div className="flex space-x-4 mr-[16px] justify-end">
               <button
                 onClick={handleEdit}
-                className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
+                className="btn border-[1px] border-blue4 text-white font-semibold text-sm bg-blue4 w-[48px] h-[28px] rounded-lg hover:bg-blue5 hover:text-white transition-colors duration-300"
               >
-                수정하기
+                수정
               </button>
               <button
                 onClick={handleDelete}
-                className="btn border-2 border-blue4 text-blue4 font-semibold text-sm bg-transparent px-4 py-2 rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300"
+                className="btn border-[1px] border-blue4 text-blue4 font-semibold text-sm bg-gray1 w-[48px] h-[28px] rounded-lg hover:bg-gray2 hover:text-blue4 transition-colors duration-300"
               >
-                삭제하기
+                삭제
               </button>
             </div>
           )}

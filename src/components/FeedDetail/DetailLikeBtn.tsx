@@ -136,7 +136,7 @@ function DetailLikeBtn({
       <div className="flex items-center">
         <button
           onClick={handleLike}
-          className="flex w-[6.4vw] h-[2.4vw] bg-blue4 focus:outline-none items-center rounded-[12px] justify-center"
+          className="flex w-[6.4vw] h-[2.4vw] bg-blue4 focus:outline-none items-center rounded-[12px] justify-center hover:bg-blue5 hover:text-white transition-colors duration-300"
         >
           <span className="flex items-center text-white text-[1vw] font-semibold">
             <HeartIcon
@@ -155,7 +155,7 @@ function DetailLikeBtn({
       </div>
       <button
         onClick={handleShareBtn}
-        className="flex text-[1vw] font-semibold w-[5.6vw] h-[2.4vw] bg-gray0 items-center border-gray8 border-[1px] rounded-[12px] justify-center"
+        className="flex text-[1vw] font-semibold w-[5.6vw] h-[2.4vw] bg-gray0 items-center border-gray8 border-[1px] rounded-[12px] justify-center hover:bg-gray1 hover:text-black transition-colors duration-300"
       >
         <ShareIcon className="w-[1.3vw] h-[1.3vw] mr-[0.8vw]" /> 공유
       </button>
