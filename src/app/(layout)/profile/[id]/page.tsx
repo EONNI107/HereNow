@@ -346,7 +346,7 @@ function MyPage({ params }: { params: { id: string } }) {
           <h2 className="text-[32px] font-bold mb-[40px]">내 프로필</h2>
           <div className="flex">
             <div className="flex items-center px-4 border-r border-gray-300 w-1/5">
-              <div className="relative w-24 h-24 mr-[64px]">
+              <div className="relative w-[160px] h-[160px]">
                 <Image
                   src={
                     imagePreview ||
@@ -428,9 +428,7 @@ function MyPage({ params }: { params: { id: string } }) {
                       </>
                     )
                   ) : (
-                    <button className="text-orange3" onClick={handleLogout}>
-                      로그아웃
-                    </button>
+                    <></>
                   )}
                 </div>
               </div>
