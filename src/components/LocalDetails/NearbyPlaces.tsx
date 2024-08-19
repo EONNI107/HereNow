@@ -53,6 +53,7 @@ function NearbyPlaces({ nearbyPlaces = [] }: NearbyPlacesProps) {
                         imageUrl={place.firstimage}
                         placeId={place.contentid}
                         isInNearbyPlaces={true}
+                        title={place.title}
                       />
                     </div>
                   </div>

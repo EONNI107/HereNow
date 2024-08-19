@@ -6,6 +6,9 @@ import { tourApi } from '@/app/api/tourApi';
 import { NearbyPlace } from '@/types/localDetails';
 import SkeletonLocalItem from '@/components/MainPage/Skeleton/SkeletonLocalItem';
 import { showToast } from '@/utils/toastHelper';
+import { useModal } from '@/components/Modal/Modal';
+import { useCookies } from 'react-cookie';
+import Image from 'next/image';
 
 type PositionType = {
   coords: {
@@ -21,6 +24,11 @@ type GeolocationError = {
 
 function LocalSection() {
   const router = useRouter();
+
+  const { isGetPosition, SetIsGetPosition } = useModal();
+  const [cookies, setCookies] = useCookies();
+  const [isNotLocation, setIsNotLocation] = useState<boolean>(false);
+
   const [localitems, setLocalitems] = useState<NearbyPlace[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
@@ -46,7 +54,10 @@ function LocalSection() {
   };
 
   const getLocationErr = (error: GeolocationError) => {
-    showToast('error', 'Failed to fetch location data');
+    showToast(
+      'error',
+      '데스크탑이나 스마트폰의 위치를 직접 승인해주시기 바랍니다.',
+    );
   };
   const getLoaction = () => {
     const option = {
@@ -60,9 +71,19 @@ function LocalSection() {
       option,
     );
   };
+  const getSortLoaction = () => {
+    if (isGetPosition) {
+      getLoaction();
+      setIsNotLocation(true);
+    }
+  };
   useEffect(() => {
-    getLoaction();
-  }, []);
+    getSortLoaction();
+    if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
+      getLoaction();
+      SetIsGetPosition(true);
+    }
+  }, [isGetPosition]);
 
   const handleClick = (contentid: string) => {
     router.push(`/local/details/${contentid}`);
@@ -75,21 +96,33 @@ function LocalSection() {
         </h2>
         <button hidden={true}></button>
       </div>
-      <div className="w-full">
-        <ul className="w-full">
-          {loading
-            ? Array.from({ length: 2 }).map((_, index) => (
-                <SkeletonLocalItem key={index} />
-              ))
-            : localitems.map((item: NearbyPlace) => (
-                <LocalItem
-                  key={item.contentid}
-                  item={item}
-                  onclick={() => handleClick(item.contentid)}
-                />
-              ))}
-        </ul>
-      </div>
+      {isNotLocation ? (
+        <div className="w-full">
+          <ul className="w-full">
+            {loading
+              ? Array.from({ length: 2 }).map((_, index) => (
+                  <SkeletonLocalItem key={index} />
+                ))
+              : localitems.map((item: NearbyPlace) => (
+                  <LocalItem
+                    key={item.contentid}
+                    item={item}
+                    onclick={() => handleClick(item.contentid)}
+                  />
+                ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="w-full flex justify-center items-center">
+          <Image
+            src="/No_Location.jpg"
+            alt="notLocation"
+            width={400}
+            height={180}
+            className="object-cover w-full h-full"
+          />
+        </div>
+      )}
     </section>
   );
 }

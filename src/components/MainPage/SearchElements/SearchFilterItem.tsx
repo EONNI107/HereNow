@@ -1,5 +1,5 @@
 'use client';
-import { SearchedType } from '@/app/(layout)/search-page/page';
+import { SearchedType } from '@/components/SearchMain/SearchMain';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';

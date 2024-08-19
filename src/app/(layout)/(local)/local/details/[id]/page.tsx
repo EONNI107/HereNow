@@ -21,6 +21,7 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
     isPending: isPendingMainData,
     error: mainDataError,
   } = useMainData(id);
+
   const typeId = mainData?.contenttypeid || '';
   const latitude = Number(mainData?.mapy);
   const longitude = Number(mainData?.mapx);

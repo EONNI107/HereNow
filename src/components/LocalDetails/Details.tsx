@@ -124,6 +124,7 @@ function Details({
                 <LikeBtn
                   imageUrl={mainData.firstimage}
                   placeId={mainData.contentid}
+                  title={mainData.title}
                 />
                 <button onClick={onCommentClick}>
                   <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" />
@@ -145,6 +146,7 @@ function Details({
                 <LikeBtn
                   imageUrl={mainData.firstimage}
                   placeId={mainData.contentid}
+                  title={mainData.title}
                 />
                 <button
                   onClick={handleShareBtn}
