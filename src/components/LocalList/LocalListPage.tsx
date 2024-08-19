@@ -9,9 +9,12 @@ import LoadingState from '@/components/LocalList/LoadingState';
 import SkeletonCard from '@/components/LocalList/SkeletonCard';
 import { Item } from '@/types/localList';
 import { getRegionNameKorean } from '@/utils/getRegionName';
+import regionData from '@/data/regions.json';
 
 function LocalListPage({ region }: { region: string }) {
   const [contentType, setContentType] = useState('12');
+  const [sigunguCode, setSigunguCode] = useState('1');
+  const areas = regionData.region.find((area) => area.ename === region);
   const {
     data,
     error,
@@ -19,7 +22,7 @@ function LocalListPage({ region }: { region: string }) {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useLocalList(region, contentType);
+  } = useLocalList(region, sigunguCode, contentType);
 
   if (error) {
     return <LoadingState error={error} />;
@@ -27,10 +30,26 @@ function LocalListPage({ region }: { region: string }) {
 
   return (
     <div>
-      <ContentTypeFilter
-        selectedContentType={contentType}
-        onContentTypeChange={setContentType}
-      />
+      <div className="flex flex-col justify-center xl:flex-row">
+        <ContentTypeFilter
+          selectedContentType={contentType}
+          onContentTypeChange={setContentType}
+        />
+        <div className="text-center">
+          <select
+            value={sigunguCode}
+            onChange={(e) => setSigunguCode(e.target.value)}
+            className="p-2 border border-gray3 w-72 rounded-3xl text-center xl:w-24 "
+          >
+            {areas?.sigungu.map((a) => (
+              <option key={a.code} value={a.code}>
+                {a.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <div className="hidden xl:block text-center my-8">
         <h3 className="text-[32px] text-blue4 font-semibold mb-3">
           {getRegionNameKorean(region)} 주변에 갈만한 곳은?
@@ -50,7 +69,7 @@ function LocalListPage({ region }: { region: string }) {
           ) : (
             data && (
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 xl:px-4">
-                {data.localList.map((item: Item) => (
+                {data.localList?.map((item: Item) => (
                   <LocalListItem
                     key={item.contentid}
                     item={item}

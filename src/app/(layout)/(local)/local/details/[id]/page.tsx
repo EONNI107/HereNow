@@ -1,4 +1,5 @@
 'use client';
+import Comments from '@/components/FeedDetail/Comments';
 import Details from '@/components/LocalDetails/Details';
 import KakaoMap from '@/components/LocalDetails/KakaoMap';
 import LocalDetailsSkeleton from '@/components/LocalDetails/LocalDetailsSkeleton';
@@ -8,10 +9,11 @@ import {
   useMainData,
   useNearbyPlaces,
 } from '@/hooks/useLocalDetails';
-import React from 'react';
+import React, { useState } from 'react';
 
 function LocalDetailsPage({ params }: { params: { id: number } }) {
   const { id } = params;
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
   const {
     data: mainData,
@@ -49,6 +51,14 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
         <div className="xl:w-[400px] mt-8 xl:mt-20">
           <NearbyPlaces nearbyPlaces={nearbyPlaces} />
         </div>
+        {isCommentModalOpen && (
+          <div className="fixed inset-0 z-50">
+            <Comments
+              placeId={id}
+              onClose={() => setIsCommentModalOpen(false)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

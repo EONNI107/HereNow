@@ -16,6 +16,8 @@ export const useMainData = (id: number) => {
   return useQuery<MainData>({
     queryKey: ['mainData', id],
     queryFn: () => fetchMainData(id),
+    staleTime: 30 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 };
 
@@ -34,6 +36,8 @@ export const useAdditionalData = (
   return useQuery<AdditionalData>({
     queryKey: ['additionalData', id, typeId],
     queryFn: () => fetchAdditionalData(id, typeId),
+    staleTime: 30 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
     ...options,
   });
 };
@@ -61,6 +65,8 @@ export const useNearbyPlaces = (
   return useQuery<NearbyPlacesType>({
     queryKey: ['nearbyPlaces', longitude, latitude, typeId, id],
     queryFn: () => fetchNearbyPlaces(longitude, latitude, typeId, id),
+    staleTime: 30 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
     select: (data) =>
       data.filter((place: NearbyPlace) => place.contentid !== id.toString()),
   });
