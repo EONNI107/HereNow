@@ -68,7 +68,6 @@ function MyPage({ params }: { params: { id: string } }) {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        // 여기에 게시물을 가져오는 로직을 구현하세요
       } catch (error) {
         showToast(
           'error',
@@ -96,7 +95,6 @@ function MyPage({ params }: { params: { id: string } }) {
       };
       reader.readAsDataURL(e.target.files[0]);
 
-      // XL 화면에서만 즉시 업데이트
       if (window.innerWidth >= 1280) {
         await handleImmediateImageUpdate(e.target.files[0]);
       }
@@ -196,6 +194,10 @@ function MyPage({ params }: { params: { id: string } }) {
   };
 
   const handleNicknameEdit = () => {
+    if (newNickname.length > 7) {
+      showToast('error', '닉네임은 8글자 미만이어야 합니다.');
+      return;
+    }
     if (isEditingNickname) {
       handleNicknameUpdate();
     } else {

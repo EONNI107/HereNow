@@ -97,7 +97,7 @@ function SignInPage() {
               <p className="text-3xl text-white font-[양진체]">지금, 여기</p>
             </div>
 
-            <div className="lg:w-1/2 lg:px-[80px]">
+            <div className="lg:w-1/2 lg:px-[65px]">
               <form onSubmit={onSubmit} className="space-y-3">
                 <div>
                   <div className="hidden lg:block text-black font-bold text-4xl text-center mb-3">
