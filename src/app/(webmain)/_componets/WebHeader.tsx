@@ -95,7 +95,7 @@ function WebHeader() {
           {user ? (
             <div className="flex gap-4 items-center justify-center">
               <div
-                className="w-12 h-12 border rounded-full px-1 py-1 cursor-pointer shrink-0"
+                className="w-12 h-12 rounded-full cursor-pointer shrink-0"
                 onClick={handleProfileImage}
               >
                 <Image
@@ -103,7 +103,7 @@ function WebHeader() {
                   alt="프로필 이미지"
                   width={48}
                   height={48}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full rounded-full"
                 />
               </div>
               <div
