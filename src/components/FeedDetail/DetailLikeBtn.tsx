@@ -150,7 +150,7 @@ function DetailLikeBtn({
           </span>
         </button>
         <span className="mx-[1.25vw] text-gray-700 flex text-[1vw] font-semibold bg-blue0 w-[6.4vw] h-[2.4vw] items-center border-blue4 border-[1px] rounded-[12px] justify-center">
-          <ChatBubbleOvalLeftEllipsisIcon className="w-[1.3vw] h-[1.3vw] cursor-pointer mr-[0.8vw]" />
+          <ChatBubbleOvalLeftEllipsisIcon className="w-[1.3vw] h-[1.3vw] mr-[0.8vw]" />
           댓글 {commentCount}
         </span>
       </div>

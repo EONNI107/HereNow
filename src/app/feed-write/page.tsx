@@ -183,7 +183,7 @@ function FeedWrite() {
         )}
         <button
           onClick={handleSubmit}
-          className="btn bg-blue4 px-2.5 py-1.5 w-15 h-9 rounded-lg font-semibold text-sm text-white xl:w-[5.4vw] xl:h-[2.7vw] xl:text-[1.3vw]"
+          className="btn bg-blue4 px-2.5 py-1.5 w-15 h-9 rounded-lg font-semibold text-sm text-white xl:w-[6vw] xl:h-[2.7vw] xl:text-[1.3vw]"
         >
           {feedId ? '수정하기' : '등록'}
         </button>

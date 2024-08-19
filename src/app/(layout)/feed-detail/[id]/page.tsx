@@ -224,9 +224,27 @@ function PostPage({ params }: PostPageProps) {
               >
                 {`${post.region} ${post.sigungu}`}
               </button>
-              <p className="text-[2.5vw] font-medium mt-[2.5vw]">
-                {post.title}
-              </p>
+              <div className="flex justify-between">
+                <p className="text-[2.5vw] font-medium mt-[2.5vw]">
+                  {post.title}
+                </p>
+                {isAuthor && (
+                  <div className="flex space-x-4 ml-[16px] items-end">
+                    <button
+                      onClick={handleEdit}
+                      className="btn border-2 border-blue4 text-blue4 font-semibold text-[1vw] bg-transparent rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300 w-[5vw] h-[2.5vw]"
+                    >
+                      수정하기
+                    </button>
+                    <button
+                      onClick={handleDelete}
+                      className="btn border-2 border-blue4 text-blue4 font-semibold text-[1vw] bg-transparent rounded-md hover:bg-blue4 hover:text-white transition-colors duration-300 w-[5vw] h-[2.5vw]"
+                    >
+                      삭제하기
+                    </button>
+                  </div>
+                )}
+              </div>
               <p className="text-[1vw] font-normal mt-[1.3vw]">
                 {post.content}
               </p>
