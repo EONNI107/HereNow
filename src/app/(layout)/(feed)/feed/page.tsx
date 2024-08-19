@@ -26,26 +26,28 @@ async function FeedListPage() {
 
   return (
     <div>
-      <div className="relative mb-4">
-        <div className="aspect-[16/9] w-full">
+      <div className="mb-4">
+        <div className="relative aspect-[16/9] max-w-[1920px] w-full mx-auto !px-0 h-[500px] overflow-hidden ">
           <Image
-            src={'/AreaDetail-Main.jpg'}
+            src={'/Main-Banner.jpg'}
             alt="피드 상단 이미지"
-            width={300}
-            height={200}
-            priority={true}
-            className="object-cover w-full"
+            width={1600}
+            height={900}
+            priority
+            className="object-cover w-full h-full "
           />
-        </div>
-        <div className="absolute inset-0 bg-black bg-opacity-15 flex flex-col justify-end p-8">
-          <div className="flex flex-col space-y-2">
-            <SendFeedWrite />
-            <h1 className="font-semibold text-[24px] text-white">
-              <span className="block">
-                <UserName />
-              </span>
-              맛집 · 여행지를 공유해주세요!
-            </h1>
+          <div className="absolute inset-0 bg-black bg-opacity-15 flex flex-col justify-end p-8 xl:justify-center xl:items-start xl:pl-[15%]">
+            <div className="flex flex-col space-y-4">
+              <div className="xl:order-2">
+                <SendFeedWrite />
+              </div>
+              <h1 className="font-semibold text-[24px] text-white xl:order-1 xl:text-[48px] xl:text-main">
+                <span className="block">
+                  <UserName />
+                </span>
+                여행지를 알려주세요!
+              </h1>
+            </div>
           </div>
         </div>
       </div>

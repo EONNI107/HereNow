@@ -10,7 +10,7 @@ type feedTypeProps = {
 };
 const WebFeedItem = ({ feedItem }: feedTypeProps) => {
   const router = useRouter();
-  let feedImage = '/No_Img.jpg';
+  let feedImage = '/NoImg-v1.png';
   if (feedItem.image) {
     try {
       const parsedImage = JSON.parse(feedItem.image) as string;
