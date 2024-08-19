@@ -85,6 +85,12 @@ function DetailLikeBtn({
       return;
     }
 
+    const originalLiked = liked;
+    const originalLikeCount = likeCount;
+
+    setLiked(!liked);
+    setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+
     try {
       if (liked) {
         const { error } = await supabase
@@ -94,12 +100,7 @@ function DetailLikeBtn({
           .eq('userId', userId);
 
         if (error) {
-          console.error(error);
-          showToast('error', '좋아요 취소 중 오류가 발생했습니다.');
-        } else {
-          setLiked(false);
-          setLikeCount((prev) => prev - 1);
-          showToast('success', '좋아요가 취소되었습니다.');
+          throw error;
         }
       } else {
         const { error } = await supabase.from('FeedLikes').insert({
@@ -108,16 +109,13 @@ function DetailLikeBtn({
         });
 
         if (error) {
-          console.error(error);
-          showToast('error', '좋아요 등록 중 오류가 발생했습니다.');
-        } else {
-          setLiked(true);
-          setLikeCount((prev) => prev + 1);
-          showToast('success', '좋아요가 등록되었습니다.');
+          throw error;
         }
       }
     } catch (e) {
-      console.error(e);
+      setLiked(originalLiked);
+      setLikeCount(originalLikeCount);
+      showToast('error', '좋아요 처리 중 오류가 발생했습니다.');
     }
   };
 
