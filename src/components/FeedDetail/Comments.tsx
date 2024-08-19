@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {
   CheckCircleIcon,
+  ChevronDownIcon,
   PencilSquareIcon,
   TrashIcon,
   XMarkIcon,
@@ -20,7 +21,6 @@ dayjs.extend(relativeTime);
 
 type Comment = {
   id: number;
-  feedId: number;
   content: string;
   userId: string;
   createdAt: string;
@@ -30,40 +30,68 @@ type Comment = {
   } | null;
 };
 
+type FeedComment = Comment & { feedId: number };
+type PlaceComment = Comment & { placeId: number };
+
 type CommentsProps = {
-  postId: number;
+  postId?: number;
+  placeId?: number;
   onClose: () => void;
 };
 
-function Comments({ postId, onClose }: CommentsProps) {
-  const [comments, setComments] = useState<Comment[]>([]);
+function Comments({ postId, placeId, onClose }: CommentsProps) {
+  const [comments, setComments] = useState<(FeedComment | PlaceComment)[]>([]);
   const [newComment, setNewComment] = useState<string>('');
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editingContent, setEditingContent] = useState<string>('');
   const { user } = useAuthStore();
   const supabase = createClient();
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [showAllComments, setShowAllComments] = useState(false);
+
+  useEffect(() => {
+    const updateMedia = () => {
+      setIsDesktop(window.innerWidth >= 1280);
+    };
+
+    updateMedia();
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  }, []);
 
   useEffect(() => {
     const fetchComments = async () => {
-      const { data, error } = await supabase
-        .from('FeedComments')
-        .select('*, Users (profileImage, nickname)')
-        .eq('feedId', postId)
-        .order('createdAt', { ascending: true });
+      if (postId) {
+        const { data, error } = await supabase
+          .from('FeedComments')
+          .select('*, Users (profileImage, nickname)')
+          .eq('feedId', postId)
+          .order('createdAt', { ascending: true });
 
-      if (error) {
-        console.error(error);
-      } else if (data) {
-        setComments(data as Comment[]);
+        if (error) {
+          console.error(error);
+        } else if (data) {
+          setComments(data as FeedComment[]);
+        }
+      } else if (placeId) {
+        const { data, error } = await supabase
+          .from('PlaceComments')
+          .select('*, Users (profileImage, nickname)')
+          .eq('placeId', placeId)
+          .order('createdAt', { ascending: true });
+
+        if (error) {
+          console.error(error);
+        } else if (data) {
+          setComments(data as PlaceComment[]);
+        }
       }
     };
-
     fetchComments();
-  }, [postId, supabase]);
+  }, [postId, placeId, supabase]);
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!user) {
       toast(<LoginPrompt />, {
         position: 'top-center',
@@ -74,31 +102,60 @@ function Comments({ postId, onClose }: CommentsProps) {
       return;
     }
 
-    const { data, error } = await supabase
-      .from('FeedComments')
-      .insert({
-        feedId: postId,
-        content: newComment,
-        userId: user.id,
-      })
-      .select('*, Users (profileImage, nickname)');
+    if (postId) {
+      const { data, error } = await supabase
+        .from('FeedComments')
+        .insert({
+          feedId: postId,
+          content: newComment,
+          userId: user.id,
+        })
+        .select('*, Users (profileImage, nickname)');
 
-    if (error) {
-      console.error(error);
-    } else if (data) {
-      setComments((prevComments) => [
-        ...prevComments,
-        ...data.map(
-          (comment): Comment => ({
-            ...comment,
-            Users: comment.Users || {
-              profileImage: null,
-              nickname: null,
-            },
-          }),
-        ),
-      ]);
-      setNewComment('');
+      if (error) {
+        console.error(error);
+      } else if (data) {
+        setComments((prevComments) => [
+          ...prevComments,
+          ...data.map(
+            (comment): FeedComment => ({
+              ...comment,
+              Users: comment.Users || {
+                profileImage: null,
+                nickname: null,
+              },
+            }),
+          ),
+        ]);
+        setNewComment('');
+      }
+    } else if (placeId) {
+      const { data, error } = await supabase
+        .from('PlaceComments')
+        .insert({
+          placeId: placeId,
+          content: newComment,
+          userId: user.id,
+        })
+        .select('*, Users (profileImage, nickname)');
+
+      if (error) {
+        console.error(error);
+      } else if (data) {
+        setComments((prevComments) => [
+          ...prevComments,
+          ...data.map(
+            (comment): PlaceComment => ({
+              ...comment,
+              Users: comment.Users || {
+                profileImage: null,
+                nickname: null,
+              },
+            }),
+          ),
+        ]);
+        setNewComment('');
+      }
     }
   };
 
@@ -122,9 +179,8 @@ function Comments({ postId, onClose }: CommentsProps) {
       toast.error('수정할 내용을 입력하세요.');
       return;
     }
-
     const { error } = await supabase
-      .from('FeedComments')
+      .from(postId ? 'FeedComments' : 'PlaceComments')
       .update({ content: editingContent })
       .eq('id', commentId)
       .eq('userId', user.id);
@@ -140,10 +196,11 @@ function Comments({ postId, onClose }: CommentsProps) {
             : comment,
         ),
       );
-      setEditingCommentId(null);
-      setEditingContent('');
-      toast.success('댓글이 수정되었습니다.');
     }
+
+    setEditingCommentId(null);
+    setEditingContent('');
+    toast.success('댓글이 수정되었습니다.');
   };
 
   const handleDeleteComment = async (commentId: number) => {
@@ -158,7 +215,7 @@ function Comments({ postId, onClose }: CommentsProps) {
     }
 
     const { error } = await supabase
-      .from('FeedComments')
+      .from(postId ? 'FeedComments' : 'PlaceComments')
       .delete()
       .eq('id', commentId)
       .eq('userId', user.id);
@@ -183,7 +240,101 @@ function Comments({ postId, onClose }: CommentsProps) {
     });
   };
 
-  return (
+  return isDesktop ? (
+    <div className="w-full mt-[1.6vw]">
+      <form onSubmit={handleCommentSubmit} className="w-full mb-[0.8vw]">
+        <div className="w-full flex items-center">
+          <textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="댓글을 입력하세요..."
+            required
+            className="textarea w-[38vw] text-[0.8vw] flex h-[2.4vw] bg-gray-100 rounded-xl items-center p-2"
+          />
+          <button
+            type="submit"
+            className="btn bg-blue4 w-[4vw] h-[2.4vw] rounded-xl text-white text-[0.8vw] ml-[0.8vw]"
+          >
+            등록
+          </button>
+        </div>
+      </form>
+      <ul className="overflow-y-auto px-[0.8vw] max-h-[21vw]">
+        {comments
+          .slice(0, showAllComments ? comments.length : 3)
+          .map((comment) => (
+            <li
+              key={comment.id}
+              className="py-[1vw] flex border-b border-gray-300"
+            >
+              <Image
+                src={comment.Users?.profileImage || '/default-profile.jpg'}
+                alt="User Avatar"
+                width={48}
+                height={48}
+                className="rounded-full mr-[0.8vw] w-[2.5vw] h-[2.5vw]"
+              />
+              <div className="flex flex-col w-full">
+                <div className="flex justify-between">
+                  <div className="flex items-center">
+                    <p className="font-semibold text-[0.9vw] mr-[0.4vw]">
+                      {comment.Users?.nickname || '알 수 없음'}
+                    </p>
+                    <p className="text-gray-500 text-[0.8vw]">
+                      {dayjs(comment.createdAt).fromNow()}
+                    </p>
+                  </div>
+                  {user?.id === comment.userId && (
+                    <div className="flex space-x-2">
+                      {editingCommentId === comment.id ? (
+                        <button
+                          onClick={() => handleUpdateComment(comment.id)}
+                          className="text-blue4 text-[0.7vw]"
+                        >
+                          <CheckCircleIcon className="w-[1vw] h-[1vw]" />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleEditClick(comment)}
+                          className="text-blue4 text-[0.8vw]"
+                        >
+                          수정
+                        </button>
+                      )}
+                      <button
+                        onClick={() => confirmDelete(comment.id)}
+                        className="text-orange4 text-[0.8vw]"
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                </div>
+                {editingCommentId === comment.id ? (
+                  <textarea
+                    value={editingContent}
+                    onChange={(e) => setEditingContent(e.target.value)}
+                    className="textarea w-full mt-2 text-[0.8vw] border border-gray-300"
+                  />
+                ) : (
+                  <p className="mt-2 text-[0.8vw]">{comment.content}</p>
+                )}
+              </div>
+            </li>
+          ))}
+      </ul>
+      {comments.length > 3 && !showAllComments && (
+        <div className="mt-[18px] flex justify-center">
+          <button
+            onClick={() => setShowAllComments(true)}
+            className="text-[0.8vw] font-semibold flex items-center"
+          >
+            더보기 <ChevronDownIcon className="w-[1vw] h-[1vw] ml-[0.8vw]" />
+          </button>
+        </div>
+      )}
+    </div>
+  ) : (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-end justify-center">
       <div className="bg-white rounded-t-2xl w-full h-[68%] flex flex-col">
         <XMarkIcon

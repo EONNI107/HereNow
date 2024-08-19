@@ -11,7 +11,7 @@ function ContentInput({ value, onChange, placeholder }: TextAreaProps) {
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
       required
-      className="textarea no-focus text-lg font-normal mt-8 bg-gray0 w-full h-full resize-none"
+      className="textarea no-focus text-[18px] font-normal mt-8 bg-gray0 w-full h-full resize-none"
       style={{ minHeight: 'calc(100vh - 336px)' }}
     />
   );
