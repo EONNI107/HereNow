@@ -9,13 +9,12 @@ import {
   useMainData,
   useNearbyPlaces,
 } from '@/hooks/useLocalDetails';
-import useAuthStore from '@/zustand/useAuthStore';
 import React, { useState } from 'react';
+import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 
 function LocalDetailsPage({ params }: { params: { id: number } }) {
   const { id } = params;
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-  const { user } = useAuthStore();
 
   const {
     data: mainData,
@@ -41,33 +40,22 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
 
   return (
     <div className="xl:container xl:max-w-screen-xl">
-      <div className="mt-4 flex flex-col bg-gray0 mx-auto xl:mt-0 xl:mb-20 xl:flex xl:flex-row xl:justify-center xl:gap-10">
+      <div className="mt-4 flex flex-col bg-gray0 xl:bg-white mx-auto xl:mt-0 xl:mb-20 xl:flex xl:flex-row xl:justify-center xl:gap-10">
         <div className="xl:w-[800px] xl:mt-11">
           <Details
             mainData={mainData}
             additionalData={additionalData}
             typeId={typeId}
+            onCommentClick={() => setIsCommentModalOpen(true)}
           />
           <KakaoMap latitude={latitude} longitude={longitude} />
 
-          {/* 댓글 섹션 */}
-          <div className="w-full mt-8 mb-20">
-            <h2 className="text-2xl font-bold mb-4">
-              {user
-                ? `${user?.nickname}님의 리뷰를 남겨주세요!`
-                : `여러분만의 리뷰를 남겨주세요!`}
+          {/* 웹에서만 보이는 리뷰 섹션 */}
+          <div className="w-full mt-8 mb-20 hidden xl:block">
+            <h2 className="text-xl font-bold mb-4">
+              {`${mainData?.title}에 대한 리뷰를 남겨주세요!`}
             </h2>
-            <div className="hidden xl:block">
-              <Comments placeId={id} onClose={() => {}} />
-            </div>
-            <div className="xl:hidden z-50">
-              <button
-                onClick={() => setIsCommentModalOpen(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded "
-              >
-                댓글 보기/작성
-              </button>
-            </div>
+            <Comments placeId={id} onClose={() => {}} />
           </div>
         </div>
         <div className="xl:w-[400px] mt-8 xl:mt-20">

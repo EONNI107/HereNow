@@ -186,4 +186,5 @@ export type DetailProps = {
   mainData?: MainData;
   additionalData?: AdditionalData;
   typeId: string;
+  onCommentClick: () => void;
 };
