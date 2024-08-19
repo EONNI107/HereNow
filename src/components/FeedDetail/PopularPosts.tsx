@@ -86,7 +86,6 @@ function PopularPosts({ userId, userNickname }: PopularPostsProps) {
   }, [userId]);
 
   if (isDesktop) {
-    // 웹 시안
     return (
       <div className="mt-[2.2vw]">
         <h3 className="text-[1.2vw] font-semibold mt-[2.2vw] mb-[1.7vw]">
@@ -112,7 +111,6 @@ function PopularPosts({ userId, userNickname }: PopularPostsProps) {
       </div>
     );
   } else {
-    // 모바일 시안
     return (
       <div className="mt-[42px]">
         <hr className="border-gray-300 mx-[16px]" />

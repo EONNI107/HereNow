@@ -20,7 +20,6 @@ function LocationButton({
   const [showDropdown, setShowDropdown] = useState(true);
 
   if (isDesktop) {
-    // 웹 시안
     return (
       <div className="flex">
         <button className="btn text-orange4 mr-4 border-orange4 border-[1px] w-[104px] h-[46px] rounded-lg flex items-center cursor-default text-[20px] font-semibold justify-center">
@@ -33,14 +32,13 @@ function LocationButton({
               sigungu={sigungu}
               setRegion={setRegion}
               setSigungu={setSigungu}
-              isDesktop={isDesktop} // isDesktop 전달
+              isDesktop={isDesktop}
             />
           </div>
         )}
       </div>
     );
   } else {
-    // 모바일 시안
     return (
       <>
         <div className="flex bg-orange0 w-full h-18 text-left items-center px-4 py-2 mb-4 rounded-lg">
@@ -60,7 +58,7 @@ function LocationButton({
             sigungu={sigungu}
             setRegion={setRegion}
             setSigungu={setSigungu}
-            isDesktop={isDesktop} // isDesktop 전달
+            isDesktop={isDesktop}
           />
         )}
       </>

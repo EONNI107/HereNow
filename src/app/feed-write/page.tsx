@@ -1,4 +1,4 @@
-'use client'; // 클라이언트 컴포넌트로 설정
+'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -49,16 +49,14 @@ function FeedWrite() {
       setImagePreviews(existingImages);
     }
 
-    // 화면 크기 체크
     const handleResize = () => {
       setIsDesktop(window.innerWidth >= 1280);
     };
 
-    handleResize(); // 초기 실행 시 화면 크기 체크
-    window.addEventListener('resize', handleResize); // 리사이즈 이벤트 리스너 등록
-
+    handleResize();
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize); // 리스너 제거
+      window.removeEventListener('resize', handleResize);
     };
   }, [searchParams]);
 
@@ -194,7 +192,6 @@ function FeedWrite() {
           className="flex flex-col m-4 xl:mx-[17.7vw]"
         >
           {isDesktop ? (
-            // 웹 시안
             <>
               <TitleInput
                 value={title}
@@ -209,14 +206,14 @@ function FeedWrite() {
                   imagePreviews={imagePreviews}
                   setImagePreviews={setImagePreviews}
                   handleImageDelete={handleImageDelete}
-                  isDesktop={isDesktop} // isDesktop 전달
+                  isDesktop={isDesktop}
                 />
                 <LocationButton
                   region={region}
                   sigungu={sigungu}
                   setRegion={setRegion}
                   setSigungu={setSigungu}
-                  isDesktop={isDesktop} // isDesktop 전달
+                  isDesktop={isDesktop}
                 />
               </div>
               <ContentInput
@@ -226,7 +223,6 @@ function FeedWrite() {
               />
             </>
           ) : (
-            // 모바일 시안
             <>
               <TitleInput
                 value={title}
@@ -239,7 +235,7 @@ function FeedWrite() {
                 sigungu={sigungu}
                 setRegion={setRegion}
                 setSigungu={setSigungu}
-                isDesktop={isDesktop} // isDesktop 전달
+                isDesktop={isDesktop}
               />
               <ImageUpload
                 images={images}
@@ -247,7 +243,7 @@ function FeedWrite() {
                 imagePreviews={imagePreviews}
                 setImagePreviews={setImagePreviews}
                 handleImageDelete={handleImageDelete}
-                isDesktop={isDesktop} // isDesktop 전달
+                isDesktop={isDesktop}
               />
               <ContentInput
                 value={content}

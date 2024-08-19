@@ -241,7 +241,6 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
   };
 
   return isDesktop ? (
-    // 웹 시안
     <div className="w-full mt-[1.6vw]">
       <form onSubmit={handleCommentSubmit} className="w-full mb-[0.8vw]">
         <div className="w-full flex items-center">
@@ -336,7 +335,6 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
       )}
     </div>
   ) : (
-    // 모바일 시안
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-end justify-center">
       <div className="bg-white rounded-t-2xl w-full h-[68%] flex flex-col">
         <XMarkIcon

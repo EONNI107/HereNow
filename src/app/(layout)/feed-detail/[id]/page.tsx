@@ -194,7 +194,6 @@ function PostPage({ params }: PostPageProps) {
   return (
     <div className="min-h-screen bg-gray0 pb-5">
       {isDesktop ? (
-        // 웹 시안
         <div className="xl:px-[17.7vw] xl:pt-[1.7vw]">
           <Swiper
             pagination={{ clickable: true }}
@@ -216,7 +215,6 @@ function PostPage({ params }: PostPageProps) {
           </Swiper>
 
           <div className="xl:flex xl:space-x-[2.1vw] mt-[3.3vw]">
-            {/* 왼쪽 섹션 */}
             <div className="flex flex-col xl:w-[41.7vw]">
               <button
                 onClick={handleRegionClick}
@@ -260,7 +258,6 @@ function PostPage({ params }: PostPageProps) {
               <Comments postId={post.id} onClose={() => {}} />
             </div>
 
-            {/* 오른쪽 섹션 */}
             <div className="flex flex-col xl:w-[21vw]">
               <div className="bg-blue1 p-[0.8vw] rounded-[18px] shadow">
                 <div className="flex items-center p-[0.4vw]">
@@ -289,7 +286,6 @@ function PostPage({ params }: PostPageProps) {
           </div>
         </div>
       ) : (
-        // 모바일 시안
         <div>
           <div className="flex items-center justify-between h-14 mt-2 px-4">
             <div className="flex items-center">

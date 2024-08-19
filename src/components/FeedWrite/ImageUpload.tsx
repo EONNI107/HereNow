@@ -50,7 +50,6 @@ function ImageUpload({
   }, [imagePreviews]);
 
   if (isDesktop) {
-    // 웹 시안
     return (
       <div className="flex flex-col">
         <div className="flex items-center">
@@ -98,7 +97,6 @@ function ImageUpload({
       </div>
     );
   } else {
-    // 모바일 시안
     return (
       <>
         <input

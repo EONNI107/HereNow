@@ -132,7 +132,6 @@ function DetailLikeBtn({
   };
 
   return isDesktop ? (
-    // 웹 시안
     <div className="flex items-center justify-between">
       <div className="flex items-center">
         <button
@@ -162,7 +161,6 @@ function DetailLikeBtn({
       </button>
     </div>
   ) : (
-    // 모바일 시안
     <div className="flex items-center justify-between h-14 px-4">
       <div className="flex items-center">
         <button onClick={handleLike} className="focus:outline-none w-6 h-6 m-2">
