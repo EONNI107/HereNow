@@ -37,7 +37,7 @@ export const GET = async (request: NextRequest) => {
 export const POST = async (request: NextRequest) => {
   const supabase = createClient();
 
-  const { userId, placeId, imageUrl } = await request.json();
+  const { userId, placeId, imageUrl, title } = await request.json();
 
   if (!userId || !placeId) {
     return NextResponse.json(
@@ -49,7 +49,7 @@ export const POST = async (request: NextRequest) => {
   try {
     const { data, error } = await supabase
       .from('PlaceLikes')
-      .insert([{ userId, placeId, imageUrl }])
+      .insert([{ userId, placeId, imageUrl, title }])
       .select();
 
     if (error) {
