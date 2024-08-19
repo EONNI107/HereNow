@@ -98,11 +98,11 @@ type PostPageProps = {
 
 function PostPage({ params }: PostPageProps) {
   const [post, setPost] = useState<Post | null>(null);
-  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
   const { user } = useAuthStore();
   const router = useRouter();
   const [isDesktop, setIsDesktop] = useState(false);
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false); // 모바일 시안에서 모달 상태 관리
 
   useEffect(() => {
     const updateMedia = () => {
@@ -215,56 +215,54 @@ function PostPage({ params }: PostPageProps) {
             ))}
           </Swiper>
 
-          <div className="xl:flex xl:space-x-10 mt-[64px]">
+          <div className="xl:flex xl:space-x-[40px] mt-[64px]">
             {/* 왼쪽 섹션 */}
             <div className="flex flex-col xl:w-[800px]">
               <button
                 onClick={handleRegionClick}
-                className="font-medium text-[20px] text-white bg-orange3 px-3 py-1.5 rounded-lg self-start"
+                className="font-medium text-[20px] text-white bg-orange3 px-[16px] py-[8px] rounded-[12px] self-start w-[205px] h-[46px]"
               >
                 {`${post.region} ${post.sigungu}`}
               </button>
               <p className="text-[48px] font-medium mt-[48px]">{post.title}</p>
-              <p className="text-base font-normal mt-[24px]">{post.content}</p>
-              <hr className="border-t border-gray-300 my-[48px]" />
+              <p className="text-[14px] font-normal mt-[24px]">
+                {post.content}
+              </p>
+              <hr className="border-t border-gray6 my-[48px]" />
               <div className="flex">
                 <DetailLikeBtn
                   postId={post.id}
                   userId={user?.id ?? ''}
-                  onCommentClick={() => setIsCommentModalOpen(true)}
+                  onCommentClick={() => {}}
                   commentCount={commentCount}
                 />
               </div>
-              {isCommentModalOpen && (
-                <div className="fixed inset-0 z-50">
-                  <Comments
-                    postId={post.id}
-                    onClose={() => setIsCommentModalOpen(false)}
-                  />
-                </div>
-              )}
+              {/* 댓글 입력창과 댓글 목록 */}
+              <Comments postId={post.id} onClose={() => {}} />
             </div>
 
             {/* 오른쪽 섹션 */}
             <div className="flex flex-col xl:w-[400px]">
               <div className="bg-blue1 p-[16px] rounded-[18px] shadow">
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center p-[8px]">
                   <Image
                     src={userProfileImage}
                     alt="User Avatar"
                     width={40}
                     height={40}
-                    className="w-10 h-10 rounded-full"
+                    className="w-[72px] h-[72px] rounded-full"
                   />
-                  <div>
-                    <p className="font-semibold">{userNickname}</p>
-                    <button
-                      onClick={() => router.push(`/profile/${post.userId}`)}
-                      className="text-blue4 font-semibold text-sm mt-1"
-                    >
-                      프로필 보기
-                    </button>
-                  </div>
+                  <p className="pl-[32px] text-[20px] font-semibold">
+                    {userNickname}
+                  </p>
+                </div>
+                <div>
+                  <button
+                    onClick={() => router.push(`/profile/${post.userId}`)}
+                    className="text-gray0 font-medium text-[20px] bg-blue4 w-full h-[62px] rounded-[16px] mt-[24px]"
+                  >
+                    프로필 구경하기
+                  </button>
                 </div>
               </div>
               <PopularPosts userId={post.userId} userNickname={userNickname} />
@@ -313,7 +311,7 @@ function PostPage({ params }: PostPageProps) {
           <DetailLikeBtn
             postId={post.id}
             userId={user?.id ?? ''}
-            onCommentClick={() => setIsCommentModalOpen(true)}
+            onCommentClick={() => setIsCommentModalOpen(true)} // 모바일 시안에서는 모달 열기
             commentCount={commentCount}
           />
           <div className="mx-4 mb-5 px-4 py-2.5 bg-white rounded-3xl">

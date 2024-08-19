@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { Post } from '@/types/post';
@@ -62,6 +64,17 @@ async function getPopularPosts(userId: string): Promise<PostWithLikes[]> {
 function PopularPosts({ userId, userNickname }: PopularPostsProps) {
   const [popularPosts, setPopularPosts] = useState<PostWithLikes[]>([]);
   const router = useRouter();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const updateMedia = () => {
+      setIsDesktop(window.innerWidth >= 1280);
+    };
+
+    updateMedia();
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  }, []);
 
   useEffect(() => {
     const fetchPopularPosts = async () => {
@@ -72,39 +85,68 @@ function PopularPosts({ userId, userNickname }: PopularPostsProps) {
     fetchPopularPosts();
   }, [userId]);
 
-  return (
-    <div className="mt-[42px]">
-      <hr className="border-gray-300 mx-[16px]" />
-      <h3 className="text-xl font-semibold mt-[42px] mx-[16px]">
-        {userNickname}님의 인기글이에요
-      </h3>
-      <div className="px-[16px] my-[24px]">
-        <button
-          onClick={() => router.push(`/profile/${userId}`)}
-          className="text-blue4 border-blue4 border-[1px] rounded-[16px] py-[16px] w-full text-[16px] font-semibold"
-        >
-          {userNickname}님 프로필 보러가기
-        </button>
-      </div>
-      <div className="grid grid-cols-2 gap-[15px] mx-[16px]">
-        {popularPosts.map((post) => (
-          <div
-            key={post.id}
-            className="relative w-full aspect-square bg-cover bg-center cursor-pointer rounded-[16px]"
-            style={{ backgroundImage: `url(${post.image[0] || ''})` }}
-            onClick={() => router.push(`/feed-detail/${post.id}`)}
-          >
-            <div className="absolute bottom-0 left-0 text-white p-[15px] w-full h-full rounded-[16px] bg-black bg-opacity-40 flex flex-col justify-end">
-              <p className="text-sm">
-                {post.region} {post.sigungu}
-              </p>
-              <p className="text-lg font-semibold">{post.title}</p>
+  if (isDesktop) {
+    // 웹 시안
+    return (
+      <div className="mt-[42px]">
+        <h3 className="text-xl font-semibold mt-[42px] mb-[32px]">
+          {userNickname}님의 다른 글
+        </h3>
+        <div className="grid grid-cols-1 gap-[15px]">
+          {popularPosts.map((post) => (
+            <div
+              key={post.id}
+              className="relative aspect-square bg-cover bg-center cursor-pointer rounded-[16px] w-[400px] h-[327px]"
+              style={{ backgroundImage: `url(${post.image[0] || ''})` }}
+              onClick={() => router.push(`/feed-detail/${post.id}`)}
+            >
+              <div className="absolute bottom-0 left-0 w-full h-[87px] rounded-b-[16px] bg-white flex flex-col justify-center border-gray4 border-[1px] pl-[24px]">
+                <p className="text-sm">
+                  {post.region} {post.sigungu}
+                </p>
+                <p className="text-lg font-semibold">{post.title}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    // 모바일 시안
+    return (
+      <div className="mt-[42px]">
+        <hr className="border-gray-300 mx-[16px]" />
+        <h3 className="text-xl font-semibold mt-[42px] mx-[16px]">
+          {userNickname}님의 인기글이에요
+        </h3>
+        <div className="px-[16px] my-[24px]">
+          <button
+            onClick={() => router.push(`/profile/${userId}`)}
+            className="text-blue4 border-blue4 border-[1px] rounded-[16px] py-[16px] w-full text-[16px] font-semibold"
+          >
+            {userNickname}님 프로필 보러가기
+          </button>
+        </div>
+        <div className="grid grid-cols-2 gap-[15px] mx-[16px]">
+          {popularPosts.map((post) => (
+            <div
+              key={post.id}
+              className="relative w-full aspect-square bg-cover bg-center cursor-pointer rounded-[16px]"
+              style={{ backgroundImage: `url(${post.image[0] || ''})` }}
+              onClick={() => router.push(`/feed-detail/${post.id}`)}
+            >
+              <div className="absolute bottom-0 left-0 text-white p-[15px] w-full h-full rounded-[16px] bg-black bg-opacity-40 flex flex-col justify-end">
+                <p className="text-sm">
+                  {post.region} {post.sigungu}
+                </p>
+                <p className="text-lg font-semibold">{post.title}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default PopularPosts;
