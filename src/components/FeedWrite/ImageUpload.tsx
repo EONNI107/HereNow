@@ -55,7 +55,7 @@ function ImageUpload({
         <div className="flex items-center">
           <label
             htmlFor="file-upload"
-            className="btn text-blue3 border-blue3 border-[1px] mr-6 rounded-[8px] cursor-pointer w-[104px] h-[46px] text-[20px] font-semibold flex justify-center items-center"
+            className="btn text-blue3 border-blue3 border-[1px] mr-6 rounded-[8px] cursor-pointer w-[104px] h-[46px] text-[20px] font-semibold flex justify-center items-center hover:bg-blue3 hover:text-white transition-colors duration-300"
           >
             사진 첨부
           </label>
