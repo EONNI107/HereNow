@@ -41,7 +41,7 @@ export default function FeedList({ userId }: { userId: string }) {
           </div>
         </div>
       ) : (
-        <div className="pt-4 xl:pt-[28px] grid grid-cols-1 md:grid-cols-2 gap-4 pb-12">
+        <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 pb-12">
           {feedsList.map((post) => {
             const postImages = JSON.parse(post.image as string);
 
@@ -49,7 +49,7 @@ export default function FeedList({ userId }: { userId: string }) {
               <Link
                 href={`/feed-detail/${post.id}`}
                 key={post.id}
-                className="flex items-center space-x-4 transition-shadow duration-200"
+                className="flex items-center space-x-4 p-4 transition-shadow duration-200"
               >
                 <Image
                   src={postImages.length > 0 ? postImages[0] : '/NoImg-v3.png'}
