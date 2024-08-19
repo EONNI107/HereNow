@@ -29,7 +29,7 @@ function LocalFeedList() {
         content="핫한 로컬들의 피드"
         url="/feed"
       />
-      <div className="grid grid-cols-4 grid-rows-2 gap-7">
+      <div className="grid grid-cols-4 grid-rows-2 gap-7 max-xl:grid-cols-3">
         {isSkeleton
           ? Array.from({ length: 8 }).map((_: unknown, index) => (
               <SkeletonWebFeed key={index} />

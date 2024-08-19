@@ -63,8 +63,8 @@ function Modal() {
     <>
       <div>
         {isShow && (
-          <div className="rounded-t-3xl absolute right-[26%] top-[80%] z-30 max-w-[1920px]">
-            <div className="max-w-[736px] max-h-[828px]">
+          <div className="rounded-t-3xl absolute left-[33%] top-[80%] z-30 max-w-[35%] max-h-[20%]">
+            <div className="w-auto h-auto">
               <Image
                 src="/Pop-Up.png"
                 alt="팝업"
@@ -74,11 +74,13 @@ function Modal() {
                 priority
               />
             </div>
-            <div className="w-full h-full flex justify-between bg-white px-8 py-4 rounded-b-3xl">
-              <button onClick={closeModalUntilExpires}>
+            <div className="w-full h-full flex justify-between bg-white px-8 py-4 rounded-b-3xl max-md:text-[12px] max-md:px-4 max-md:py-3">
+              <button onClick={closeModalUntilExpires} className="shrink-0">
                 오늘은 그만 볼래요
               </button>
-              <button onClick={confirmShow}>닫기</button>
+              <button className="shrink-0" onClick={confirmShow}>
+                닫기
+              </button>
             </div>
           </div>
         )}
