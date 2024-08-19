@@ -86,25 +86,24 @@ function PopularPosts({ userId, userNickname }: PopularPostsProps) {
   }, [userId]);
 
   if (isDesktop) {
-    // 웹 시안
     return (
-      <div className="mt-[42px]">
-        <h3 className="text-xl font-semibold mt-[42px] mb-[32px]">
+      <div className="mt-[2.2vw]">
+        <h3 className="text-[1.2vw] font-semibold mt-[2.2vw] mb-[1.7vw]">
           {userNickname}님의 다른 글
         </h3>
-        <div className="grid grid-cols-1 gap-[15px]">
+        <div className="grid grid-cols-1 gap-[0.8vw]">
           {popularPosts.map((post) => (
             <div
               key={post.id}
-              className="relative aspect-square bg-cover bg-center cursor-pointer rounded-[16px] w-[400px] h-[327px]"
+              className="relative aspect-square bg-cover bg-center cursor-pointer rounded-[16px] w-[21vw] h-[17vw]"
               style={{ backgroundImage: `url(${post.image[0] || ''})` }}
               onClick={() => router.push(`/feed-detail/${post.id}`)}
             >
-              <div className="absolute bottom-0 left-0 w-full h-[87px] rounded-b-[16px] bg-white flex flex-col justify-center border-gray4 border-[1px] pl-[24px]">
-                <p className="text-sm">
+              <div className="absolute bottom-0 left-0 w-full h-[4.5vw] rounded-b-[16px] bg-white flex flex-col justify-center border-gray4 border-[1px] pl-[1.3vw]">
+                <p className="text-[0.8vw]">
                   {post.region} {post.sigungu}
                 </p>
-                <p className="text-lg font-semibold">{post.title}</p>
+                <p className="text-[1vw] font-semibold">{post.title}</p>
               </div>
             </div>
           ))}
@@ -112,7 +111,6 @@ function PopularPosts({ userId, userNickname }: PopularPostsProps) {
       </div>
     );
   } else {
-    // 모바일 시안
     return (
       <div className="mt-[42px]">
         <hr className="border-gray-300 mx-[16px]" />

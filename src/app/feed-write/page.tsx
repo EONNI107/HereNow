@@ -55,7 +55,6 @@ function FeedWrite() {
 
     handleResize();
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -164,12 +163,16 @@ function FeedWrite() {
 
   return (
     <div>
-      <div className="header flex justify-between items-center w-full h-12 px-2">
+      <div className="header flex justify-between items-center w-full h-12 xl:h-[4.2vw] px-[17vw]">
         {isDesktop ? (
-          <HomeIcon
-            onClick={() => router.push('/')}
-            className="btn h-5 w-5 ml-2 cursor-pointer"
-          />
+          <p
+            onClick={() => {
+              router.push('/');
+            }}
+            className="font-['양진체'] text-blue4 text-xl cursor-pointer"
+          >
+            지금,여기
+          </p>
         ) : (
           <ChevronLeftIcon
             onClick={() => router.back()}
@@ -178,53 +181,40 @@ function FeedWrite() {
         )}
         <button
           onClick={handleSubmit}
-          className="btn bg-blue4 px-2.5 py-1.5 w-15 h-9 rounded-lg font-semibold text-sm text-white"
+          className="btn bg-blue4 px-2.5 py-1.5 w-15 h-9 rounded-lg font-semibold text-sm text-white xl:w-[6vw] xl:h-[2.7vw] xl:text-[1.3vw]"
         >
           {feedId ? '수정하기' : '등록'}
         </button>
       </div>
       <div className="body flex flex-col bg-gray0">
-        <form onSubmit={handleSubmit} className="flex flex-col m-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col m-4 xl:mx-[17.7vw]"
+        >
           {isDesktop ? (
-            // 웹 시안
             <>
               <TitleInput
                 value={title}
                 onChange={setTitle}
                 placeholder="제목"
               />
-              <hr className="border-gray-300 border mb-4" />
-              <div className="flex flex-row space-x-4 mb-4">
+              <hr className="border-gray-300 border mb-[2.5vw]" />
+              <div className="flex space-x-4 mb-4">
                 <ImageUpload
                   images={images}
                   setImages={setImages}
                   imagePreviews={imagePreviews}
                   setImagePreviews={setImagePreviews}
                   handleImageDelete={handleImageDelete}
+                  isDesktop={isDesktop}
                 />
                 <LocationButton
                   region={region}
                   sigungu={sigungu}
                   setRegion={setRegion}
                   setSigungu={setSigungu}
+                  isDesktop={isDesktop}
                 />
-              </div>
-              <div className="flex overflow-x-auto space-x-2 mb-4">
-                {imagePreviews.map((src, index) => (
-                  <div key={index} className="relative">
-                    <img
-                      src={src}
-                      alt={`preview-${index}`}
-                      className="h-20 w-20 object-cover"
-                    />
-                    <button
-                      onClick={() => handleImageDelete(index)}
-                      className="absolute top-0 right-0 bg-red-500 text-white rounded-full"
-                    >
-                      X
-                    </button>
-                  </div>
-                ))}
               </div>
               <ContentInput
                 value={content}
@@ -233,7 +223,6 @@ function FeedWrite() {
               />
             </>
           ) : (
-            // 모바일 시안
             <>
               <TitleInput
                 value={title}
@@ -246,6 +235,7 @@ function FeedWrite() {
                 sigungu={sigungu}
                 setRegion={setRegion}
                 setSigungu={setSigungu}
+                isDesktop={isDesktop}
               />
               <ImageUpload
                 images={images}
@@ -253,6 +243,7 @@ function FeedWrite() {
                 imagePreviews={imagePreviews}
                 setImagePreviews={setImagePreviews}
                 handleImageDelete={handleImageDelete}
+                isDesktop={isDesktop}
               />
               <ContentInput
                 value={content}
