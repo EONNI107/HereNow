@@ -381,7 +381,7 @@ function MyPage({ params }: { params: { id: string } }) {
                 <p className="text-sub1 w-[92px] text-[18px]">이메일</p>
                 <p className="text-sub2">{profile?.email}</p>
               </div>
-              <div className="flex items-center">
+              <div className="flex items-center h-[30px]">
                 <div className="flex items-center">
                   <p className="text-sub1 w-[92px] text-[18px]">닉네임</p>
                   {isEditingNickname ? (
@@ -389,7 +389,7 @@ function MyPage({ params }: { params: { id: string } }) {
                       type="text"
                       value={newNickname}
                       onChange={(e) => setNewNickname(e.target.value)}
-                      className="px-2 py-1 w-[100px]"
+                      className="px-2 py-1 w-[100px] border border-blue4 rounded-lg"
                     />
                   ) : (
                     <p className="text-[20px]  w-[100px] font-bold">
