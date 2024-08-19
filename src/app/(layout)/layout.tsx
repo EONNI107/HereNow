@@ -8,7 +8,7 @@ function layout({ children }: PropsWithChildren) {
       <Suspense>
         <HeaderLayout />
       </Suspense>
-      <div className="pt-[50px] pb-[84px]">{children}</div>
+      <div className="pt-[50px] pb-[84px] lg:pt-[86px]">{children}</div>
       <Footer />
     </>
   );

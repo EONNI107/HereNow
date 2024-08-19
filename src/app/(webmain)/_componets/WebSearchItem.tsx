@@ -7,7 +7,8 @@ import React from 'react';
 type SearchedTypeProp = {
   item: SearchedType;
 };
-function SearchFilterItem({ item }: SearchedTypeProp) {
+
+function WebSearchItem({ item }: SearchedTypeProp) {
   const router = useRouter();
 
   const handleClick = (contentid: string) => {
@@ -19,20 +20,20 @@ function SearchFilterItem({ item }: SearchedTypeProp) {
       className="w-full flex cursor-pointer gap-4"
       onClick={() => handleClick(item.contentid)}
     >
-      <div className="w-[100px] h-[100px]">
+      <div className="w-[190px] h-[120px]">
         <Image
-          src={item.firstimage || item.firstimage2 || '/NoImg-v3.png'}
+          src={item.firstimage || item.firstimage2 || '/No_Img.jpg'}
           alt="이미지"
-          width={100}
-          height={100}
+          width={190}
+          height={120}
           className="rounded-lg border w-full h-full object-cover"
         />
       </div>
-      <div className="flex justify-between items-center font-semibold text-[16px] text-main w-[218px]">
+      <div className="flex items-center font-semibold text-[16px] text-main">
         <p>{item.title}</p>
       </div>
     </div>
   );
 }
 
-export default SearchFilterItem;
+export default WebSearchItem;
