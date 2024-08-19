@@ -13,7 +13,7 @@ function LocalListItem({ item, region }: { item: Item; region: string }) {
   );
 
   return (
-    <div className="border rounded-3xl overflow-hidden shadow-xl relative w-[343px] h-[140px] xl:w-[399px] xl:h-[258px] xl:rounded-xl group">
+    <div className="border rounded-3xl overflow-hidden shadow-xl relative w-[343px] h-[155px] xl:w-[399px] xl:h-[258px] xl:rounded-xl group">
       <div className="relative">
         <Link href={`/local/details/${item.contentid}`}>
           <Image

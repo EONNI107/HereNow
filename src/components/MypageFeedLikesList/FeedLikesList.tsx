@@ -44,7 +44,7 @@ export default function FeedLikes() {
           </div>
         </div>
       ) : (
-        <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 pb-12">
           {feedLikes.map((like) => {
             const post = like.Feeds;
             const postImages = post?.image
@@ -57,11 +57,12 @@ export default function FeedLikes() {
                 className="flex items-center space-x-4 p-4 transition-shadow duration-200"
               >
                 <Image
-                  src={postImages ? postImages[0] : '/No_Img.jpg'}
+                  src={postImages.length > 0 ? postImages[0] : '/NoImg-v3.png'}
                   alt="이미지"
                   width={100}
                   height={100}
                   className="rounded-[8px] object-cover w-[100px] h-[100px] xl:w-[190px] xl:h-[120px]"
+                  priority
                 />
                 <div className="flex-1 min-w-0 xl:w-full">
                   <strong className="font-semibold text-lg xl:text-2xl block mb-2 truncate">

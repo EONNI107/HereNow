@@ -104,9 +104,20 @@ function Details({
   return (
     <>
       {mainData?.firstimage ? (
+        <div className="relative w-full h-[310px] xl:w-[800px] xl:h-[600px] mx-auto mb-6 xl:mb-9 bg-white">
+          <Image
+            src={mainData.firstimage || '/NoImg-v3.png'}
+            alt="장소 이미지"
+            fill
+            sizes="(max-width: 1240px) 100vw, 1240px"
+            className="object-cover w-full xl:object-contain"
+            priority
+          />
+        </div>
+      ) : (
         <div className="relative w-full h-[310px] xl:w-[800px] xl:h-[600px] mx-auto mb-6 xl:mb-9">
           <Image
-            src={mainData.firstimage || '/No_Img.jpg'}
+            src={'/NoImg-v3.png'}
             alt="장소 이미지"
             fill
             sizes="(max-width: 1240px) 100vw, 1240px"
@@ -114,10 +125,9 @@ function Details({
             priority
           />
         </div>
-      ) : null}
+      )}
       <div className="mx-4 xl:mx-0">
         <div className="flex flex-col justify-between gap-2 mb-4 xl:mb-6">
-          {/* 모바일 환경에서만 보이는 아이콘 섹션 */}
           {mainData?.contentid && (
             <div className="flex justify-between items-center xl:hidden mb-2">
               <div className="flex items-center gap-2">
@@ -136,10 +146,8 @@ function Details({
             </div>
           )}
 
-          {/* 제목 */}
           <h1 className="text-2xl xl:text-5xl">{mainData?.title}</h1>
 
-          {/* 웹 환경에서만 보이는 아이콘 섹션 */}
           {mainData?.contentid && (
             <div className="hidden xl:block mt-4">
               <div className="flex items-center gap-4 mb-2">

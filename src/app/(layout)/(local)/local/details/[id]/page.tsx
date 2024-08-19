@@ -51,7 +51,6 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
           />
           <KakaoMap latitude={latitude} longitude={longitude} />
 
-          {/* 웹에서만 보이는 리뷰 섹션 */}
           <div className="w-full mt-8 mb-20 hidden xl:block">
             <h2 className="text-xl font-bold mb-4">
               {`${mainData?.title}에 대한 리뷰를 남겨주세요!`}
