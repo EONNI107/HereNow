@@ -1,14 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import LocalItem from '@/components/MainPage/Main/Sections/LocalItem';
-import { tourApi } from '@/app/api/tourApi';
 import { NearbyPlace } from '@/types/localDetails';
-import SkeletonLocalItem from '@/components/MainPage/Skeleton/SkeletonLocalItem';
+import { tourApi } from '@/app/api/tourApi';
 import { showToast } from '@/utils/toastHelper';
+import AroundLocalItem from './AroundLocalItem';
+import { Regions } from '@/types/mainTypes';
+import WebMainBar from '../WebMainBar';
 import { useModal } from '@/components/Modal/Modal';
 import { useCookies } from 'react-cookie';
 import Image from 'next/image';
+import SkeletonLocation from '@/components/MainPage/Skeleton/SkeletonLocation';
 
 type PositionType = {
   coords: {
@@ -21,22 +23,19 @@ type GeolocationError = {
   code: number;
   message: string;
 };
-
-function LocalSection() {
-  const router = useRouter();
-
+function AroundLocalList() {
   const { isGetPosition, SetIsGetPosition } = useModal();
-  const [cookies, setCookies] = useCookies();
+  const router = useRouter();
   const [isNotLocation, setIsNotLocation] = useState<boolean>(false);
-
   const [localitems, setLocalitems] = useState<NearbyPlace[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const serviceKey = process.env.NEXT_PUBLIC_TOURAPI_KEY;
-
+  const { region }: Regions = require('@/data/regions.json');
+  const [cookies, setCookies] = useCookies();
   const getLocationData = async (latitude: number, longitude: number) => {
     try {
       const res = await tourApi(
-        `/locationBasedList1?MobileOS=ETC&numOfRows=2&MobileApp=new&_type=JSON&mapX=${longitude}&mapY=${latitude}&radius=20000&contentTypeId=12&serviceKey=${serviceKey}`,
+        `/locationBasedList1?MobileOS=ETC&numOfRows=3&MobileApp=new&_type=JSON&mapX=${longitude}&mapY=${latitude}&radius=20000&contentTypeId=12&serviceKey=${serviceKey}`,
       );
 
       const items: NearbyPlace[] = res.data.response.body.items.item;
@@ -71,13 +70,14 @@ function LocalSection() {
       option,
     );
   };
-  const getSortLoaction = () => {
-    if (isGetPosition) {
-      getLoaction();
-      setIsNotLocation(true);
-    }
-  };
+
   useEffect(() => {
+    const getSortLoaction = () => {
+      if (isGetPosition) {
+        getLoaction();
+        setIsNotLocation(true);
+      }
+    };
     getSortLoaction();
     if (cookies['MODAL_EXPIRES'] && cookies['MODAL_LOCATION']) {
       getLoaction();
@@ -85,26 +85,28 @@ function LocalSection() {
     }
   }, [isGetPosition]);
 
+  const filtercode = localitems[0]?.areacode;
+  const filterdata = region.find((e) => e.code === filtercode);
+
   const handleClick = (contentid: string) => {
     router.push(`/local/details/${contentid}`);
   };
   return (
-    <section className="flex flex-col gap-4 w-full px-4">
-      <div className="flex justify-between">
-        <h2 className="text-main font-semibold text-lg">
-          내 주변에 있는 여행지
-        </h2>
-        <button hidden={true}></button>
-      </div>
+    <>
       {isNotLocation ? (
-        <div className="w-full">
-          <ul className="w-full">
+        <div className="w-full flex flex-col gap-9">
+          <WebMainBar
+            title="가장 인기있는"
+            content="내 주변의 관광명소"
+            url={`/local/${filterdata?.ename}`}
+          />
+          <ul className="flex gap-[42px]">
             {loading
-              ? Array.from({ length: 2 }).map((_, index) => (
-                  <SkeletonLocalItem key={index} />
+              ? Array.from({ length: 3 }).map((_, index) => (
+                  <SkeletonLocation key={index} />
                 ))
               : localitems.map((item: NearbyPlace) => (
-                  <LocalItem
+                  <AroundLocalItem
                     key={item.contentid}
                     item={item}
                     onclick={() => handleClick(item.contentid)}
@@ -113,17 +115,23 @@ function LocalSection() {
           </ul>
         </div>
       ) : (
-        <div className="w-full flex justify-center items-center">
+        <div className="w-full flex flex-col justify-center items-center gap-[64px]">
+          <WebMainBar
+            title="가장 인기있는"
+            content="내 주변의 관광명소"
+            url={`/local/${filterdata?.ename}`}
+          />
           <Image
             src="/No_Location.jpg"
             alt="notLocation"
-            width={400}
+            width={1240}
             height={180}
             className="object-cover w-full h-full"
           />
         </div>
       )}
-    </section>
+    </>
   );
 }
-export default LocalSection;
+
+export default AroundLocalList;
