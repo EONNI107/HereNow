@@ -63,7 +63,7 @@ function Modal() {
     <>
       <div>
         {isShow && (
-          <div className="rounded-t-3xl absolute left-[33%] top-[80%] z-30 max-w-[35%] max-h-[20%]">
+          <div className="rounded-t-3xl fixed top-[50%] left-[50%] z-30 max-w-[400px] w-[90%] -translate-x-1/2 -translate-y-1/2">
             <div className="w-auto h-auto">
               <Image
                 src="/Pop-Up.png"
@@ -87,7 +87,9 @@ function Modal() {
       </div>
       <div
         className={`${
-          !isShow ? 'hidden' : 'bg-black/[0.25] fixed w-full h-screen z-20'
+          !isShow
+            ? 'hidden'
+            : 'bg-black/[0.25] fixed inset-0 z-20 flex justify-center items-center'
         }`}
       ></div>
     </>
