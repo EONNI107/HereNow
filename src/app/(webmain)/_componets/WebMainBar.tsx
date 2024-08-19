@@ -23,7 +23,7 @@ function WebMainBar({
       <div className="flex items-end">
         <button
           onClick={() => router.push(`${url}`)}
-          className="border-solid border-orange3 border text-orange3 text-base not-italic font-semibold leading-[150%] py-2 px-4 rounded-xl"
+          className="border-solid border-orange3 border text-orange3 text-base font-semibold leading-[150%] py-2 px-4 rounded-xl hover:bg-orange3 hover:text-gray0 transition-colors duration-300"
         >
           더보기
         </button>

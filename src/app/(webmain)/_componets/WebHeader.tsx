@@ -100,7 +100,7 @@ function WebHeader() {
                 className="w-full h-full cursor-pointer"
                 onClick={handleLogout}
               >
-                <button className="text-sm font-normal leading-[150%]">
+                <button className="text-sm font-normal leading-[150%] ">
                   로그아웃
                 </button>
               </div>
@@ -108,7 +108,7 @@ function WebHeader() {
           ) : (
             <button
               onClick={HandleOnClick}
-              className="py-2 px-4 bg-orange3 rounded-lg text-base font-semibold leading-[150%] text-gray0"
+              className="py-2 px-4 bg-orange3 rounded-lg text-base font-semibold leading-[150%] text-gray0 hover:bg-orange4 transition-colors duration-300"
             >
               시작하기
             </button>

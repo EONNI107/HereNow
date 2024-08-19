@@ -32,9 +32,9 @@ function MainBanner() {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="gap-[30px] flex flex-col justify-center items-center absolute top-[40%] left-[10%] w-[30%] h-[30%] text-[230%]">
+      <div className="gap-[30px] flex flex-col justify-center items-start absolute top-[40%] left-[10%] w-[30%] h-[30%] text-[150%]">
         <div className="w-full">
-          <h2 className="font-semibold leading-[150%] shrink-0">
+          <h2 className="font-semibold leading-[150%] shrink-0 text-[170%]">
             {user ? `${user.nickname}님` : '여러분'}
             만의 <br />
             맛집과 여행지를 알려주세요!
@@ -42,9 +42,9 @@ function MainBanner() {
         </div>
         <div
           onClick={HandleOnClick}
-          className="shrink-0 cursor-pointer w-full px-[26px] py-[14px] flex justify-center items-center rounded-2xl bg-blue4 text-white"
+          className="hover:bg-blue5 transition-colors duration-300 shrink-0 cursor-pointer px-[22px] py-[12px] w-[60%] flex justify-center items-center rounded-2xl bg-blue4 text-white"
         >
-          <button className="font-semibold">글쓰러가기</button>
+          <button className="font-semibold ">글쓰러가기</button>
         </div>
       </div>
     </div>
