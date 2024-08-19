@@ -116,6 +116,7 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
             <LikeBtn
               imageUrl={mainData.firstimage}
               placeId={mainData.contentid}
+              title={mainData.title}
             />
             <button
               onClick={handleShareBtn}

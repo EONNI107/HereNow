@@ -156,21 +156,27 @@ export type Database = {
       }
       PlaceLikes: {
         Row: {
+          content: string | null
           id: number
           imageUrl: string | null
           placeId: string
+          title: string | null
           userId: string
         }
         Insert: {
+          content?: string | null
           id?: number
           imageUrl?: string | null
           placeId: string
+          title?: string | null
           userId?: string
         }
         Update: {
+          content?: string | null
           id?: number
           imageUrl?: string | null
           placeId?: string
+          title?: string | null
           userId?: string
         }
         Relationships: [
