@@ -9,11 +9,13 @@ import {
   useMainData,
   useNearbyPlaces,
 } from '@/hooks/useLocalDetails';
+import useAuthStore from '@/zustand/useAuthStore';
 import React, { useState } from 'react';
 
 function LocalDetailsPage({ params }: { params: { id: number } }) {
   const { id } = params;
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const { user } = useAuthStore();
 
   const {
     data: mainData,
@@ -39,7 +41,7 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
 
   return (
     <div className="xl:container xl:max-w-screen-xl">
-      <div className="mt-4 flex flex-col bg-gray0 mx-auto xl:mt-0 xl:max-h-[2000px] xl:mb-5 xl:flex xl:flex-row xl:justify-center xl:gap-10">
+      <div className="mt-4 flex flex-col bg-gray0 mx-auto xl:mt-0 xl:mb-20 xl:flex xl:flex-row xl:justify-center xl:gap-10">
         <div className="xl:w-[800px] xl:mt-11">
           <Details
             mainData={mainData}
@@ -47,19 +49,35 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
             typeId={typeId}
           />
           <KakaoMap latitude={latitude} longitude={longitude} />
+
+          {/* 댓글 섹션 */}
+          <div className="w-full mt-8 mb-20">
+            <h2 className="text-2xl font-bold mb-4">
+              {user
+                ? `${user?.nickname}님의 리뷰를 남겨주세요!`
+                : `여러분만의 리뷰를 남겨주세요!`}
+            </h2>
+            <div className="hidden xl:block">
+              <Comments placeId={id} onClose={() => {}} />
+            </div>
+            <div className="xl:hidden z-50">
+              <button
+                onClick={() => setIsCommentModalOpen(true)}
+                className="bg-blue-500 text-white px-4 py-2 rounded "
+              >
+                댓글 보기/작성
+              </button>
+            </div>
+          </div>
         </div>
         <div className="xl:w-[400px] mt-8 xl:mt-20">
           <NearbyPlaces nearbyPlaces={nearbyPlaces} />
         </div>
-        {isCommentModalOpen && (
-          <div className="fixed inset-0 z-50">
-            <Comments
-              placeId={id}
-              onClose={() => setIsCommentModalOpen(false)}
-            />
-          </div>
-        )}
       </div>
+
+      {isCommentModalOpen && (
+        <Comments placeId={id} onClose={() => setIsCommentModalOpen(false)} />
+      )}
     </div>
   );
 }

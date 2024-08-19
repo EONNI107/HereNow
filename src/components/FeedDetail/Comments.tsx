@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import {
   CheckCircleIcon,
   ChevronDownIcon,
@@ -16,8 +14,7 @@ import useAuthStore from '@/zustand/useAuthStore';
 import { toast } from 'react-toastify';
 import LoginPrompt from '@/components/LoginPrompt';
 import DeletePrompt from '@/components/DeletePrompt';
-
-dayjs.extend(relativeTime);
+import { fromNow } from '@/utils/formatDate';
 
 type Comment = {
   id: number;
@@ -232,25 +229,31 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
   };
 
   const confirmDelete = (commentId: number) => {
-    toast(<DeletePrompt onConfirm={() => handleDeleteComment(commentId)} />, {
-      position: 'top-center',
-      autoClose: false,
-      closeOnClick: false,
-      closeButton: false,
-    });
+    toast(
+      <DeletePrompt
+        onConfirm={() => handleDeleteComment(commentId)}
+        isComment={true}
+      />,
+      {
+        position: 'top-center',
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+      },
+    );
   };
-
+  console.log('isDesktop => ', isDesktop);
   return isDesktop ? (
-    // 웹 시안
+    // 데스크톱 버전
     <div className="w-full mt-8">
       <form onSubmit={handleCommentSubmit} className="w-full mb-4">
         <div className="w-full flex items-center">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글을 입력하세요..."
+            placeholder="웹 댓글 작성폼"
             required
-            className="textarea w-[720px] text-[16px] flex h-[48px] bg-gray-100 rounded-xl items-center p-2"
+            className="textarea w-[720px] text-[16px] flex h-[48px] bg-gray-100 rounded-xl items-center p-2 resize-none"
           />
           <button
             type="submit"
@@ -279,7 +282,7 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
                       {comment.Users?.nickname || '알 수 없음'}
                     </p>
                     <p className="text-gray-500 text-[12px]">
-                      {dayjs(comment.createdAt).fromNow()}
+                      {fromNow(comment.createdAt)}
                     </p>
                   </div>
                   {user?.id === comment.userId && (
@@ -312,7 +315,7 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
                   <textarea
                     value={editingContent}
                     onChange={(e) => setEditingContent(e.target.value)}
-                    className="textarea w-full mt-2 text-[14px] border border-gray-300"
+                    className="textarea w-full mt-2 text-[14px] border border-gray-300 resize-none"
                   />
                 ) : (
                   <p className="mt-2 text-[14px]">{comment.content}</p>
@@ -321,13 +324,18 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
             </li>
           ))}
       </ul>
-      {comments.length > 3 && !showAllComments && (
+      {comments.length > 3 && (
         <div className="mt-[18px] flex justify-center">
           <button
-            onClick={() => setShowAllComments(true)}
+            onClick={() => setShowAllComments(!showAllComments)}
             className="text-[14px] font-semibold flex items-center"
           >
-            더보기 <ChevronDownIcon className="w-[16px] h-[16px] ml-[16px]" />
+            {showAllComments ? '접기' : '더보기'}
+            <ChevronDownIcon
+              className={`w-[16px] h-[16px] ml-[16px] ${
+                showAllComments ? 'transform rotate-180' : ''
+              }`}
+            />
           </button>
         </div>
       )}
@@ -341,82 +349,110 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
           className="text-xl ml-auto my-4 p-1 h-8 w-8 cursor-pointer mr-4"
         />
         <hr className="border-gray-300 mx-4" />
-        <ul className="flex-grow overflow-y-auto px-4">
-          {comments.map((comment) => (
-            <li key={comment.id} className="py-4 flex">
-              <Image
-                src={comment.Users?.profileImage || '/default-profile.jpg'}
-                alt="User Avatar"
-                width={48}
-                height={48}
-                className="rounded-full mr-6 w-12 h-12"
-              />
-              <div className="items-center w-full">
-                <div className="flex">
-                  <p className="font-semibold text-[14px] mr-2">
-                    {comment.Users?.nickname || '알 수 없음'}
-                  </p>
-                  <p className="text-gray-500 text-[14px]">
-                    {dayjs(comment.createdAt).fromNow()}
-                  </p>
-                  {user?.id === comment.userId && (
-                    <span className="flex space-x-2 ml-5">
-                      {editingCommentId === comment.id ? (
-                        <button
-                          onClick={() => handleUpdateComment(comment.id)}
-                          className="text-blue4 text-[14px]"
-                        >
-                          <CheckCircleIcon className="w-5 h-5" />
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => handleEditClick(comment)}
-                          className="text-blue4 text-[14px]"
-                        >
-                          <PencilSquareIcon className="w-5 h-5" />
-                        </button>
-                      )}
-                      <button
-                        onClick={() => confirmDelete(comment.id)}
-                        className="text-orange4 text-[14px]"
-                      >
-                        <TrashIcon className="w-5 h-5" />
-                      </button>
-                    </span>
-                  )}
+        <div className="flex-grow overflow-y-auto px-4">
+          {comments.length === 0 ? (
+            <div className="flex items-center justify-center flex-wrap h-full">
+              <p className="text-gray5 text-[16px]">
+                첫 댓글의 주인공이 되세요!
+              </p>
+              <form onSubmit={handleCommentSubmit} className="w-full fixed">
+                <div className="w-full flex items-center pt-1 pb-4 shadow-2xl">
+                  <textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="댓글이 없을 때 댓글 작성폼"
+                    required
+                    className="textarea resize-none text-[16px] flex-grow no-focus mr-2 h-[48px] bg-blue0 rounded-xl p-2 ml-4"
+                  />
+                  <button
+                    type="submit"
+                    className="btn bg-blue3 px-5 h-[48px] rounded-xl text-white text-[16px] mr-4"
+                  >
+                    등록
+                  </button>
                 </div>
-                {editingCommentId === comment.id ? (
-                  <div>
-                    <textarea
-                      value={editingContent}
-                      onChange={(e) => setEditingContent(e.target.value)}
-                      className={`textarea no-focus w-full mt-[7px] text-[14px] border border-gray-400 focus:border-gray-400 focus:outline-none`}
-                    />
+              </form>
+            </div>
+          ) : (
+            <ul>
+              {comments.map((comment) => (
+                <li key={comment.id} className="py-4 flex">
+                  <Image
+                    src={comment.Users?.profileImage || '/default-profile.jpg'}
+                    alt="User Avatar"
+                    width={48}
+                    height={48}
+                    className="rounded-full mr-6 w-12 h-12"
+                  />
+                  <div className="items-center w-full">
+                    <div className="flex">
+                      <p className="font-semibold text-[14px] mr-2">
+                        {comment.Users?.nickname || '알 수 없음'}
+                      </p>
+                      <p className="text-gray-500 text-[14px]">
+                        {fromNow(comment.createdAt)}
+                      </p>
+                      {user?.id === comment.userId && (
+                        <span className="flex space-x-2 ml-5">
+                          {editingCommentId === comment.id ? (
+                            <button
+                              onClick={() => handleUpdateComment(comment.id)}
+                              className="text-blue4 text-[14px]"
+                            >
+                              <CheckCircleIcon className="w-5 h-5" />
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => handleEditClick(comment)}
+                              className="text-blue4 text-[14px]"
+                            >
+                              <PencilSquareIcon className="w-5 h-5" />
+                            </button>
+                          )}
+                          <button
+                            onClick={() => confirmDelete(comment.id)}
+                            className="text-orange4 text-[14px]"
+                          >
+                            <TrashIcon className="w-5 h-5" />
+                          </button>
+                        </span>
+                      )}
+                    </div>
+
+                    {editingCommentId === comment.id ? (
+                      <div>
+                        <textarea
+                          value={editingContent}
+                          onChange={(e) => setEditingContent(e.target.value)}
+                          className={`textarea resize-none no-focus w-full mt-[7px] text-[14px] border border-gray-400 focus:border-gray-400 focus:outline-none`}
+                        />
+                      </div>
+                    ) : (
+                      <p className="mt-[7px] text-[14px]">{comment.content}</p>
+                    )}
                   </div>
-                ) : (
-                  <p className="mt-[7px] text-[14px]">{comment.content}</p>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-        <form onSubmit={handleCommentSubmit} className="w-full">
-          <div className="w-full flex items-center pt-1 pb-4 shadow-2xl">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="댓글을 입력하세요..."
-              required
-              className="textarea text-[16px] flex-grow no-focus mr-2 h-[48px] bg-blue0 rounded-xl p-2 ml-4"
-            />
-            <button
-              type="submit"
-              className="btn bg-blue3 px-5 h-[48px] rounded-xl text-white text-[16px] mr-4"
-            >
-              등록
-            </button>
-          </div>
-        </form>
+                </li>
+              ))}
+            </ul>
+          )}
+          <form onSubmit={handleCommentSubmit} className="w-full">
+            <div className="w-full flex items-center pt-1 pb-4 shadow-2xl">
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="댓글이 있을 때 작성폼"
+                required
+                className="textarea resize-none text-[16px] flex-grow no-focus mr-2 h-[48px] bg-blue0 rounded-xl p-2 ml-4"
+              />
+              <button
+                type="submit"
+                className="btn bg-blue3 px-5 h-[48px] rounded-xl text-white text-[16px] mr-4"
+              >
+                등록
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
