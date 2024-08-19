@@ -7,7 +7,11 @@ type LocalListData = {
   totalPage: number;
 };
 
-function useLocalList(region: string, contentType: string) {
+function useLocalList(
+  region: string,
+  sigunguCode: string,
+  contentType: string,
+) {
   return useInfiniteQuery<
     LocalListData,
     Error,
@@ -15,12 +19,12 @@ function useLocalList(region: string, contentType: string) {
     string[],
     number
   >({
-    queryKey: ['localList', region, contentType],
+    queryKey: ['localList', region, sigunguCode, contentType],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await axios.get<LocalListData>(
         contentType === '15'
-          ? `/api/local-event/${region}?pageNo=${pageParam}`
-          : `/api/local-list/${region}?pageNo=${pageParam}&contentTypeId=${contentType}`,
+          ? `/api/local-event/${region}?pageNo=${pageParam}&sigunguCode=${sigunguCode}`
+          : `/api/local-list/${region}?pageNo=${pageParam}&contentTypeId=${contentType}&sigunguCode=${sigunguCode}`,
       );
       return response.data;
     },
