@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import regionData from '@/data/regions.json';
+
 type LocationDropdownProps = {
   region: string;
   sigungu: string;
   setRegion: (value: string) => void;
   setSigungu: (value: string) => void;
+  isDesktop: boolean;
 };
 
 function LocationDropdown({
@@ -12,6 +14,7 @@ function LocationDropdown({
   sigungu,
   setRegion,
   setSigungu,
+  isDesktop,
 }: LocationDropdownProps) {
   const [regionsData] = useState(regionData);
 
@@ -25,13 +28,19 @@ function LocationDropdown({
   };
 
   return (
-    <div className="flex flex-col mb-2">
+    <div
+      className={`flex ${isDesktop ? 'flex-row space-x-4' : 'flex-col mb-2'}`}
+    >
       <select
         value={region}
         onChange={handleRegionChange}
-        className="input bg-gray0 mb-4 border-2 rounded"
+        className={`input border-2 rounded ${
+          isDesktop
+            ? 'bg-orange0 border-orange5 w-[194px] h-[46px] px-4 text-[18px] font-medium'
+            : 'bg-gray0 mb-4'
+        }`}
       >
-        <option value="">시/도 선택</option>
+        <option value="">특별시/광역시/도</option>
         {regionsData.region.map((region) => (
           <option key={region.code} value={region.name}>
             {region.name}
@@ -43,9 +52,13 @@ function LocationDropdown({
         <select
           value={sigungu}
           onChange={handleSigunguChange}
-          className="input mb-2 bg-gray0 border-2 rounded"
+          className={`input border-2 rounded ${
+            isDesktop
+              ? 'bg-orange0 border-orange5 w-[140px] h-[46px] px-4 text-[18px] font-medium'
+              : 'bg-gray0 mb-2'
+          }`}
         >
-          <option value="">시/군/구 선택</option>
+          <option value="">시/군/구</option>
           {regionsData.region
             .find((r) => r.name === region)
             ?.sigungu.map((district) => (
