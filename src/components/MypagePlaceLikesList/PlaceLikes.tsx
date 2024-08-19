@@ -41,7 +41,7 @@ export default function PlaceLikes() {
           </div>
         </div>
       ) : (
-        <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 pb-12">
           {placeLikes.map((place) => {
             return (
               <Link
@@ -50,11 +50,12 @@ export default function PlaceLikes() {
                 className="flex items-center space-x-4 p-4 transition-shadow duration-200"
               >
                 <Image
-                  src={place.imageUrl || '/No_Img.jpg'}
+                  src={place.imageUrl || '/NoImg-v1.png'}
                   alt="이미지"
                   width={100}
                   height={100}
                   className="rounded-[8px] object-cover w-[100px] h-[100px] xl:w-[190px] xl:h-[120px]"
+                  priority
                 />
                 <div className="flex-1 min-w-0 xl:w-full">
                   <strong className="font-semibold text-lg xl:text-2xl block mb-2 truncate">

@@ -22,7 +22,7 @@ function WebSearchItem({ item }: SearchedTypeProp) {
     >
       <div className="w-[190px] h-[120px]">
         <Image
-          src={item.firstimage || item.firstimage2 || '/No_Img.jpg'}
+          src={item.firstimage || item.firstimage2 || '/NoImg-v2.png'}
           alt="이미지"
           width={190}
           height={120}
