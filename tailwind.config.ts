@@ -7,7 +7,21 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      center: true,
+      padding: { xl: '20px' },
+    },
     extend: {
+      keyframes: {
+        pop: {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.35)' },
+          '100%': { transform: 'scale(1)' },
+        },
+      },
+      animation: {
+        pop: 'pop 0.3s ease-in-out',
+      },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
       },

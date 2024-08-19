@@ -9,7 +9,7 @@ function FeedLoading() {
       <div className="relative mb-4">
         <div className="aspect-[16/9] w-full">
           <Image
-            src={'/AreaDetail-Main.jpg'}
+            src={'/Main-Banner.jpg'}
             alt="피드 상단 이미지"
             width={300}
             height={200}
@@ -34,7 +34,7 @@ function FeedLoading() {
           </div>
         </div>
       </div>
-      <div className="container mx-auto p-4">
+      <div className="mx-auto p-4">
         <div className="grid grid-cols-1 gap-4">
           {[...Array(4)].map((_, i) => (
             <FeedItemSkeleton key={i} />

@@ -5,12 +5,25 @@ export const POST = async (request: NextRequest) => {
   const { email, password, nickname } = await request.json();
   const supabase = createClient();
 
+  const { data: existingUser } = await supabase
+    .from('Users')
+    .select('email')
+    .eq('email', email)
+    .single();
+
+  if (existingUser) {
+    return NextResponse.json(
+      { error: '이미 사용 중인 이메일입니다' },
+      { status: 400 },
+    );
+  }
+
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: {
-        nickname,
+        name: nickname,
       },
     },
   });

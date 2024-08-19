@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { HeartIcon } from '@heroicons/react/24/outline';
-import { ShareIcon } from '@heroicons/react/24/outline';
-import { showToast } from '@/utils/toastHelper';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -9,14 +7,24 @@ import LoginPrompt from '@/components/LoginPrompt';
 import useAuthStore from '@/zustand/useAuthStore';
 
 type LikeBtnProps = {
+  title: string;
   placeId: string;
   imageUrl: string;
+  isInNearbyPlaces?: boolean;
+  isInLocalList?: boolean;
 };
 
-function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
+function LikeBtn({
+  placeId,
+  imageUrl,
+  title,
+  isInNearbyPlaces = false,
+  isInLocalList = false,
+}: LikeBtnProps) {
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [liked, setLiked] = useState(false);
+
   const userId = user?.id;
 
   useEffect(() => {
@@ -36,7 +44,12 @@ function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
 
   const { mutate: likeMutate } = useMutation({
     mutationFn: async () => {
-      await axios.post('/api/like-place', { userId, placeId, imageUrl });
+      await axios.post('/api/like-place', {
+        userId,
+        placeId,
+        imageUrl,
+        title,
+      });
     },
     onMutate: async () => {
       setLiked(true);
@@ -90,27 +103,54 @@ function LikeBtn({ placeId, imageUrl }: LikeBtnProps) {
     }
   };
 
-  const handleShareBtn = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      showToast('success', '현재 페이지 주소가 복사되었습니다.');
-    } catch (err) {
-      console.error('복사 실패', err);
-      showToast('error', '현재 페이지 주소 복사를 실패하였습니다.');
-    }
-  };
-
   return (
-    <div className="items-center flex gap-2 mb-4">
-      <button onClick={handleLike} className="focus:outline-none">
-        <HeartIcon
-          className={`w-6 h-6 ${liked ? 'text-red-500' : 'text-gray-400'}`}
-          fill={liked ? '#ff5c5c' : 'none'}
-        />
-      </button>
-      <button onClick={handleShareBtn}>
-        <ShareIcon className="w-5 h-5" />
-      </button>
+    <div>
+      {isInLocalList ? (
+        <button
+          onClick={handleLike}
+          className={`flex gap-2 justify-center xl:hover:bg-blue5 xl:bg-blue4 xl:border border-blue4 xl:p-2 xl:rounded-lg xl:w-24 ${
+            isInLocalList &&
+            'xl:bg-transparent xl:hover:bg-transparent xl:border-none xl:w-4 xl:p-0 xl:algin'
+          }`}
+        >
+          <div className="">
+            <HeartIcon
+              className={`w-6 h-6 ${liked && 'animate-pop'} ${
+                liked ? 'text-orange5 fill-orange5 ' : 'text-gray3 '
+              }`}
+            />
+          </div>
+        </button>
+      ) : (
+        <button
+          onClick={handleLike}
+          className={`flex gap-2 justify-center xl:hover:bg-blue5 xl:bg-blue4 xl:border border-blue4 xl:p-2 xl:rounded-lg xl:w-24 ${
+            isInNearbyPlaces &&
+            'xl:bg-transparent xl:hover:bg-transparent xl:border-none xl:w-4 xl:p-0 xl:algin'
+          }`}
+        >
+          <div className="">
+            <HeartIcon
+              className={`w-6 h-6 ${liked && 'animate-pop'} ${
+                isInNearbyPlaces
+                  ? liked
+                    ? 'animate-pop xl:text-orange5 xl:fill-orange5'
+                    : 'xl:text-gray3'
+                  : liked
+                  ? 'text-orange5 fill-orange5 xl:fill-white xl:text-white'
+                  : 'text-gray3 xl:text-white'
+              }`}
+            />
+          </div>
+          <span
+            className={`hidden xl:inline-flex text-white ${
+              isInNearbyPlaces && 'xl:hidden'
+            }`}
+          >
+            찜
+          </span>
+        </button>
+      )}
     </div>
   );
 }

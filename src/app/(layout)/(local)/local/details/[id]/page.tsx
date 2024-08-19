@@ -1,4 +1,5 @@
 'use client';
+import Comments from '@/components/FeedDetail/Comments';
 import Details from '@/components/LocalDetails/Details';
 import KakaoMap from '@/components/LocalDetails/KakaoMap';
 import LocalDetailsSkeleton from '@/components/LocalDetails/LocalDetailsSkeleton';
@@ -8,16 +9,19 @@ import {
   useMainData,
   useNearbyPlaces,
 } from '@/hooks/useLocalDetails';
-import React from 'react';
+import React, { useState } from 'react';
+import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 
 function LocalDetailsPage({ params }: { params: { id: number } }) {
   const { id } = params;
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
   const {
     data: mainData,
     isPending: isPendingMainData,
     error: mainDataError,
   } = useMainData(id);
+
   const typeId = mainData?.contenttypeid || '';
   const latitude = Number(mainData?.mapy);
   const longitude = Number(mainData?.mapx);
@@ -36,14 +40,32 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
   }
 
   return (
-    <div className="my-4 bg-gray0">
-      <Details
-        mainData={mainData}
-        additionalData={additionalData}
-        typeId={typeId}
-      />
-      <KakaoMap latitude={latitude} longitude={longitude} />
-      <NearbyPlaces nearbyPlaces={nearbyPlaces} />
+    <div className="xl:container xl:max-w-screen-xl">
+      <div className="mt-4 flex flex-col bg-gray0 xl:bg-white mx-auto xl:mt-0 xl:mb-20 xl:flex xl:flex-row xl:justify-center xl:gap-10">
+        <div className="xl:w-[800px] xl:mt-11">
+          <Details
+            mainData={mainData}
+            additionalData={additionalData}
+            typeId={typeId}
+            onCommentClick={() => setIsCommentModalOpen(true)}
+          />
+          <KakaoMap latitude={latitude} longitude={longitude} />
+
+          <div className="w-full mt-8 mb-20 hidden xl:block">
+            <h2 className="text-xl font-bold mb-4">
+              {`${mainData?.title}에 대한 리뷰를 남겨주세요!`}
+            </h2>
+            <Comments placeId={id} onClose={() => {}} />
+          </div>
+        </div>
+        <div className="xl:w-[400px] mt-8 xl:mt-20">
+          <NearbyPlaces nearbyPlaces={nearbyPlaces} />
+        </div>
+      </div>
+
+      {isCommentModalOpen && (
+        <Comments placeId={id} onClose={() => setIsCommentModalOpen(false)} />
+      )}
     </div>
   );
 }

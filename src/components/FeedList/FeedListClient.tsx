@@ -120,33 +120,45 @@ function FeedListClient({
   if (error) return <div>에러: {error.message}</div>;
 
   return (
-    <div className="container mx-auto">
-      <div className="mb-4 flex space-x-4 ml-4">
-        <select
-          value={selectedRegion}
-          onChange={handleRegionChange}
-          className="p-2 border rounded"
-        >
-          <option value="">모든 지역</option>
-          {regionData.region.map((r) => (
-            <option key={r.code} value={r.name}>
-              {r.name}
-            </option>
-          ))}
-        </select>
-        <select
-          value={sortOption}
-          onChange={handleSortChange}
-          className="p-2 border rounded"
-        >
-          <option value="latest">최신순</option>
-          <option value="mostLikes">찜한순</option>
-          <option value="mostComments">댓글순</option>
-        </select>
+    <div className="lg:container xl:max-w-6xl px-4">
+      <div className="mb-4 xl:bg-gray0 xl:p-4 xl:rounded-lg xl:border xl:border-gray8">
+        <h2 className="hidden xl:block text-[20px] font-bold mb-2 text-center">
+          빠르게 보고싶은 글이 있나요?
+        </h2>
+        <div className="flex space-x-4 xl:justify-center xl:items-center">
+          <select
+            value={selectedRegion}
+            onChange={handleRegionChange}
+            className="p-2 border rounded w-full xl:w-[500px]"
+          >
+            <option value="">모든 지역</option>
+            {regionData.region.map((r) => (
+              <option key={r.code} value={r.name}>
+                {r.name}
+              </option>
+            ))}
+          </select>
+          <select
+            value={sortOption}
+            onChange={handleSortChange}
+            className="p-2 border rounded w-full xl:w-auto"
+          >
+            <option value="latest">최신순</option>
+            <option value="mostLikes">찜한순</option>
+            <option value="mostComments">댓글순</option>
+          </select>
+        </div>
       </div>
-
-      <div className="bg-gray0 p-4">
-        <div className="grid grid-cols-1 gap-4">
+      <div className="hidden xl:block text-center my-8">
+        <h3 className="text-[32px] text-blue4 font-semibold mb-3">
+          로컬들이 공유하는 피드는?
+        </h3>
+        <p className="text-[20px] text-sub1 font-medium mb-4">
+          로컬들이 몰래 알려주는 장소를 찾아보세요
+        </p>
+      </div>
+      <div className="bg-gray0 p-4 xl:bg-white">
+        <div className="grid grid-cols-1 gap-8 xl:grid-cols-2 xl:gap-x-6 xl:gap-y-16">
           {sortedFeeds.map((feed) => (
             <FeedListItem
               key={feed.id}

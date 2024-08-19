@@ -27,6 +27,17 @@ function DetailLikeBtn({
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const supabase = createClient();
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const updateMedia = () => {
+      setIsDesktop(window.innerWidth >= 1280);
+    };
+
+    updateMedia();
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  }, []);
 
   useEffect(() => {
     const fetchLikes = async () => {
@@ -74,6 +85,12 @@ function DetailLikeBtn({
       return;
     }
 
+    const originalLiked = liked;
+    const originalLikeCount = likeCount;
+
+    setLiked(!liked);
+    setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+
     try {
       if (liked) {
         const { error } = await supabase
@@ -83,12 +100,7 @@ function DetailLikeBtn({
           .eq('userId', userId);
 
         if (error) {
-          console.error(error);
-          showToast('error', '좋아요 취소 중 오류가 발생했습니다.');
-        } else {
-          setLiked(false);
-          setLikeCount((prev) => prev - 1);
-          showToast('success', '좋아요가 취소되었습니다.');
+          throw error;
         }
       } else {
         const { error } = await supabase.from('FeedLikes').insert({
@@ -97,16 +109,13 @@ function DetailLikeBtn({
         });
 
         if (error) {
-          console.error(error);
-          showToast('error', '좋아요 등록 중 오류가 발생했습니다.');
-        } else {
-          setLiked(true);
-          setLikeCount((prev) => prev + 1);
-          showToast('success', '좋아요가 등록되었습니다.');
+          throw error;
         }
       }
     } catch (e) {
-      console.error(e);
+      setLiked(originalLiked);
+      setLikeCount(originalLikeCount);
+      showToast('error', '좋아요 처리 중 오류가 발생했습니다.');
     }
   };
 
@@ -120,12 +129,41 @@ function DetailLikeBtn({
     }
   };
 
-  return (
+  return isDesktop ? (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center">
+        <button
+          onClick={handleLike}
+          className="flex w-[6.4vw] h-[2.4vw] bg-blue4 focus:outline-none items-center rounded-[12px] justify-center hover:bg-blue5 hover:text-white transition-colors duration-300"
+        >
+          <span className="flex items-center text-white text-[1vw] font-semibold">
+            <HeartIcon
+              className={`${
+                liked ? 'xl:fill-white xl:text-white animate-pop' : 'text-white'
+              } w-[1.3vw] h-[1.3vw] mr-[0.8vw]`}
+              fill={liked ? '#ff5c5c ' : 'none'}
+            />{' '}
+            찜 {likeCount}
+          </span>
+        </button>
+        <span className="mx-[1.25vw] text-gray-700 flex text-[1vw] font-semibold bg-blue0 w-[6.4vw] h-[2.4vw] items-center border-blue4 border-[1px] rounded-[12px] justify-center">
+          <ChatBubbleOvalLeftEllipsisIcon className="w-[1.3vw] h-[1.3vw] mr-[0.8vw]" />
+          댓글 {commentCount}
+        </span>
+      </div>
+      <button
+        onClick={handleShareBtn}
+        className="flex text-[1vw] font-semibold w-[5.6vw] h-[2.4vw] bg-gray0 items-center border-gray8 border-[1px] rounded-[12px] justify-center hover:bg-gray1 hover:text-black transition-colors duration-300"
+      >
+        <ShareIcon className="w-[1.3vw] h-[1.3vw] mr-[0.8vw]" /> 공유
+      </button>
+    </div>
+  ) : (
     <div className="flex items-center justify-between h-14 px-4">
       <div className="flex items-center">
         <button onClick={handleLike} className="focus:outline-none w-6 h-6 m-2">
           <HeartIcon
-            className={`${liked ? 'text-red-500' : 'text-black'}`}
+            className={`${liked ? 'text-red-500 animate-pop' : 'text-black'}`}
             fill={liked ? '#ff5c5c' : 'none'}
           />
         </button>

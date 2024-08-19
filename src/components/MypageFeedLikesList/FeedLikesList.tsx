@@ -12,31 +12,30 @@ type LikedFeeds = Tables<'FeedLikes'> & { Feeds: Tables<'Feeds'> | null };
 export default function FeedLikes() {
   const [feedLikes, setFeedLikes] = useState<LikedFeeds[]>([]);
   const { user } = useAuthStore();
+  const supabase = createClient();
 
   useEffect(() => {
-    const supabase = createClient();
     const fetchFeedLikes = async () => {
       if (!user) return;
-      try {
-        const { data, error } = await supabase
-          .from('FeedLikes')
-          .select('*,Feeds(*)')
-          .eq('userId', user.id);
 
-        if (error) {
-          showToast('error', '슈퍼베이스 불러오는중 오류가 발생했습니다');
-          console.log(error.message);
-        }
-        if (!data) return;
-        setFeedLikes(data);
-      } catch {}
+      const { data, error } = await supabase
+        .from('FeedLikes')
+        .select('*,Feeds(*)')
+        .eq('userId', user.id);
+
+      if (error) {
+        showToast('error', '슈퍼베이스 불러오는중 오류가 발생했습니다');
+        console.log(error.message);
+      }
+      if (!data) return;
+      setFeedLikes(data);
     };
 
     fetchFeedLikes();
   }, [user?.id]);
 
   return (
-    <div className="h-[calc((100svh_-_58px_-_92px)_*_0.7)] overflow-y-auto">
+    <div className="h-[calc(100dvh-355px)] w-full overflow-y-auto">
       {feedLikes.length === 0 ? (
         <div className="h-full flex justify-center items-center">
           <div className="flex flex-col items-center justify-center">
@@ -45,27 +44,35 @@ export default function FeedLikes() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 min-[375px]:grid-cols-2 gap-0.5 w-full">
+        <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 pb-12">
           {feedLikes.map((like) => {
             const post = like.Feeds;
             const postImages = post?.image
               ? JSON.parse(post.image as string)
               : [];
-
             return (
-              <div key={like.id}>
-                {postImages.length > 0 && (
-                  <Link href={`/feed-detail/${post?.id}`}>
-                    <Image
-                      src={postImages[0]}
-                      alt="이미지"
-                      width={200}
-                      height={200}
-                      className="rounded aspect-square object-cover"
-                    />
-                  </Link>
-                )}
-              </div>
+              <Link
+                href={`/feed-detail/${like.id}`}
+                key={like.id}
+                className="flex items-center space-x-4 p-4 transition-shadow duration-200"
+              >
+                <Image
+                  src={postImages.length > 0 ? postImages[0] : '/NoImg-v3.png'}
+                  alt="이미지"
+                  width={100}
+                  height={100}
+                  className="rounded-[8px] object-cover w-[100px] h-[100px] xl:w-[190px] xl:h-[120px]"
+                  priority
+                />
+                <div className="flex-1 min-w-0 xl:w-full">
+                  <strong className="font-semibold text-lg xl:text-2xl block mb-2 truncate">
+                    {like.Feeds?.title}
+                  </strong>
+                  <p className="text-sub1 xl:text-lg line-clamp-2 xl:line-clamp-1">
+                    {like.Feeds?.content}
+                  </p>
+                </div>
+              </Link>
             );
           })}
         </div>

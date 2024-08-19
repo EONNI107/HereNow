@@ -1,18 +1,11 @@
 'use client';
-import Header from '@/components/MainPage/Header';
-import Main from '@/components/MainPage/Main';
-import useAuthStore from '@/zustand/useAuthStore';
-function Home() {
-  const { user } = useAuthStore();
+import dynamic from 'next/dynamic';
 
-  return (
-    <>
-      <Header
-        title={user ? `${user.user_metadata.nickname}님만의` : '여러분만의'}
-        content="맛집, 여행지를 공유해주세요!"
-      />
-      <Main />
-    </>
-  );
+const HomeMain = dynamic(() => import('@/components/HomeMain/HomeMain'), {
+  ssr: false,
+});
+
+function Home() {
+  return <HomeMain />;
 }
 export default Home;

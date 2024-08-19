@@ -14,12 +14,14 @@ function LocalItem({ item, onclick }: NearbyTypePlace) {
     >
       <Image
         src={
-          item.firstimage ? item.firstimage || item.firstimage2 : '/No_Img.jpg'
+          item.firstimage
+            ? item.firstimage || item.firstimage2
+            : '/NoImg-v1.png'
         }
         alt="축제이미지"
         width={368}
         height={100}
-        className="rounded-xl object-cover w-full h-[100px]"
+        className="rounded-xl object-cover w-full h-[135px]"
         priority
       />
       <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent rounded-xl"></div>

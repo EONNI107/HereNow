@@ -3,7 +3,7 @@ import SearchFilterItem from './SearchFilterItem';
 import { searchApi } from '@/components/MainPage/api/searchApi';
 import SkeletonSearchItem from '@/components/MainPage/Skeleton/SkeletonSearchItem';
 import SearchIntroduction from '@/components/MainPage/SearchElements/SearchIntroduction';
-import { SearchedType } from '@/app/(layout)/search-page/page';
+import { SearchedType } from '@/components/SearchMain/SearchMain';
 
 type SearchItemProps = {
   searchValue: string;
