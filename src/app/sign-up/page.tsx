@@ -18,6 +18,7 @@ function SignUpPage() {
   const [nickname, setNickname] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isEmailChecked, setIsEmailChecked] = useState(false);
   const router = useRouter();
 
   const isValidEmail = (email: string) => {
@@ -46,11 +47,27 @@ function SignUpPage() {
     setIsFormValid(isValid);
   }, [email, password, passwordConfirm, nickname]);
 
-  const handleEmailBlur = (e: FocusEvent<HTMLInputElement>) => {
+  const handleEmailBlur = async (e: FocusEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
       showToast('error', '이메일을 입력하세요');
     } else if (!isValidEmail(e.target.value)) {
       showToast('error', '올바른 이메일 형식이 아닙니다');
+    } else {
+      try {
+        const response = await axios.post('/api/check-email', {
+          email: e.target.value,
+        });
+        if (response.data.exists) {
+          showToast('error', '이미 사용 중인 이메일입니다');
+          setIsEmailChecked(false);
+        } else {
+          showToast('success', '사용 가능한 이메일입니다');
+          setIsEmailChecked(true);
+        }
+      } catch (error) {
+        showToast('error', '이메일 중복 확인 중 오류가 발생했습니다');
+        setIsEmailChecked(false);
+      }
     }
   };
 
@@ -110,7 +127,14 @@ function SignUpPage() {
         router.push('/sign-in');
       }
     } catch (error) {
-      showToast('error', `회원가입에 실패했습니다`);
+      if (axios.isAxiosError(error) && error.response) {
+        showToast(
+          'error',
+          error.response.data.error || '회원가입에 실패했습니다',
+        );
+      } else {
+        showToast('error', '회원가입에 실패했습니다');
+      }
     } finally {
       setIsSubmitting(false);
     }
