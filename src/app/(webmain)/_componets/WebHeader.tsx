@@ -9,10 +9,12 @@ import { toast } from 'react-toastify';
 import LoginPrompt from '@/components/LoginPrompt';
 import useAuthStore from '@/zustand/useAuthStore';
 import Image from 'next/image';
+import axios from 'axios';
+import { showToast } from '@/utils/toastHelper';
 
 function WebHeader() {
   const router = useRouter();
-  const { user, logOut } = useAuthStore();
+  const { user } = useAuthStore();
   const {
     setIsbg,
     isbg,
@@ -49,10 +51,18 @@ function WebHeader() {
   const handleProfileImage = () => {
     router.push(`/profile/${user?.id}`);
   };
-  const handleLogout = () => {
-    window.location.reload();
-    logOut();
+  const handleLogout = async () => {
+    const response = await axios.post(`/api/sign-out`);
+    if (response.status === 200) {
+      useAuthStore.getState().logOut();
+
+      showToast('success', '로그아웃이 완료 되었습니다');
+      router.push('/sign-in');
+    } else {
+      showToast('error', '로그아웃 중 오류가 발생했습니다');
+    }
   };
+
   return (
     <header className="w-full py-4 fixed right-0 left-0 mx-auto z-10 box-shadow bg-white flex justify-center items-center max-xl:px-12">
       <div className="flex gap-x-[90px] w-[1293px]">
