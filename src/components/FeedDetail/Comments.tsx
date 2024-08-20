@@ -35,7 +35,7 @@ type CommentsProps = {
   placeId?: number;
   onClose: () => void;
   onCommentAdded: () => void;
-  onCommentRemoved: () => void; // 새로운 prop 추가
+  onCommentRemoved: () => void;
 };
 
 function Comments({
@@ -133,7 +133,7 @@ function Comments({
           ),
         ]);
         setNewComment('');
-        onCommentAdded(); // 댓글이 성공적으로 추가되었을 때 댓글 수를 업데이트
+        onCommentAdded();
       }
     } else if (placeId) {
       const { data, error } = await supabase
@@ -161,7 +161,7 @@ function Comments({
           ),
         ]);
         setNewComment('');
-        onCommentAdded(); // 댓글이 성공적으로 추가되었을 때 댓글 수를 업데이트
+        onCommentAdded();
       }
     }
   };
@@ -234,7 +234,7 @@ function Comments({
       setComments((prevComments) =>
         prevComments.filter((comment) => comment.id !== commentId),
       );
-      onCommentRemoved(); // 댓글이 삭제되었을 때 댓글 수를 업데이트
+      onCommentRemoved();
       toast.success('댓글이 삭제되었습니다.', {
         autoClose: 1500,
         closeOnClick: true,
