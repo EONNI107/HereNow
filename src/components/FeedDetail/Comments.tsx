@@ -259,7 +259,7 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
           />
           <button
             type="submit"
-            className="btn bg-blue4 w-[80px] h-[48px] rounded-xl text-white text-[16px] ml-4"
+            className="btn bg-blue4 w-[80px] h-[48px] rounded-xl text-white text-[16px] ml-4 hover:bg-blue5 transition-colors duration-300"
           >
             등록
           </button>

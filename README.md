@@ -70,7 +70,7 @@
     <td align="center"><a href="https://github.com/Maestrossa"><img src="https://avatars.githubusercontent.com/u/161290671?v=4" width="100" /></a></td>
     <td align="center"><a href="https://github.com/SecretCandy"><img src="https://avatars.githubusercontent.com/u/108340910?v=4" width="100" /></a></td>
     <td align="center"><a href="https://github.com/leeseayoung"><img src="https://avatars.githubusercontent.com/u/141402621?v=4" width="100" /></a></td>  
-    <td align="center"><a href=""><img src="" width="100" /></a></td> 
+    <td align="center"><a href="https://github.com/EONNI107"><img src="https://avatars.githubusercontent.com/u/131836982?v=4" width="100" /></a></td> 
   </tr>
   <tr>
     <td align="center">피드 목록페이지, 
