@@ -15,6 +15,15 @@ import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 function LocalDetailsPage({ params }: { params: { id: number } }) {
   const { id } = params;
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
+
+  const incrementCommentCount = () => {
+    setCommentCount((prevCount) => prevCount + 1);
+  };
+
+  const decrementCommentCount = () => {
+    setCommentCount((prevCount) => prevCount - 1);
+  };
 
   const {
     data: mainData,
@@ -55,7 +64,12 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
             <h2 className="text-xl font-bold mb-4">
               {`${mainData?.title}에 대한 리뷰를 남겨주세요!`}
             </h2>
-            <Comments placeId={id} onClose={() => {}} />
+            <Comments
+              placeId={id}
+              onClose={() => {}}
+              onCommentAdded={incrementCommentCount}
+              onCommentRemoved={decrementCommentCount}
+            />
           </div>
         </div>
         <div className="xl:w-[400px] mt-8 xl:mt-20">
@@ -64,7 +78,12 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
       </div>
 
       {isCommentModalOpen && (
-        <Comments placeId={id} onClose={() => setIsCommentModalOpen(false)} />
+        <Comments
+          placeId={id}
+          onClose={() => setIsCommentModalOpen(false)}
+          onCommentAdded={incrementCommentCount}
+          onCommentRemoved={decrementCommentCount}
+        />
       )}
     </div>
   );
