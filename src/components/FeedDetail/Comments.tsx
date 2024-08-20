@@ -34,9 +34,17 @@ type CommentsProps = {
   postId?: number;
   placeId?: number;
   onClose: () => void;
+  onCommentAdded: () => void;
+  onCommentRemoved: () => void; // 새로운 prop 추가
 };
 
-function Comments({ postId, placeId, onClose }: CommentsProps) {
+function Comments({
+  postId,
+  placeId,
+  onClose,
+  onCommentAdded,
+  onCommentRemoved,
+}: CommentsProps) {
   const [comments, setComments] = useState<(FeedComment | PlaceComment)[]>([]);
   const [newComment, setNewComment] = useState<string>('');
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
@@ -125,6 +133,7 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
           ),
         ]);
         setNewComment('');
+        onCommentAdded(); // 댓글이 성공적으로 추가되었을 때 댓글 수를 업데이트
       }
     } else if (placeId) {
       const { data, error } = await supabase
@@ -152,6 +161,7 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
           ),
         ]);
         setNewComment('');
+        onCommentAdded(); // 댓글이 성공적으로 추가되었을 때 댓글 수를 업데이트
       }
     }
   };
@@ -224,6 +234,7 @@ function Comments({ postId, placeId, onClose }: CommentsProps) {
       setComments((prevComments) =>
         prevComments.filter((comment) => comment.id !== commentId),
       );
+      onCommentRemoved(); // 댓글이 삭제되었을 때 댓글 수를 업데이트
       toast.success('댓글이 삭제되었습니다.', {
         autoClose: 1500,
         closeOnClick: true,
