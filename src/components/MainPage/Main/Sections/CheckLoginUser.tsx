@@ -1,5 +1,4 @@
 import { createClient } from '@/utils/supabase/client';
-import { showToast } from '@/utils/toastHelper';
 import { useEffect } from 'react';
 import useAuthStore from '@/zustand/useAuthStore';
 
