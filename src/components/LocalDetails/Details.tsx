@@ -158,7 +158,7 @@ function Details({
                 />
                 <button
                   onClick={handleShareBtn}
-                  className="flex items-center gap-2 border border-gray8 p-2 rounded-lg"
+                  className="flex items-center gap-2 border border-gray8 p-2 rounded-lg hover:bg-gray1 transition-colors duration-300"
                 >
                   <ShareIcon className="w-5 h-5" />
                   <span className="text-gray12">공유</span>

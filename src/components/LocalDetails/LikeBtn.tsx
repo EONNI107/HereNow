@@ -124,7 +124,7 @@ function LikeBtn({
       ) : (
         <button
           onClick={handleLike}
-          className={`flex gap-2 justify-center xl:hover:bg-blue5 xl:bg-blue4 xl:border border-blue4 xl:p-2 xl:rounded-lg xl:w-24 ${
+          className={`flex gap-2 justify-center xl:hover:bg-blue5 transition-colors duration-300 xl:bg-blue4 xl:border border-blue4 xl:p-2 xl:rounded-lg xl:w-24 ${
             isInNearbyPlaces &&
             'xl:bg-transparent xl:hover:bg-transparent xl:border-none xl:w-4 xl:p-0 xl:algin'
           }`}
