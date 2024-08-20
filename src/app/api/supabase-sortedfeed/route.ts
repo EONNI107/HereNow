@@ -5,12 +5,22 @@ export const POST = async (request: Request) => {
   const supabase = createClient();
   const { searchValue, title } = await request.json();
   try {
-    const response = await supabase
+    const { data: initialData, error: initialError } = await supabase
       .from('Feeds')
       .select('*')
-      .ilike('content', `%${searchValue}%`)
-      .ilike('title', `%${title}%`);
-    return NextResponse.json(response);
+      .or(`title.ilike.%${searchValue}%,content.ilike.%${searchValue}%`);
+
+    if (initialError) {
+      throw initialError;
+    }
+
+    const filteredData = initialData.filter(
+      (item) =>
+        item.title.toLowerCase().includes(title.toLowerCase()) ||
+        item.content.toLowerCase().includes(title.toLowerCase()),
+    );
+    console.log(filteredData);
+    return NextResponse.json(filteredData);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
