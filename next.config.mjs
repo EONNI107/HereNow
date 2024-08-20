@@ -14,6 +14,12 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'cuxcqeqwbwfuxipnozwy.supabase.co',
       },
+      {
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        hostname: 't1.kakaocdn.net',
+      },
     ],
   },
 };

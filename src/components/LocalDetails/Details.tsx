@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import {
   BookOpenIcon,
   CalendarDateRangeIcon,
+  ChatBubbleOvalLeftEllipsisIcon,
   ClockIcon,
   MapPinIcon,
   PhoneIcon,
@@ -13,7 +14,12 @@ import { DetailProps } from '@/types/localDetails';
 import Image from 'next/image';
 import { showToast } from '@/utils/toastHelper';
 
-function Details({ mainData, additionalData, typeId }: DetailProps) {
+function Details({
+  mainData,
+  additionalData,
+  typeId,
+  onCommentClick,
+}: DetailProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -98,9 +104,20 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
   return (
     <>
       {mainData?.firstimage ? (
+        <div className="relative w-full h-[310px] xl:w-[800px] xl:h-[600px] mx-auto mb-6 xl:mb-9 bg-white">
+          <Image
+            src={mainData.firstimage || '/NoImg-v3.png'}
+            alt="장소 이미지"
+            fill
+            sizes="(max-width: 1240px) 100vw, 1240px"
+            className="object-cover w-full xl:object-contain"
+            priority
+          />
+        </div>
+      ) : (
         <div className="relative w-full h-[310px] xl:w-[800px] xl:h-[600px] mx-auto mb-6 xl:mb-9">
           <Image
-            src={mainData?.firstimage || '/No_Img.jpg'}
+            src={'/NoImg-v3.png'}
             alt="장소 이미지"
             fill
             sizes="(max-width: 1240px) 100vw, 1240px"
@@ -108,28 +125,49 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
             priority
           />
         </div>
-      ) : null}
+      )}
+      <div className="mx-4 xl:mx-0">
+        <div className="flex flex-col justify-between gap-2 mb-4 xl:mb-6">
+          {mainData?.contentid && (
+            <div className="flex justify-between items-center xl:hidden mb-2">
+              <div className="flex items-center gap-2">
+                <LikeBtn
+                  imageUrl={mainData.firstimage}
+                  placeId={mainData.contentid}
+                  title={mainData.title}
+                />
+                <button onClick={onCommentClick}>
+                  <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6" />
+                </button>
+              </div>
+              <button onClick={handleShareBtn}>
+                <ShareIcon className="w-5 h-5" />
+              </button>
+            </div>
+          )}
 
-      <div className="flex flex-row-reverse justify-between gap-2 mx-4 xl:mx-0 xl:flex-col">
-        {mainData?.contentid && (
-          <div className="items-center flex gap-2 xl:gap-9 mb-4 xl:mb-6">
-            <LikeBtn
-              imageUrl={mainData.firstimage}
-              placeId={mainData.contentid}
-              title={mainData.title}
-            />
-            <button
-              onClick={handleShareBtn}
-              className="flex gap-2 justify-center xl:border border-gray8 xl:p-2 xl:rounded-lg xl:w-24"
-            >
-              <ShareIcon className="w-5 h-5" />
-              <span className="hidden xl:inline-flex text-gray12">공유</span>
-            </button>
-          </div>
-        )}
-        <h1 className="text-2xl mb-4 xl:text-5xl xl:mb-6">{mainData?.title}</h1>
+          <h1 className="text-2xl xl:text-5xl">{mainData?.title}</h1>
+
+          {mainData?.contentid && (
+            <div className="hidden xl:block mt-4">
+              <div className="flex items-center gap-4 mb-2">
+                <LikeBtn
+                  imageUrl={mainData.firstimage}
+                  placeId={mainData.contentid}
+                  title={mainData.title}
+                />
+                <button
+                  onClick={handleShareBtn}
+                  className="flex items-center gap-2 border border-gray8 p-2 rounded-lg"
+                >
+                  <ShareIcon className="w-5 h-5" />
+                  <span className="text-gray12">공유</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col mx-4 xl:mx-0">
           <p className={`${isExpanded ? '' : 'line-clamp-4'}`}>
@@ -146,11 +184,11 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
         </div>
         <div className="flex-col space-y-4 mx-4 xl:mx-0">
           <p className="flex gap-2">
-            <MapPinIcon className="w-t h-5" /> {mainData?.addr1}
+            <MapPinIcon className="w-t h-5" />
+            {mainData?.addr1}
           </p>
           {filteredHours ? (
             <p className="flex gap-2">
-              {' '}
               <ClockIcon className="w-5 h-5 flex-shrink-0" />
               {filteredHours}
             </p>
@@ -158,31 +196,30 @@ function Details({ mainData, additionalData, typeId }: DetailProps) {
           {filteredRestDate
             ? filteredRestDate !== '' && (
                 <p className="flex gap-2">
-                  {' '}
-                  <CalendarDateRangeIcon className="w-t h-5 flex-shrink-0" />{' '}
-                  휴무: {filteredRestDate}{' '}
+                  <CalendarDateRangeIcon className="w-t h-5 flex-shrink-0" />
+                  휴무: {filteredRestDate}
                 </p>
               )
             : additionalData?.eventstartdate && (
                 <p className="flex gap-2">
-                  <CalendarDateRangeIcon className="w-t h-5 flex-shrink-0" />{' '}
+                  <CalendarDateRangeIcon className="w-t h-5 flex-shrink-0" />
                   {additionalData?.eventstartdate &&
-                    formatKoreanDate(additionalData?.eventstartdate)}{' '}
-                  -{' '}
+                    formatKoreanDate(additionalData?.eventstartdate)}
+                  -
                   {additionalData?.eventenddate &&
                     formatKoreanDate(additionalData?.eventenddate)}
                 </p>
               )}
           {additionalData?.treatmenu ? (
             <p className="flex gap-2">
-              <BookOpenIcon className="w-t h-5 flex-shrink-0" />{' '}
+              <BookOpenIcon className="w-t h-5 flex-shrink-0" />
               {additionalData?.treatmenu}
             </p>
           ) : null}
-
           {phoneNumber ? (
             <p className="flex gap-2">
-              <PhoneIcon className="w-t h-5 flex-shrink-0" /> {phoneNumber}
+              <PhoneIcon className="w-t h-5 flex-shrink-0" />
+              {phoneNumber}
             </p>
           ) : null}
         </div>

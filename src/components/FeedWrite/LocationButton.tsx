@@ -22,7 +22,7 @@ function LocationButton({
   if (isDesktop) {
     return (
       <div className="flex">
-        <button className="btn text-orange4 mr-4 border-orange4 border-[1px] w-[104px] h-[46px] rounded-lg flex items-center cursor-default text-[20px] font-semibold justify-center">
+        <button className="btn text-orange4 mr-4 border-orange4 border-[1px] w-[104px] h-[46px] rounded-lg flex items-center cursor-default text-[20px] font-semibold justify-center hover:bg-orange4 hover:text-white transition-colors duration-300">
           <span>위치 추가</span>
         </button>
         {showDropdown && (

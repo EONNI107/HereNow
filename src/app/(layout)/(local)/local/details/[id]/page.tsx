@@ -10,6 +10,7 @@ import {
   useNearbyPlaces,
 } from '@/hooks/useLocalDetails';
 import React, { useState } from 'react';
+import { ChatBubbleOvalLeftEllipsisIcon } from '@heroicons/react/24/outline';
 
 function LocalDetailsPage({ params }: { params: { id: number } }) {
   const { id } = params;
@@ -40,27 +41,31 @@ function LocalDetailsPage({ params }: { params: { id: number } }) {
 
   return (
     <div className="xl:container xl:max-w-screen-xl">
-      <div className="mt-4 flex flex-col bg-gray0 mx-auto xl:mt-0 xl:max-h-[2000px] xl:mb-5 xl:flex xl:flex-row xl:justify-center xl:gap-10">
+      <div className="mt-4 flex flex-col bg-gray0 xl:bg-white mx-auto xl:mt-0 xl:mb-20 xl:flex xl:flex-row xl:justify-center xl:gap-10">
         <div className="xl:w-[800px] xl:mt-11">
           <Details
             mainData={mainData}
             additionalData={additionalData}
             typeId={typeId}
+            onCommentClick={() => setIsCommentModalOpen(true)}
           />
           <KakaoMap latitude={latitude} longitude={longitude} />
+
+          <div className="w-full mt-8 mb-20 hidden xl:block">
+            <h2 className="text-xl font-bold mb-4">
+              {`${mainData?.title}에 대한 리뷰를 남겨주세요!`}
+            </h2>
+            <Comments placeId={id} onClose={() => {}} />
+          </div>
         </div>
         <div className="xl:w-[400px] mt-8 xl:mt-20">
           <NearbyPlaces nearbyPlaces={nearbyPlaces} />
         </div>
-        {isCommentModalOpen && (
-          <div className="fixed inset-0 z-50">
-            <Comments
-              placeId={id}
-              onClose={() => setIsCommentModalOpen(false)}
-            />
-          </div>
-        )}
       </div>
+
+      {isCommentModalOpen && (
+        <Comments placeId={id} onClose={() => setIsCommentModalOpen(false)} />
+      )}
     </div>
   );
 }

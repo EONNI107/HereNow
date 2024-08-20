@@ -163,7 +163,7 @@ function FeedWrite() {
 
   return (
     <div>
-      <div className="header flex justify-between items-center w-full h-12 xl:h-[4.2vw] px-[17vw]">
+      <div className="header flex justify-between items-center px-2 w-full h-12 xl:h-[4.2vw] xl:px-[17vw]">
         {isDesktop ? (
           <p
             onClick={() => {
@@ -181,7 +181,7 @@ function FeedWrite() {
         )}
         <button
           onClick={handleSubmit}
-          className="btn bg-blue4 px-2.5 py-1.5 w-15 h-9 rounded-lg font-semibold text-sm text-white xl:w-[6vw] xl:h-[2.7vw] xl:text-[1.3vw]"
+          className="btn bg-blue4 px-2.5 py-1.5 w-15 h-9 rounded-lg font-semibold text-sm text-white xl:w-[6vw] xl:h-[2.7vw] xl:text-[1.3vw] hover:bg-blue5 hover:text-white transition-colors duration-300"
         >
           {feedId ? '수정하기' : '등록'}
         </button>
