@@ -14,7 +14,6 @@ export default function FeedList({ userId }: { userId: string }) {
 
   useEffect(() => {
     const fetchFeeds = async () => {
-      if (!user) return;
       const { data, error } = await supabase
         .from('Feeds')
         .select('*')
