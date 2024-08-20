@@ -50,8 +50,10 @@ function WebHeader() {
   };
   const handleProfileImage = () => {
     router.push(`/profile/${user?.id}`);
+    setIsbg(false);
   };
   const handleLogout = async () => {
+    setIsbg(false);
     const response = await axios.post(`/api/sign-out`);
     if (response.status === 200) {
       useAuthStore.getState().logOut();
@@ -62,13 +64,17 @@ function WebHeader() {
       showToast('error', '로그아웃 중 오류가 발생했습니다');
     }
   };
+  const handleHomeClick = () => {
+    setIsbg(false);
+    router.push('/');
+  };
 
   return (
     <header className="w-full py-4 fixed right-0 left-0 mx-auto z-10 box-shadow bg-white flex justify-center items-center max-xl:px-12">
       <div className="flex gap-x-[90px] w-[1293px]">
         <div
           className="grow-0 font-medium text-[36px] flex justify-center items-center cursor-pointer"
-          onClick={() => router.push('/')}
+          onClick={handleHomeClick}
         >
           <p className="font-[양진체] text-blue4 shrink-0">지금,여기</p>
         </div>

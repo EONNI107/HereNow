@@ -1,17 +1,18 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { showToast } from '@/utils/toastHelper';
-import { ChangeEvent, useEffect, useState } from 'react';
-import PenIcon from '@/components/IconList/PenIcon';
 import Image from 'next/image';
-import { Tables, TablesInsert } from '@/types/supabase';
+import PenIcon from '@/components/IconList/PenIcon';
 import FeedsList from '@/components/MypageFeedsList/FeedsList';
 import FeedLikes from '@/components/MypageFeedLikesList/FeedLikesList';
 import PlaceLikes from '@/components/MypagePlaceLikesList/PlaceLikes';
 import useAuthStore from '@/zustand/useAuthStore';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { ChangeEvent } from 'react';
+import { Tables, TablesInsert } from '@/types/supabase';
 
 type EditProfile = Pick<TablesInsert<'Users'>, 'nickname' | 'profileImage'>;
 
@@ -48,15 +49,13 @@ function MyPage({ params }: { params: { id: string } }) {
   };
 
   const fetchProfile = async () => {
-    if (user) {
-      const profileData = await fetchUserProfile(params.id);
-      if (profileData) {
-        setProfile(profileData);
-        setEditProfile({
-          nickname: profileData.nickname,
-          profileImage: profileData.profileImage,
-        });
-      }
+    const profileData = await fetchUserProfile(params.id);
+    if (profileData) {
+      setProfile(profileData);
+      setEditProfile({
+        nickname: profileData.nickname,
+        profileImage: profileData.profileImage,
+      });
     }
   };
 
@@ -343,7 +342,9 @@ function MyPage({ params }: { params: { id: string } }) {
           </div>
         </div>
         <div className="hidden xl:block w-full rounded-lg">
-          <h2 className="text-[32px] font-bold mb-[40px]">내 프로필</h2>
+          <h2 className="text-[32px] font-bold mb-[40px]">
+            {profile?.nickname}님의 프로필
+          </h2>
           <div className="flex">
             <div className="flex items-center px-4 border-r border-gray-300 w-1/5">
               <div className="relative w-[160px] h-[160px]">
@@ -388,10 +389,10 @@ function MyPage({ params }: { params: { id: string } }) {
                       type="text"
                       value={newNickname}
                       onChange={(e) => setNewNickname(e.target.value)}
-                      className="px-2 py-1 w-[100px] border border-blue4 rounded-lg"
+                      className="px-2 py-1 w-[125px] border border-blue4 rounded-lg"
                     />
                   ) : (
-                    <p className="text-[20px]  w-[100px] font-bold">
+                    <p className="text-[20px]  w-[125px] font-bold">
                       {profile?.nickname}
                     </p>
                   )}
@@ -440,9 +441,7 @@ function MyPage({ params }: { params: { id: string } }) {
       <div className="w-full mt-6">
         {isMyPage ? (
           <div>
-            <div className="hidden xl:block text-4xl font-bold mb-4">
-              내 피드
-            </div>
+            <div className="hidden xl:block text-4xl font-bold mb-4">피드</div>
             <div className="flex justify-center xl:justify-start flex-grow">
               <button
                 className={`p-2 flex-1 xl:flex-none xl:px-4 ${
@@ -501,8 +500,8 @@ function MyPage({ params }: { params: { id: string } }) {
             </div>
           </div>
         ) : (
-          <div className="">
-            <div className="">
+          <div>
+            <div>
               <div className="hidden xl:block text-4xl font-bold mb-4">
                 피드
               </div>

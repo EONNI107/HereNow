@@ -128,6 +128,14 @@ function PostPage({ params }: PostPageProps) {
     fetchData();
   }, [params.id]);
 
+  const incrementCommentCount = () => {
+    setCommentCount((prevCount) => prevCount + 1);
+  };
+
+  const decrementCommentCount = () => {
+    setCommentCount((prevCount) => prevCount - 1);
+  };
+
   if (!post) {
     return <FeedDetailSkeleton />;
   }
@@ -243,6 +251,9 @@ function PostPage({ params }: PostPageProps) {
                   </div>
                 )}
               </div>
+              <p className="text-sm text-gray-500 mt-2">
+                {formatDate(post.createdAt)}
+              </p>
               <p className="text-[1vw] font-normal mt-[1.3vw]">
                 {post.content}
               </p>
@@ -255,7 +266,12 @@ function PostPage({ params }: PostPageProps) {
                   commentCount={commentCount}
                 />
               </div>
-              <Comments postId={post.id} onClose={() => {}} />
+              <Comments
+                postId={post.id}
+                onClose={() => {}}
+                onCommentAdded={incrementCommentCount}
+                onCommentRemoved={decrementCommentCount}
+              />
             </div>
 
             <div className="flex flex-col xl:w-[21vw]">
@@ -357,6 +373,8 @@ function PostPage({ params }: PostPageProps) {
               <Comments
                 postId={post.id}
                 onClose={() => setIsCommentModalOpen(false)}
+                onCommentAdded={incrementCommentCount}
+                onCommentRemoved={decrementCommentCount}
               />
             </div>
           )}

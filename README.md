@@ -1,6 +1,9 @@
 # 🍀 프로젝트명 : 지금, 여기
-
-<img alt="image" src="public/readme-brochure.png">
+<br/>
+<p align="center">
+<img alt="image" src="public/readme-brochure.png" width = 90%>
+</p>
+<br/>
 
 # 소개
 
@@ -22,13 +25,22 @@
 
 # 1. 프로젝트 소개
 
+<br/>
+
+###  배포주소 및 시연영상
+  > 배포 사이트: <br/>
+  > 시연 영상: <br/>  
+
+  <br/>
+  
+## 🐬 로컬의 생생한 순간을 당신의 손안에! “지금, 여기”
+🚴여행을 계획하면서 현지의 생생한 정보를 얻고 싶었던 적이 있으신가요? <br/> 
+"지금, 여기"만 있으면 헛걸음 걱정은 이제 끝! 
+-  “지금, 여기” 에서 현지의 여행지, 맛집, 행사 정보를 실시간으로 확인하고 다른 사용자들과 소통하며 필요한 정보를 나눌 수 있어요.
+- 사용자는 현재 위치 또는 관심 있는 로컬의 맛집, 여행지, 행사, 날씨, 사용자 후기 등을 확인하고, 다른 사용자들과 정보를 공유하며 소통할 수 있습니다.
   <br/>
 
-- 한줄 정리 : 로컬의 정보를 확인하고 공유할 수 있는 플랫폼입니다.<br />
-
-- 내용 : 사용자는 현재 위치 또는 관심 있는 로컬의 맛집, 여행지, 행사, 날씨, 사용자 후기 등을 확인하고, 다른 사용자들과 정보를 공유하며 소통할 수 있습니다.
-  <br/>
-
+## 아키텍처
 - 프로젝트 핵심 기술:
   - 패키지 매니저 : npm
   - 프론트엔드 : React,Next,js,TypeScript,Tailwind CSS
@@ -38,6 +50,8 @@
   - 전역상태관리 : Zustand, Tanstack Query
   - API : 한국관광공사 Tour API, 카카오 지도 API
   - 배포 : Vercel
+<br />
+
 
 ## 팀원 소개
 
@@ -56,7 +70,7 @@
     <td align="center"><a href="https://github.com/Maestrossa"><img src="https://avatars.githubusercontent.com/u/161290671?v=4" width="100" /></a></td>
     <td align="center"><a href="https://github.com/SecretCandy"><img src="https://avatars.githubusercontent.com/u/108340910?v=4" width="100" /></a></td>
     <td align="center"><a href="https://github.com/leeseayoung"><img src="https://avatars.githubusercontent.com/u/141402621?v=4" width="100" /></a></td>  
-    <td align="center"><a href=""><img src="" width="100" /></a></td> 
+    <td align="center"><a href="https://github.com/EONNI107"><img src="https://avatars.githubusercontent.com/u/131836982?v=4" width="100" /></a></td> 
   </tr>
   <tr>
     <td align="center">피드 목록페이지, 
@@ -81,30 +95,35 @@
 
 # 2. 프로젝트 진행
 
-  <br/>
-
-<img width="300" height="300"  alt="image" src="gif\룰파일.gif">
-<img width="300" height="300" alt="image" src="gif\코드 컨벤션.jpg">
-<br/>
 <br/>
 
 ## 2024.07.16 ~ 2024.08.21<br/><br/>
 
-💬 원활한 소통과 작업내용 공유를 위해 zep과 slack을 사용했어요<br/>
+<br/>
+<p align:"center"><img width="300" height="300"  alt="image" src="gif\룰파일.gif">
+<img width="300" height="300" alt="image" src="gif\코드 컨벤션.jpg">
+</p>
 
-💬 코드 컨벤션을 규칙을 정해서 통일된 규칙안에서 코드를 작성해보았어요<br/>
+<figcaption>
+🥇 원활한 소통과 작업내용 공유를 위해 zep과 slack을 사용했어요
+  <br />
+🥈 코드 컨벤션을 규칙을 정해서 통일된 규칙안에서 코드를 작성해보았어요
+  <br />
+🥉 pr에 2명 이상의 approve가 있어야 develop에 merge를 할 수 있도록 설정했어요
+  <br />
+</figcaption>
+<br/>
+<br/>
 
-💬 pr에 2명 이상의 approve가 있어야 develop에 merge를 할 수 있도록 설정했어요
 
   <br/>
-  
   <br/>
 
 # 3. 프로젝트 대표기능
 
   <br/>
 
-- 사용자는 현재 위치, 전국 키워드와 또는 검색을 이용하여 정보(맛집, 관관지, 행사등)를 찾을 수 있어요<br />
+- 사용자는 현재 위치, 전국 키워드와 또는 검색을 이용하여 정보(맛집, 관관지, 행사등)를 찾을 수 있어요<br />    
 - 각 지역만의 정보(맛집, 관관지, 행사등)를 한눈에 확인할 수 있어요<br />
 - 피드를 통해 관련 로컬들의 맛집, 관관지, 행사등의 후기를 한눈에 볼 수 있어요<br />
 - 자신만의 피드를 작성하여 본인만의 이야기를 남길 수 있어요<br />
