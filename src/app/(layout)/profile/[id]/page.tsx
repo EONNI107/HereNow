@@ -48,15 +48,13 @@ function MyPage({ params }: { params: { id: string } }) {
   };
 
   const fetchProfile = async () => {
-    if (user) {
-      const profileData = await fetchUserProfile(params.id);
-      if (profileData) {
-        setProfile(profileData);
-        setEditProfile({
-          nickname: profileData.nickname,
-          profileImage: profileData.profileImage,
-        });
-      }
+    const profileData = await fetchUserProfile(params.id);
+    if (profileData) {
+      setProfile(profileData);
+      setEditProfile({
+        nickname: profileData.nickname,
+        profileImage: profileData.profileImage,
+      });
     }
   };
 
@@ -388,10 +386,10 @@ function MyPage({ params }: { params: { id: string } }) {
                       type="text"
                       value={newNickname}
                       onChange={(e) => setNewNickname(e.target.value)}
-                      className="px-2 py-1 w-[100px] border border-blue4 rounded-lg"
+                      className="px-2 py-1 w-[125px] border border-blue4 rounded-lg"
                     />
                   ) : (
-                    <p className="text-[20px]  w-[100px] font-bold">
+                    <p className="text-[20px]  w-[125px] font-bold">
                       {profile?.nickname}
                     </p>
                   )}
