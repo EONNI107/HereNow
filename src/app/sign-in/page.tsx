@@ -129,7 +129,7 @@ function SignInPage() {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full bg-blue4 text-white py-4 px-6 rounded-2xl hover:bg-gray3 text-sm"
+                    className="w-full bg-blue4 text-white py-4 px-6 rounded-2xl hover:bg-blue5 transition-colors duration-300 text-sm"
                   >
                     로그인
                   </button>
@@ -137,7 +137,7 @@ function SignInPage() {
                   <button
                     type="button"
                     onClick={handleHomeClick}
-                    className="w-full bg-orange3 text-white py-4 px-6 rounded-2xl hover:bg-gray3 text-sm mt-3"
+                    className="w-full bg-orange3 text-white py-4 px-6 rounded-2xl hover:bg-orange4 transition-colors duration-300 text-sm mt-3"
                   >
                     홈으로
                   </button>
@@ -167,7 +167,7 @@ function SignInPage() {
                     <button
                       type="button"
                       onClick={() => signInWithOAuth('kakao')}
-                      className="w-full bg-[#F9E006] font-bold text-black py-3 px-4 rounded-2xl hover:bg-yellow-400 flex items-center justify-center text-sm"
+                      className="w-full bg-[#F9E006] font-bold text-black py-3 px-4 rounded-2xl hover:bg-yellow-400 transition-colors duration-300 flex items-center justify-center text-sm"
                     >
                       <Image
                         src="/kakao_symbol.png"
@@ -180,7 +180,7 @@ function SignInPage() {
                     <button
                       type="button"
                       onClick={() => signInWithOAuth('google')}
-                      className="w-full bg-white font-bold text-black py-3 px-4 rounded-2xl border border-gray3 hover:bg-gray-100 flex items-center justify-center text-sm"
+                      className="w-full bg-white font-bold text-black py-3 px-4 rounded-2xl border border-gray3 hover:bg-gray1 transition-colors duration-300 flex items-center justify-center text-sm"
                     >
                       <Image
                         src="/google_symbol.png"
